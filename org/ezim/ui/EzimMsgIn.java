@@ -35,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 
 import org.ezim.core.EzimContact;
+import org.ezim.ui.EzimMain;
 import org.ezim.ui.EzimMsgOut;
 
 public class EzimMsgIn extends JFrame
@@ -59,7 +60,7 @@ public class EzimMsgIn extends JFrame
 			this.jtaMsg.setText(strIn);
 
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setTitle("Incoming Message");
+		this.setTitle(EzimMain.rbpIncomingMessage);
 		this.setMinimumSize(new Dimension(320, 200));
 		this.setVisible(true);
 		this.toFront();
@@ -68,7 +69,7 @@ public class EzimMsgIn extends JFrame
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
-		this.jlblName = new JLabel("From");
+		this.jlblName = new JLabel(EzimMain.rbpFrom);
 
 		this.jtfdName = new JTextField(this.ec.getName());
 		this.jtfdName.setEnabled(false);
@@ -81,7 +82,7 @@ public class EzimMsgIn extends JFrame
 
 		this.jspMsg = new JScrollPane();
 
-		this.jlblOpen = new JLabel("<Click here to open message>");
+		this.jlblOpen = new JLabel(EzimMain.rbpClickHereToOpenMessage);
 		this.jlblOpen.addMouseListener
 		(
 			new MouseListener()
@@ -209,7 +210,9 @@ public class EzimMsgIn extends JFrame
 	private void jbtnReply_ActionPerformed(ActionEvent evt)
 	{
 		StringBuffer sbMsg = new StringBuffer();
-		sbMsg.append("----- Original Message by ");
+		sbMsg.append("----- ");
+		sbMsg.append(EzimMain.rbpOriginalMessageFrom);
+		sbMsg.append(" ");
 		sbMsg.append(ec.getName());
 		sbMsg.append(" -----\n");
 		sbMsg.append(this.jtaMsg.getText());
