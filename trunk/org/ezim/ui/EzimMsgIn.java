@@ -115,7 +115,7 @@ public class EzimMsgIn extends JFrame
 			}
 		);
 
-		this.jbtnReply = new JButton("Reply");
+		this.jbtnReply = new JButton(EzimMain.rbpReply);
 		this.jbtnReply.addActionListener
 		(
 			new ActionListener()
