@@ -1,5 +1,5 @@
 /*
-    Java Intranet Messenger
+    EZ Intranet Messenger
     Copyright (C) 2007  Chun-Kwong Wong <chunkwong.wong@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -15,60 +15,69 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.ezim.core;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.lang.Thread;
-import java.lang.reflect.Array;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
+import java.net.Socket;
 
-public class EzimAckSender extends Thread
+import org.ezim.core.EzimContact;
+import org.ezim.ui.EzimMsgIn;
+
+public class EzimMsgTakerThread extends Thread
 {
-	private EzimMain emHwnd;
-	private String msg;
+	private EzimContact ec;
+	private Socket sck;
 
-	public EzimAckSender(EzimMain emIn, String strIn)
+	public EzimMsgTakerThread(EzimContact ecIn, Socket sckIn)
 	{
-		this.emHwnd = emIn;
-		this.msg = strIn;
+		this.ec = ecIn;
+		this.sck = sckIn;
 	}
 
 	public void run()
 	{
-		MulticastSocket ms = null;
-		InetAddress ia = null;
-		DatagramPacket dp = null;
-		byte[] arrBytes = null;
+		StringBuffer sbTmp = new StringBuffer();
+		BufferedReader brTmp = null;
 
 		try
 		{
-			ia = InetAddress.getByName(Ezim.mcGroup);
-
-			ms = new MulticastSocket(Ezim.ackPort);
-			ms.setReuseAddress(true);
-			ms.setTimeToLive(Ezim.ttl);
-			if (ms.getLoopbackMode()) ms.setLoopbackMode(false);
-
-			arrBytes = this.msg.getBytes(Ezim.rtxEnc);
-			dp = new DatagramPacket
+			brTmp = new BufferedReader
 			(
-				arrBytes
-				, arrBytes.length
-				, ia
-				, Ezim.ackPort
+				new InputStreamReader
+				(
+					this.sck.getInputStream()
+					, Ezim.rtxEnc
+				)
 			);
 
-			ms.send(dp);
+			do
+			{
+				sbTmp.append(brTmp.readLine());
+				sbTmp.append("\n");
+			} while(brTmp.ready());
+
+			new EzimMsgIn(this.ec, sbTmp.toString());
 		}
 		catch(Exception e)
 		{
-			emHwnd.errAlert(e.getMessage());
+			// ignore
 		}
 		finally
 		{
 			try
 			{
-				if (ms != null && ! ms.isClosed()) ms.close();
+				brTmp.close();
+			}
+			catch(Exception e)
+			{
+				// ignore
+			}
+
+			try
+			{
+				if (sck != null && ! sck.isClosed()) sck.close();
 			}
 			catch(Exception e)
 			{

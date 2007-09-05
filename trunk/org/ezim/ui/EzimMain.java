@@ -1,5 +1,5 @@
 /*
-    Java Intranet Messenger
+    EZ Intranet Messenger
     Copyright (C) 2007  Chun-Kwong Wong <chunkwong.wong@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -15,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.ezim.ui;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import org.ezim.core.Ezim;
+import org.ezim.core.EzimAckSemantics;
+import org.ezim.core.EzimAckSender;
+import org.ezim.core.EzimContact;
+import org.ezim.core.EzimContactException;
+import org.ezim.ui.EzimMsgOut;
 
 public class EzimMain
 	extends JFrame
@@ -88,7 +96,7 @@ public class EzimMain
 
 		try
 		{
-			ResourceBundle rbAbout = ResourceBundle.getBundle("EzimAbout");
+			ResourceBundle rbAbout = ResourceBundle.getBundle("org/ezim/properties/EzimAbout");
 			this.notice = Ezim.appName + "\n"
 				+ "version " + Ezim.appVer + "\n\n"
 				+ rbAbout.getString("NOTICE");

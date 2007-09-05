@@ -1,5 +1,5 @@
 /*
-    Java Intranet Messenger
+    EZ Intranet Messenger
     Copyright (C) 2007  Chun-Kwong Wong <chunkwong.wong@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -15,56 +15,60 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.ezim.core;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.lang.Thread;
 import java.net.Socket;
+import javax.swing.JOptionPane;
 
-public class EzimMsgTakerThread extends Thread
+public class EzimMsgSender extends Thread
 {
-	private EzimContact ec;
-	private Socket sck;
+	private String ip;
+	private String msg;
 
-	public EzimMsgTakerThread(EzimContact ecIn, Socket sckIn)
+	public EzimMsgSender(String strIp, String strMsg)
 	{
-		this.ec = ecIn;
-		this.sck = sckIn;
+		this.ip = strIp;
+		this.msg = strMsg;
 	}
 
 	public void run()
 	{
-		StringBuffer sbTmp = new StringBuffer();
-		BufferedReader brTmp = null;
+		Socket sckOut = null;
+		BufferedWriter bwTmp = null;
 
 		try
 		{
-			brTmp = new BufferedReader
+			sckOut = new Socket(this.ip, Ezim.msgPort);
+			bwTmp = new BufferedWriter
 			(
-				new InputStreamReader
+				new OutputStreamWriter
 				(
-					this.sck.getInputStream()
+					sckOut.getOutputStream()
 					, Ezim.rtxEnc
 				)
 			);
 
-			do
-			{
-				sbTmp.append(brTmp.readLine());
-				sbTmp.append("\n");
-			} while(brTmp.ready());
-
-			new EzimMsgIn(this.ec, sbTmp.toString());
+			bwTmp.write(this.msg);
+			bwTmp.flush();
 		}
 		catch(Exception e)
 		{
-			// ignore
+			JOptionPane.showMessageDialog
+			(
+				null
+				, e.getMessage()
+				, "Send Message Error"
+				, JOptionPane.ERROR_MESSAGE
+			);
 		}
 		finally
 		{
 			try
 			{
-				brTmp.close();
+				bwTmp.close();
 			}
 			catch(Exception e)
 			{
@@ -73,14 +77,13 @@ public class EzimMsgTakerThread extends Thread
 
 			try
 			{
-				if (sck != null && ! sck.isClosed()) sck.close();
+				if (sckOut != null && ! sckOut.isClosed())
+					sckOut.close();
 			}
 			catch(Exception e)
 			{
 				// ignore
 			}
 		}
-
-		return;
 	}
 }
