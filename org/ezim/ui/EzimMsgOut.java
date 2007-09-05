@@ -1,5 +1,5 @@
 /*
-    Java Intranet Messenger
+    EZ Intranet Messenger
     Copyright (C) 2007  Chun-Kwong Wong <chunkwong.wong@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -15,13 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.ezim.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -33,7 +32,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 
-public class EzimMsgIn extends JFrame
+import org.ezim.core.EzimContact;
+import org.ezim.core.EzimMsgSender;
+
+public class EzimMsgOut extends JFrame
 {
 	private EzimContact ec;
 
@@ -42,29 +44,42 @@ public class EzimMsgIn extends JFrame
 	private JTextField jtfdName;
 	private JTextArea jtaMsg;
 	private JScrollPane jspMsg;
-	private JLabel jlblOpen;
-	private JButton jbtnReply;
+	private JButton jbtnSend;
 
 	// C O N S T R U C T O R -----------------------------------------------
-	public EzimMsgIn(EzimContact ecIn, String strIn)
+	public EzimMsgOut(EzimContact ecIn)
+	{
+		init(ecIn, (String) null);
+	}
+
+	public EzimMsgOut(EzimContact ecIn, String strIn)
+	{
+		init(ecIn, strIn);
+	}
+
+	private void init(EzimContact ecIn, String strIn)
 	{
 		this.ec = ecIn;
 		this.initGUI();
 
 		if (strIn != null && strIn.length() > 0)
+		{
 			this.jtaMsg.setText(strIn);
+			this.jtaMsg.setCaretPosition(0);
+		}
 
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setTitle("Incoming Message");
+		this.setTitle("Outgoing Message");
 		this.setMinimumSize(new Dimension(320, 200));
 		this.setVisible(true);
-		this.toFront();
+
+		return;
 	}
 
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
-		this.jlblName = new JLabel("From");
+		this.jlblName = new JLabel("To");
 
 		this.jtfdName = new JTextField(this.ec.getName());
 		this.jtfdName.setEnabled(false);
@@ -73,56 +88,21 @@ public class EzimMsgIn extends JFrame
 		this.jtaMsg.setLineWrap(true);
 		this.jtaMsg.setWrapStyleWord(true);
 		this.jtaMsg.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-		this.jtaMsg.setEditable(false);
 
-		this.jspMsg = new JScrollPane();
+		this.jspMsg = new JScrollPane(this.jtaMsg);
 
-		this.jlblOpen = new JLabel("<Click here to open message>");
-		this.jlblOpen.addMouseListener
-		(
-			new MouseListener()
-			{
-				public void mouseClicked(MouseEvent evtTmp)
-				{
-					jlblOpen_MouseClicked(evtTmp);
-					return;
-				}
-
-				public void mouseEntered(MouseEvent evtTmp)
-				{
-					return;
-				}
-
-				public void mouseExited(MouseEvent evtTmp)
-				{
-					return;
-				}
-
-				public void mousePressed(MouseEvent evtTmp)
-				{
-					return;
-				}
-
-				public void mouseReleased(MouseEvent evtTmp)
-				{
-					return;
-				}
-			}
-		);
-
-		this.jbtnReply = new JButton("Reply");
-		this.jbtnReply.addActionListener
+		this.jbtnSend = new JButton("Send");
+		this.jbtnSend.addActionListener
 		(
 			new ActionListener()
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					jbtnReply_ActionPerformed(evtTmp);
+					jbtnSend_ActionPerformed(evtTmp);
 					return;
 				}
 			}
 		);
-		this.jbtnReply.setEnabled(false);
 
 		this.jpnlBase = new JPanel();
 		this.add(this.jpnlBase);
@@ -158,18 +138,7 @@ public class EzimMsgIn extends JFrame
 				, GroupLayout.DEFAULT_SIZE
 				, Integer.MAX_VALUE
 			)
-			.addGroup
-			(
-				glBase.createSequentialGroup()
-				.addComponent
-				(
-					this.jlblOpen
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, Integer.MAX_VALUE
-				)
-				.addComponent(this.jbtnReply)
-			)
+			.addComponent(this.jbtnSend)
 		);
 
 		glBase.setHorizontalGroup(hGrp);
@@ -191,35 +160,22 @@ public class EzimMsgIn extends JFrame
 			, Integer.MAX_VALUE
 		);
 
-		vGrp.addGroup
-		(
-			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent(this.jlblOpen)
-			.addComponent(this.jbtnReply)
-		);
+		vGrp.addComponent(this.jbtnSend);
 
 		glBase.setVerticalGroup(vGrp);
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
-	private void jbtnReply_ActionPerformed(ActionEvent evt)
+	private void jbtnSend_ActionPerformed(ActionEvent evt)
 	{
-		StringBuffer sbMsg = new StringBuffer();
-		sbMsg.append("----- Original Message by ");
-		sbMsg.append(ec.getName());
-		sbMsg.append(" -----\n");
-		sbMsg.append(this.jtaMsg.getText());
-		new EzimMsgOut(this.ec, sbMsg.toString());
+		EzimMsgSender jmsTmp = new EzimMsgSender
+		(
+			this.ec.getIp()
+			, this.jtaMsg.getText()
+		);
+		jmsTmp.run();
+
 		this.dispose();
-
-		return;
-	}
-
-	private void jlblOpen_MouseClicked(MouseEvent evt)
-	{
-		this.jspMsg.setViewportView(this.jtaMsg);
-		this.jbtnReply.setEnabled(true);
-		this.jlblOpen.setVisible(false);
 
 		return;
 	}

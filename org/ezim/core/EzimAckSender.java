@@ -1,5 +1,5 @@
 /*
-    Java Intranet Messenger
+    EZ Intranet Messenger
     Copyright (C) 2007  Chun-Kwong Wong <chunkwong.wong@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -15,74 +15,70 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.ezim.core;
 
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
 import java.lang.Thread;
-import java.net.Socket;
-import javax.swing.JOptionPane;
+import java.lang.reflect.Array;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 
-public class EzimMsgSender extends Thread
+import org.ezim.ui.EzimMain;
+
+public class EzimAckSender extends Thread
 {
-	private String ip;
+	private EzimMain emHwnd;
 	private String msg;
 
-	public EzimMsgSender(String strIp, String strMsg)
+	public EzimAckSender(EzimMain emIn, String strIn)
 	{
-		this.ip = strIp;
-		this.msg = strMsg;
+		this.emHwnd = emIn;
+		this.msg = strIn;
 	}
 
 	public void run()
 	{
-		Socket sckOut = null;
-		BufferedWriter bwTmp = null;
+		MulticastSocket ms = null;
+		InetAddress ia = null;
+		DatagramPacket dp = null;
+		byte[] arrBytes = null;
 
 		try
 		{
-			sckOut = new Socket(this.ip, Ezim.msgPort);
-			bwTmp = new BufferedWriter
+			ia = InetAddress.getByName(Ezim.mcGroup);
+
+			ms = new MulticastSocket(Ezim.ackPort);
+			ms.setReuseAddress(true);
+			ms.setTimeToLive(Ezim.ttl);
+			if (ms.getLoopbackMode()) ms.setLoopbackMode(false);
+
+			arrBytes = this.msg.getBytes(Ezim.rtxEnc);
+			dp = new DatagramPacket
 			(
-				new OutputStreamWriter
-				(
-					sckOut.getOutputStream()
-					, Ezim.rtxEnc
-				)
+				arrBytes
+				, arrBytes.length
+				, ia
+				, Ezim.ackPort
 			);
 
-			bwTmp.write(this.msg);
-			bwTmp.flush();
+			ms.send(dp);
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog
-			(
-				null
-				, e.getMessage()
-				, "Send Message Error"
-				, JOptionPane.ERROR_MESSAGE
-			);
+			emHwnd.errAlert(e.getMessage());
 		}
 		finally
 		{
 			try
 			{
-				bwTmp.close();
-			}
-			catch(Exception e)
-			{
-				// ignore
-			}
-
-			try
-			{
-				if (sckOut != null && ! sckOut.isClosed())
-					sckOut.close();
+				if (ms != null && ! ms.isClosed()) ms.close();
 			}
 			catch(Exception e)
 			{
 				// ignore
 			}
 		}
+
+		return;
 	}
 }

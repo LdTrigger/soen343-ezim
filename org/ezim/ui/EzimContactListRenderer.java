@@ -1,5 +1,5 @@
 /*
-    Java Intranet Messenger
+    EZ Intranet Messenger
     Copyright (C) 2007  Chun-Kwong Wong <chunkwong.wong@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.ezim.ui;
 
 import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+
+import org.ezim.core.EzimContact;
 
 public class EzimContactListRenderer
 	extends JLabel

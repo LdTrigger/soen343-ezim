@@ -1,5 +1,5 @@
 /*
-    Java Intranet Messenger
+    EZ Intranet Messenger
     Copyright (C) 2007  Chun-Kwong Wong <chunkwong.wong@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -15,12 +15,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.ezim.core;
 
 import java.lang.Thread;
 import java.lang.reflect.Array;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+
+import org.ezim.core.EzimAckSemantics;
+import org.ezim.ui.EzimMain;
 
 public class EzimAckTaker extends Thread
 {
