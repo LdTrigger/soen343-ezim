@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 
 import org.ezim.core.EzimAckTaker;
 import org.ezim.core.EzimMsgTaker;
+import org.ezim.core.EzimLang;
 import org.ezim.ui.EzimMain;
 
 public class Ezim
@@ -78,7 +79,7 @@ public class Ezim
 			{
 				strOut = JOptionPane.showInputDialog
 				(
-					"Please input your name:"
+					EzimLang.PleaseInputYourName
 				);
 			}
 
@@ -125,6 +126,7 @@ public class Ezim
 
 	public static void main(String[] arrArgs)
 	{
+		EzimLang.init();
 		String strName = getConf();
 
 		EzimMain emTmp = new EzimMain();
