@@ -34,7 +34,7 @@ import javax.swing.JTextArea;
 
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimMsgSender;
-import org.ezim.ui.EzimMain;
+import org.ezim.core.EzimLang;
 
 public class EzimMsgOut extends JFrame
 {
@@ -70,7 +70,7 @@ public class EzimMsgOut extends JFrame
 		}
 
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setTitle(EzimMain.rbpOutgoingMessage);
+		this.setTitle(EzimLang.OutgoingMessage);
 		this.setMinimumSize(new Dimension(320, 200));
 		this.setVisible(true);
 
@@ -80,7 +80,7 @@ public class EzimMsgOut extends JFrame
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
-		this.jlblName = new JLabel(EzimMain.rbpTo);
+		this.jlblName = new JLabel(EzimLang.To);
 
 		this.jtfdName = new JTextField(this.ec.getName());
 		this.jtfdName.setEnabled(false);
@@ -92,7 +92,7 @@ public class EzimMsgOut extends JFrame
 
 		this.jspMsg = new JScrollPane(this.jtaMsg);
 
-		this.jbtnSend = new JButton(EzimMain.rbpSend);
+		this.jbtnSend = new JButton(EzimLang.Send);
 		this.jbtnSend.addActionListener
 		(
 			new ActionListener()

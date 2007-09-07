@@ -28,7 +28,6 @@ import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ListSelectionModel;
@@ -46,6 +45,7 @@ import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
+import org.ezim.core.EzimLang;
 import org.ezim.ui.EzimMsgOut;
 
 public class EzimMain
@@ -65,24 +65,6 @@ public class EzimMain
 	public String localAddress;
 	public String localName;
 	public String localStatus;
-
-	// resource bundle properties
-	public static String rbpNotice;
-	public static String rbpAbout;
-	public static String rbpStatus;
-	public static String rbpMessage;
-	public static String rbpSendMessageToContact;
-	public static String rbpRefresh;
-	public static String rbpRefreshContactList;
-	public static String rbpError;
-	public static String rbpIncomingMessage;
-	public static String rbpFrom;
-	public static String rbpClickHereToOpenMessage;
-	public static String rbpReply;
-	public static String rbpOriginalMessageFrom;
-	public static String rbpOutgoingMessage;
-	public static String rbpTo;
-	public static String rbpSend;
 
 	// C O N S T R U C T O R
 	public EzimMain()
@@ -110,47 +92,13 @@ public class EzimMain
 		this.localStatus = EzimContact.DEFAULT_STATUS;
 		this.alContacts = new ArrayList<EzimContact>();
 
-		try
-		{
-			ResourceBundle rbTmp = ResourceBundle.getBundle
-			(
-				"org/ezim/properties/EzimUI"
-			);
-
-			rbpNotice = Ezim.appName + "\n"
-				+ "version " + Ezim.appVer + "\n\n"
-				+ rbTmp.getString("NOTICE");
-
-			rbpAbout = rbTmp.getString("ABOUT");
-			rbpStatus = rbTmp.getString("STATUS");
-			rbpMessage = rbTmp.getString("MESSAGE");
-			rbpSendMessageToContact = rbTmp.getString("SEND_MESSAGE_TO_CONTACT");
-			rbpRefresh = rbTmp.getString("REFRESH");
-			rbpRefreshContactList = rbTmp.getString("REFRESH_CONTACT_LIST");
-			rbpError = rbTmp.getString("ERROR");
-			rbpIncomingMessage = rbTmp.getString("INCOMING_MESSAGE");
-			rbpFrom = rbTmp.getString("FROM");
-			rbpClickHereToOpenMessage = rbTmp.getString("CLICK_HERE_TO_OPEN_MESSAGE");
-			rbpReply = rbTmp.getString("REPLY");
-			rbpOriginalMessageFrom = rbTmp.getString("ORIGINAL_MESSAGE_FROM");
-			rbpOutgoingMessage = rbTmp.getString("OUTGOING_MESSAGE");
-			rbpTo = rbTmp.getString("TO");
-			rbpSend = rbTmp.getString("SEND");
-		}
-		catch(Exception e)
-		{
-			// properties file is obligatory
-			System.out.println(e.getMessage());
-			System.exit(1);
-		}
-
 		return;
 	}
 
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
-		this.jlblStatus = new JLabel(EzimMain.rbpStatus);
+		this.jlblStatus = new JLabel(EzimLang.Status);
 
 		this.jtfdStatus = new JTextField(EzimContact.DEFAULT_STATUS);
 		this.jtfdStatus.setEnabled(false);
@@ -255,8 +203,8 @@ public class EzimMain
 
 		this.jspContacts = new JScrollPane(this.jlstContacts);
 
-		this.jbtnMsg = new JButton(EzimMain.rbpMessage);
-		this.jbtnMsg.setToolTipText(EzimMain.rbpSendMessageToContact);
+		this.jbtnMsg = new JButton(EzimLang.Message);
+		this.jbtnMsg.setToolTipText(EzimLang.SendMessageToContact);
 		this.jbtnMsg.addActionListener
 		(
 			new ActionListener()
@@ -269,8 +217,8 @@ public class EzimMain
 			}
 		);
 
-		this.jbtnRfh = new JButton(EzimMain.rbpRefresh);
-		this.jbtnRfh.setToolTipText(EzimMain.rbpRefreshContactList);
+		this.jbtnRfh = new JButton(EzimLang.Refresh);
+		this.jbtnRfh.setToolTipText(EzimLang.RefreshContactList);
 		this.jbtnRfh.addActionListener
 		(
 			new ActionListener()
@@ -454,8 +402,8 @@ public class EzimMain
 		JOptionPane.showMessageDialog
 		(
 			this
-			, this.rbpNotice
-			, EzimMain.rbpAbout
+			, EzimLang.Notice
+			, EzimLang.About
 			, JOptionPane.PLAIN_MESSAGE
 		);
 	}
@@ -467,7 +415,7 @@ public class EzimMain
 		(
 			this
 			, strIn
-			, EzimMain.rbpError
+			, EzimLang.Error
 			, JOptionPane.ERROR_MESSAGE
 		);
 
