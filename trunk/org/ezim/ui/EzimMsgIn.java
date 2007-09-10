@@ -151,7 +151,7 @@ public class EzimMsgIn extends JFrame
 				.addComponent
 				(
 					this.jtfdName
-					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.DEFAULT_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, Integer.MAX_VALUE
 				)
@@ -160,7 +160,7 @@ public class EzimMsgIn extends JFrame
 			(
 				this.jspMsg
 				, GroupLayout.DEFAULT_SIZE
-				, GroupLayout.DEFAULT_SIZE
+				, GroupLayout.PREFERRED_SIZE
 				, Integer.MAX_VALUE
 			)
 			.addGroup
@@ -169,7 +169,7 @@ public class EzimMsgIn extends JFrame
 				.addComponent
 				(
 					this.jlblOpen
-					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.DEFAULT_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, Integer.MAX_VALUE
 				)
@@ -192,7 +192,7 @@ public class EzimMsgIn extends JFrame
 		(
 			this.jspMsg
 			, GroupLayout.DEFAULT_SIZE
-			, GroupLayout.DEFAULT_SIZE
+			, GroupLayout.PREFERRED_SIZE
 			, Integer.MAX_VALUE
 		);
 

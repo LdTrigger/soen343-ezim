@@ -129,7 +129,7 @@ public class EzimPlaza extends JFrame
 				.addComponent
 				(
 					this.jtfdSpeak
-					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.DEFAULT_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, Integer.MAX_VALUE
 				)
