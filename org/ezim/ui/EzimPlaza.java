@@ -30,11 +30,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimPlainDocument;
 import org.ezim.ui.EzimMain;
 
 public class EzimPlaza extends JFrame
@@ -70,7 +72,12 @@ public class EzimPlaza extends JFrame
 
 		this.jspPlaza = new JScrollPane(this.jtaPlaza);
 
-		this.jtfdSpeak = new JTextField();
+		this.jtfdSpeak = new JTextField
+		(
+			new EzimPlainDocument(Ezim.maxAckLength)
+			, ""
+			, 0
+		);
 		this.jtfdSpeak.addActionListener
 		(
 			new ActionListener()

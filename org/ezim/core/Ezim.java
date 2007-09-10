@@ -48,6 +48,9 @@ public class Ezim
 	public final static int msgPort = 6666;
 	public final static int msgTimeout = 30000;
 
+	// maximum textfield lengths (for Ack messages)
+	public final static int maxAckLength = inBuf / 4;
+
 	public static String getConf()
 	{
 		String strOut = null;
