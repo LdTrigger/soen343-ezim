@@ -44,8 +44,9 @@ public class Ezim
 	public final static int ttl = 1;
 	public final static int inBuf = 1024;
 
-	// message transmission port
+	// message transmission port and timeout limit (in ms)
 	public final static int msgPort = 6666;
+	public final static int msgTimeout = 30000;
 
 	public static String getConf()
 	{
