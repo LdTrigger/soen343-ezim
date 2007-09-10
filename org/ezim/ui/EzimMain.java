@@ -279,7 +279,7 @@ public class EzimMain
 					.addComponent
 					(
 						this.jtfdStatus
-						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.DEFAULT_SIZE
 						, GroupLayout.PREFERRED_SIZE
 						, Integer.MAX_VALUE
 					)
@@ -296,7 +296,7 @@ public class EzimMain
 					.addComponent
 					(
 						this.jbtnMsg
-						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.DEFAULT_SIZE
 						, GroupLayout.PREFERRED_SIZE
 						, Integer.MAX_VALUE
 					)
@@ -308,7 +308,7 @@ public class EzimMain
 					.addComponent
 					(
 						this.jbtnPlz
-						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.DEFAULT_SIZE
 						, GroupLayout.PREFERRED_SIZE
 						, Integer.MAX_VALUE
 					)
