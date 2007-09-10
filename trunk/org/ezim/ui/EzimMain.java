@@ -46,6 +46,7 @@ import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimPlainDocument;
 import org.ezim.ui.EzimMsgOut;
 import org.ezim.ui.EzimPlaza;
 
@@ -106,7 +107,12 @@ public class EzimMain
 		// C O M P O N E N T S ---------------------------------------------
 		this.jlblStatus = new JLabel(EzimLang.Status);
 
-		this.jtfdStatus = new JTextField(EzimContact.DEFAULT_STATUS);
+		this.jtfdStatus = new JTextField
+		(
+			new EzimPlainDocument(Ezim.maxAckLength)
+			, EzimContact.DEFAULT_STATUS
+			, 0
+		);
 		this.jtfdStatus.setEnabled(false);
 		this.jtfdStatus.addActionListener
 		(
