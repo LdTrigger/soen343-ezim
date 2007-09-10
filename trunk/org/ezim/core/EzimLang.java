@@ -21,23 +21,39 @@ import java.util.ResourceBundle;
 
 public class EzimLang
 {
+	// username input dialog
 	public static String PleaseInputYourName;
+
+	// about dialog
 	public static String Notice;
 	public static String About;
+
+	// main window
 	public static String Status;
 	public static String Message;
 	public static String SendMessageToContact;
 	public static String Refresh;
 	public static String RefreshContactList;
+	public static String Plaza;
+
+	// error dialog
 	public static String Error;
+
+	// incoming message window
 	public static String IncomingMessage;
 	public static String From;
 	public static String ClickHereToOpenMessage;
 	public static String Reply;
 	public static String OriginalMessageFrom;
+
+	// outgoing message window
 	public static String OutgoingMessage;
 	public static String To;
 	public static String Send;
+
+	// plaza of speech
+	public static String PlazaOfSpeech;
+	public static String Speak;
 
 	public static void init()
 	{
@@ -48,26 +64,41 @@ public class EzimLang
 				"org/ezim/properties/EzimUI"
 			);
 
+			// username input dialog
+			PleaseInputYourName = rbTmp.getString("PLEASE_INPUT_YOUR_NAME");
+
+			// about dialog
 			Notice = Ezim.appName + "\n"
 			 + "version " + Ezim.appVer + "\n\n"
 			 + rbTmp.getString("NOTICE");
-
-			PleaseInputYourName = rbTmp.getString("PLEASE_INPUT_YOUR_NAME");
 			About = rbTmp.getString("ABOUT");
+
+			// main window
 			Status = rbTmp.getString("STATUS");
 			Message = rbTmp.getString("MESSAGE");
 			SendMessageToContact = rbTmp.getString("SEND_MESSAGE_TO_CONTACT");
 			Refresh = rbTmp.getString("REFRESH");
 			RefreshContactList = rbTmp.getString("REFRESH_CONTACT_LIST");
+			Plaza = rbTmp.getString("PLAZA");
+
+			// error dialog
 			Error = rbTmp.getString("ERROR");
+
+			// incoming message window
 			IncomingMessage = rbTmp.getString("INCOMING_MESSAGE");
 			From = rbTmp.getString("FROM");
 			ClickHereToOpenMessage = rbTmp.getString("CLICK_HERE_TO_OPEN_MESSAGE");
 			Reply = rbTmp.getString("REPLY");
 			OriginalMessageFrom = rbTmp.getString("ORIGINAL_MESSAGE_FROM");
+
+			// outgoing message window
 			OutgoingMessage = rbTmp.getString("OUTGOING_MESSAGE");
 			To = rbTmp.getString("TO");
 			Send = rbTmp.getString("SEND");
+
+			// plaza of speech
+			PlazaOfSpeech = rbTmp.getString("PLAZA_OF_SPEECH");
+			Speak = rbTmp.getString("SPEAK");
 		}
 		catch(Exception e)
 		{

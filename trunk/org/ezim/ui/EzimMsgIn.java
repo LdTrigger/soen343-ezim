@@ -31,8 +31,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimLang;

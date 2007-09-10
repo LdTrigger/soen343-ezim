@@ -27,6 +27,7 @@ public class EzimAckSemantics
 	private final static String ON		= Ezim.appAbbrev + "ON:";
 	private final static String OFF		= Ezim.appAbbrev + "OFF:";
 	private final static String STATUS	= Ezim.appAbbrev + "STATUS:";
+	private final static String SPEECH	= Ezim.appAbbrev + "SPEECH:";
 
 	/**
 	 * used when the application starts to poll from all existing users
@@ -60,6 +61,14 @@ public class EzimAckSemantics
 	public static String status(String strStatus)
 	{
 		return EzimAckSemantics.STATUS + strStatus;
+	}
+
+	/**
+	 * used to speak publicly in the plaza
+	 */
+	public static String speech(String strSpeech)
+	{
+		return EzimAckSemantics.SPEECH + strSpeech;
 	}
 
 	/**
@@ -122,6 +131,14 @@ public class EzimAckSemantics
 			(
 				strIp
 				, strAck.substring(EzimAckSemantics.STATUS.length())
+			);
+		}
+		else if (strAck.startsWith(EzimAckSemantics.SPEECH))
+		{
+			emIn.epMain.addSpeech
+			(
+				strIp
+				, strAck.substring(EzimAckSemantics.SPEECH.length())
 			);
 		}
 

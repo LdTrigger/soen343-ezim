@@ -47,6 +47,7 @@ import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
 import org.ezim.core.EzimLang;
 import org.ezim.ui.EzimMsgOut;
+import org.ezim.ui.EzimPlaza;
 
 public class EzimMain
 	extends JFrame
@@ -61,10 +62,13 @@ public class EzimMain
 	private JScrollPane jspContacts;
 	private JButton jbtnMsg;
 	private JButton jbtnRfh;
+	private JButton jbtnPlz;
 
 	public String localAddress;
 	public String localName;
 	public String localStatus;
+
+	public EzimPlaza epMain;
 
 	// C O N S T R U C T O R
 	public EzimMain()
@@ -91,6 +95,8 @@ public class EzimMain
 
 		this.localStatus = EzimContact.DEFAULT_STATUS;
 		this.alContacts = new ArrayList<EzimContact>();
+
+		this.epMain = new EzimPlaza(this);
 
 		return;
 	}
@@ -231,6 +237,20 @@ public class EzimMain
 			}
 		);
 
+		this.jbtnPlz = new JButton(EzimLang.Plaza);
+		this.jbtnPlz.setToolTipText(EzimLang.PlazaOfSpeech);
+		this.jbtnPlz.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent evtTmp)
+				{
+					jbtnPlz_ActionPerformed(evtTmp);
+					return;
+				}
+			}
+		);
+
 		this.jpnlBase = new JPanel();
 		this.add(this.jpnlBase);
 
@@ -259,7 +279,11 @@ public class EzimMain
 					)
 					.addComponent(this.jlblAbout)
 			)
-			.addComponent(this.jspContacts)
+			.addGroup
+			(
+				glBase.createSequentialGroup()
+					.addComponent(this.jspContacts)
+			)
 			.addGroup
 			(
 				glBase.createSequentialGroup()
@@ -271,6 +295,17 @@ public class EzimMain
 						, Integer.MAX_VALUE
 					)
 					.addComponent(this.jbtnRfh)
+			)
+			.addGroup
+			(
+				glBase.createSequentialGroup()
+					.addComponent
+					(
+						this.jbtnPlz
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, Integer.MAX_VALUE
+					)
 			)
 		);
 
@@ -297,6 +332,12 @@ public class EzimMain
 			glBase.createParallelGroup(Alignment.BASELINE)
 			.addComponent(this.jbtnMsg)
 			.addComponent(this.jbtnRfh)
+		);
+
+		vGrp.addGroup
+		(
+			glBase.createParallelGroup(Alignment.BASELINE)
+			.addComponent(this.jbtnPlz)
 		);
 
 		glBase.setVerticalGroup(vGrp);
@@ -352,25 +393,6 @@ public class EzimMain
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
-	private void jbtnMsg_ActionPerformed(ActionEvent evt)
-	{
-		if (this.jlstContacts.getSelectedValue() != null)
-		{
-			EzimMsgOut jmoTmp = new EzimMsgOut
-			(
-				(EzimContact) this.jlstContacts.getSelectedValue()
-			);
-		}
-
-		return;
-	}
-
-	private void jbtnRfh_ActionPerformed(ActionEvent evt)
-	{
-		this.freshPoll();
-		return;
-	}
-
 	private void jtfdStatus_ActionPerformed(ActionEvent evt)
 	{
 		this.changeStatus();
@@ -393,6 +415,35 @@ public class EzimMain
 	private void jlblAbout_MouseClicked(MouseEvent evt)
 	{
 		this.showAboutDlg();
+		return;
+	}
+
+	private void jbtnMsg_ActionPerformed(ActionEvent evt)
+	{
+		if (this.jlstContacts.getSelectedValue() != null)
+		{
+			EzimMsgOut jmoTmp = new EzimMsgOut
+			(
+				(EzimContact) this.jlstContacts.getSelectedValue()
+			);
+		}
+
+		return;
+	}
+
+	private void jbtnRfh_ActionPerformed(ActionEvent evt)
+	{
+		this.freshPoll();
+		return;
+	}
+
+	private void jbtnPlz_ActionPerformed(ActionEvent evt)
+	{
+		if (! this.epMain.isVisible())
+		{
+			this.epMain.reset();
+			this.epMain.setVisible(true);
+		}
 		return;
 	}
 
@@ -583,14 +634,17 @@ public class EzimMain
 			this.jtfdStatus.setText(strTmp);
 		}
 
-		this.localStatus = strTmp;
+		if (! this.localStatus.equals(strTmp))
+		{
+			this.localStatus = strTmp;
 
-		easTmp = new EzimAckSender
-		(
-			this
-			, EzimAckSemantics.status(this.localStatus)
-		);
-		easTmp.start();
+			easTmp = new EzimAckSender
+			(
+				this
+				, EzimAckSemantics.status(this.localStatus)
+			);
+			easTmp.start();
+		}
 
 		this.jtfdStatus.setEnabled(false);
 
