@@ -42,6 +42,7 @@ public class EzimMsgSender extends Thread
 		try
 		{
 			sckOut = new Socket(this.ip, Ezim.msgPort);
+			sckOut.setSoTimeout(Ezim.msgTimeout);
 			bwTmp = new BufferedWriter
 			(
 				new OutputStreamWriter
