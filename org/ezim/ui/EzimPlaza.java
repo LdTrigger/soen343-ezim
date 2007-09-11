@@ -221,7 +221,7 @@ public class EzimPlaza extends JFrame
 				);
 
 				// update scrollbar position
-				this.jtaPlaza.moveCaretPosition
+				this.jtaPlaza.setCaretPosition
 				(
 					this.jtaPlaza.getText().length()
 				);
