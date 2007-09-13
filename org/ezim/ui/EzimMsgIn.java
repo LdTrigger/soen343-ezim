@@ -35,6 +35,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.ui.EzimMsgOut;
 
@@ -59,6 +60,7 @@ public class EzimMsgIn extends JFrame
 		if (strIn != null && strIn.length() > 0)
 			this.jtaMsg.setText(strIn);
 
+		this.setIconImage(EzimImage.icoMsg.getImage());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setTitle(EzimLang.IncomingMessage);
 		this.setMinimumSize(new Dimension(320, 200));

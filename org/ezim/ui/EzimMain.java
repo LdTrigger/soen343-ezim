@@ -45,6 +45,7 @@ import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
+import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
 import org.ezim.ui.EzimMsgOut;
@@ -77,6 +78,7 @@ public class EzimMain
 		this.initData();
 		this.initGUI();
 
+		this.setIconImage(EzimImage.icoMain.getImage());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle(Ezim.appAbbrev);
 		this.setMinimumSize(new Dimension(210, 300));
@@ -462,6 +464,7 @@ public class EzimMain
 			, EzimLang.Notice
 			, EzimLang.About
 			, JOptionPane.PLAIN_MESSAGE
+			, EzimImage.icoMain
 		);
 	}
 
