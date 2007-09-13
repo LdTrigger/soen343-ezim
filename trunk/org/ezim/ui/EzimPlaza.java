@@ -35,6 +35,7 @@ import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
+import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
 import org.ezim.ui.EzimMain;
@@ -56,6 +57,7 @@ public class EzimPlaza extends JFrame
 
 		this.initGUI();
 
+		this.setIconImage(EzimImage.icoPlaza.getImage());
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setTitle(EzimLang.PlazaOfSpeech);
 		this.setMinimumSize(new Dimension(320, 200));

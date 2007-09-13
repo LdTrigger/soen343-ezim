@@ -67,7 +67,7 @@ public class Ezim
 			if (strSep.equals("/"))	sbFName.append(".");
 			else					sbFName.append("_");
 
-			sbFName.append("Ezim.conf");
+			sbFName.append("ezim.conf");
 
 			brTmp = new BufferedReader
 			(
@@ -131,6 +131,8 @@ public class Ezim
 	public static void main(String[] arrArgs)
 	{
 		EzimLang.init();
+		EzimImage.init();
+
 		String strName = getConf();
 
 		EzimMain emTmp = new EzimMain();
