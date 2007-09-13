@@ -17,12 +17,6 @@
  */
 package org.ezim.core;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import javax.swing.JOptionPane;
-
 import org.ezim.core.EzimAckTaker;
 import org.ezim.core.EzimMsgTaker;
 import org.ezim.core.EzimLang;
@@ -51,81 +45,22 @@ public class Ezim
 	// maximum textfield lengths (for Ack messages)
 	public final static int maxAckLength = inBuf / 4;
 
-	public static String getConf()
+	public static EzimConf getConf()
 	{
-		String strOut = null;
 		String strSep = System.getProperty("file.separator");
+		String strHome = System.getProperty("user.home");
 		StringBuffer sbFName = new StringBuffer();
-		BufferedReader brTmp = null;
-		BufferedWriter bwTmp = null;
 
-		try
-		{
-			sbFName.append(System.getProperty("user.home"));
-			sbFName.append(strSep);
+		// determine the appropriate configuration filename
+		sbFName.append(strHome);
+		sbFName.append(strSep);
 
-			if (strSep.equals("/"))	sbFName.append(".");
-			else					sbFName.append("_");
+		if (strSep.equals("/"))	sbFName.append(".");
+		else					sbFName.append("_");
 
-			sbFName.append("ezim.conf");
+		sbFName.append("ezim.conf");
 
-			brTmp = new BufferedReader
-			(
-				new FileReader(sbFName.toString())
-			);
-
-			strOut = brTmp.readLine();
-		}
-		catch(Exception e)
-		{
-			// obtain user name
-			while(strOut == null || strOut.length() == 0)
-			{
-				strOut = JOptionPane.showInputDialog
-				(
-					EzimLang.PleaseInputYourName
-				);
-			}
-
-			try
-			{
-				bwTmp = new BufferedWriter
-				(
-					new FileWriter(sbFName.toString())
-				);
-
-				bwTmp.write(strOut);
-			}
-			catch(Exception exp)
-			{
-				// ignore?!
-			}
-		}
-		finally
-		{
-			try
-			{
-				if (brTmp != null)
-					brTmp.close();
-			}
-			catch(Exception e)
-			{
-			}
-
-			try
-			{
-				if (bwTmp != null)
-				{
-					bwTmp.flush();
-					bwTmp.close();
-				}
-			}
-			catch(Exception e)
-			{
-			}
-		}
-
-		return strOut;
+		return new EzimConf(sbFName.toString());
 	}
 
 	public static void main(String[] arrArgs)
@@ -133,10 +68,10 @@ public class Ezim
 		EzimLang.init();
 		EzimImage.init();
 
-		String strName = getConf();
+		EzimConf ecTmp = getConf();
 
 		EzimMain emTmp = new EzimMain();
-		emTmp.localName = strName;
+		emTmp.localName = ecTmp.settings.getProperty(EzimConf.username);
 
 		EzimMsgTaker emtTmp = new EzimMsgTaker(emTmp);
 		emtTmp.start();
