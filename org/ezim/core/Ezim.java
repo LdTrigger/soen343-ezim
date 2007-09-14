@@ -45,13 +45,15 @@ public class Ezim
 	// maximum textfield lengths (for Ack messages)
 	public final static int maxAckLength = inBuf / 4;
 
-	public static EzimConf getConf()
+	/**
+	 * determine the appropriate configuration filename
+	 */
+	public static String getConfFilename()
 	{
 		String strSep = System.getProperty("file.separator");
 		String strHome = System.getProperty("user.home");
 		StringBuffer sbFName = new StringBuffer();
 
-		// determine the appropriate configuration filename
 		sbFName.append(strHome);
 		sbFName.append(strSep);
 
@@ -60,7 +62,15 @@ public class Ezim
 
 		sbFName.append("ezim.conf");
 
-		return new EzimConf(sbFName.toString());
+		return sbFName.toString();
+	}
+
+	/**
+	 * retrieve configurations from file
+	 */
+	public static EzimConf getConf()
+	{
+		return new EzimConf(getConfFilename());
 	}
 
 	public static void main(String[] arrArgs)
@@ -71,7 +81,44 @@ public class Ezim
 		EzimConf ecTmp = getConf();
 
 		EzimMain emTmp = new EzimMain();
-		emTmp.localName = ecTmp.settings.getProperty(EzimConf.username);
+		emTmp.setLocation
+		(
+			Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.mainFrameX
+				)
+			)
+			, Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.mainFrameY
+				)
+			)
+		);
+		emTmp.setSize
+		(
+			Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.mainFrameW
+				)
+			)
+			, Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.mainFrameH
+				)
+			)
+		);
+		emTmp.localName = ecTmp.settings.getProperty
+		(
+			EzimConf.username
+		);
 
 		EzimMsgTaker emtTmp = new EzimMsgTaker(emTmp);
 		emtTmp.start();
