@@ -26,6 +26,10 @@ public class EzimConf
 {
 	// configuration item name
 	public final static String username = "USERNAME";
+	public final static String mainFrameX = "MAIN_FRAME_X";
+	public final static String mainFrameY = "MAIN_FRAME_Y";
+	public final static String mainFrameH = "MAIN_FRAME_H";
+	public final static String mainFrameW = "MAIN_FRAME_W";
 
 	// configuration item
 	public Properties settings;
@@ -75,6 +79,11 @@ public class EzimConf
 				);
 			}
 			this.settings.setProperty(EzimConf.username, strTmp);
+
+			this.settings.setProperty(EzimConf.mainFrameX, "0");
+			this.settings.setProperty(EzimConf.mainFrameY, "0");
+			this.settings.setProperty(EzimConf.mainFrameH, "0");
+			this.settings.setProperty(EzimConf.mainFrameW, "0");
 
 			// save properties to file
 			this.write(strFName);

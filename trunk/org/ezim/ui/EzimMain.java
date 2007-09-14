@@ -18,6 +18,7 @@
 package org.ezim.ui;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -43,6 +44,7 @@ import javax.swing.JTextField;
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckSender;
+import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
 import org.ezim.core.EzimImage;
@@ -370,6 +372,34 @@ public class EzimMain
 
 	public void windowClosing(WindowEvent e)
 	{
+		// save window location and size
+		String strTmp = Ezim.getConfFilename();
+		EzimConf ecTmp = new EzimConf(strTmp);
+		Point ptTmp = this.getLocationOnScreen();
+		ecTmp.settings.setProperty
+		(
+			EzimConf.mainFrameX
+			, String.valueOf((int) ptTmp.getX())
+		);
+		ecTmp.settings.setProperty
+		(
+			EzimConf.mainFrameY
+			, String.valueOf((int) ptTmp.getY())
+		);
+		Dimension dmTmp = this.getSize();
+		ecTmp.settings.setProperty
+		(
+			EzimConf.mainFrameW
+			, String.valueOf((int) dmTmp.getWidth())
+		);
+		ecTmp.settings.setProperty
+		(
+			EzimConf.mainFrameH
+			, String.valueOf((int) dmTmp.getHeight())
+		);
+		ecTmp.write(strTmp);
+
+		// acknowledge other peers we're going offline
 		EzimAckSender easTmp = new EzimAckSender
 		(
 			this
