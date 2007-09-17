@@ -26,6 +26,7 @@ public class EzimAckSemantics
 	private final static String POLL	= Ezim.appAbbrev + "POLL:";
 	private final static String ON		= Ezim.appAbbrev + "ON:";
 	private final static String OFF		= Ezim.appAbbrev + "OFF:";
+	private final static String STATE	= Ezim.appAbbrev + "STATE:";
 	private final static String STATUS	= Ezim.appAbbrev + "STATUS:";
 	private final static String SPEECH	= Ezim.appAbbrev + "SPEECH:";
 
@@ -53,6 +54,14 @@ public class EzimAckSemantics
 	public static String offline()
 	{
 		return EzimAckSemantics.OFF;
+	}
+
+	/**
+	 * used to acknowledge all other users to change state
+	 */
+	public static String state(int iState)
+	{
+		return EzimAckSemantics.STATE + Integer.toString(iState);
 	}
 
 	/**
@@ -108,9 +117,25 @@ public class EzimAckSemantics
 			EzimAckSender easTmp2 = new EzimAckSender
 			(
 				emIn
-				, EzimAckSemantics.status(emIn.localStatus)
+				, EzimAckSemantics.state(emIn.localState)
 			);
 			easTmp2.start();
+
+			try
+			{
+				Thread.sleep(500);
+			}
+			catch(Exception e)
+			{
+				// ignore whatever
+			}
+
+			EzimAckSender easTmp3 = new EzimAckSender
+			(
+				emIn
+				, EzimAckSemantics.status(emIn.localStatus)
+			);
+			easTmp3.start();
 		}
 		else if (strAck.startsWith(EzimAckSemantics.ON))
 		{
@@ -124,6 +149,20 @@ public class EzimAckSemantics
 		else if (strAck.startsWith(EzimAckSemantics.OFF))
 		{
 			emIn.rmContact(strIp);
+		}
+		else if (strAck.startsWith(EzimAckSemantics.STATE))
+		{
+			emIn.updContactState
+			(
+				strIp
+				, Integer.valueOf
+					(
+						strAck.substring
+						(
+							EzimAckSemantics.STATE.length()
+						)
+					)
+			);
 		}
 		else if (strAck.startsWith(EzimAckSemantics.STATUS))
 		{

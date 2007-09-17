@@ -70,6 +70,7 @@ public class EzimMain
 
 	public String localAddress;
 	public String localName;
+	public int localState;
 	public String localStatus;
 
 	public EzimPlaza epMain;
@@ -98,6 +99,7 @@ public class EzimMain
 			this.localAddress = "127.0.0.1";
 		}
 
+		this.localState = EzimContact.DEFAULT_STATE;
 		this.localStatus = EzimContact.DEFAULT_STATUS;
 		this.alContacts = new ArrayList<EzimContact>();
 
@@ -479,6 +481,8 @@ public class EzimMain
 	{
 		if (! this.epMain.isVisible())
 		{
+			this.changeState(1);
+
 			this.epMain.reset();
 			this.epMain.setVisible(true);
 		}
@@ -641,6 +645,24 @@ public class EzimMain
 	}
 
 	/**
+	 * update an existing contact with the new state
+	 * @param strIp IP address of the contact to be update
+	 * @param iState new state of the contact
+	 */
+	public void updContactState(String strIp, int iState)
+	{
+		EzimContact ecTmp = this.getContact(strIp);
+
+		if (ecTmp != null)
+		{
+			ecTmp.setState(iState);
+			this.refreshContactList();
+		}
+
+		return;
+	}
+
+	/**
 	 * update an existing contact with the new status
 	 * @param strIp IP address of the contact to be updated
 	 * @param strStatus new status of the contact
@@ -659,6 +681,28 @@ public class EzimMain
 	}
 
 	// O P E R A T I V E   M E T H O D -------------------------------------
+	/**
+	 * change state and notify all peers for status change
+	 */
+	private void changeState(int iState)
+	{
+		EzimAckSender easTmp = null;
+
+		if (this.localState != iState)
+		{
+			this.localState = iState;
+
+			easTmp = new EzimAckSender
+			(
+				this
+				, EzimAckSemantics.state(iState)
+			);
+			easTmp.start();
+		}
+
+		return;
+	}
+
 	/**
 	 * change status and notify all peers for status change
 	 */
