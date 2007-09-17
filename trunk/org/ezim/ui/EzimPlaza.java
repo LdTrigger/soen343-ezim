@@ -21,6 +21,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -40,7 +42,9 @@ import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
 import org.ezim.ui.EzimMain;
 
-public class EzimPlaza extends JFrame
+public class EzimPlaza
+	extends JFrame
+	implements WindowListener
 {
 	private EzimMain emHwnd;
 
@@ -157,6 +161,57 @@ public class EzimPlaza extends JFrame
 		);
 
 		glBase.setVerticalGroup(vGrp);
+
+		// W I N D O W   L I S T E N E R -----------------------------------
+		this.addWindowListener(this);
+
+		return;
+	}
+
+	// W I N D O W   L I S T E N E R ---------------------------------------
+	public void windowActivated(WindowEvent e)
+	{
+		return;
+	}
+
+	public void windowClosed(WindowEvent e)
+	{
+		// comment out the setDefaultCloseOperation to make this usable
+		return;
+	}
+
+	public void windowClosing(WindowEvent e)
+	{
+		this.emHwnd.localState = EzimContact.DEFAULT_STATE;
+
+		EzimAckSender easTmp = new EzimAckSender
+		(
+			this.emHwnd
+			, EzimAckSemantics.state(EzimContact.DEFAULT_STATE)
+		);
+		easTmp.start();
+
+		return;
+	}
+
+	public void windowDeactivated(WindowEvent e)
+	{
+		return;
+	}
+
+	public void windowDeiconified(WindowEvent e)
+	{
+		return;
+	}
+
+	public void windowIconified(WindowEvent e)
+	{
+		return;
+	}
+
+	public void windowOpened(WindowEvent e)
+	{
+		return;
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------

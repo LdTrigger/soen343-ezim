@@ -22,10 +22,12 @@ import org.ezim.core.EzimContactException;
 public class EzimContact
 {
 	// default status
+	public final static int DEFAULT_STATE = 0;
 	public final static String DEFAULT_STATUS = "Online";
 
 	private String ip;
 	private String name;
+	private int state;
 	private String status;
 
 	public EzimContact(String strIp, String strName, String strStatus)
@@ -33,6 +35,7 @@ public class EzimContact
 	{
 		this.setIp(strIp);
 		this.setName(strName);
+		this.setState(EzimContact.DEFAULT_STATE);
 		this.setStatus(strStatus);
 	}
 
@@ -44,6 +47,11 @@ public class EzimContact
 	public String getName()
 	{
 		return this.name;
+	}
+
+	public int getState()
+	{
+		return this.state;
 	}
 
 	public String getStatus()
@@ -66,6 +74,14 @@ public class EzimContact
 			this.name = strIn;
 		else
 			this.name = this.ip;
+
+		return;
+	}
+
+	public void setState(int iIn)
+	{
+		if (iIn >= 0) this.state = iIn;
+		else this.state = EzimContact.DEFAULT_STATE;
 
 		return;
 	}

@@ -23,6 +23,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimImage;
 
 public class EzimContactListRenderer
 	extends JLabel
@@ -38,6 +39,19 @@ public class EzimContactListRenderer
 	)
 	{
 		EzimContact ecTmp = (EzimContact) objIn;
+
+		// state icon
+		switch(ecTmp.getState())
+		{
+			case(1):
+				this.setIcon(EzimImage.icoMan01);
+				break;
+			default:
+				this.setIcon(EzimImage.icoMan00);
+				break;
+		}
+
+		// username + status
 		this.setText(ecTmp.getName() + " (" + ecTmp.getStatus() + ")");
 
 		if (blnSelected)

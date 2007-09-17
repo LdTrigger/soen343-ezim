@@ -27,6 +27,10 @@ public class EzimImage
 	public static ImageIcon icoMsg;
 	public static ImageIcon icoPlaza;
 
+	// state icons
+	public static ImageIcon icoMan00;
+	public static ImageIcon icoMan01;
+
 	public static void init()
 	{
 		URL iconUrlTmp = null;
@@ -51,6 +55,20 @@ public class EzimImage
 			"org/ezim/image/icon/plaza.png"
 		);
 		icoPlaza = new ImageIcon(iconUrlTmp);
+
+		// status man icon 00
+		iconUrlTmp = ClassLoader.getSystemResource
+		(
+			"org/ezim/image/icon/man00.png"
+		);
+		icoMan00 = new ImageIcon(iconUrlTmp);
+
+		// status man icon 01
+		iconUrlTmp = ClassLoader.getSystemResource
+		(
+			"org/ezim/image/icon/man01.png"
+		);
+		icoMan01 = new ImageIcon(iconUrlTmp);
 
 		return;
 	}
