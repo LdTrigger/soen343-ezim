@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimImage;
 
@@ -61,7 +62,11 @@ public class EzimContactListRenderer
 		}
 		else
 		{
-			this.setBackground(jlstIn.getBackground());
+			if (iIdx == 0)
+				this.setBackground(Ezim.colorSelf);
+			else
+				this.setBackground(jlstIn.getBackground());
+
 			this.setForeground(jlstIn.getForeground());
 		}
 

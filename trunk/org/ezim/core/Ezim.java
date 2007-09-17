@@ -17,6 +17,8 @@
  */
 package org.ezim.core;
 
+import java.awt.Color;
+
 import org.ezim.core.EzimAckTaker;
 import org.ezim.core.EzimMsgTaker;
 import org.ezim.core.EzimLang;
@@ -44,6 +46,9 @@ public class Ezim
 
 	// maximum textfield lengths (for Ack messages)
 	public final static int maxAckLength = inBuf / 4;
+
+	// self-entry background color on the contact list
+	public final static Color colorSelf = new Color((int) 0xDEEFFF);
 
 	/**
 	 * determine the appropriate configuration filename
