@@ -21,6 +21,7 @@ import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.lang.Thread;
 import java.net.Socket;
+import java.net.InetSocketAddress;
 import javax.swing.JOptionPane;
 
 public class EzimMsgSender extends Thread
@@ -37,12 +38,14 @@ public class EzimMsgSender extends Thread
 	public void run()
 	{
 		Socket sckOut = null;
+		InetSocketAddress isaTmp = null;
 		BufferedWriter bwTmp = null;
 
 		try
 		{
-			sckOut = new Socket(this.ip, Ezim.msgPort);
-			sckOut.setSoTimeout(Ezim.msgTimeout);
+			sckOut = new Socket();
+			isaTmp = new InetSocketAddress(this.ip, Ezim.msgPort);
+			sckOut.connect(isaTmp, Ezim.msgTimeout);
 			bwTmp = new BufferedWriter
 			(
 				new OutputStreamWriter
