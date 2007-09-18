@@ -18,6 +18,7 @@
 package org.ezim.core;
 
 import java.awt.Color;
+import javax.swing.JOptionPane;
 
 import org.ezim.core.EzimAckTaker;
 import org.ezim.core.EzimMsgTaker;
@@ -124,6 +125,23 @@ public class Ezim
 		(
 			EzimConf.username
 		);
+
+		// query username if isn't set yet
+		if (emTmp.localName == null || emTmp.localName.length() == 0)
+		{
+			String strTmp = null;
+
+			// obtain user name
+			while(strTmp == null || strTmp.length() == 0)
+			{
+				strTmp = JOptionPane.showInputDialog
+				(
+					EzimLang.PleaseInputYourName
+				);
+			}
+
+			emTmp.localName = strTmp;
+		}
 
 		EzimMsgTaker emtTmp = new EzimMsgTaker(emTmp);
 		emtTmp.start();

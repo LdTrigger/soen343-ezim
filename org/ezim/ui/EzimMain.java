@@ -380,6 +380,11 @@ public class EzimMain
 		Point ptTmp = this.getLocationOnScreen();
 		ecTmp.settings.setProperty
 		(
+			EzimConf.username
+			, this.localName
+		);
+		ecTmp.settings.setProperty
+		(
 			EzimConf.mainFrameX
 			, String.valueOf((int) ptTmp.getX())
 		);

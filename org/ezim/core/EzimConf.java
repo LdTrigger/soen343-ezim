@@ -20,7 +20,6 @@ package org.ezim.core;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
-import javax.swing.JOptionPane;
 
 public class EzimConf
 {
@@ -37,18 +36,27 @@ public class EzimConf
 	// C O N S T R U C T O R -----------------------------------------------
 	public EzimConf(String strFName)
 	{
+		// set default values
 		this.init();
 
+		// set saved configuration settings
 		if (strFName != null && strFName.length() > 0)
 			this.read(strFName);
 	}
 
 	/**
-	 * initialize (nullify) all configuration items
+	 * initialize all configuration items
 	 */
 	private void init()
 	{
 		this.settings = new Properties();
+
+		// default values
+		this.settings.setProperty(EzimConf.mainFrameX, "0");
+		this.settings.setProperty(EzimConf.mainFrameY, "0");
+		this.settings.setProperty(EzimConf.mainFrameH, "0");
+		this.settings.setProperty(EzimConf.mainFrameW, "0");
+
 		return;
 	}
 
@@ -68,25 +76,7 @@ public class EzimConf
 		}
 		catch(Exception e)
 		{
-			String strTmp = null;
-
-			// obtain user name
-			while(strTmp == null || strTmp.length() == 0)
-			{
-				strTmp = JOptionPane.showInputDialog
-				(
-					EzimLang.PleaseInputYourName
-				);
-			}
-			this.settings.setProperty(EzimConf.username, strTmp);
-
-			this.settings.setProperty(EzimConf.mainFrameX, "0");
-			this.settings.setProperty(EzimConf.mainFrameY, "0");
-			this.settings.setProperty(EzimConf.mainFrameH, "0");
-			this.settings.setProperty(EzimConf.mainFrameW, "0");
-
-			// save properties to file
-			this.write(strFName);
+			// ignore
 		}
 		finally
 		{
