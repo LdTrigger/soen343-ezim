@@ -24,6 +24,8 @@ import java.net.Socket;
 import java.net.InetSocketAddress;
 import javax.swing.JOptionPane;
 
+import org.ezim.core.EzimLang;
+
 public class EzimMsgSender extends Thread
 {
 	private String ip;
@@ -64,7 +66,7 @@ public class EzimMsgSender extends Thread
 			(
 				null
 				, e.getMessage()
-				, "Send Message Error"
+				, EzimLang.SendMessageError
 				, JOptionPane.ERROR_MESSAGE
 			);
 		}
