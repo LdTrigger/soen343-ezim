@@ -51,6 +51,9 @@ public class EzimLang
 	public static String To;
 	public static String Send;
 
+	// send message error dialog
+	public static String SendMessageError;
+
 	// plaza of speech
 	public static String PlazaOfSpeech;
 	public static String Speak;
@@ -95,6 +98,9 @@ public class EzimLang
 			OutgoingMessage = rbTmp.getString("OUTGOING_MESSAGE");
 			To = rbTmp.getString("TO");
 			Send = rbTmp.getString("SEND");
+
+			// send message error dialog
+			SendMessageError = rbTmp.getString("SEND_MESSAGE_ERROR");
 
 			// plaza of speech
 			PlazaOfSpeech = rbTmp.getString("PLAZA_OF_SPEECH");
