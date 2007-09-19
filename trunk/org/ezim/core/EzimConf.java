@@ -32,6 +32,10 @@ public class EzimConf
 	public final static String ezimmainLocationY = "ezimmain.location.y";
 	public final static String ezimmainSizeH = "ezimmain.size.h";
 	public final static String ezimmainSizeW = "ezimmain.size.w";
+	public final static String ezimplazaLocationX = "ezimplaza.location.x";
+	public final static String ezimplazaLocationY = "ezimplaza.location.y";
+	public final static String ezimplazaSizeH = "ezimplaza.size.h";
+	public final static String ezimplazaSizeW = "ezimplaza.size.w";
 
 	// configuration item
 	public Properties settings;
@@ -58,6 +62,10 @@ public class EzimConf
 		this.settings.setProperty(EzimConf.ezimmainLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimmainSizeH, "0");
 		this.settings.setProperty(EzimConf.ezimmainSizeW, "0");
+		this.settings.setProperty(EzimConf.ezimplazaLocationX, "0");
+		this.settings.setProperty(EzimConf.ezimplazaLocationY, "0");
+		this.settings.setProperty(EzimConf.ezimplazaSizeH, "0");
+		this.settings.setProperty(EzimConf.ezimplazaSizeW, "0");
 
 		return;
 	}

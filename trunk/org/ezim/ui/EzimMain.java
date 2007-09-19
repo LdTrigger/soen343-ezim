@@ -374,14 +374,15 @@ public class EzimMain
 
 	public void windowClosing(WindowEvent e)
 	{
-		// save window location and size
 		EzimConf ecTmp = new EzimConf();
-		Point ptTmp = this.getLocationOnScreen();
 		ecTmp.settings.setProperty
 		(
 			EzimConf.ezimmainLocalname
 			, this.localName
 		);
+
+		// save window location and size
+		Point ptTmp = this.getLocationOnScreen();
 		ecTmp.settings.setProperty
 		(
 			EzimConf.ezimmainLocationX
@@ -401,6 +402,28 @@ public class EzimMain
 		ecTmp.settings.setProperty
 		(
 			EzimConf.ezimmainSizeH
+			, String.valueOf((int) dmTmp.getHeight())
+		);
+		ptTmp = this.epMain.getLocation();
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimplazaLocationX
+			, String.valueOf((int) ptTmp.getX())
+		);
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimplazaLocationY
+			, String.valueOf((int) ptTmp.getY())
+		);
+		dmTmp = this.epMain.getSize();
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimplazaSizeW
+			, String.valueOf((int) dmTmp.getWidth())
+		);
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimplazaSizeH
 			, String.valueOf((int) dmTmp.getHeight())
 		);
 		ecTmp.write();
