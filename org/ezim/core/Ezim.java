@@ -51,20 +51,12 @@ public class Ezim
 	// self-entry background color on the contact list
 	public final static Color colorSelf = new Color((int) 0xDEEFFF);
 
-	/**
-	 * retrieve configurations from file
-	 */
-	public static EzimConf getConf()
-	{
-		return new EzimConf();
-	}
-
 	public static void main(String[] arrArgs)
 	{
 		EzimLang.init();
 		EzimImage.init();
 
-		EzimConf ecTmp = getConf();
+		EzimConf ecTmp = new EzimConf();
 
 		EzimMain emTmp = new EzimMain();
 		emTmp.setLocation
@@ -98,6 +90,40 @@ public class Ezim
 				ecTmp.settings.getProperty
 				(
 					EzimConf.ezimmainSizeH
+				)
+			)
+		);
+		emTmp.epMain.setLocation
+		(
+			Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimplazaLocationX
+				)
+			)
+			, Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimplazaLocationY
+				)
+			)
+		);
+		emTmp.epMain.setSize
+		(
+			Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimplazaSizeW
+				)
+			)
+			, Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimplazaSizeH
 				)
 			)
 		);
