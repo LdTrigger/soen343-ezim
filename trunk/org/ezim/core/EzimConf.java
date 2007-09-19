@@ -17,31 +17,33 @@
  */
 package org.ezim.core;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
+import org.ezim.core.Ezim;
+
 public class EzimConf
 {
 	// configuration item name
-	public final static String username = "USERNAME";
-	public final static String mainFrameX = "MAIN_FRAME_X";
-	public final static String mainFrameY = "MAIN_FRAME_Y";
-	public final static String mainFrameH = "MAIN_FRAME_H";
-	public final static String mainFrameW = "MAIN_FRAME_W";
+	public final static String ezimmainLocalname = "ezimmain.localname";
+	public final static String ezimmainLocationX = "ezimmain.location.x";
+	public final static String ezimmainLocationY = "ezimmain.location.y";
+	public final static String ezimmainSizeH = "ezimmain.size.h";
+	public final static String ezimmainSizeW = "ezimmain.size.w";
 
 	// configuration item
 	public Properties settings;
 
 	// C O N S T R U C T O R -----------------------------------------------
-	public EzimConf(String strFName)
+	public EzimConf()
 	{
 		// set default values
 		this.init();
 
 		// set saved configuration settings
-		if (strFName != null && strFName.length() > 0)
-			this.read(strFName);
+		this.read();
 	}
 
 	/**
@@ -52,26 +54,59 @@ public class EzimConf
 		this.settings = new Properties();
 
 		// default values
-		this.settings.setProperty(EzimConf.mainFrameX, "0");
-		this.settings.setProperty(EzimConf.mainFrameY, "0");
-		this.settings.setProperty(EzimConf.mainFrameH, "0");
-		this.settings.setProperty(EzimConf.mainFrameW, "0");
+		this.settings.setProperty(EzimConf.ezimmainLocationX, "0");
+		this.settings.setProperty(EzimConf.ezimmainLocationY, "0");
+		this.settings.setProperty(EzimConf.ezimmainSizeH, "0");
+		this.settings.setProperty(EzimConf.ezimmainSizeW, "0");
 
 		return;
 	}
 
 	// P U B L I C   M E T H O D S -----------------------------------------
 	/**
-	 * read configuration items from file indicated by the given filename
-	 * @param strFName name of the configuration file
+	 * determine the appropriate configuration directory name
 	 */
-	public void read(String strFName)
+	public static String getConfDir()
+	{
+		String strSep = System.getProperty("file.separator");
+		String strHome = System.getProperty("user.home");
+		StringBuffer sbFName = new StringBuffer();
+
+		sbFName.append(strHome);
+		sbFName.append(strSep);
+
+		sbFName.append(".");
+		sbFName.append(Ezim.appAbbrev);
+
+		return sbFName.toString();
+	}
+
+	/**
+	 * determine the appropriate configuration filename
+	 */
+	public static String getConfFilename()
+	{
+		String strSep = System.getProperty("file.separator");
+		StringBuffer sbFName = new StringBuffer();
+
+		sbFName.append(EzimConf.getConfDir());
+		sbFName.append(strSep);
+		sbFName.append(Ezim.appAbbrev);
+		sbFName.append(".conf");
+
+		return sbFName.toString();
+	}
+
+	/**
+	 * read configuration items from file indicated by the given filename
+	 */
+	public void read()
 	{
 		FileInputStream fisTmp = null;
 
 		try
 		{
-			fisTmp = new FileInputStream(strFName);
+			fisTmp = new FileInputStream(EzimConf.getConfFilename());
 			this.settings.load(fisTmp);
 		}
 		catch(Exception e)
@@ -95,16 +130,21 @@ public class EzimConf
 
 	/**
 	 * write configuration items to the file indicated by the given filename
-	 * @param strFName name of the configuration file
 	 */
-	public void write(String strFName)
+	public void write()
 	{
+		File fTmp = null;
 		FileOutputStream fosTmp = null;
 
 		try
 		{
-			fosTmp = new FileOutputStream(strFName);
-			this.settings.store(fosTmp, "--- Ezim Configuration File ---");
+			// prepare directories if necessary
+			fTmp = new File(EzimConf.getConfDir());
+			if (! fTmp.exists() || ! fTmp.isDirectory()) fTmp.mkdirs();
+
+			// output configuration to file
+			fosTmp = new FileOutputStream(EzimConf.getConfFilename());
+			this.settings.store(fosTmp, "--- ezim Configuration File ---");
 		}
 		catch(Exception e)
 		{
