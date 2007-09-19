@@ -29,7 +29,7 @@ public class Ezim
 {
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
-	public final static String appAbbrev = "Ezim";
+	public final static String appAbbrev = "ezim";
 	public final static String appVer = "0.0.4";
 
 	// transmission character encoding
@@ -52,31 +52,11 @@ public class Ezim
 	public final static Color colorSelf = new Color((int) 0xDEEFFF);
 
 	/**
-	 * determine the appropriate configuration filename
-	 */
-	public static String getConfFilename()
-	{
-		String strSep = System.getProperty("file.separator");
-		String strHome = System.getProperty("user.home");
-		StringBuffer sbFName = new StringBuffer();
-
-		sbFName.append(strHome);
-		sbFName.append(strSep);
-
-		if (strSep.equals("/"))	sbFName.append(".");
-		else					sbFName.append("_");
-
-		sbFName.append("ezim.conf");
-
-		return sbFName.toString();
-	}
-
-	/**
 	 * retrieve configurations from file
 	 */
 	public static EzimConf getConf()
 	{
-		return new EzimConf(getConfFilename());
+		return new EzimConf();
 	}
 
 	public static void main(String[] arrArgs)
@@ -93,14 +73,14 @@ public class Ezim
 			(
 				ecTmp.settings.getProperty
 				(
-					EzimConf.mainFrameX
+					EzimConf.ezimmainLocationX
 				)
 			)
 			, Integer.parseInt
 			(
 				ecTmp.settings.getProperty
 				(
-					EzimConf.mainFrameY
+					EzimConf.ezimmainLocationY
 				)
 			)
 		);
@@ -110,20 +90,20 @@ public class Ezim
 			(
 				ecTmp.settings.getProperty
 				(
-					EzimConf.mainFrameW
+					EzimConf.ezimmainSizeW
 				)
 			)
 			, Integer.parseInt
 			(
 				ecTmp.settings.getProperty
 				(
-					EzimConf.mainFrameH
+					EzimConf.ezimmainSizeH
 				)
 			)
 		);
 		emTmp.localName = ecTmp.settings.getProperty
 		(
-			EzimConf.username
+			EzimConf.ezimmainLocalname
 		);
 
 		// query username if isn't set yet
