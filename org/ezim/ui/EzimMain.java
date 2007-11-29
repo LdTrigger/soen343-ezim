@@ -218,6 +218,44 @@ public class EzimMain
 		(
 			ListSelectionModel.SINGLE_SELECTION
 		);
+		this.jlstContacts.addMouseListener
+		(
+			new MouseListener()
+			{
+				public void mouseClicked(MouseEvent evtTmp)
+				{
+					if
+					(
+						evtTmp.getButton() == MouseEvent.BUTTON1
+						&& evtTmp.getClickCount() > 1
+					)
+					{
+						jlstContacts_MouseDblClicked(evtTmp);
+					}
+					return;
+				}
+
+				public void mouseEntered(MouseEvent evtTmp)
+				{
+					return;
+				}
+
+				public void mouseExited(MouseEvent evtTmp)
+				{
+					return;
+				}
+
+				public void mousePressed(MouseEvent evtTmp)
+				{
+					return;
+				}
+
+				public void mouseReleased(MouseEvent evtTmp)
+				{
+					return;
+				}
+			}
+		);
 
 		this.jspContacts = new JScrollPane(this.jlstContacts);
 
@@ -485,7 +523,7 @@ public class EzimMain
 		return;
 	}
 
-	private void jbtnMsg_ActionPerformed(ActionEvent evt)
+	private void openMsgOut()
 	{
 		if (this.jlstContacts.getSelectedValue() != null)
 		{
@@ -495,6 +533,18 @@ public class EzimMain
 			);
 		}
 
+		return;
+	}
+
+	private void jlstContacts_MouseDblClicked(MouseEvent evt)
+	{
+		this.openMsgOut();
+		return;
+	}
+
+	private void jbtnMsg_ActionPerformed(ActionEvent evt)
+	{
+		this.openMsgOut();
 		return;
 	}
 
