@@ -30,6 +30,13 @@ public class EzimContactListRenderer
 	extends JLabel
 	implements ListCellRenderer
 {
+	private EzimMain emHwnd;
+
+	public EzimContactListRenderer(EzimMain emIn)
+	{
+		this.emHwnd = emIn;
+	}
+
 	public Component getListCellRendererComponent
 	(
 		JList jlstIn
@@ -62,7 +69,7 @@ public class EzimContactListRenderer
 		}
 		else
 		{
-			if (iIdx == 0)
+			if (ecTmp.getIp().equals(emHwnd.localAddress))
 				this.setBackground(Ezim.colorSelf);
 			else
 				this.setBackground(jlstIn.getBackground());

@@ -29,6 +29,7 @@ import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ListSelectionModel;
@@ -213,7 +214,7 @@ public class EzimMain
 		);
 
 		this.jlstContacts = new JList();
-		this.jlstContacts.setCellRenderer(new EzimContactListRenderer());
+		this.jlstContacts.setCellRenderer(new EzimContactListRenderer(this));
 		this.jlstContacts.setSelectionMode
 		(
 			ListSelectionModel.SINGLE_SELECTION
@@ -604,6 +605,8 @@ public class EzimMain
 			new EzimContact[0]
 		);
 
+		Arrays.sort(ecTmp);
+
 		this.jlstContacts.setListData(ecTmp);
 		this.jlstContacts.repaint();
 
@@ -664,22 +667,10 @@ public class EzimMain
 		{
 			try
 			{
-				// place the user him/herself as the first entry
-				if (strIp.equals(this.localAddress))
-				{
-					this.alContacts.add
-					(
-						0
-						, new EzimContact(strIp, strName, strStatus)
-					);
-				}
-				else
-				{
-					this.alContacts.add
-					(
-						new EzimContact(strIp, strName, strStatus)
-					);
-				}
+				this.alContacts.add
+				(
+					new EzimContact(strIp, strName, strStatus)
+				);
 			}
 			catch(EzimContactException eceTmp)
 			{
