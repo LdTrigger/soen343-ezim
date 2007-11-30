@@ -54,12 +54,16 @@ public class EzimMsgTaker extends Thread
 						.getAddress().getHostAddress()
 				);
 
-				EzimMsgTakerThread emttTmp = new EzimMsgTakerThread
-				(
-					ecTmp
-					, sckIn
-				);
-				emttTmp.run();
+				// only take messages from known contacts
+				if (ecTmp != null)
+				{
+					EzimMsgTakerThread emttTmp = new EzimMsgTakerThread
+					(
+						ecTmp
+						, sckIn
+					);
+					emttTmp.run();
+				}
 			}
 		}
 		catch(Exception e)
