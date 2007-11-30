@@ -19,7 +19,7 @@ package org.ezim.core;
 
 import org.ezim.core.EzimContactException;
 
-public class EzimContact
+public class EzimContact implements Comparable
 {
 	// default status
 	public final static int DEFAULT_STATE = 0;
@@ -37,6 +37,15 @@ public class EzimContact
 		this.setName(strName);
 		this.setState(EzimContact.DEFAULT_STATE);
 		this.setStatus(strStatus);
+	}
+
+	public int compareTo(Object ecIn)
+		throws ClassCastException
+	{
+		if (! (ecIn instanceof EzimContact))
+			throw new ClassCastException("An EzimContact object expected.");
+
+		return this.getName().compareTo(((EzimContact) ecIn).getName());
 	}
 
 	public String getIp()
