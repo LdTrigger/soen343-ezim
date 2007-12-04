@@ -64,6 +64,11 @@ public class EzimMsgTaker extends Thread
 					);
 					emttTmp.run();
 				}
+				else if (sckIn != null && ! sckIn.isClosed())
+				{
+					sckIn.close();
+					sckIn = null;
+				}
 			}
 		}
 		catch(Exception e)

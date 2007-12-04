@@ -19,6 +19,7 @@ package org.ezim.core;
 
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import org.ezim.core.EzimAckTaker;
 import org.ezim.core.EzimMsgTaker;
@@ -53,6 +54,8 @@ public class Ezim
 
 	public static void main(String[] arrArgs)
 	{
+		UIManager.put("Button.defaultButtonFollowsFocus", true);
+
 		EzimLang.init();
 		EzimImage.init();
 
