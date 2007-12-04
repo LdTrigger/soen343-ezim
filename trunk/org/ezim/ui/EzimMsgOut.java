@@ -171,14 +171,17 @@ public class EzimMsgOut extends JFrame
 	// E V E N T   H A N D L E R -------------------------------------------
 	private void jbtnSend_ActionPerformed(ActionEvent evt)
 	{
-		EzimMsgSender jmsTmp = new EzimMsgSender
-		(
-			this.ec.getIp()
-			, this.jtaMsg.getText()
-		);
-		jmsTmp.run();
+		if (this.jtaMsg.getText().length() > 0)
+		{
+			EzimMsgSender jmsTmp = new EzimMsgSender
+			(
+				this.ec.getIp()
+				, this.jtaMsg.getText()
+			);
+			jmsTmp.run();
 
-		this.dispose();
+			this.dispose();
+		}
 
 		return;
 	}

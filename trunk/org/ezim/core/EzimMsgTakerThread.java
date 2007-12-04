@@ -52,11 +52,11 @@ public class EzimMsgTakerThread extends Thread
 				)
 			);
 
-			do
+			while(brTmp.ready())
 			{
 				sbTmp.append(brTmp.readLine());
 				sbTmp.append("\n");
-			} while(brTmp.ready());
+			}
 
 			new EzimMsgIn(this.ec, sbTmp.toString());
 		}
