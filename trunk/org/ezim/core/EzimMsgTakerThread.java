@@ -40,6 +40,7 @@ public class EzimMsgTakerThread extends Thread
 	{
 		StringBuffer sbTmp = new StringBuffer();
 		BufferedReader brTmp = null;
+		String strTmp = null;
 
 		try
 		{
@@ -51,6 +52,14 @@ public class EzimMsgTakerThread extends Thread
 					, Ezim.rtxEnc
 				)
 			);
+
+			// we need this block due to BufferedReader.ready()'s nature
+			strTmp = brTmp.readLine();
+			if (strTmp != null)
+			{
+				sbTmp.append(strTmp);
+				sbTmp.append("\n");
+			}
 
 			while(brTmp.ready())
 			{
