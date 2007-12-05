@@ -559,7 +559,7 @@ public class EzimMain
 	{
 		if (! this.epMain.isVisible())
 		{
-			this.changeState(1);
+			this.changeState(EzimContact.PLAZA_STATE);
 
 			this.epMain.reset();
 			this.epMain.setVisible(true);
@@ -723,6 +723,34 @@ public class EzimMain
 
 		if (ecTmp != null)
 		{
+			if (this.epMain.isVisible())
+			{
+				if
+				(
+					ecTmp.getState() == EzimContact.DEFAULT_STATE
+					&& iState == EzimContact.PLAZA_STATE
+				)
+				{
+					this.epMain.addNarration
+					(
+						strIp
+						, EzimLang.HasJoinedPlazaOfSpeech
+					);
+				}
+				else if
+				(
+					ecTmp.getState() == EzimContact.PLAZA_STATE
+					&& iState == EzimContact.DEFAULT_STATE
+				)
+				{
+					this.epMain.addNarration
+					(
+						strIp
+						, EzimLang.HasLeftPlazaOfSpeech
+					);
+				}
+			}
+
 			ecTmp.setState(iState);
 			this.refreshContactList();
 		}

@@ -51,9 +51,10 @@ public class EzimContactListRenderer
 		// state icon
 		switch(ecTmp.getState())
 		{
-			case(1):
+			case(EzimContact.PLAZA_STATE):
 				this.setIcon(EzimImage.icoMan01);
 				break;
+			case(EzimContact.DEFAULT_STATE):
 			default:
 				this.setIcon(EzimImage.icoMan00);
 				break;
