@@ -57,6 +57,8 @@ public class EzimLang
 	// plaza of speech
 	public static String PlazaOfSpeech;
 	public static String Speak;
+	public static String HasJoinedPlazaOfSpeech;
+	public static String HasLeftPlazaOfSpeech;
 
 	public static void init()
 	{
@@ -105,6 +107,8 @@ public class EzimLang
 			// plaza of speech
 			PlazaOfSpeech = rbTmp.getString("PLAZA_OF_SPEECH");
 			Speak = rbTmp.getString("SPEAK");
+			HasJoinedPlazaOfSpeech = rbTmp.getString("HAS_JOINED_PLAZA_OF_SPEECH");
+			HasLeftPlazaOfSpeech = rbTmp.getString("HAS_LEFT_PLAZA_OF_SPEECH");
 		}
 		catch(Exception e)
 		{

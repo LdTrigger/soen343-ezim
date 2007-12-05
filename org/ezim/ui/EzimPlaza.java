@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -47,6 +49,8 @@ public class EzimPlaza
 	implements WindowListener
 {
 	private EzimMain emHwnd;
+
+	private static SimpleDateFormat sdfHHmm = new SimpleDateFormat("HH:mm");
 
 	private JPanel jpnlBase;
 	private JTextArea jtaPlaza;
@@ -259,11 +263,33 @@ public class EzimPlaza
 	}
 
 	/**
+	 * add content to the window and scroll to the updated position
+	 * @param strContent contents to be added
+	 */
+	public synchronized void addPlazaContents(String strContent)
+	{
+		if (this.isVisible())
+		{
+			// add contents to the contents text area
+			this.jtaPlaza.append(strContent);
+			this.jtaPlaza.append("\n");
+
+			// update scrollbar position
+			this.jtaPlaza.setCaretPosition
+			(
+				this.jtaPlaza.getText().length()
+			);
+		}
+
+		return;
+	}
+
+	/**
 	 * add speech to the window with the given IP and contents
-	 * @param strIp IP address of the contact to be updated
+	 * @param strIp IP address of the contact who makes the speech
 	 * @param strSpeech contents of the speech
 	 */
-	public synchronized void addSpeech(String strIp, String strSpeech)
+	public void addSpeech(String strIp, String strSpeech)
 	{
 		if (this.isVisible())
 		{
@@ -271,17 +297,58 @@ public class EzimPlaza
 
 			if (ecTmp != null)
 			{
-				// add username and speech contents
-				this.jtaPlaza.append
+				StringBuffer sbTmp = new StringBuffer();
+
+				// add timestamp
+				sbTmp.append
 				(
-					ecTmp.getName() + ":\n\t" + strSpeech + "\n"
+					"[" + sdfHHmm.format(new Date()) + "] "
+				);
+				// add contact name
+				sbTmp.append
+				(
+					"<" + ecTmp.getName() + "> "
+				);
+				// add speech contents
+				sbTmp.append
+				(
+					strSpeech
 				);
 
-				// update scrollbar position
-				this.jtaPlaza.setCaretPosition
+				this.addPlazaContents(sbTmp.toString());
+			}
+		}
+
+		return;
+	}
+
+	/**
+	 * add narration to the window with the given IP and contents
+	 * @param strIp IP address of the contact to be narrated
+	 * @param strNarration contents of the narration
+	 */
+	public void addNarration(String strIp, String strNarration)
+	{
+		if (this.isVisible())
+		{
+			EzimContact ecTmp = this.emHwnd.getContact(strIp);
+
+			if (ecTmp != null)
+			{
+				StringBuffer sbTmp = new StringBuffer();
+
+				// add contact name
+				sbTmp.append
 				(
-					this.jtaPlaza.getText().length()
+					"* " + ecTmp.getName() + " "
 				);
+				// add narration contents
+				sbTmp.append
+				(
+					strNarration
+				);
+
+				this.addPlazaContents(sbTmp.toString());
 			}
 		}
 

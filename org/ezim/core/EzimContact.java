@@ -25,6 +25,9 @@ public class EzimContact implements Comparable
 	public final static int DEFAULT_STATE = 0;
 	public final static String DEFAULT_STATUS = "Online";
 
+	// plaza status
+	public final static int PLAZA_STATE = 1;
+
 	private String ip;
 	private String name;
 	private int state;
