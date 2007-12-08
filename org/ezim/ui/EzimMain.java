@@ -51,6 +51,7 @@ import org.ezim.core.EzimContactException;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
+import org.ezim.core.EzimSysTray;
 import org.ezim.ui.EzimMsgOut;
 import org.ezim.ui.EzimPlaza;
 
@@ -75,10 +76,14 @@ public class EzimMain
 	public String localStatus;
 
 	public EzimPlaza epMain;
+	private EzimSysTray ezimSysTray;
 
+	
 	// C O N S T R U C T O R
-	public EzimMain()
+	public EzimMain(EzimSysTray ezimSysTray)
 	{
+		this.ezimSysTray = ezimSysTray;
+		this.ezimSysTray.setMainWindow(this);
 		this.initData();
 		this.initGUI();
 
@@ -86,7 +91,6 @@ public class EzimMain
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle(Ezim.appAbbrev);
 		this.setMinimumSize(new Dimension(210, 300));
-		this.setVisible(true);
 	}
 
 	private void initData()
@@ -105,6 +109,9 @@ public class EzimMain
 		this.alContacts = new ArrayList<EzimContact>();
 
 		this.epMain = new EzimPlaza(this);
+		this.ezimSysTray.setContactList(this.alContacts);
+		this.ezimSysTray.updateSysTrayMenue();
+		this.ezimSysTray.setPlazaWindow(epMain);
 
 		return;
 	}
@@ -413,7 +420,7 @@ public class EzimMain
 
 	public void windowClosing(WindowEvent e)
 	{
-		EzimConf ecTmp = new EzimConf();
+		EzimConf ecTmp = EzimConf.getInstance();
 		ecTmp.settings.setProperty
 		(
 			EzimConf.ezimmainLocalname
@@ -485,11 +492,13 @@ public class EzimMain
 
 	public void windowDeiconified(WindowEvent e)
 	{
+	    setVisible(true);
 		return;
 	}
 
 	public void windowIconified(WindowEvent e)
 	{
+	    setVisible(false);
 		return;
 	}
 
@@ -682,6 +691,7 @@ public class EzimMain
 			}
 		}
 
+		ezimSysTray.updateSysTrayMenue();
 		return;
 	}
 
@@ -708,7 +718,7 @@ public class EzimMain
 				this.refreshContactList();
 			}
 		}
-
+		ezimSysTray.updateSysTrayMenue();
 		return;
 	}
 
@@ -780,7 +790,7 @@ public class EzimMain
 	/**
 	 * change state and notify all peers for status change
 	 */
-	private void changeState(int iState)
+	public void changeState(int iState)
 	{
 		EzimAckSender easTmp = null;
 
@@ -837,6 +847,8 @@ public class EzimMain
 	{
 		this.alContacts = new ArrayList<EzimContact>();
 		this.refreshContactList();
+		this.ezimSysTray.setContactList(this.alContacts);
+		this.ezimSysTray.updateSysTrayMenue();
 
 		EzimAckSender easTmp = new EzimAckSender
 		(

@@ -60,6 +60,15 @@ public class EzimLang
 	public static String HasJoinedPlazaOfSpeech;
 	public static String HasLeftPlazaOfSpeech;
 
+	// systray support
+	public static String SystrayExit;
+	public static String SystrayUsersOnline;
+	public static String SystrayMsgToAll;
+	public static String HasReadMessage;
+	public static String SystrayOpenMessageImmediatly;
+	public static String SystrayProperties;
+	
+
 	public static void init()
 	{
 		try
@@ -109,6 +118,15 @@ public class EzimLang
 			Speak = rbTmp.getString("SPEAK");
 			HasJoinedPlazaOfSpeech = rbTmp.getString("HAS_JOINED_PLAZA_OF_SPEECH");
 			HasLeftPlazaOfSpeech = rbTmp.getString("HAS_LEFT_PLAZA_OF_SPEECH");
+			
+			// systray
+			SystrayExit = rbTmp.getString("SYSTRAY_EXIT");
+			SystrayUsersOnline = rbTmp.getString("SYSTRAY_USERS_ONLINE_MSG");
+			SystrayMsgToAll = rbTmp.getString("SYSTRAY_MSG_TO_ALL");
+			HasReadMessage = rbTmp.getString("SYSTRAY_HAS_READ_MESSAGE");
+			SystrayProperties = rbTmp.getString("SYSTRAY_PROPERTIES");
+			SystrayOpenMessageImmediatly = rbTmp.getString("SYSTRAY_OPEN_MESSAGE_IMMEDIATLY");
+
 		}
 		catch(Exception e)
 		{
