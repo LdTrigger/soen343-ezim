@@ -36,12 +36,23 @@ public class EzimConf
 	public final static String ezimplazaLocationY = "ezimplaza.location.y";
 	public final static String ezimplazaSizeH = "ezimplaza.size.h";
 	public final static String ezimplazaSizeW = "ezimplaza.size.w";
+	public final static String ezimmsgoutLocationX = "ezimmsgout.location.x";
+	public final static String ezimmsgoutLocationY = "ezimmsgout.location.y";
+	public final static String ezimmsgoutSizeH = "ezimmsgout.size.h";
+	public final static String ezimmsgoutSizeW = "ezimmsgout.size.w";
+	public final static String ezimmsginLocationX = "ezimmsgin.location.x";
+	public final static String ezimmsginLocationY = "ezimmsgin.location.y";
+	public final static String ezimmsginSizeH = "ezimmsgin.size.h";
+	public final static String ezimmsginSizeW = "ezimmsgin.size.w";
 
 	// configuration item
 	public Properties settings;
 
+	// singleton object
+	private static EzimConf ezconf = null;
+
 	// C O N S T R U C T O R -----------------------------------------------
-	public EzimConf()
+	private EzimConf()
 	{
 		// set default values
 		this.init();
@@ -66,11 +77,30 @@ public class EzimConf
 		this.settings.setProperty(EzimConf.ezimplazaLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimplazaSizeH, "0");
 		this.settings.setProperty(EzimConf.ezimplazaSizeW, "0");
+		this.settings.setProperty(EzimConf.ezimmsgoutLocationX, "0");
+		this.settings.setProperty(EzimConf.ezimmsgoutLocationY, "0");
+		this.settings.setProperty(EzimConf.ezimmsgoutSizeH, "0");
+		this.settings.setProperty(EzimConf.ezimmsgoutSizeW, "0");
+		this.settings.setProperty(EzimConf.ezimmsginLocationX, "0");
+		this.settings.setProperty(EzimConf.ezimmsginLocationY, "0");
+		this.settings.setProperty(EzimConf.ezimmsginSizeH, "0");
+		this.settings.setProperty(EzimConf.ezimmsginSizeW, "0");
 
 		return;
 	}
 
 	// P U B L I C   M E T H O D S -----------------------------------------
+	/**
+	 * return an EzimConf object
+	 */
+	public static EzimConf getInstance()
+	{
+		if (EzimConf.ezconf == null)
+			EzimConf.ezconf = new EzimConf();
+
+		return EzimConf.ezconf;
+	}
+
 	/**
 	 * determine the appropriate configuration directory name
 	 */
@@ -139,7 +169,7 @@ public class EzimConf
 	/**
 	 * write configuration items to the file indicated by the given filename
 	 */
-	public void write()
+	public synchronized void write()
 	{
 		File fTmp = null;
 		FileOutputStream fosTmp = null;
