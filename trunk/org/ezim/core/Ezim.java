@@ -31,7 +31,7 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "0.0.5";
+	public final static String appVer = "0.0.6";
 
 	// transmission character encoding
 	public final static String rtxEnc = "UTF-8";
