@@ -19,10 +19,13 @@ package org.ezim.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -34,12 +37,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.ui.EzimMsgOut;
 
-public class EzimMsgIn extends JFrame
+public class EzimMsgIn
+	extends JFrame
+	implements WindowListener
 {
 	private EzimContact ec;
 
@@ -55,6 +61,8 @@ public class EzimMsgIn extends JFrame
 	public EzimMsgIn(EzimContact ecIn, String strIn)
 	{
 		this.ec = ecIn;
+
+		this.loadConf();
 		this.initGUI();
 
 		if (strIn != null && strIn.length() > 0)
@@ -66,6 +74,79 @@ public class EzimMsgIn extends JFrame
 		this.setMinimumSize(new Dimension(320, 200));
 		this.setVisible(true);
 		this.toFront();
+	}
+
+	private void loadConf()
+	{
+		EzimConf ecTmp = EzimConf.getInstance();
+
+		this.setLocation
+		(
+			Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimmsginLocationX
+				)
+			)
+			, Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimmsginLocationY
+				)
+			)
+		);
+		this.setSize
+		(
+			Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimmsginSizeW
+				)
+			)
+			, Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimmsginSizeH
+				)
+			)
+		);
+
+		return;
+	}
+
+	private void saveConf()
+	{
+		EzimConf ecTmp = EzimConf.getInstance();
+
+		// save window location and size
+		Point ptTmp = this.getLocationOnScreen();
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmsginLocationX
+			, String.valueOf((int) ptTmp.getX())
+		);
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmsginLocationY
+			, String.valueOf((int) ptTmp.getY())
+		);
+		Dimension dmTmp = this.getSize();
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmsginSizeW
+			, String.valueOf((int) dmTmp.getWidth())
+		);
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmsginSizeH
+			, String.valueOf((int) dmTmp.getHeight())
+		);
+
+		return;
 	}
 
 	private void initGUI()
@@ -206,6 +287,47 @@ public class EzimMsgIn extends JFrame
 		);
 
 		glBase.setVerticalGroup(vGrp);
+
+		this.addWindowListener(this);
+
+		return;
+	}
+
+	// W I N D O W   L I S T E N E R ---------------------------------------
+	public void windowActivated(WindowEvent e)
+	{
+		return;
+	}
+
+	public void windowClosed(WindowEvent e)
+	{
+		return;
+	}
+
+	public void windowClosing(WindowEvent e)
+	{
+		this.saveConf();
+		return;
+	}
+
+	public void windowDeactivated(WindowEvent e)
+	{
+		return;
+	}
+
+	public void windowDeiconified(WindowEvent e)
+	{
+		return;
+	}
+
+	public void windowIconified(WindowEvent e)
+	{
+		return;
+	}
+
+	public void windowOpened(WindowEvent e)
+	{
+		return;
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
@@ -219,6 +341,7 @@ public class EzimMsgIn extends JFrame
 		sbMsg.append(" -----\n");
 		sbMsg.append(this.jtaMsg.getText());
 		new EzimMsgOut(this.ec, sbMsg.toString());
+		this.saveConf();
 		this.dispose();
 
 		return;

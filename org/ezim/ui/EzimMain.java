@@ -25,8 +25,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,10 +76,11 @@ public class EzimMain
 
 	public EzimPlaza epMain;
 
-	// C O N S T R U C T O R
+	// C O N S T R U C T O R -----------------------------------------------
 	public EzimMain()
 	{
 		this.initData();
+		this.loadConf();
 		this.initGUI();
 
 		this.setIconImage(EzimImage.icoMain.getImage());
@@ -87,6 +88,170 @@ public class EzimMain
 		this.setTitle(Ezim.appAbbrev);
 		this.setMinimumSize(new Dimension(210, 300));
 		this.setVisible(true);
+	}
+
+	/**
+	 * load configuration settings
+	 */
+	private void loadConf()
+	{
+		EzimConf ecTmp = EzimConf.getInstance();
+
+		this.setLocation
+		(
+			Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimmainLocationX
+				)
+			)
+			, Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimmainLocationY
+				)
+			)
+		);
+		this.setSize
+		(
+			Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimmainSizeW
+				)
+			)
+			, Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimmainSizeH
+				)
+			)
+		);
+		this.epMain.setLocation
+		(
+			Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimplazaLocationX
+				)
+			)
+			, Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimplazaLocationY
+				)
+			)
+		);
+		this.epMain.setSize
+		(
+			Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimplazaSizeW
+				)
+			)
+			, Integer.parseInt
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimplazaSizeH
+				)
+			)
+		);
+		this.localName = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimmainLocalname
+		);
+
+		// query username if isn't set yet
+		if (this.localName == null || this.localName.length() == 0)
+		{
+			String strTmp = null;
+
+			// obtain user name
+			while(strTmp == null || strTmp.length() == 0)
+			{
+				strTmp = JOptionPane.showInputDialog
+				(
+					EzimLang.PleaseInputYourName
+				);
+			}
+
+			this.localName = strTmp;
+		}
+
+		return;
+	}
+
+	/**
+	 * save configuration settings
+	 */
+	private void saveConf()
+	{
+		EzimConf ecTmp = EzimConf.getInstance();
+
+		// save username
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmainLocalname
+			, this.localName
+		);
+
+		// save window location and size
+		Point ptTmp = this.getLocationOnScreen();
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmainLocationX
+			, String.valueOf((int) ptTmp.getX())
+		);
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmainLocationY
+			, String.valueOf((int) ptTmp.getY())
+		);
+		Dimension dmTmp = this.getSize();
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmainSizeW
+			, String.valueOf((int) dmTmp.getWidth())
+		);
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmainSizeH
+			, String.valueOf((int) dmTmp.getHeight())
+		);
+		ptTmp = this.epMain.getLocation();
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimplazaLocationX
+			, String.valueOf((int) ptTmp.getX())
+		);
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimplazaLocationY
+			, String.valueOf((int) ptTmp.getY())
+		);
+		dmTmp = this.epMain.getSize();
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimplazaSizeW
+			, String.valueOf((int) dmTmp.getWidth())
+		);
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimplazaSizeH
+			, String.valueOf((int) dmTmp.getHeight())
+		);
+		ecTmp.write();
+
+		return;
 	}
 
 	private void initData()
@@ -413,59 +578,7 @@ public class EzimMain
 
 	public void windowClosing(WindowEvent e)
 	{
-		EzimConf ecTmp = new EzimConf();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainLocalname
-			, this.localName
-		);
-
-		// save window location and size
-		Point ptTmp = this.getLocationOnScreen();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainLocationX
-			, String.valueOf((int) ptTmp.getX())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainLocationY
-			, String.valueOf((int) ptTmp.getY())
-		);
-		Dimension dmTmp = this.getSize();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainSizeW
-			, String.valueOf((int) dmTmp.getWidth())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainSizeH
-			, String.valueOf((int) dmTmp.getHeight())
-		);
-		ptTmp = this.epMain.getLocation();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimplazaLocationX
-			, String.valueOf((int) ptTmp.getX())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimplazaLocationY
-			, String.valueOf((int) ptTmp.getY())
-		);
-		dmTmp = this.epMain.getSize();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimplazaSizeW
-			, String.valueOf((int) dmTmp.getWidth())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimplazaSizeH
-			, String.valueOf((int) dmTmp.getHeight())
-		);
-		ecTmp.write();
+		this.saveConf();
 
 		// acknowledge other peers we're going offline
 		EzimAckSender easTmp = new EzimAckSender
