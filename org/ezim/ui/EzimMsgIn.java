@@ -19,14 +19,10 @@ package org.ezim.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -37,15 +33,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import org.ezim.core.EzimConf;
 
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
-import org.ezim.core.EzimSysTray;
 import org.ezim.ui.EzimMsgOut;
 
-public class EzimMsgIn extends JFrame implements WindowListener
+public class EzimMsgIn extends JFrame
 {
 	private EzimContact ec;
 
@@ -56,14 +50,11 @@ public class EzimMsgIn extends JFrame implements WindowListener
 	private JScrollPane jspMsg;
 	private JLabel jlblOpen;
 	private JButton jbtnReply;
-	private EzimConf ezimCnf;
-	
+
 	// C O N S T R U C T O R -----------------------------------------------
 	public EzimMsgIn(EzimContact ecIn, String strIn)
 	{
 		this.ec = ecIn;
-		ezimCnf = EzimConf.getInstance();
-		
 		this.initGUI();
 
 		if (strIn != null && strIn.length() > 0)
@@ -73,79 +64,12 @@ public class EzimMsgIn extends JFrame implements WindowListener
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setTitle(EzimLang.IncomingMessage);
 		this.setMinimumSize(new Dimension(320, 200));
-		this.setPositionFromConf();
-	
 		this.setVisible(true);
 		this.toFront();
 	}
 
-	private void setPositionFromConf(){
-		this.setLocation
-		(
-			Integer.parseInt
-			(
-					ezimCnf.settings.getProperty
-				(
-					EzimConf.ezimMsgInLocationX
-				)
-			)
-			, Integer.parseInt
-			(
-					ezimCnf.settings.getProperty
-				(
-					EzimConf.ezimMsgInLocationY
-				)
-			)
-		);
-		this.setSize
-		(
-			Integer.parseInt
-			(
-					ezimCnf.settings.getProperty
-				(
-					EzimConf.ezimMsgInSizeW
-				)
-			)
-			, Integer.parseInt
-			(
-					ezimCnf.settings.getProperty
-				(
-					EzimConf.ezimMsgInSizeH
-				)
-			)
-		);	
-	}
-	
-	private void storePostionToConf(){
-		Point ptTmp = this.getLocation();
-		ezimCnf.settings.setProperty
-		(
-			EzimConf.ezimMsgInLocationX
-			, String.valueOf((int) ptTmp.getX())
-		);
-		ezimCnf.settings.setProperty
-		(
-			EzimConf.ezimMsgInLocationY
-			, String.valueOf((int) ptTmp.getY())
-		);
-		Dimension dmTmp = this.getSize();
-		ezimCnf.settings.setProperty
-		(
-			EzimConf.ezimMsgInSizeW
-			, String.valueOf((int) dmTmp.getWidth())
-		);
-		ezimCnf.settings.setProperty
-		(
-			EzimConf.ezimMsgInSizeH
-			, String.valueOf((int) dmTmp.getHeight())
-		);
-		ezimCnf.write();
-	}
-	
 	private void initGUI()
 	{
-		this.addWindowListener(this);
-		
 		// C O M P O N E N T S ---------------------------------------------
 		this.jlblName = new JLabel(EzimLang.From);
 
@@ -282,11 +206,6 @@ public class EzimMsgIn extends JFrame implements WindowListener
 		);
 
 		glBase.setVerticalGroup(vGrp);
-		
-		
-		if(EzimSysTray.getInstance().openMsgsImmediatly){
-			jlblOpen_MouseClicked(null);
-		}
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
@@ -312,28 +231,5 @@ public class EzimMsgIn extends JFrame implements WindowListener
 		this.jlblOpen.setVisible(false);
 
 		return;
-	}
-
-	public void windowActivated(WindowEvent arg0) {
-	}
-
-	public void windowClosed(WindowEvent arg0) {
-		storePostionToConf();
-
-	}
-
-	public void windowClosing(WindowEvent arg0) {
-	}
-
-	public void windowDeactivated(WindowEvent arg0) {
-	}
-
-	public void windowDeiconified(WindowEvent arg0) {
-	}
-
-	public void windowIconified(WindowEvent arg0) {
-	}
-
-	public void windowOpened(WindowEvent arg0) {
 	}
 }

@@ -59,13 +59,9 @@ public class Ezim
 		EzimLang.init();
 		EzimImage.init();
 
-		EzimConf ecTmp = EzimConf.getInstance();
+		EzimConf ecTmp = new EzimConf();
 
-		EzimSysTray sysTray = EzimSysTray.getInstance();
-
-		EzimMain emTmp = new EzimMain(sysTray);
-		
-		
+		EzimMain emTmp = new EzimMain();
 		emTmp.setLocation
 		(
 			Integer.parseInt
@@ -156,12 +152,6 @@ public class Ezim
 			emTmp.localName = strTmp;
 		}
 
-		if(sysTray.isAvailable()){
-			emTmp.setVisible(false);
-		}else{
-			emTmp.setVisible(true);
-		}
-		
 		EzimMsgTaker emtTmp = new EzimMsgTaker(emTmp);
 		emtTmp.start();
 

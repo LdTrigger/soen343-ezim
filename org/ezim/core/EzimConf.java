@@ -36,21 +36,12 @@ public class EzimConf
 	public final static String ezimplazaLocationY = "ezimplaza.location.y";
 	public final static String ezimplazaSizeH = "ezimplaza.size.h";
 	public final static String ezimplazaSizeW = "ezimplaza.size.w";
-	public final static String ezimMsgOutLocationX = "ezimMsgOut.location.x";
-	public final static String ezimMsgOutLocationY = "ezimMsgOut.location.y";
-	public final static String ezimMsgOutSizeH = "ezimMsgOut.size.h";
-	public final static String ezimMsgOutSizeW = "ezimMsgOut.size.w";
-	public final static String ezimMsgInLocationX = "ezimMsgIn.location.x";
-	public final static String ezimMsgInLocationY = "ezimMsgIn.location.y";
-	public final static String ezimMsgInSizeH = "ezimMsgIn.size.h";
-	public final static String ezimMsgInSizeW = "ezimMsgIn.size.w";
-	public final static String ezimOpenMsgsImmediatly = "ezimOpenMsgsImmediatly";
 
 	// configuration item
 	public Properties settings;
 
 	// C O N S T R U C T O R -----------------------------------------------
-	private EzimConf()
+	public EzimConf()
 	{
 		// set default values
 		this.init();
@@ -58,15 +49,7 @@ public class EzimConf
 		// set saved configuration settings
 		this.read();
 	}
-	private static EzimConf ezCf = null;
-	
-	synchronized public static EzimConf getInstance(){
-		if(ezCf == null){
-			ezCf = new EzimConf();
-		}
-		return ezCf;
-	}
-	
+
 	/**
 	 * initialize all configuration items
 	 */
@@ -84,16 +67,6 @@ public class EzimConf
 		this.settings.setProperty(EzimConf.ezimplazaSizeH, "0");
 		this.settings.setProperty(EzimConf.ezimplazaSizeW, "0");
 
-		this.settings.setProperty(EzimConf.ezimMsgOutLocationX, "0");
-		this.settings.setProperty(EzimConf.ezimMsgOutLocationY, "0");
-		this.settings.setProperty(EzimConf.ezimMsgOutSizeH, "0");
-		this.settings.setProperty(EzimConf.ezimMsgOutSizeW, "0");
-		this.settings.setProperty(EzimConf.ezimMsgInLocationX, "0");
-		this.settings.setProperty(EzimConf.ezimMsgInLocationY, "0");
-		this.settings.setProperty(EzimConf.ezimMsgInSizeH, "0");
-		this.settings.setProperty(EzimConf.ezimMsgInSizeW, "0");
-		this.settings.setProperty(EzimConf.ezimOpenMsgsImmediatly, "false");
-		
 		return;
 	}
 
