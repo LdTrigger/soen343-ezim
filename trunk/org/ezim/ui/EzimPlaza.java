@@ -131,7 +131,13 @@ public class EzimPlaza
 			.addGroup
 			(
 				glBase.createSequentialGroup()
-				.addComponent(this.jspPlaza)
+				.addComponent
+				(
+					this.jspPlaza
+					, GroupLayout.DEFAULT_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, Short.MAX_VALUE
+				)
 			)
 			.addGroup
 			(
@@ -141,9 +147,15 @@ public class EzimPlaza
 					this.jtfdSpeak
 					, GroupLayout.DEFAULT_SIZE
 					, GroupLayout.PREFERRED_SIZE
-					, Integer.MAX_VALUE
+					, Short.MAX_VALUE
 				)
-				.addComponent(this.jbtnSpeak)
+				.addComponent
+				(
+					this.jbtnSpeak
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
 			)
 		);
 
@@ -154,14 +166,32 @@ public class EzimPlaza
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent(this.jspPlaza)
+			.addComponent
+			(
+				this.jspPlaza
+				, GroupLayout.DEFAULT_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, Short.MAX_VALUE
+			)
 		);
 
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent(this.jtfdSpeak)
-			.addComponent(this.jbtnSpeak)
+			.addComponent
+			(
+				this.jtfdSpeak
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
+				this.jbtnSpeak
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
 		);
 
 		glBase.setVerticalGroup(vGrp);

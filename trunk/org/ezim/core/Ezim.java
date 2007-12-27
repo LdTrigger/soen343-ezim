@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.ezim.core.EzimAckTaker;
-import org.ezim.core.EzimMsgTaker;
+import org.ezim.core.EzimDtxTaker;
 import org.ezim.core.EzimLang;
 import org.ezim.ui.EzimMain;
 
@@ -33,18 +33,18 @@ public class Ezim
 	public final static String appAbbrev = "ezim";
 	public final static String appVer = "0.0.6";
 
-	// transmission character encoding
-	public final static String rtxEnc = "UTF-8";
-
 	// multicast group, port, TTL, and incoming buffer size
 	public final static String mcGroup = "229.0.0.1";
 	public final static int ackPort = 5555;
 	public final static int ttl = 1;
 	public final static int inBuf = 1024;
 
-	// message transmission port and timeout limit (in ms)
-	public final static int msgPort = 6666;
-	public final static int msgTimeout = 30000;
+	// direct transmission port and timeout limit (in ms)
+	public final static int dtxPort = 6666;
+	public final static int dtxTimeout = 30000;
+
+	// direct transmission message encoding
+	public final static String dtxMsgEnc = "UTF-8";
 
 	// maximum textfield lengths (for Ack messages)
 	public final static int maxAckLength = inBuf / 4;
@@ -61,8 +61,8 @@ public class Ezim
 
 		EzimMain emTmp = new EzimMain();
 
-		EzimMsgTaker emtTmp = new EzimMsgTaker(emTmp);
-		emtTmp.start();
+		EzimDtxTaker edtTmp = new EzimDtxTaker(emTmp);
+		edtTmp.start();
 
 		EzimAckTaker eatTmp = new EzimAckTaker(emTmp);
 		eatTmp.start();

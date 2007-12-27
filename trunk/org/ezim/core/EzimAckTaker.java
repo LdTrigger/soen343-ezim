@@ -62,7 +62,7 @@ public class EzimAckTaker extends Thread
 					dp.getData()
 					, 0
 					, dp.getLength()
-					, Ezim.rtxEnc
+					, Ezim.dtxMsgEnc
 				);
 
 				EzimAckSemantics.parser
