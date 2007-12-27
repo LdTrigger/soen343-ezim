@@ -17,83 +17,74 @@
  */
 package org.ezim.core;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.lang.Thread;
+import java.net.ServerSocket;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import org.ezim.core.EzimContact;
-import org.ezim.ui.EzimMsgIn;
+import org.ezim.core.EzimDtxTakerThread;
+import org.ezim.ui.EzimMain;
 
-public class EzimMsgTakerThread extends Thread
+public class EzimDtxTaker extends Thread
 {
-	private EzimContact ec;
-	private Socket sck;
+	private EzimMain emHwnd;
 
-	public EzimMsgTakerThread(EzimContact ecIn, Socket sckIn)
+	public EzimDtxTaker(EzimMain emIn)
 	{
-		this.ec = ecIn;
-		this.sck = sckIn;
+		this.emHwnd = emIn;
 	}
 
 	public void run()
 	{
-		StringBuffer sbTmp = new StringBuffer();
-		BufferedReader brTmp = null;
-		String strTmp = null;
+		ServerSocket ssck = null;
+		Socket sckIn = null;
 
 		try
 		{
-			brTmp = new BufferedReader
-			(
-				new InputStreamReader
+			ssck = new ServerSocket(Ezim.dtxPort);
+
+			while(true)
+			{
+				sckIn = ssck.accept();
+
+				EzimContact ecTmp = this.emHwnd.getContact
 				(
-					this.sck.getInputStream()
-					, Ezim.rtxEnc
-				)
-			);
+					((InetSocketAddress) sckIn.getRemoteSocketAddress())
+						.getAddress().getHostAddress()
+				);
 
-			// we need this block due to BufferedReader.ready()'s nature
-			strTmp = brTmp.readLine();
-			if (strTmp != null)
-			{
-				sbTmp.append(strTmp);
-				sbTmp.append("\n");
+				// only take messages from known contacts
+				if (ecTmp != null)
+				{
+					EzimDtxTakerThread emttTmp = new EzimDtxTakerThread
+					(
+						ecTmp
+						, sckIn
+					);
+					emttTmp.run();
+				}
+				else if (sckIn != null && ! sckIn.isClosed())
+				{
+					sckIn.close();
+					sckIn = null;
+				}
 			}
-
-			while(brTmp.ready())
-			{
-				sbTmp.append(brTmp.readLine());
-				sbTmp.append("\n");
-			}
-
-			new EzimMsgIn(this.ec, sbTmp.toString());
 		}
 		catch(Exception e)
 		{
-			// ignore
+			emHwnd.errAlert(e.getMessage());
 		}
 		finally
 		{
 			try
 			{
-				brTmp.close();
-			}
-			catch(Exception e)
-			{
-				// ignore
-			}
-
-			try
-			{
-				if (sck != null && ! sck.isClosed()) sck.close();
+				if (ssck != null && ! ssck.isClosed()) ssck.close();
 			}
 			catch(Exception e)
 			{
 				// ignore
 			}
 		}
-
-		return;
 	}
 }

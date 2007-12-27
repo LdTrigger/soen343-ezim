@@ -46,14 +46,14 @@ public class EzimMsgSender extends Thread
 		try
 		{
 			sckOut = new Socket();
-			isaTmp = new InetSocketAddress(this.ip, Ezim.msgPort);
-			sckOut.connect(isaTmp, Ezim.msgTimeout);
+			isaTmp = new InetSocketAddress(this.ip, Ezim.dtxPort);
+			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 			bwTmp = new BufferedWriter
 			(
 				new OutputStreamWriter
 				(
 					sckOut.getOutputStream()
-					, Ezim.rtxEnc
+					, Ezim.dtxMsgEnc
 				)
 			);
 

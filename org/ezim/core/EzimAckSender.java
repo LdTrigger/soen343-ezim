@@ -52,7 +52,7 @@ public class EzimAckSender extends Thread
 			ms.setTimeToLive(Ezim.ttl);
 			if (ms.getLoopbackMode()) ms.setLoopbackMode(false);
 
-			arrBytes = this.msg.getBytes(Ezim.rtxEnc);
+			arrBytes = this.msg.getBytes(Ezim.dtxMsgEnc);
 			if (arrBytes.length > Ezim.inBuf)
 				throw new Exception("Ack message too long.");
 			dp = new DatagramPacket

@@ -485,20 +485,38 @@ public class EzimMain
 			.addGroup
 			(
 				glBase.createSequentialGroup()
-					.addComponent(this.jlblStatus)
+					.addComponent
+					(
+						this.jlblStatus
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
 					.addComponent
 					(
 						this.jtfdStatus
 						, GroupLayout.DEFAULT_SIZE
 						, GroupLayout.PREFERRED_SIZE
-						, Integer.MAX_VALUE
+						, Short.MAX_VALUE
 					)
-					.addComponent(this.jlblAbout)
+					.addComponent
+					(
+						this.jlblAbout
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
 			)
 			.addGroup
 			(
 				glBase.createSequentialGroup()
-					.addComponent(this.jspContacts)
+					.addComponent
+					(
+						this.jspContacts
+						, GroupLayout.DEFAULT_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, Short.MAX_VALUE
+					)
 			)
 			.addGroup
 			(
@@ -508,9 +526,15 @@ public class EzimMain
 						this.jbtnMsg
 						, GroupLayout.DEFAULT_SIZE
 						, GroupLayout.PREFERRED_SIZE
-						, Integer.MAX_VALUE
+						, Short.MAX_VALUE
 					)
-					.addComponent(this.jbtnRfh)
+					.addComponent
+					(
+						this.jbtnRfh
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
 			)
 			.addGroup
 			(
@@ -520,7 +544,7 @@ public class EzimMain
 						this.jbtnPlz
 						, GroupLayout.DEFAULT_SIZE
 						, GroupLayout.PREFERRED_SIZE
-						, Integer.MAX_VALUE
+						, Short.MAX_VALUE
 					)
 			)
 		);
@@ -532,28 +556,70 @@ public class EzimMain
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent(this.jlblStatus)
-			.addComponent(this.jtfdStatus)
-			.addComponent(this.jlblAbout)
+			.addComponent
+			(
+				this.jlblStatus
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
+				this.jtfdStatus
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
+				this.jlblAbout
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
 		);
 
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent(this.jspContacts)
+			.addComponent
+			(
+				this.jspContacts
+				, GroupLayout.DEFAULT_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, Short.MAX_VALUE
+			)
 		);
 
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent(this.jbtnMsg)
-			.addComponent(this.jbtnRfh)
+			.addComponent
+			(
+				this.jbtnMsg
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
+				this.jbtnRfh
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
 		);
 
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent(this.jbtnPlz)
+			.addComponent
+			(
+				this.jbtnPlz
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
 		);
 
 		glBase.setVerticalGroup(vGrp);
