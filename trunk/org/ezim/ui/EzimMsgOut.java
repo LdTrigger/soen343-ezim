@@ -87,6 +87,7 @@ public class EzimMsgOut
 		return;
 	}
 
+	// P R I V A T E   M E T H O D S ---------------------------------------
 	private void loadConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
@@ -327,13 +328,11 @@ public class EzimMsgOut
 		{
 			EzimMsgSender jmsTmp = new EzimMsgSender
 			(
-				this.ec.getIp()
+				this
+				, this.ec.getIp()
 				, this.jtaMsg.getText()
 			);
 			jmsTmp.run();
-
-			this.saveConf();
-			this.dispose();
 		}
 
 		return;

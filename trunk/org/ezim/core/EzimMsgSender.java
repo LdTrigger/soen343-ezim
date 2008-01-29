@@ -17,6 +17,7 @@
  */
 package org.ezim.core;
 
+import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.lang.Thread;
@@ -25,14 +26,17 @@ import java.net.InetSocketAddress;
 import javax.swing.JOptionPane;
 
 import org.ezim.core.EzimLang;
+import org.ezim.ui.EzimMsgOut;
 
 public class EzimMsgSender extends Thread
 {
+	private EzimMsgOut emo;
 	private String ip;
 	private String msg;
 
-	public EzimMsgSender(String strIp, String strMsg)
+	public EzimMsgSender(EzimMsgOut emoIn, String strIp, String strMsg)
 	{
+		this.emo = emoIn;
 		this.ip = strIp;
 		this.msg = strMsg;
 	}
@@ -45,6 +49,9 @@ public class EzimMsgSender extends Thread
 
 		try
 		{
+			// disable the send message window before proceeding
+			this.emo.setEnabled(false);
+
 			sckOut = new Socket();
 			isaTmp = new InetSocketAddress(this.ip, Ezim.dtxPort);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
@@ -59,6 +66,15 @@ public class EzimMsgSender extends Thread
 
 			bwTmp.write(this.msg);
 			bwTmp.flush();
+
+			// close the send message window upon success
+			WindowEvent weTmp = new WindowEvent
+				(
+					this.emo
+					, WindowEvent.WINDOW_CLOSING
+				);
+
+			this.emo.dispatchEvent(weTmp);
 		}
 		catch(Exception e)
 		{
@@ -69,6 +85,9 @@ public class EzimMsgSender extends Thread
 				, EzimLang.SendMessageError
 				, JOptionPane.ERROR_MESSAGE
 			);
+
+			// re-enable the send message window upon failure
+			this.emo.setEnabled(true);
 		}
 		finally
 		{
