@@ -28,12 +28,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -48,9 +48,11 @@ import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
+import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
+import org.ezim.ui.EzimFileOut;
 import org.ezim.ui.EzimMsgOut;
 import org.ezim.ui.EzimPlaza;
 
@@ -58,7 +60,6 @@ public class EzimMain
 	extends JFrame
 	implements WindowListener
 {
-	private ArrayList<EzimContact> alContacts;
 	private JPanel jpnlBase;
 	private JLabel jlblStatus;
 	private JTextField jtfdStatus;
@@ -66,6 +67,7 @@ public class EzimMain
 	private JList jlstContacts;
 	private JScrollPane jspContacts;
 	private JButton jbtnMsg;
+	private JButton jbtnFtx;
 	private JButton jbtnRfh;
 	private JButton jbtnPlz;
 
@@ -86,7 +88,7 @@ public class EzimMain
 		this.setIconImage(EzimImage.icoMain.getImage());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle(Ezim.appAbbrev);
-		this.setMinimumSize(new Dimension(210, 300));
+		this.setMinimumSize(new Dimension(230, 300));
 		this.setVisible(true);
 	}
 
@@ -267,7 +269,6 @@ public class EzimMain
 
 		this.localState = EzimContact.DEFAULT_STATE;
 		this.localStatus = EzimContact.DEFAULT_STATUS;
-		this.alContacts = new ArrayList<EzimContact>();
 
 		this.epMain = new EzimPlaza(this);
 
@@ -345,39 +346,6 @@ public class EzimMain
 			}
 		);
 
-		this.jlblAbout = new JLabel("?");
-		this.jlblAbout.addMouseListener
-		(
-			new MouseListener()
-			{
-				public void mouseClicked(MouseEvent evtTmp)
-				{
-					jlblAbout_MouseClicked(evtTmp);
-					return;
-				}
-
-				public void mouseEntered(MouseEvent evtTmp)
-				{
-					return;
-				}
-
-				public void mouseExited(MouseEvent evtTmp)
-				{
-					return;
-				}
-
-				public void mousePressed(MouseEvent evtTmp)
-				{
-					return;
-				}
-
-				public void mouseReleased(MouseEvent evtTmp)
-				{
-					return;
-				}
-			}
-		);
-
 		this.jlstContacts = new JList();
 		this.jlstContacts.setCellRenderer(new EzimContactListRenderer(this));
 		this.jlstContacts.setSelectionMode
@@ -425,7 +393,8 @@ public class EzimMain
 
 		this.jspContacts = new JScrollPane(this.jlstContacts);
 
-		this.jbtnMsg = new JButton(EzimLang.Message);
+		this.jbtnMsg = new JButton(EzimImage.icoBtnMsg);
+		this.jbtnMsg.setPreferredSize(new Dimension(32, 32));
 		this.jbtnMsg.setToolTipText(EzimLang.SendMessageToContact);
 		this.jbtnMsg.addActionListener
 		(
@@ -439,7 +408,23 @@ public class EzimMain
 			}
 		);
 
-		this.jbtnRfh = new JButton(EzimLang.Refresh);
+		this.jbtnFtx = new JButton(EzimImage.icoBtnFtx);
+		this.jbtnFtx.setPreferredSize(new Dimension(32, 32));
+		this.jbtnFtx.setToolTipText(EzimLang.SendFileToContact);
+		this.jbtnFtx.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent evtTmp)
+				{
+					jbtnFtx_ActionPerformed(evtTmp);
+					return;
+				}
+			}
+		);
+
+		this.jbtnRfh = new JButton(EzimImage.icoBtnRefresh);
+		this.jbtnRfh.setPreferredSize(new Dimension(32, 32));
 		this.jbtnRfh.setToolTipText(EzimLang.RefreshContactList);
 		this.jbtnRfh.addActionListener
 		(
@@ -453,7 +438,8 @@ public class EzimMain
 			}
 		);
 
-		this.jbtnPlz = new JButton(EzimLang.Plaza);
+		this.jbtnPlz = new JButton(EzimImage.icoBtnPlaza);
+		this.jbtnPlz.setPreferredSize(new Dimension(32, 32));
 		this.jbtnPlz.setToolTipText(EzimLang.PlazaOfSpeech);
 		this.jbtnPlz.addActionListener
 		(
@@ -462,6 +448,40 @@ public class EzimMain
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					jbtnPlz_ActionPerformed(evtTmp);
+					return;
+				}
+			}
+		);
+
+		this.jlblAbout = new JLabel(EzimImage.icoLblAbout);
+		this.jlblAbout.setPreferredSize(new Dimension(32, 32));
+		this.jlblAbout.addMouseListener
+		(
+			new MouseListener()
+			{
+				public void mouseClicked(MouseEvent evtTmp)
+				{
+					jlblAbout_MouseClicked(evtTmp);
+					return;
+				}
+
+				public void mouseEntered(MouseEvent evtTmp)
+				{
+					return;
+				}
+
+				public void mouseExited(MouseEvent evtTmp)
+				{
+					return;
+				}
+
+				public void mousePressed(MouseEvent evtTmp)
+				{
+					return;
+				}
+
+				public void mouseReleased(MouseEvent evtTmp)
+				{
 					return;
 				}
 			}
@@ -499,13 +519,6 @@ public class EzimMain
 						, GroupLayout.PREFERRED_SIZE
 						, Short.MAX_VALUE
 					)
-					.addComponent
-					(
-						this.jlblAbout
-						, GroupLayout.PREFERRED_SIZE
-						, GroupLayout.PREFERRED_SIZE
-						, GroupLayout.PREFERRED_SIZE
-					)
 			)
 			.addGroup
 			(
@@ -524,9 +537,16 @@ public class EzimMain
 					.addComponent
 					(
 						this.jbtnMsg
-						, GroupLayout.DEFAULT_SIZE
 						, GroupLayout.PREFERRED_SIZE
-						, Short.MAX_VALUE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
+					.addComponent
+					(
+						this.jbtnFtx
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
 					)
 					.addComponent
 					(
@@ -535,16 +555,24 @@ public class EzimMain
 						, GroupLayout.PREFERRED_SIZE
 						, GroupLayout.PREFERRED_SIZE
 					)
-			)
-			.addGroup
-			(
-				glBase.createSequentialGroup()
 					.addComponent
 					(
 						this.jbtnPlz
-						, GroupLayout.DEFAULT_SIZE
 						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
+					.addContainerGap
+					(
+					 	0
 						, Short.MAX_VALUE
+					)
+					.addComponent
+					(
+						this.jlblAbout
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
 					)
 			)
 		);
@@ -566,13 +594,6 @@ public class EzimMain
 			.addComponent
 			(
 				this.jtfdStatus
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-			)
-			.addComponent
-			(
-				this.jlblAbout
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
@@ -603,19 +624,28 @@ public class EzimMain
 			)
 			.addComponent
 			(
+				this.jbtnFtx
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
 				this.jbtnRfh
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 			)
-		);
-
-		vGrp.addGroup
-		(
-			glBase.createParallelGroup(Alignment.BASELINE)
 			.addComponent
 			(
 				this.jbtnPlz
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
+				this.jlblAbout
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
@@ -728,6 +758,26 @@ public class EzimMain
 		return;
 	}
 
+	private void jbtnFtx_ActionPerformed(ActionEvent evt)
+	{
+		if (this.jlstContacts.getSelectedValue() != null)
+		{
+			JFileChooser jfcTmp = new JFileChooser();
+			int iJfcRes = jfcTmp.showOpenDialog(this);
+
+			if (iJfcRes == JFileChooser.APPROVE_OPTION)
+			{
+				EzimFileOut efoTmp = new EzimFileOut
+				(
+				 	(EzimContact) this.jlstContacts.getSelectedValue()
+					, jfcTmp.getSelectedFile()
+				);
+			}
+		}
+
+		return;
+	}
+
 	private void jbtnRfh_ActionPerformed(ActionEvent evt)
 	{
 		this.freshPoll();
@@ -779,10 +829,7 @@ public class EzimMain
 	 */
 	private void refreshContactList()
 	{
-		EzimContact[] ecTmp = (EzimContact[]) this.alContacts.toArray
-		(
-			new EzimContact[0]
-		);
+		EzimContact[] ecTmp = EzimContactList.getInstance().toArray();
 
 		Arrays.sort(ecTmp);
 
@@ -793,48 +840,6 @@ public class EzimMain
 	}
 
 	/**
-	 * find and return index of the contact specified by the IP address
-	 * @param strIp IP address to look for
-	 * @return index of the contact, or -1 if not found
-	 */
-	private int idxContact(String strIp)
-	{
-		int iOut = -1;
-		int iCnt = 0;
-		int iLen = alContacts.size();
-		EzimContact ecTmp = null;
-
-		for(iCnt = 0; iCnt < iLen; iCnt ++)
-		{
-			ecTmp = (EzimContact) this.alContacts.get(iCnt);
-
-			if (strIp.equals(ecTmp.getIp()))
-			{
-				iOut = iCnt;
-				break;
-			}
-		}
-
-		return iOut;
-	}
-
-	/**
-	 * find and return the contact specified by the IP address
-	 * @param strIp IP address to look for
-	 * @return instance of the contact, or null if not found
-	 */
-	public EzimContact getContact(String strIp)
-	{
-		EzimContact ecOut = null;
-		int iIdx = idxContact(strIp);
-
-		if (iIdx != -1)
-			ecOut = (EzimContact) this.alContacts.get(iIdx);
-
-		return ecOut;
-	}
-
-	/**
 	 * add a new contact to the list if not yet exists
 	 * @param strIp IP address of the new contact
 	 * @param strname name of the new contact
@@ -842,23 +847,17 @@ public class EzimMain
 	 */
 	public void addContact(String strIp, String strName, String strStatus)
 	{
-		if (this.idxContact(strIp) == -1)
+		try
 		{
-			try
-			{
-				this.alContacts.add
-				(
-					new EzimContact(strIp, strName, strStatus)
-				);
-			}
-			catch(EzimContactException eceTmp)
-			{
-				this.errAlert(eceTmp.getMessage());
-			}
-			finally
-			{
-				this.refreshContactList();
-			}
+			EzimContactList.getInstance().add(strIp, strName, strStatus);
+		}
+		catch(EzimContactException eceTmp)
+		{
+			this.errAlert(eceTmp.getMessage());
+		}
+		finally
+		{
+			this.refreshContactList();
 		}
 
 		return;
@@ -870,22 +869,17 @@ public class EzimMain
 	 */
 	public void rmContact(String strIp)
 	{
-		int iIdx = idxContact(strIp);
-
-		if (iIdx != -1)
+		try
 		{
-			try
-			{
-				this.alContacts.remove(iIdx);
-			}
-			catch(Exception e)
-			{
-				this.errAlert(e.getMessage());
-			}
-			finally
-			{
-				this.refreshContactList();
-			}
+			EzimContactList.getInstance().remove(strIp);
+		}
+		catch(Exception e)
+		{
+			this.errAlert(e.getMessage());
+		}
+		finally
+		{
+			this.refreshContactList();
 		}
 
 		return;
@@ -898,7 +892,7 @@ public class EzimMain
 	 */
 	public void updContactState(String strIp, int iState)
 	{
-		EzimContact ecTmp = this.getContact(strIp);
+		EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
 
 		if (ecTmp != null)
 		{
@@ -944,7 +938,7 @@ public class EzimMain
 	 */
 	public void updContactStatus(String strIp, String strStatus)
 	{
-		EzimContact ecTmp = this.getContact(strIp);
+		EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
 
 		if (ecTmp != null)
 		{
@@ -1014,7 +1008,7 @@ public class EzimMain
 	 */
 	public void freshPoll()
 	{
-		this.alContacts = new ArrayList<EzimContact>();
+		EzimContactList.getInstance(true);
 		this.refreshContactList();
 
 		EzimAckSender easTmp = new EzimAckSender

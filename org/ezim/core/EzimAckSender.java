@@ -18,7 +18,6 @@
 package org.ezim.core;
 
 import java.lang.Thread;
-import java.lang.reflect.Array;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;

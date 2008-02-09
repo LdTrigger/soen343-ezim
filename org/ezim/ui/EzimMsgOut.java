@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimMsgSender;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
@@ -264,8 +265,13 @@ public class EzimMsgOut
 		vGrp.addComponent
 		(
 			this.jspMsg
+/*
 			, GroupLayout.DEFAULT_SIZE
 			, GroupLayout.PREFERRED_SIZE
+			, Short.MAX_VALUE
+*/
+			, GroupLayout.DEFAULT_SIZE
+			, 100
 			, Short.MAX_VALUE
 		);
 

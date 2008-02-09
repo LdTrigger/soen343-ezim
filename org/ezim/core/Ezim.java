@@ -18,7 +18,6 @@
 package org.ezim.core;
 
 import java.awt.Color;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.ezim.core.EzimAckTaker;
@@ -39,6 +38,9 @@ public class Ezim
 	public final static int ttl = 1;
 	public final static int inBuf = 1024;
 
+	// maximum textfield lengths (for Ack messages)
+	public final static int maxAckLength = inBuf / 4;
+
 	// direct transmission port and timeout limit (in ms)
 	public final static int dtxPort = 6666;
 	public final static int dtxTimeout = 30000;
@@ -46,8 +48,8 @@ public class Ezim
 	// direct transmission message encoding
 	public final static String dtxMsgEnc = "UTF-8";
 
-	// maximum textfield lengths (for Ack messages)
-	public final static int maxAckLength = inBuf / 4;
+	// direct transmission buffer length (in bytes)
+	public final static int dtxBufLen = 1024;
 
 	// self-entry background color on the contact list
 	public final static Color colorSelf = new Color((int) 0xDEEFFF);

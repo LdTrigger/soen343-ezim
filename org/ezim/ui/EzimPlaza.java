@@ -39,6 +39,7 @@ import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
+import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
@@ -169,8 +170,13 @@ public class EzimPlaza
 			.addComponent
 			(
 				this.jspPlaza
+/*
 				, GroupLayout.DEFAULT_SIZE
 				, GroupLayout.PREFERRED_SIZE
+				, Short.MAX_VALUE
+*/
+				, GroupLayout.DEFAULT_SIZE
+				, 100
 				, Short.MAX_VALUE
 			)
 		);
@@ -323,7 +329,7 @@ public class EzimPlaza
 	{
 		if (this.isVisible())
 		{
-			EzimContact ecTmp = this.emHwnd.getContact(strIp);
+			EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
 
 			if (ecTmp != null)
 			{
@@ -361,7 +367,7 @@ public class EzimPlaza
 	{
 		if (this.isVisible())
 		{
-			EzimContact ecTmp = this.emHwnd.getContact(strIp);
+			EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
 
 			if (ecTmp != null)
 			{

@@ -30,11 +30,10 @@ public class EzimLang
 
 	// main window
 	public static String Status;
-	public static String Message;
 	public static String SendMessageToContact;
-	public static String Refresh;
+	public static String SendFileToContact;
 	public static String RefreshContactList;
-	public static String Plaza;
+	public static String PlazaOfSpeech;
 
 	// error dialog
 	public static String Error;
@@ -54,8 +53,23 @@ public class EzimLang
 	// send message error dialog
 	public static String SendMessageError;
 
+	// incoming file window
+	public static String IncomingFile;
+	public static String IncomingFileConfirmation;
+	public static String ReceiveTheFollowingFile;
+	public static String Receiving;
+
+	// outgoing file window
+	public static String OutgoingFile;
+	public static String Filename;
+	public static String Cancel;
+	public static String WaitingForResponse;
+	public static String Sending;
+	public static String RefusedByRemote;
+	public static String Done;
+	public static String Close;
+
 	// plaza of speech
-	public static String PlazaOfSpeech;
 	public static String Speak;
 	public static String HasJoinedPlazaOfSpeech;
 	public static String HasLeftPlazaOfSpeech;
@@ -80,11 +94,10 @@ public class EzimLang
 
 			// main window
 			Status = rbTmp.getString("STATUS");
-			Message = rbTmp.getString("MESSAGE");
 			SendMessageToContact = rbTmp.getString("SEND_MESSAGE_TO_CONTACT");
-			Refresh = rbTmp.getString("REFRESH");
+			SendFileToContact = rbTmp.getString("SEND_FILE_TO_CONTACT");
 			RefreshContactList = rbTmp.getString("REFRESH_CONTACT_LIST");
-			Plaza = rbTmp.getString("PLAZA");
+			PlazaOfSpeech = rbTmp.getString("PLAZA_OF_SPEECH");
 
 			// error dialog
 			Error = rbTmp.getString("ERROR");
@@ -104,8 +117,23 @@ public class EzimLang
 			// send message error dialog
 			SendMessageError = rbTmp.getString("SEND_MESSAGE_ERROR");
 
+			// incoming file window
+			IncomingFile = rbTmp.getString("INCOMING_FILE");
+			IncomingFileConfirmation = rbTmp.getString("INCOMING_FILE_CONFIRMATION");
+			ReceiveTheFollowingFile = rbTmp.getString("RECEIVE_THE_FOLLOWING_FILE");
+			Receiving = rbTmp.getString("RECEIVING");
+
+			// outgoing file window
+			OutgoingFile = rbTmp.getString("OUTGOING_FILE");
+			Filename = rbTmp.getString("FILENAME");
+			Cancel = rbTmp.getString("CANCEL");
+			WaitingForResponse = rbTmp.getString("WAITING_FOR_RESPONSE");
+			Sending = rbTmp.getString("SENDING");
+			RefusedByRemote = rbTmp.getString("REFUSED_BY_REMOTE");
+			Done = rbTmp.getString("DONE");
+			Close = rbTmp.getString("CLOSE");
+
 			// plaza of speech
-			PlazaOfSpeech = rbTmp.getString("PLAZA_OF_SPEECH");
 			Speak = rbTmp.getString("SPEAK");
 			HasJoinedPlazaOfSpeech = rbTmp.getString("HAS_JOINED_PLAZA_OF_SPEECH");
 			HasLeftPlazaOfSpeech = rbTmp.getString("HAS_LEFT_PLAZA_OF_SPEECH");

@@ -31,6 +31,16 @@ public class EzimImage
 	public static ImageIcon icoMan00;
 	public static ImageIcon icoMan01;
 
+	// EzimMain buttons
+	public static ImageIcon icoBtnMsg;
+	public static ImageIcon icoBtnFtx;
+	public static ImageIcon icoBtnFrx;
+	public static ImageIcon icoBtnRefresh;
+	public static ImageIcon icoBtnPlaza;
+
+	// EzimMain labels
+	public static ImageIcon icoLblAbout;
+
 	public static void init()
 	{
 		URL iconUrlTmp = null;
@@ -69,6 +79,49 @@ public class EzimImage
 			"org/ezim/image/icon/man01.png"
 		);
 		icoMan01 = new ImageIcon(iconUrlTmp);
+
+		// main window message button icon
+		iconUrlTmp = ClassLoader.getSystemResource
+		(
+			"org/ezim/image/icon/btnmsg.png"
+		);
+		icoBtnMsg = new ImageIcon(iconUrlTmp);
+
+		// main window file transmission button icon
+		// outgoing file window frame icon
+		iconUrlTmp = ClassLoader.getSystemResource
+		(
+			"org/ezim/image/icon/btnftx.png"
+		);
+		icoBtnFtx = new ImageIcon(iconUrlTmp);
+
+		// incoming file window frame icon
+		iconUrlTmp = ClassLoader.getSystemResource
+		(
+			"org/ezim/image/icon/btnfrx.png"
+		);
+		icoBtnFrx = new ImageIcon(iconUrlTmp);
+
+		// main window refresh button icon
+		iconUrlTmp = ClassLoader.getSystemResource
+		(
+			"org/ezim/image/icon/btnrefresh.png"
+		);
+		icoBtnRefresh = new ImageIcon(iconUrlTmp);
+
+		// main window plaza button icon
+		iconUrlTmp = ClassLoader.getSystemResource
+		(
+			"org/ezim/image/icon/btnplaza.png"
+		);
+		icoBtnPlaza = new ImageIcon(iconUrlTmp);
+
+		// main window about label icon
+		iconUrlTmp = ClassLoader.getSystemResource
+		(
+			"org/ezim/image/icon/lblabout.png"
+		);
+		icoLblAbout = new ImageIcon(iconUrlTmp);
 
 		return;
 	}

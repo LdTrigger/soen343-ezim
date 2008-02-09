@@ -17,7 +17,7 @@
  */
 package org.ezim.core;
 
-import java.awt.event.WindowEvent;
+import java.io.File;
 import java.lang.Thread;
 import java.net.Socket;
 import java.net.InetSocketAddress;
@@ -25,19 +25,17 @@ import javax.swing.JOptionPane;
 
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
-import org.ezim.ui.EzimMsgOut;
+import org.ezim.ui.EzimFileOut;
 
-public class EzimMsgSender extends Thread
+public class EzimFileSender extends Thread
 {
-	private EzimMsgOut emo;
+	private EzimFileOut efo;
 	private String ip;
-	private String msg;
 
-	public EzimMsgSender(EzimMsgOut emoIn, String strIp, String strMsg)
+	public EzimFileSender(EzimFileOut efoIn, String strIp)
 	{
-		this.emo = emoIn;
+		this.efo = efoIn;
 		this.ip = strIp;
-		this.msg = strMsg;
 	}
 
 	public void run()
@@ -47,23 +45,18 @@ public class EzimMsgSender extends Thread
 
 		try
 		{
-			// disable the send message window before proceeding
-			this.emo.setEnabled(false);
-
 			sckOut = new Socket();
 			isaTmp = new InetSocketAddress(this.ip, Ezim.dtxPort);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 
-			EzimDtxSemantics.sendMsg(sckOut, this.msg);
-
-			// close the send message window upon success
-			WindowEvent weTmp = new WindowEvent
+			EzimDtxSemantics.sendFile
 			(
-				this.emo
-				, WindowEvent.WINDOW_CLOSING
+				sckOut
+				, this.efo.getId()
+				, this.efo
 			);
 
-			this.emo.dispatchEvent(weTmp);
+			this.efo.finishProgress();
 		}
 		catch(Exception e)
 		{
@@ -76,7 +69,7 @@ public class EzimMsgSender extends Thread
 			);
 
 			// re-enable the send message window upon failure
-			this.emo.setEnabled(true);
+			this.efo.setEnabled(true);
 		}
 		finally
 		{

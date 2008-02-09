@@ -44,6 +44,14 @@ public class EzimConf
 	public final static String ezimmsginLocationY = "ezimmsgin.location.y";
 	public final static String ezimmsginSizeH = "ezimmsgin.size.h";
 	public final static String ezimmsginSizeW = "ezimmsgin.size.w";
+	public final static String ezimfileoutLocationX = "ezimfileout.location.x";
+	public final static String ezimfileoutLocationY = "ezimfileout.location.y";
+	public final static String ezimfileoutSizeH = "ezimfileout.size.h";
+	public final static String ezimfileoutSizeW = "ezimfileout.size.w";
+	public final static String ezimfileinLocationX = "ezimfilein.location.x";
+	public final static String ezimfileinLocationY = "ezimfilein.location.y";
+	public final static String ezimfileinSizeH = "ezimfilein.size.h";
+	public final static String ezimfileinSizeW = "ezimfilein.size.w";
 
 	// configuration item
 	public Properties settings;
@@ -85,6 +93,14 @@ public class EzimConf
 		this.settings.setProperty(EzimConf.ezimmsginLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimmsginSizeH, "0");
 		this.settings.setProperty(EzimConf.ezimmsginSizeW, "0");
+		this.settings.setProperty(EzimConf.ezimfileoutLocationX, "0");
+		this.settings.setProperty(EzimConf.ezimfileoutLocationY, "0");
+		this.settings.setProperty(EzimConf.ezimfileoutSizeH, "0");
+		this.settings.setProperty(EzimConf.ezimfileoutSizeW, "0");
+		this.settings.setProperty(EzimConf.ezimfileinLocationX, "0");
+		this.settings.setProperty(EzimConf.ezimfileinLocationY, "0");
+		this.settings.setProperty(EzimConf.ezimfileinSizeH, "0");
+		this.settings.setProperty(EzimConf.ezimfileinSizeW, "0");
 
 		return;
 	}

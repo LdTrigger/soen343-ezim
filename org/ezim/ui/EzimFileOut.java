@@ -18,64 +18,76 @@
 package org.ezim.ui;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.io.File;
+import java.util.Date;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
-import org.ezim.ui.EzimMsgOut;
+import org.ezim.core.EzimFileRequester;
 
-public class EzimMsgIn
+public class EzimFileOut
 	extends JFrame
-	implements WindowListener
 {
 	private EzimContact ec;
+	private File file;
+	private String id;
 
 	private JPanel jpnlBase;
 	private JLabel jlblName;
 	private JTextField jtfdName;
-	private JTextArea jtaMsg;
-	private JScrollPane jspMsg;
-	private JLabel jlblOpen;
-	private JButton jbtnReply;
+	private JLabel jlblFName;
+	private JTextField jtfdFName;
+	private JProgressBar jpbProgress;
+	private JLabel jlblSysMsg;
+	private JButton jbtnClose;
 
 	// C O N S T R U C T O R -----------------------------------------------
-	public EzimMsgIn(EzimContact ecIn, String strIn)
+	public EzimFileOut(EzimContact ecIn)
 	{
+		init(ecIn, (File) null);
+	}
+
+	public EzimFileOut(EzimContact ecIn, File fIn)
+	{
+		init(ecIn, fIn);
+
+		EzimFtxList.getInstance().put(this.id, this);
+		new EzimFileRequester(ecIn.getIp(), this.id, this.file).run();
+	}
+
+	private void init(EzimContact ecIn, File fIn)
+	{
+		this.id = Long.toString(new Date().getTime());
 		this.ec = ecIn;
+		this.file = fIn;
 
 		this.loadConf();
 		this.initGUI();
 
-		if (strIn != null && strIn.length() > 0)
-			this.jtaMsg.setText(strIn);
-
-		this.setIconImage(EzimImage.icoMsg.getImage());
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setTitle(EzimLang.IncomingMessage);
-		this.setMinimumSize(new Dimension(320, 200));
+		this.setIconImage(EzimImage.icoBtnFtx.getImage());
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setTitle(EzimLang.OutgoingFile);
+		this.setMinimumSize(new Dimension(320, 180));
 		this.setVisible(true);
-		this.toFront();
+
+		return;
 	}
 
+	// P R I V A T E   M E T H O D S ---------------------------------------
 	private void loadConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
@@ -86,14 +98,14 @@ public class EzimMsgIn
 			(
 				ecTmp.settings.getProperty
 				(
-					EzimConf.ezimmsginLocationX
+					EzimConf.ezimfileoutLocationX
 				)
 			)
 			, Integer.parseInt
 			(
 				ecTmp.settings.getProperty
 				(
-					EzimConf.ezimmsginLocationY
+					EzimConf.ezimfileoutLocationY
 				)
 			)
 		);
@@ -103,14 +115,14 @@ public class EzimMsgIn
 			(
 				ecTmp.settings.getProperty
 				(
-					EzimConf.ezimmsginSizeW
+					EzimConf.ezimfileoutSizeW
 				)
 			)
 			, Integer.parseInt
 			(
 				ecTmp.settings.getProperty
 				(
-					EzimConf.ezimmsginSizeH
+					EzimConf.ezimfileoutSizeH
 				)
 			)
 		);
@@ -126,23 +138,23 @@ public class EzimMsgIn
 		Point ptTmp = this.getLocationOnScreen();
 		ecTmp.settings.setProperty
 		(
-			EzimConf.ezimmsginLocationX
+			EzimConf.ezimfileoutLocationX
 			, String.valueOf((int) ptTmp.getX())
 		);
 		ecTmp.settings.setProperty
 		(
-			EzimConf.ezimmsginLocationY
+			EzimConf.ezimfileoutLocationY
 			, String.valueOf((int) ptTmp.getY())
 		);
 		Dimension dmTmp = this.getSize();
 		ecTmp.settings.setProperty
 		(
-			EzimConf.ezimmsginSizeW
+			EzimConf.ezimfileoutSizeW
 			, String.valueOf((int) dmTmp.getWidth())
 		);
 		ecTmp.settings.setProperty
 		(
-			EzimConf.ezimmsginSizeH
+			EzimConf.ezimfileoutSizeH
 			, String.valueOf((int) dmTmp.getHeight())
 		);
 
@@ -152,65 +164,34 @@ public class EzimMsgIn
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
-		this.jlblName = new JLabel(EzimLang.From);
+		this.jlblName = new JLabel(EzimLang.To);
 
 		this.jtfdName = new JTextField(this.ec.getName());
-		this.jtfdName.setEnabled(false);
+		this.jtfdName.setEditable(false);
 
-		this.jtaMsg = new JTextArea();
-		this.jtaMsg.setLineWrap(true);
-		this.jtaMsg.setWrapStyleWord(true);
-		this.jtaMsg.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-		this.jtaMsg.setEditable(false);
+		this.jlblFName = new JLabel(EzimLang.Filename);
 
-		this.jspMsg = new JScrollPane();
+		this.jtfdFName = new JTextField();
+		if (this.file != null) this.jtfdFName.setText(this.file.getName());
+		this.jtfdFName.setEditable(false);
 
-		this.jlblOpen = new JLabel(EzimLang.ClickHereToOpenMessage);
-		this.jlblOpen.addMouseListener
-		(
-			new MouseListener()
-			{
-				public void mouseClicked(MouseEvent evtTmp)
-				{
-					jlblOpen_MouseClicked(evtTmp);
-					return;
-				}
+		this.jpbProgress = new JProgressBar();
 
-				public void mouseEntered(MouseEvent evtTmp)
-				{
-					return;
-				}
+		this.jlblSysMsg = new JLabel(EzimLang.WaitingForResponse);
 
-				public void mouseExited(MouseEvent evtTmp)
-				{
-					return;
-				}
-
-				public void mousePressed(MouseEvent evtTmp)
-				{
-					return;
-				}
-
-				public void mouseReleased(MouseEvent evtTmp)
-				{
-					return;
-				}
-			}
-		);
-
-		this.jbtnReply = new JButton(EzimLang.Reply);
-		this.jbtnReply.addActionListener
+		this.jbtnClose = new JButton(EzimLang.Close);
+		this.jbtnClose.addActionListener
 		(
 			new ActionListener()
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					jbtnReply_ActionPerformed(evtTmp);
+					jbtnClose_ActionPerformed(evtTmp);
 					return;
 				}
 			}
 		);
-		this.jbtnReply.setEnabled(false);
+		this.jbtnClose.setEnabled(false);
 
 		this.jpnlBase = new JPanel();
 		this.add(this.jpnlBase);
@@ -230,45 +211,63 @@ public class EzimMsgIn
 			.addGroup
 			(
 				glBase.createSequentialGroup()
-				.addComponent
+				.addGroup
 				(
-					this.jlblName
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
+					glBase.createParallelGroup()
+					.addComponent
+					(
+						this.jlblName
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
+					.addComponent
+					(
+						this.jlblFName
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
 				)
-				.addComponent
+				.addGroup
 				(
-					this.jtfdName
-					, GroupLayout.DEFAULT_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, Short.MAX_VALUE
+					glBase.createParallelGroup()
+					.addComponent
+					(
+						this.jtfdName
+						, GroupLayout.DEFAULT_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, Short.MAX_VALUE
+					)
+					.addComponent
+					(
+						this.jtfdFName
+						, GroupLayout.DEFAULT_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, Short.MAX_VALUE
+					)
 				)
 			)
 			.addComponent
 			(
-				this.jspMsg
+				this.jpbProgress
 				, GroupLayout.DEFAULT_SIZE
 				, GroupLayout.PREFERRED_SIZE
 				, Short.MAX_VALUE
 			)
-			.addGroup
+			.addComponent
 			(
-				glBase.createSequentialGroup()
-				.addComponent
-				(
-					this.jlblOpen
-					, GroupLayout.DEFAULT_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, Short.MAX_VALUE
-				)
-				.addComponent
-				(
-					this.jbtnReply
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
+				this.jlblSysMsg
+				, GroupLayout.DEFAULT_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, Short.MAX_VALUE
+			)
+			.addComponent
+			(
+				this.jbtnClose
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
 			)
 		);
 
@@ -295,105 +294,116 @@ public class EzimMsgIn
 			)
 		);
 
-		vGrp.addComponent
-		(
-			this.jspMsg
-/*
-			, GroupLayout.DEFAULT_SIZE
-			, GroupLayout.PREFERRED_SIZE
-			, Short.MAX_VALUE
-*/
-			, GroupLayout.DEFAULT_SIZE
-			, 100
-			, Short.MAX_VALUE
-		);
-
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
 			.addComponent
 			(
-				this.jlblOpen
+				this.jlblFName
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 			)
 			.addComponent
 			(
-				this.jbtnReply
+				this.jtfdFName
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 			)
 		);
 
+		vGrp.addComponent
+		(
+			this.jpbProgress
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+		);
+
+		vGrp.addComponent
+		(
+			this.jlblSysMsg
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+		);
+
+		vGrp.addContainerGap
+		(
+			GroupLayout.DEFAULT_SIZE
+			, Short.MAX_VALUE
+		);
+
+		vGrp.addComponent
+		(
+			this.jbtnClose
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+		);
+
 		glBase.setVerticalGroup(vGrp);
 
-		this.addWindowListener(this);
-
-		return;
-	}
-
-	// W I N D O W   L I S T E N E R ---------------------------------------
-	public void windowActivated(WindowEvent e)
-	{
-		return;
-	}
-
-	public void windowClosed(WindowEvent e)
-	{
-		return;
-	}
-
-	public void windowClosing(WindowEvent e)
-	{
-		this.saveConf();
-		return;
-	}
-
-	public void windowDeactivated(WindowEvent e)
-	{
-		return;
-	}
-
-	public void windowDeiconified(WindowEvent e)
-	{
-		return;
-	}
-
-	public void windowIconified(WindowEvent e)
-	{
-		return;
-	}
-
-	public void windowOpened(WindowEvent e)
-	{
 		return;
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
-	private void jbtnReply_ActionPerformed(ActionEvent evt)
+	private void unregSaveDispose()
 	{
-		StringBuffer sbMsg = new StringBuffer();
-		sbMsg.append("----- ");
-		sbMsg.append(EzimLang.OriginalMessageFrom);
-		sbMsg.append(" ");
-		sbMsg.append(ec.getName());
-		sbMsg.append(" -----\n");
-		sbMsg.append(this.jtaMsg.getText());
-		new EzimMsgOut(this.ec, sbMsg.toString());
+		EzimFtxList.getInstance().remove(this.id);
 		this.saveConf();
 		this.dispose();
 
 		return;
 	}
 
-	private void jlblOpen_MouseClicked(MouseEvent evt)
+	private void jbtnClose_ActionPerformed(ActionEvent evt)
 	{
-		this.jspMsg.setViewportView(this.jtaMsg);
-		this.jbtnReply.setEnabled(true);
-		this.jlblOpen.setVisible(false);
+		this.unregSaveDispose();
+		return;
+	}
 
+	// O P E R A T I O N ---------------------------------------------------
+	public String getId()
+	{
+		return this.id;
+	}
+
+	public File getFile()
+	{
+		return this.file;
+	}
+
+	public void setSysMsg(String strIn)
+	{
+		this.jlblSysMsg.setText(strIn);
+		return;
+	}
+
+	public void setSize(int iIn)
+	{
+		this.jpbProgress.setMaximum(iIn);
+		return;
+	}
+
+	public void setProgressed(int iIn)
+	{
+		this.jpbProgress.setValue(iIn);
+		return;
+	}
+
+	public void finishProgress()
+	{
+		this.setSysMsg(EzimLang.Done);
+		this.jbtnClose.setEnabled(true);
+
+		return;
+	}
+
+	public void setCloseButtonEnabled(boolean blnIn)
+	{
+		this.jbtnClose.setEnabled(blnIn);
 		return;
 	}
 }

@@ -17,13 +17,14 @@
  */
 package org.ezim.core;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.lang.Thread;
 import java.net.Socket;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimContact;
-import org.ezim.ui.EzimMsgIn;
 
 public class EzimDtxTakerThread extends Thread
 {
@@ -38,46 +39,55 @@ public class EzimDtxTakerThread extends Thread
 
 	public void run()
 	{
-		StringBuffer sbTmp = new StringBuffer();
-		BufferedReader brTmp = null;
-		String strTmp = null;
+		File fHdr = null;
+		FileOutputStream fosData = null;
+		InputStream isSck = null;
+		int iFlg = 4;
+		int iTmp = 0;
+		byte bTmp = 0;
 
 		try
 		{
-			brTmp = new BufferedReader
+			fHdr = File.createTempFile(Ezim.appAbbrev, null);
+			fosData = new FileOutputStream(fHdr);
+			isSck = this.sck.getInputStream();
+
+			while
 			(
-				new InputStreamReader
+				iFlg > 0
+				&& ! ((iTmp = isSck.read()) < 0)
+			)
+			{
+				bTmp = (byte) iTmp;
+				fosData.write(bTmp);
+
+				if
 				(
-					this.sck.getInputStream()
-					, Ezim.dtxMsgEnc
+					(iTmp == 0x0d && iFlg % 2 == 0)
+					|| (iTmp == 0x0a && iFlg % 2 == 1)
 				)
-			);
-
-			// we need this block due to BufferedReader.ready()'s nature
-			strTmp = brTmp.readLine();
-			if (strTmp != null)
-			{
-				sbTmp.append(strTmp);
-				sbTmp.append("\n");
+				{
+					iFlg --;
+				}
+				else
+				{
+					iFlg = 4;
+				}
 			}
 
-			while(brTmp.ready())
-			{
-				sbTmp.append(brTmp.readLine());
-				sbTmp.append("\n");
-			}
+			fosData.close();
 
-			new EzimMsgIn(this.ec, sbTmp.toString());
+			EzimDtxSemantics.parser(fHdr, this.sck, this.ec);
 		}
 		catch(Exception e)
 		{
-			// ignore
+			// ignore (safe?)
 		}
 		finally
 		{
 			try
 			{
-				brTmp.close();
+				if (this.sck != null) this.sck.close();
 			}
 			catch(Exception e)
 			{
@@ -86,12 +96,14 @@ public class EzimDtxTakerThread extends Thread
 
 			try
 			{
-				if (sck != null && ! sck.isClosed()) sck.close();
+				if (fosData != null) fosData.close();
 			}
 			catch(Exception e)
 			{
 				// ignore
 			}
+
+			fHdr.delete();
 		}
 
 		return;

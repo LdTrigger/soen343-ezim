@@ -22,6 +22,7 @@ import java.net.ServerSocket;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimDtxTakerThread;
 import org.ezim.ui.EzimMain;
@@ -47,8 +48,9 @@ public class EzimDtxTaker extends Thread
 			while(true)
 			{
 				sckIn = ssck.accept();
+				sckIn.setSoTimeout(Ezim.dtxTimeout);
 
-				EzimContact ecTmp = this.emHwnd.getContact
+				EzimContact ecTmp = EzimContactList.getInstance().get
 				(
 					((InetSocketAddress) sckIn.getRemoteSocketAddress())
 						.getAddress().getHostAddress()
