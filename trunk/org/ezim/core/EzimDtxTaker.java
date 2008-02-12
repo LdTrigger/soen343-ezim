@@ -64,7 +64,7 @@ public class EzimDtxTaker extends Thread
 						ecTmp
 						, sckIn
 					);
-					emttTmp.run();
+					emttTmp.start();
 				}
 				else if (sckIn != null && ! sckIn.isClosed())
 				{

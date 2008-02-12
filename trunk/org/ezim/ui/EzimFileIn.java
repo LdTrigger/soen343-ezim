@@ -449,7 +449,7 @@ public class EzimFileIn
 			this.ec.getIp()
 			, this.id
 			, blnFinalRes
-		).run();
+		).start();
 
 		// close this incoming file window if the user has declined the
 		// transmission or has not chosen where to save the file

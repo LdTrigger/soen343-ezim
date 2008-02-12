@@ -618,7 +618,7 @@ public class EzimDtxSemantics
 					if (strFileRes.equals(EzimDtxSemantics.RES_OK))
 					{
 						efoTmp.setSysMsg(EzimLang.Sending);
-						new EzimFileSender(efoTmp, ecIn.getIp()).run();
+						new EzimFileSender(efoTmp, ecIn.getIp()).start();
 					}
 					else
 					{

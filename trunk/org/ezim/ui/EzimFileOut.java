@@ -66,7 +66,7 @@ public class EzimFileOut
 		init(ecIn, fIn);
 
 		EzimFtxList.getInstance().put(this.id, this);
-		new EzimFileRequester(ecIn.getIp(), this.id, this.file).run();
+		new EzimFileRequester(ecIn.getIp(), this.id, this.file).start();
 	}
 
 	private void init(EzimContact ecIn, File fIn)
