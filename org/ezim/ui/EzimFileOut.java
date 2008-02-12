@@ -22,6 +22,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.Socket;
 import java.util.Date;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -43,6 +44,7 @@ public class EzimFileOut
 	extends JFrame
 {
 	private EzimContact ec;
+	private Socket sck;
 	private File file;
 	private String id;
 
@@ -179,7 +181,7 @@ public class EzimFileOut
 
 		this.jlblSysMsg = new JLabel(EzimLang.WaitingForResponse);
 
-		this.jbtnClose = new JButton(EzimLang.Close);
+		this.jbtnClose = new JButton(EzimLang.Cancel);
 		this.jbtnClose.addActionListener
 		(
 			new ActionListener()
@@ -191,7 +193,6 @@ public class EzimFileOut
 				}
 			}
 		);
-		this.jbtnClose.setEnabled(false);
 
 		this.jpnlBase = new JPanel();
 		this.add(this.jpnlBase);
@@ -351,6 +352,15 @@ public class EzimFileOut
 	// E V E N T   H A N D L E R -------------------------------------------
 	private void unregSaveDispose()
 	{
+		try
+		{
+			this.sck.close();
+		}
+		catch(Exception e)
+		{
+			// ignore
+		}
+
 		EzimFtxList.getInstance().remove(this.id);
 		this.saveConf();
 		this.dispose();
@@ -375,6 +385,12 @@ public class EzimFileOut
 		return this.file;
 	}
 
+	public void setSocket(Socket sckIn)
+	{
+		this.sck = sckIn;
+		return;
+	}
+
 	public void setSysMsg(String strIn)
 	{
 		this.jlblSysMsg.setText(strIn);
@@ -393,17 +409,19 @@ public class EzimFileOut
 		return;
 	}
 
-	public void finishProgress()
+	public void abortProgress()
 	{
-		this.setSysMsg(EzimLang.Done);
-		this.jbtnClose.setEnabled(true);
+		this.setSysMsg(EzimLang.TransmissionAborted);
+		this.jbtnClose.setText(EzimLang.Close);
 
 		return;
 	}
 
-	public void setCloseButtonEnabled(boolean blnIn)
+	public void finishProgress()
 	{
-		this.jbtnClose.setEnabled(blnIn);
+		this.setSysMsg(EzimLang.Done);
+		this.jbtnClose.setText(EzimLang.Close);
+
 		return;
 	}
 }

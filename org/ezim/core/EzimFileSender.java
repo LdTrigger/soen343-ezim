@@ -49,14 +49,14 @@ public class EzimFileSender extends Thread
 			isaTmp = new InetSocketAddress(this.ip, Ezim.dtxPort);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 
+			this.efo.setSocket(sckOut);
+
 			EzimDtxSemantics.sendFile
 			(
 				sckOut
 				, this.efo.getId()
 				, this.efo
 			);
-
-			this.efo.finishProgress();
 		}
 		catch(Exception e)
 		{
