@@ -338,7 +338,7 @@ public class EzimMsgOut
 				, this.ec.getIp()
 				, this.jtaMsg.getText()
 			);
-			jmsTmp.run();
+			jmsTmp.start();
 		}
 
 		return;
