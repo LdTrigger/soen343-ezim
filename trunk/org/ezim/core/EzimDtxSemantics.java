@@ -330,6 +330,7 @@ public class EzimDtxSemantics
 			byte[] bTmp = new byte[Ezim.dtxBufLen];
 			int iTmp = 0;
 			int iCnt = 0;
+			int iCLen = 0;
 
 			FileInputStream fisTmp = null;
 
@@ -337,6 +338,7 @@ public class EzimDtxSemantics
 			{
 				OutputStream osTmp = sckIn.getOutputStream();
 				fisTmp = new FileInputStream(efoIn.getFile());
+				iCLen = fisTmp.available();
 
 				// create necessary header fields
 				Hashtable<String, String> htTmp
@@ -350,7 +352,7 @@ public class EzimDtxSemantics
 				htTmp.put
 				(
 					EzimDtxSemantics.HDR_CLEN
-					, Integer.toString(fisTmp.available())
+					, Integer.toString(iCLen)
 				);
 				htTmp.put
 				(
@@ -361,7 +363,7 @@ public class EzimDtxSemantics
 				// output header in bytes
 				sendHeaderBytes(sckIn, htTmp);
 
-				efoIn.setSize(fisTmp.available());
+				efoIn.setSize(iCLen);
 				// convert and output file contents in bytes
 				while(! ((iTmp = fisTmp.read(bTmp)) < 0))
 				{
@@ -383,6 +385,11 @@ public class EzimDtxSemantics
 				{
 					// ignore
 				}
+
+				if (iCnt < iCLen)
+					efoIn.abortProgress();
+				else if (iCnt == iCLen)
+					efoIn.finishProgress();
 			}
 		}
 
@@ -506,12 +513,15 @@ public class EzimDtxSemantics
 			}
 
 			fosTmp.flush();
-
-			efiIn.finishProgress();
 		}
 		finally
 		{
 			if (fosTmp != null) fosTmp.close();
+
+			if (iCnt < iCLen)
+				efiIn.abortProgress();
+			else if (iCnt == iCLen)
+				efiIn.finishProgress();
 		}
 
 		return;
@@ -572,7 +582,9 @@ public class EzimDtxSemantics
 					EzimFileIn efiTmp = EzimFrxList.getInstance()
 						.get(strFileReqId);
 
+					efiTmp.setSocket(sckIn);
 					efiTmp.setSysMsg(EzimLang.Receiving);
+
 					EzimDtxSemantics.getFile
 					(
 						isData
@@ -623,7 +635,6 @@ public class EzimDtxSemantics
 					else
 					{
 						efoTmp.setSysMsg(EzimLang.RefusedByRemote);
-						efoTmp.setCloseButtonEnabled(true);
 					}
 				}
 			}

@@ -22,6 +22,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.Socket;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -44,6 +45,7 @@ public class EzimFileIn
 	extends JFrame
 {
 	private EzimContact ec;
+	private Socket sck;
 	private File file;
 	private String id;
 	private String remoteFName;
@@ -63,12 +65,22 @@ public class EzimFileIn
 		init(ecIn, strId, (String) null);
 	}
 
-	public EzimFileIn(EzimContact ecIn, String strId, String strRemoteFName)
+	public EzimFileIn
+	(
+		EzimContact ecIn
+		, String strId
+		, String strRemoteFName
+	)
 	{
 		init(ecIn, strId, strRemoteFName);
 	}
 
-	private void init(EzimContact ecIn, String strId, String strRemoteFName)
+	private void init
+	(
+		EzimContact ecIn
+		, String strId
+		, String strRemoteFName
+	)
 	{
 		this.ec = ecIn;
 		this.id = strId;
@@ -178,7 +190,7 @@ public class EzimFileIn
 
 		this.jlblSysMsg = new JLabel(EzimLang.WaitingForResponse);
 
-		this.jbtnClose = new JButton(EzimLang.Close);
+		this.jbtnClose = new JButton(EzimLang.Cancel);
 		this.jbtnClose.addActionListener
 		(
 			new ActionListener()
@@ -190,7 +202,6 @@ public class EzimFileIn
 				}
 			}
 		);
-		this.jbtnClose.setEnabled(false);
 
 		this.jpnlBase = new JPanel();
 		this.add(this.jpnlBase);
@@ -350,6 +361,15 @@ public class EzimFileIn
 	// E V E N T   H A N D L E R -------------------------------------------
 	private void unregSaveDispose()
 	{
+		try
+		{
+			this.sck.close();
+		}
+		catch(Exception e)
+		{
+			// ignore
+		}
+
 		EzimFrxList.getInstance().remove(this.id);
 		this.saveConf();
 		this.dispose();
@@ -374,6 +394,12 @@ public class EzimFileIn
 		return this.file;
 	}
 
+	public void setSocket(Socket sckIn)
+	{
+		this.sck = sckIn;
+		return;
+	}
+
 	public void setSysMsg(String strIn)
 	{
 		this.jlblSysMsg.setText(strIn);
@@ -392,10 +418,18 @@ public class EzimFileIn
 		return;
 	}
 
+	public void abortProgress()
+	{
+		this.setSysMsg(EzimLang.TransmissionAborted);
+		this.jbtnClose.setText(EzimLang.Close);
+
+		return;
+	}
+
 	public void finishProgress()
 	{
 		this.setSysMsg(EzimLang.Done);
-		this.jbtnClose.setEnabled(true);
+		this.jbtnClose.setText(EzimLang.Close);
 
 		return;
 	}

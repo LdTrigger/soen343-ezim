@@ -66,6 +66,7 @@ public class EzimLang
 	public static String WaitingForResponse;
 	public static String Sending;
 	public static String RefusedByRemote;
+	public static String TransmissionAborted;
 	public static String Done;
 	public static String Close;
 
@@ -130,6 +131,7 @@ public class EzimLang
 			WaitingForResponse = rbTmp.getString("WAITING_FOR_RESPONSE");
 			Sending = rbTmp.getString("SENDING");
 			RefusedByRemote = rbTmp.getString("REFUSED_BY_REMOTE");
+			TransmissionAborted = rbTmp.getString("TRANSMISSION_ABORTED");
 			Done = rbTmp.getString("DONE");
 			Close = rbTmp.getString("CLOSE");
 
