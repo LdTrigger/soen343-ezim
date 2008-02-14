@@ -411,7 +411,7 @@ public class EzimFileOut
 
 	public void abortProgress()
 	{
-		this.setSysMsg(EzimLang.TransmissionAborted);
+		this.setSysMsg(EzimLang.TransmissionAbortedByRemote);
 		this.jbtnClose.setText(EzimLang.Close);
 
 		return;

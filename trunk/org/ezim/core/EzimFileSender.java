@@ -60,14 +60,6 @@ public class EzimFileSender extends Thread
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog
-			(
-				null
-				, e.getMessage()
-				, EzimLang.SendMessageError
-				, JOptionPane.ERROR_MESSAGE
-			);
-
 			// re-enable the send message window upon failure
 			this.efo.setEnabled(true);
 		}
