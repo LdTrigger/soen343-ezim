@@ -582,15 +582,18 @@ public class EzimDtxSemantics
 					EzimFileIn efiTmp = EzimFrxList.getInstance()
 						.get(strFileReqId);
 
-					efiTmp.setSocket(sckIn);
-					efiTmp.setSysMsg(EzimLang.Receiving);
+					if (efiTmp != null)
+					{
+						efiTmp.setSocket(sckIn);
+						efiTmp.setSysMsg(EzimLang.Receiving);
 
-					EzimDtxSemantics.getFile
-					(
-						isData
-						, iCLen
-						, efiTmp
-					);
+						EzimDtxSemantics.getFile
+						(
+							isData
+							, iCLen
+							, efiTmp
+						);
+					}
 				}
 				// receive incoming file request
 				else if (strCType.equals(EzimDtxSemantics.CTYPE_FILEREQ))
@@ -627,15 +630,26 @@ public class EzimDtxSemantics
 					EzimFileOut efoTmp = EzimFtxList.getInstance()
 						.get(strFileReqId);
 
-					if (strFileRes.equals(EzimDtxSemantics.RES_OK))
+					if (efoTmp != null)
 					{
-						efoTmp.setSysMsg(EzimLang.Sending);
-						new EzimFileSender(efoTmp, ecIn.getIp()).start();
+						if (strFileRes.equals(EzimDtxSemantics.RES_OK))
+						{
+							efoTmp.setSysMsg(EzimLang.Sending);
+
+							EzimFileSender efsTmp = new EzimFileSender
+							(
+								efoTmp
+								, ecIn.getIp()
+							);
+							efsTmp.start();
+						}
+						else
+						{
+							efoTmp.setSysMsg(EzimLang.RefusedByRemote);
+						}
 					}
-					else
-					{
-						efoTmp.setSysMsg(EzimLang.RefusedByRemote);
-					}
+
+					// if the outgoing file window is close...
 				}
 			}
 		}
