@@ -801,7 +801,7 @@ public class EzimMain
 	{
 		JOptionPane.showMessageDialog
 		(
-			this
+			null
 			, EzimLang.Notice
 			, EzimLang.About
 			, JOptionPane.PLAIN_MESSAGE
