@@ -41,6 +41,7 @@ public class EzimLang
 	// incoming message window
 	public static String IncomingMessage;
 	public static String From;
+	public static String Subject;
 	public static String ClickHereToOpenMessage;
 	public static String Reply;
 	public static String OriginalMessageFrom;
@@ -55,8 +56,9 @@ public class EzimLang
 
 	// incoming file window
 	public static String IncomingFile;
-	public static String IncomingFileConfirmation;
-	public static String ReceiveTheFollowingFile;
+	public static String ReceiveFile;
+	public static String Yes;
+	public static String No;
 	public static String Receiving;
 
 	// outgoing file window
@@ -106,6 +108,7 @@ public class EzimLang
 			// incoming message window
 			IncomingMessage = rbTmp.getString("INCOMING_MESSAGE");
 			From = rbTmp.getString("FROM");
+			Subject = rbTmp.getString("SUBJECT");
 			ClickHereToOpenMessage = rbTmp.getString("CLICK_HERE_TO_OPEN_MESSAGE");
 			Reply = rbTmp.getString("REPLY");
 			OriginalMessageFrom = rbTmp.getString("ORIGINAL_MESSAGE_FROM");
@@ -120,8 +123,9 @@ public class EzimLang
 
 			// incoming file window
 			IncomingFile = rbTmp.getString("INCOMING_FILE");
-			IncomingFileConfirmation = rbTmp.getString("INCOMING_FILE_CONFIRMATION");
-			ReceiveTheFollowingFile = rbTmp.getString("RECEIVE_THE_FOLLOWING_FILE");
+			ReceiveFile = rbTmp.getString("RECEIVE_FILE");
+			Yes = rbTmp.getString("YES");
+			No = rbTmp.getString("NO");
 			Receiving = rbTmp.getString("RECEIVING");
 
 			// outgoing file window

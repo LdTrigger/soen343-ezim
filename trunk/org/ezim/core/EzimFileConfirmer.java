@@ -17,7 +17,6 @@
  */
 package org.ezim.core;
 
-import java.awt.event.WindowEvent;
 import java.lang.Thread;
 import java.net.Socket;
 import java.net.InetSocketAddress;
@@ -25,27 +24,23 @@ import javax.swing.JOptionPane;
 
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
-import org.ezim.ui.EzimMsgOut;
 
-public class EzimMsgSender extends Thread
+public class EzimFileConfirmer extends Thread
 {
-	private EzimMsgOut emo;
-	private String ip;
-	private String sbj;
-	private String msg;
+	private String ip = null;
+	private String id = null;
+	private boolean blnConfirm = false;
 
-	public EzimMsgSender
+	public EzimFileConfirmer
 	(
-		EzimMsgOut emoIn
-		, String strIp
-		, String strSbj
-		, String strMsg
+		String strIp
+		, String strId
+		, boolean blnIn
 	)
 	{
-		this.emo = emoIn;
 		this.ip = strIp;
-		this.sbj = strSbj;
-		this.msg = strMsg;
+		this.id = strId;
+		this.blnConfirm = blnIn;
 	}
 
 	public void run()
@@ -55,36 +50,20 @@ public class EzimMsgSender extends Thread
 
 		try
 		{
-			// disable the send message window before proceeding
-			this.emo.setEnabled(false);
-
 			sckOut = new Socket();
 			isaTmp = new InetSocketAddress(this.ip, Ezim.dtxPort);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 
-			EzimDtxSemantics.sendMsg(sckOut, this.sbj, this.msg);
-
-			// close the send message window upon success
-			WindowEvent weTmp = new WindowEvent
+			EzimDtxSemantics.sendFileConfirm
 			(
-				this.emo
-				, WindowEvent.WINDOW_CLOSING
+				sckOut
+				, this.id
+				, this.blnConfirm
 			);
-
-			this.emo.dispatchEvent(weTmp);
 		}
 		catch(Exception e)
 		{
-			JOptionPane.showMessageDialog
-			(
-				null
-				, e.getMessage()
-				, EzimLang.SendMessageError
-				, JOptionPane.ERROR_MESSAGE
-			);
-
-			// re-enable the send message window upon failure
-			this.emo.setEnabled(true);
+			// ignore
 		}
 		finally
 		{

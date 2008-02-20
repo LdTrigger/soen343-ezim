@@ -57,6 +57,8 @@ public class EzimFileIn
 	private JTextField jtfdFName;
 	private JProgressBar jpbProgress;
 	private JLabel jlblSysMsg;
+	private JButton jbtnYes;
+	private JButton jbtnNo;
 	private JButton jbtnClose;
 
 	// C O N S T R U C T O R -----------------------------------------------
@@ -188,7 +190,33 @@ public class EzimFileIn
 
 		this.jpbProgress = new JProgressBar();
 
-		this.jlblSysMsg = new JLabel(EzimLang.WaitingForResponse);
+		this.jlblSysMsg = new JLabel(EzimLang.ReceiveFile);
+
+		this.jbtnYes = new JButton(EzimLang.Yes);
+		this.jbtnYes.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent evtTmp)
+				{
+					jbtnYes_ActionPerformed(evtTmp);
+					return;
+				}
+			}
+		);
+
+		this.jbtnNo = new JButton(EzimLang.No);
+		this.jbtnNo.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent evtTmp)
+				{
+					jbtnNo_ActionPerformed(evtTmp);
+					return;
+				}
+			}
+		);
 
 		this.jbtnClose = new JButton(EzimLang.Cancel);
 		this.jbtnClose.addActionListener
@@ -202,6 +230,7 @@ public class EzimFileIn
 				}
 			}
 		);
+		this.jbtnClose.setVisible(false);
 
 		this.jpnlBase = new JPanel();
 		this.add(this.jpnlBase);
@@ -272,12 +301,30 @@ public class EzimFileIn
 				, GroupLayout.PREFERRED_SIZE
 				, Short.MAX_VALUE
 			)
-			.addComponent
+			.addGroup
 			(
-				this.jbtnClose
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
+				glBase.createSequentialGroup()
+				.addComponent
+				(
+					this.jbtnYes
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jbtnNo
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jbtnClose
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
 			)
 		);
 
@@ -345,12 +392,30 @@ public class EzimFileIn
 			, Short.MAX_VALUE
 		);
 
-		vGrp.addComponent
+		vGrp.addGroup
 		(
-			this.jbtnClose
-			, GroupLayout.PREFERRED_SIZE
-			, GroupLayout.PREFERRED_SIZE
-			, GroupLayout.PREFERRED_SIZE
+			glBase.createParallelGroup(Alignment.BASELINE)
+			.addComponent
+			(
+				this.jbtnYes
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
+				this.jbtnNo
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
+				this.jbtnClose
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
 		);
 
 		glBase.setVerticalGroup(vGrp);
@@ -374,6 +439,18 @@ public class EzimFileIn
 		this.saveConf();
 		this.dispose();
 
+		return;
+	}
+
+	private void jbtnYes_ActionPerformed(ActionEvent evt)
+	{
+		acceptTransmission(true);
+		return;
+	}
+
+	private void jbtnNo_ActionPerformed(ActionEvent evt)
+	{
+		acceptTransmission(false);
 		return;
 	}
 
@@ -434,22 +511,17 @@ public class EzimFileIn
 		return;
 	}
 
-	public void getUserInput()
+	public void acceptTransmission(boolean blnRes)
 	{
+		this.setSysMsg(EzimLang.WaitingForResponse);
+		this.jbtnYes.setVisible(false);
+		this.jbtnNo.setVisible(false);
+		this.jbtnClose.setVisible(true);
+
 		EzimFrxList.getInstance().put(this.id, this);
 
-		// see if the user wants to receive the incoming file request
-		int iRes = JOptionPane.showConfirmDialog
-		(
-			this
-			, EzimLang.ReceiveTheFollowingFile
-				+ "\n\'" + this.remoteFName + "\'"
-			, EzimLang.IncomingFileConfirmation
-			, JOptionPane.YES_NO_OPTION
-		);
-
 		// let the user choose where to save the incoming file
-		if (iRes == JOptionPane.YES_OPTION)
+		if (blnRes)
 		{
 			JFileChooser jfcTmp = new JFileChooser();
 
@@ -471,11 +543,7 @@ public class EzimFileIn
 			}
 		}
 
-		boolean blnFinalRes =
-		(
-			iRes == JOptionPane.YES_OPTION
-			&& this.file != null
-		);
+		boolean blnFinalRes = (blnRes && this.file != null);
 
 		// respond back to the request
 		new EzimFileResponsor

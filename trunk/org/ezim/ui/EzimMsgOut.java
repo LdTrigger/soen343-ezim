@@ -35,12 +35,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimMsgSender;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimPlainDocument;
 
 public class EzimMsgOut
 	extends JFrame
@@ -51,6 +53,8 @@ public class EzimMsgOut
 	private JPanel jpnlBase;
 	private JLabel jlblName;
 	private JTextField jtfdName;
+	private JLabel jlblSbj;
+	private JTextField jtfdSbj;
 	private JTextArea jtaMsg;
 	private JScrollPane jspMsg;
 	private JButton jbtnSend;
@@ -58,20 +62,25 @@ public class EzimMsgOut
 	// C O N S T R U C T O R -----------------------------------------------
 	public EzimMsgOut(EzimContact ecIn)
 	{
-		init(ecIn, (String) null);
+		init(ecIn, (String) null, (String) null);
 	}
 
-	public EzimMsgOut(EzimContact ecIn, String strIn)
+	public EzimMsgOut(EzimContact ecIn, String strSbj, String strIn)
 	{
-		init(ecIn, strIn);
+		init(ecIn, strSbj, strIn);
 	}
 
-	private void init(EzimContact ecIn, String strIn)
+	private void init(EzimContact ecIn, String strSbj, String strIn)
 	{
 		this.ec = ecIn;
 
 		this.loadConf();
 		this.initGUI();
+
+		if (strSbj != null && strSbj.length() > 0)
+		{
+			this.jtfdSbj.setText(strSbj);
+		}
 
 		if (strIn != null && strIn.length() > 0)
 		{
@@ -170,6 +179,15 @@ public class EzimMsgOut
 		this.jtfdName = new JTextField(this.ec.getName());
 		this.jtfdName.setEnabled(false);
 
+		this.jlblSbj = new JLabel(EzimLang.Subject);
+
+		this.jtfdSbj = new JTextField
+		(
+			new EzimPlainDocument(Ezim.dtxBufLen)
+			, ""
+			, 0
+		);
+
 		this.jtaMsg = new JTextArea();
 		this.jtaMsg.setLineWrap(true);
 		this.jtaMsg.setWrapStyleWord(true);
@@ -208,19 +226,41 @@ public class EzimMsgOut
 			.addGroup
 			(
 				glBase.createSequentialGroup()
-				.addComponent
+				.addGroup
 				(
-					this.jlblName
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
+					glBase.createParallelGroup(Alignment.LEADING)
+					.addComponent
+					(
+						this.jlblName
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
+					.addComponent
+					(
+						this.jlblSbj
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
 				)
-				.addComponent
+				.addGroup
 				(
-					this.jtfdName
-					, GroupLayout.DEFAULT_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, Short.MAX_VALUE
+					glBase.createParallelGroup(Alignment.LEADING)
+					.addComponent
+					(
+						this.jtfdName
+						, GroupLayout.DEFAULT_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, Short.MAX_VALUE
+					)
+					.addComponent
+					(
+						this.jtfdSbj
+						, GroupLayout.DEFAULT_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, Short.MAX_VALUE
+					)
 				)
 			)
 			.addComponent
@@ -256,6 +296,25 @@ public class EzimMsgOut
 			.addComponent
 			(
 				this.jtfdName
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+		);
+
+		vGrp.addGroup
+		(
+			glBase.createParallelGroup(Alignment.BASELINE)
+			.addComponent
+			(
+				this.jlblSbj
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
+				this.jtfdSbj
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
@@ -336,6 +395,7 @@ public class EzimMsgOut
 			(
 				this
 				, this.ec.getIp()
+				, this.jtfdSbj.getText()
 				, this.jtaMsg.getText()
 			);
 			jmsTmp.start();
