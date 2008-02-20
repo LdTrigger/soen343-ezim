@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimFtxList;

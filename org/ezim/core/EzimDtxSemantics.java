@@ -30,6 +30,7 @@ import java.util.Hashtable;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimFileConfirmer;
 import org.ezim.core.EzimFileSender;
 import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimLang;
@@ -54,13 +55,14 @@ public class EzimDtxSemantics
 	private final static String CTYPE_FILE		= "File";
 	private final static String CTYPE_FILEREQ	= "File-Request";
 	private final static String CTYPE_FILERES	= "File-Response";
+	private final static String CTYPE_FILECFM	= "File-Confirm";
 
 	// header field "Content-Length"
 	private final static String HDR_CLEN		= "Content-Length";
 
 	// header field "Subject"
 	// valid content type: "Message"
-//	private final static String HDR_SBJ			= "Subject";
+	private final static String HDR_SBJ			= "Subject";
 
 	// header field "File-Request-ID"
 	// valid content type: "File", "File-Request", "File-Response"
@@ -71,10 +73,14 @@ public class EzimDtxSemantics
 	private final static String HDR_FILENAME	= "Filename";
 
 	// header field "File-Response"
-	// valid content type: "File Request"
+	// valid content type: "File-Request"
 	private final static String HDR_FILERES		= "File-Response";
-	private final static String RES_OK			= "OK";
-	private final static String RES_NG			= "NG";
+	private final static String OK				= "OK";
+	private final static String NG				= "NG";
+
+	// header field "File-Confirm"
+	// valid content type: "File-Confirm"
+	private final static String HDR_FILECFM		= "File-Confirm";
 
 	// C L A S S   V A R I A B L E -----------------------------------------
 	private static byte[] bHDRSPR	= null;
@@ -144,10 +150,11 @@ public class EzimDtxSemantics
 	/**
 	 * format and output message
 	 * @param sckIn outgoing socket
+	 * @param strSbj subject line of the outgoing message
 	 * @param strMsg message to be formatted and sent
 	 * @return
 	 */
-	public static void sendMsg(Socket sckIn, String strMsg)
+	public static void sendMsg(Socket sckIn, String strSbj, String strMsg)
 		throws Exception
 	{
 		EzimDtxSemantics.initByteArrays();
@@ -172,6 +179,11 @@ public class EzimDtxSemantics
 		(
 			EzimDtxSemantics.HDR_CLEN
 			, Integer.toString(bMsg.length)
+		);
+		htTmp.put
+		(
+			EzimDtxSemantics.HDR_SBJ
+			, strSbj
 		);
 
 		// output header in bytes
@@ -268,8 +280,8 @@ public class EzimDtxSemantics
 			EzimDtxSemantics.initByteArrays();
 
 			String strRes = blnRes
-				? EzimDtxSemantics.RES_OK
-				: EzimDtxSemantics.RES_NG;
+				? EzimDtxSemantics.OK
+				: EzimDtxSemantics.NG;
 
 			OutputStream osTmp = sckIn.getOutputStream();
 
@@ -296,6 +308,68 @@ public class EzimDtxSemantics
 			(
 				EzimDtxSemantics.HDR_FILERES
 				, strRes
+			);
+
+			// output header in bytes
+			sendHeaderBytes(sckIn, htTmp);
+
+			// make sure everything is sent
+			osTmp.flush();
+		}
+
+		return;
+	}
+
+	/**
+	 * format and output file confirmation
+	 * @param sckIn outgoing socket
+	 * @param strId File-Request-ID to respond to
+	 * @param blnConfirm confirmation (true: OK; false: NG)
+	 */
+	public static void sendFileConfirm
+	(
+		Socket sckIn
+		, String strId
+		, boolean blnConfirm
+	)
+		throws Exception
+	{
+		if
+		(
+			strId != null && strId.length() > 0
+		)
+		{
+			EzimDtxSemantics.initByteArrays();
+
+			String strConfirm = blnConfirm
+				? EzimDtxSemantics.OK
+				: EzimDtxSemantics.NG;
+
+			OutputStream osTmp = sckIn.getOutputStream();
+
+			// create necessary header fields
+			Hashtable<String, String> htTmp
+				= new Hashtable<String, String>();
+
+			htTmp.put
+			(
+				EzimDtxSemantics.HDR_CTYPE
+				, EzimDtxSemantics.CTYPE_FILECFM
+			);
+			htTmp.put
+			(
+				EzimDtxSemantics.HDR_CLEN
+				, "0"
+			);
+			htTmp.put
+			(
+				EzimDtxSemantics.HDR_FILEREQID
+				, strId
+			);
+			htTmp.put
+			(
+				EzimDtxSemantics.HDR_FILECFM
+				, strConfirm
 			);
 
 			// output header in bytes
@@ -433,7 +507,7 @@ public class EzimDtxSemantics
 
 		for(int iX = 0; iX < arrLines.length; iX ++)
 		{
-			arrHdrFldParts = arrLines[iX].split(EzimDtxSemantics.HDRSPR);
+			arrHdrFldParts = arrLines[iX].split(EzimDtxSemantics.HDRSPR, 2);
 
 			if (arrHdrFldParts.length > 1)
 				htOut.put(arrHdrFldParts[0], arrHdrFldParts[1]);
@@ -447,6 +521,7 @@ public class EzimDtxSemantics
 	 * @param isIn input stream which streams raw incoming data
 	 * @param iCLen length of the message in bytes
 	 * @param ecIn peer user who made the direct transmission
+	 * @param strSbj subject line of the incoming message
 	 * @return
 	 */
 	private static void getMsg
@@ -454,6 +529,7 @@ public class EzimDtxSemantics
 		InputStream isIn
 		, int iCLen
 		, EzimContact ecIn
+		, String strSbj
 	)
 		throws Exception
 	{
@@ -475,7 +551,7 @@ public class EzimDtxSemantics
 
 		strTmp = new String(bBuf, 0, iCnt, Ezim.dtxMsgEnc);
 
-		new EzimMsgIn(ecIn, strTmp);
+		new EzimMsgIn(ecIn, strSbj, strTmp);
 
 		return;
 	}
@@ -569,7 +645,12 @@ public class EzimDtxSemantics
 				// receive incoming message
 				if (strCType.equals(EzimDtxSemantics.CTYPE_MSG))
 				{
-					EzimDtxSemantics.getMsg(isData, iCLen, ecIn);
+					String strSbj = htHdr.get
+					(
+						EzimDtxSemantics.HDR_SBJ
+					);
+
+					EzimDtxSemantics.getMsg(isData, iCLen, ecIn, strSbj);
 				}
 				// receive incoming file
 				else if (strCType.equals(EzimDtxSemantics.CTYPE_FILE))
@@ -585,7 +666,6 @@ public class EzimDtxSemantics
 					if (efiTmp != null)
 					{
 						efiTmp.setSocket(sckIn);
-						efiTmp.setSysMsg(EzimLang.Receiving);
 
 						EzimDtxSemantics.getFile
 						(
@@ -613,7 +693,29 @@ public class EzimDtxSemantics
 						, strFileReqId
 						, strFilename
 					);
-					efiTmp.getUserInput();
+				}
+				// receive incoming file confirmation
+				else if (strCType.equals(EzimDtxSemantics.CTYPE_FILECFM))
+				{
+					String strFileReqId = htHdr.get
+					(
+						EzimDtxSemantics.HDR_FILEREQID
+					);
+					String strFileCfm = htHdr.get
+					(
+						EzimDtxSemantics.HDR_FILECFM
+					);
+
+					EzimFileIn efiTmp = EzimFrxList.getInstance()
+						.get(strFileReqId);
+
+					if (efiTmp != null)
+					{
+						if (strFileCfm.equals(EzimDtxSemantics.OK))
+							efiTmp.setSysMsg(EzimLang.Receiving);
+						else
+							efiTmp.abortProgress();
+					}
 				}
 				// receive incoming file response
 				else if (strCType.equals(EzimDtxSemantics.CTYPE_FILERES))
@@ -632,9 +734,17 @@ public class EzimDtxSemantics
 
 					if (efoTmp != null)
 					{
-						if (strFileRes.equals(EzimDtxSemantics.RES_OK))
+						if (strFileRes.equals(EzimDtxSemantics.OK))
 						{
 							efoTmp.setSysMsg(EzimLang.Sending);
+
+							EzimFileConfirmer efcTmp = new EzimFileConfirmer
+							(
+								ecIn.getIp()
+								, strFileReqId
+								, true
+							);
+							efcTmp.start();
 
 							EzimFileSender efsTmp = new EzimFileSender
 							(
@@ -648,8 +758,17 @@ public class EzimDtxSemantics
 							efoTmp.setSysMsg(EzimLang.RefusedByRemote);
 						}
 					}
-
-					// if the outgoing file window is close...
+					else if (strFileRes.equals(EzimDtxSemantics.OK))
+					{
+						// if the outgoing file window is close...
+						EzimFileConfirmer efcTmp = new EzimFileConfirmer
+						(
+							ecIn.getIp()
+							, strFileReqId
+							, false
+						);
+						efcTmp.start();
+					}
 				}
 			}
 		}
