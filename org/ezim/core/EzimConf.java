@@ -27,6 +27,11 @@ import org.ezim.core.Ezim;
 public class EzimConf
 {
 	// configuration item name
+	public final static String ezimMcGroup = "ezim.multicast.group";
+	public final static String ezimMcPort = "ezim.multicast.port";
+	public final static String ezimDtxPort = "ezim.dtx.port";
+	public final static String ezimColorSelf = "ezim.color.self";
+
 	public final static String ezimmainLocalname = "ezimmain.localname";
 	public final static String ezimmainLocationX = "ezimmain.location.x";
 	public final static String ezimmainLocationY = "ezimmain.location.y";
@@ -77,6 +82,23 @@ public class EzimConf
 		this.settings = new Properties();
 
 		// default values
+		this.settings.setProperty(EzimConf.ezimMcGroup, Ezim.mcGroup);
+		this.settings.setProperty
+		(
+			EzimConf.ezimMcPort
+			, Integer.toString(Ezim.mcPort)
+		);
+		this.settings.setProperty
+		(
+			EzimConf.ezimDtxPort
+			, Integer.toString(Ezim.dtxPort)
+		);
+		this.settings.setProperty
+		(
+			EzimConf.ezimColorSelf
+			, Integer.toString(Ezim.colorSelf, 16)
+		);
+
 		this.settings.setProperty(EzimConf.ezimmainLocationX, "0");
 		this.settings.setProperty(EzimConf.ezimmainLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimmainSizeH, "0");

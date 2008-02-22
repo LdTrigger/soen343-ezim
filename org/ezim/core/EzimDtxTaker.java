@@ -23,6 +23,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import org.ezim.core.Ezim;
+import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimDtxTakerThread;
 import org.ezim.ui.EzimMain;
@@ -41,9 +42,17 @@ public class EzimDtxTaker extends Thread
 		ServerSocket ssck = null;
 		Socket sckIn = null;
 
+		EzimConf ecnfTmp = EzimConf.getInstance();
+
 		try
 		{
-			ssck = new ServerSocket(Ezim.dtxPort);
+			ssck = new ServerSocket
+			(
+				Integer.parseInt
+				(
+					ecnfTmp.settings.getProperty(EzimConf.ezimDtxPort)
+				)
+			);
 
 			while(true)
 			{

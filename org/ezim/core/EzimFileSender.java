@@ -23,6 +23,8 @@ import java.net.Socket;
 import java.net.InetSocketAddress;
 import javax.swing.JOptionPane;
 
+import org.ezim.core.Ezim;
+import org.ezim.core.EzimConf;
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
 import org.ezim.ui.EzimFileOut;
@@ -43,10 +45,19 @@ public class EzimFileSender extends Thread
 		Socket sckOut = null;
 		InetSocketAddress isaTmp = null;
 
+		EzimConf ecTmp = EzimConf.getInstance();
+
 		try
 		{
 			sckOut = new Socket();
-			isaTmp = new InetSocketAddress(this.ip, Ezim.dtxPort);
+			isaTmp = new InetSocketAddress
+			(
+				this.ip
+				, Integer.parseInt
+				(
+					ecTmp.settings.getProperty(EzimConf.ezimDtxPort)
+				)
+			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 
 			this.efo.setSocket(sckOut);
