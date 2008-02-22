@@ -17,7 +17,6 @@
  */
 package org.ezim.core;
 
-import java.awt.Color;
 import javax.swing.UIManager;
 
 import org.ezim.core.EzimAckTaker;
@@ -34,7 +33,7 @@ public class Ezim
 
 	// multicast group, port, TTL, and incoming buffer size
 	public final static String mcGroup = "229.0.0.1";
-	public final static int ackPort = 5555;
+	public final static int mcPort = 5555;
 	public final static int ttl = 1;
 	public final static int inBuf = 1024;
 
@@ -52,7 +51,7 @@ public class Ezim
 	public final static int dtxBufLen = 1024;
 
 	// self-entry background color on the contact list
-	public final static Color colorSelf = new Color((int) 0xDEEFFF);
+	public final static int colorSelf = (int) 0xDEEFFF;
 
 	public static void main(String[] arrArgs)
 	{

@@ -17,12 +17,14 @@
  */
 package org.ezim.ui;
 
+import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import org.ezim.core.Ezim;
+import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimImage;
 
@@ -47,6 +49,15 @@ public class EzimContactListRenderer
 	)
 	{
 		EzimContact ecTmp = (EzimContact) objIn;
+		EzimConf ecnfTmp = EzimConf.getInstance();
+		Color clrSelf = new Color
+		(
+			Integer.parseInt
+			(
+				ecnfTmp.settings.getProperty(EzimConf.ezimColorSelf)
+				, 16
+			)
+		);
 
 		// state icon
 		switch(ecTmp.getState())
@@ -71,7 +82,7 @@ public class EzimContactListRenderer
 		else
 		{
 			if (ecTmp.getIp().equals(emHwnd.localAddress))
-				this.setBackground(Ezim.colorSelf);
+				this.setBackground(clrSelf);
 			else
 				this.setBackground(jlstIn.getBackground());
 

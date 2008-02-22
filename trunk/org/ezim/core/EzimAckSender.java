@@ -22,6 +22,8 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
+import org.ezim.core.Ezim;
+import org.ezim.core.EzimConf;
 import org.ezim.ui.EzimMain;
 
 public class EzimAckSender extends Thread
@@ -42,11 +44,22 @@ public class EzimAckSender extends Thread
 		DatagramPacket dp = null;
 		byte[] arrBytes = null;
 
+		EzimConf ecTmp = EzimConf.getInstance();
+
 		try
 		{
-			ia = InetAddress.getByName(Ezim.mcGroup);
+			ia = InetAddress.getByName
+			(
+				ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
+			);
 
-			ms = new MulticastSocket(Ezim.ackPort);
+			ms = new MulticastSocket
+			(
+				Integer.parseInt
+				(
+					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
+				)
+			);
 			ms.setReuseAddress(true);
 			ms.setTimeToLive(Ezim.ttl);
 			if (ms.getLoopbackMode()) ms.setLoopbackMode(false);
@@ -59,7 +72,10 @@ public class EzimAckSender extends Thread
 				arrBytes
 				, arrBytes.length
 				, ia
-				, Ezim.ackPort
+				, Integer.parseInt
+				(
+					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
+				)
 			);
 
 			ms.send(dp);

@@ -22,7 +22,9 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimAckSemantics;
+import org.ezim.core.EzimConf;
 import org.ezim.ui.EzimMain;
 
 public class EzimAckTaker extends Thread
@@ -42,11 +44,22 @@ public class EzimAckTaker extends Thread
 		byte[] arrBytes = new byte[Ezim.inBuf];
 		String strTmp = null;
 
+		EzimConf ecTmp = EzimConf.getInstance();
+
 		try
 		{
-			ia = InetAddress.getByName(Ezim.mcGroup);
+			ia = InetAddress.getByName
+			(
+				ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
+			);
 
-			ms = new MulticastSocket(Ezim.ackPort);
+			ms = new MulticastSocket
+			(
+				Integer.parseInt
+				(
+					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
+				)
+			);
 			ms.setReuseAddress(true);
 			ms.joinGroup(ia);
 
