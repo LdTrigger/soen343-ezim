@@ -41,6 +41,7 @@ public class EzimAckSender extends Thread
 	{
 		MulticastSocket ms = null;
 		InetAddress ia = null;
+		int iMcPort = 0;
 		DatagramPacket dp = null;
 		byte[] arrBytes = null;
 
@@ -53,13 +54,12 @@ public class EzimAckSender extends Thread
 				ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
 			);
 
-			ms = new MulticastSocket
+			iMcPort = Integer.parseInt
 			(
-				Integer.parseInt
-				(
-					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
-				)
+				ecTmp.settings.getProperty(EzimConf.ezimMcPort)
 			);
+
+			ms = new MulticastSocket(iMcPort);
 			ms.setReuseAddress(true);
 			ms.setTimeToLive(Ezim.ttl);
 			if (ms.getLoopbackMode()) ms.setLoopbackMode(false);
@@ -72,10 +72,7 @@ public class EzimAckSender extends Thread
 				arrBytes
 				, arrBytes.length
 				, ia
-				, Integer.parseInt
-				(
-					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
-				)
+				, iMcPort
 			);
 
 			ms.send(dp);

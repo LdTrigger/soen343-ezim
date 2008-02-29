@@ -32,7 +32,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.ezim.core.Ezim;
@@ -43,6 +42,7 @@ import org.ezim.core.EzimMsgSender;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
+import org.ezim.ui.EzimTextArea;
 
 public class EzimMsgOut
 	extends JFrame
@@ -55,7 +55,7 @@ public class EzimMsgOut
 	private JTextField jtfdName;
 	private JLabel jlblSbj;
 	private JTextField jtfdSbj;
-	private JTextArea jtaMsg;
+	private EzimTextArea etaMsg;
 	private JScrollPane jspMsg;
 	private JButton jbtnSend;
 
@@ -84,8 +84,8 @@ public class EzimMsgOut
 
 		if (strIn != null && strIn.length() > 0)
 		{
-			this.jtaMsg.setText(strIn);
-			this.jtaMsg.setCaretPosition(0);
+			this.etaMsg.setText(strIn);
+			this.etaMsg.setCaretPosition(0);
 		}
 
 		this.setIconImage(EzimImage.icoMsg.getImage());
@@ -188,12 +188,12 @@ public class EzimMsgOut
 			, 0
 		);
 
-		this.jtaMsg = new JTextArea();
-		this.jtaMsg.setLineWrap(true);
-		this.jtaMsg.setWrapStyleWord(true);
-		this.jtaMsg.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		this.etaMsg = new EzimTextArea();
+		this.etaMsg.setLineWrap(true);
+		this.etaMsg.setWrapStyleWord(true);
+		this.etaMsg.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 
-		this.jspMsg = new JScrollPane(this.jtaMsg);
+		this.jspMsg = new JScrollPane(this.etaMsg);
 
 		this.jbtnSend = new JButton(EzimLang.Send);
 		this.jbtnSend.addActionListener
@@ -389,14 +389,14 @@ public class EzimMsgOut
 	// E V E N T   H A N D L E R -------------------------------------------
 	private void jbtnSend_ActionPerformed(ActionEvent evt)
 	{
-		if (this.jtaMsg.getText().length() > 0)
+		if (this.etaMsg.getText().length() > 0)
 		{
 			EzimMsgSender jmsTmp = new EzimMsgSender
 			(
 				this
 				, this.ec.getIp()
 				, this.jtfdSbj.getText()
-				, this.jtaMsg.getText()
+				, this.etaMsg.getText()
 			);
 			jmsTmp.start();
 		}
