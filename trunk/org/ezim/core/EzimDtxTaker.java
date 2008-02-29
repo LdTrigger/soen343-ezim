@@ -53,7 +53,26 @@ public class EzimDtxTaker extends Thread
 					ecnfTmp.settings.getProperty(EzimConf.ezimDtxPort)
 				)
 			);
+		}
+		catch(Exception e)
+		{
+			emHwnd.errAlert(e.getMessage());
 
+			try
+			{
+				if (ssck != null && ! ssck.isClosed()) ssck.close();
+			}
+			catch(Exception exp)
+			{
+				// ignore
+			}
+
+			// only one instance of the application is allowed at one time
+			System.exit(1);
+		}
+
+		try
+		{
 			while(true)
 			{
 				sckIn = ssck.accept();

@@ -32,6 +32,7 @@ public class Ezim
 	public final static String appVer = "0.0.9";
 
 	// multicast group, port, TTL, and incoming buffer size
+	// where group should be from 224.0.0.0 to 239.255.255.255
 	public final static String mcGroup = "229.0.0.1";
 	public final static int mcPort = 5555;
 	public final static int ttl = 1;
