@@ -1008,7 +1008,7 @@ public class EzimMain
 			{
 				if
 				(
-					ecTmp.getState() == EzimContact.DEFAULT_STATE
+					ecTmp.getState() != EzimContact.PLAZA_STATE
 					&& iState == EzimContact.PLAZA_STATE
 				)
 				{
@@ -1021,7 +1021,7 @@ public class EzimMain
 				else if
 				(
 					ecTmp.getState() == EzimContact.PLAZA_STATE
-					&& iState == EzimContact.DEFAULT_STATE
+					&& iState != EzimContact.PLAZA_STATE
 				)
 				{
 					this.epMain.addNarration
@@ -1066,12 +1066,23 @@ public class EzimMain
 		// save configurations
 		this.saveConf();
 
+		// change our state back to default, if it was something else
+		// (i.e. leave the plaza if we were there)
+		if (this.localState != EzimContact.DEFAULT_STATE)
+		{
+			EzimAckSender easDS = new EzimAckSender
+			(
+				EzimAckSemantics.state(EzimContact.DEFAULT_STATE)
+			);
+			easDS.start();
+		}
+
 		// acknowledge other peers we're going offline
-		EzimAckSender easTmp = new EzimAckSender
+		EzimAckSender easOff = new EzimAckSender
 		(
 			EzimAckSemantics.offline()
 		);
-		easTmp.start();
+		easOff.start();
 
 		return;
 	}
