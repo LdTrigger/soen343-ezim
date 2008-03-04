@@ -30,11 +30,8 @@ import org.ezim.ui.EzimMain;
 
 public class EzimDtxTaker extends Thread
 {
-	private EzimMain emHwnd;
-
-	public EzimDtxTaker(EzimMain emIn)
+	public EzimDtxTaker()
 	{
-		this.emHwnd = emIn;
 	}
 
 	public void run()
@@ -56,7 +53,7 @@ public class EzimDtxTaker extends Thread
 		}
 		catch(Exception e)
 		{
-			emHwnd.errAlert(e.getMessage());
+			EzimMain.getInstance().errAlert(e.getMessage());
 
 			try
 			{
@@ -103,7 +100,7 @@ public class EzimDtxTaker extends Thread
 		}
 		catch(Exception e)
 		{
-			emHwnd.errAlert(e.getMessage());
+			EzimMain.getInstance().errAlert(e.getMessage());
 		}
 		finally
 		{

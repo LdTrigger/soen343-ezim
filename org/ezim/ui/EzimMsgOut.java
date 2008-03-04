@@ -202,7 +202,7 @@ public class EzimMsgOut
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					jbtnSend_ActionPerformed(evtTmp);
+					EzimMsgOut.this.jbtnSend_ActionPerformed(evtTmp);
 					return;
 				}
 			}

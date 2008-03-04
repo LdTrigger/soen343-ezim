@@ -189,7 +189,7 @@ public class EzimFileOut
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					jbtnClose_ActionPerformed(evtTmp);
+					EzimFileOut.this.jbtnClose_ActionPerformed(evtTmp);
 					return;
 				}
 			}

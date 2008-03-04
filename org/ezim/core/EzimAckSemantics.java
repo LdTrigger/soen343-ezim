@@ -84,13 +84,15 @@ public class EzimAckSemantics
 	 * parse all incoming acknowledge broadcast messages and react
 	 * accordingly
 	 */
-	public static void parser(EzimMain emIn, String strIp, String strAck)
+	public static void parser(String strIp, String strAck)
 	{
+		EzimMain emTmp = EzimMain.getInstance();
+
 		if (strAck.startsWith(EzimAckSemantics.POLL))
 		{
-			if (! strIp.equals(emIn.localAddress))
+			if (! strIp.equals(emTmp.localAddress))
 			{
-				emIn.addContact
+				emTmp.addContact
 				(
 					strIp
 					, strAck.substring(EzimAckSemantics.POLL.length())
@@ -100,8 +102,7 @@ public class EzimAckSemantics
 
 			EzimAckSender easTmp1 = new EzimAckSender
 			(
-				emIn
-				, EzimAckSemantics.online(emIn.localName)
+				EzimAckSemantics.online(emTmp.localName)
 			);
 			easTmp1.start();
 
@@ -116,8 +117,7 @@ public class EzimAckSemantics
 
 			EzimAckSender easTmp2 = new EzimAckSender
 			(
-				emIn
-				, EzimAckSemantics.state(emIn.localState)
+				EzimAckSemantics.state(emTmp.localState)
 			);
 			easTmp2.start();
 
@@ -132,14 +132,13 @@ public class EzimAckSemantics
 
 			EzimAckSender easTmp3 = new EzimAckSender
 			(
-				emIn
-				, EzimAckSemantics.status(emIn.localStatus)
+				EzimAckSemantics.status(emTmp.localStatus)
 			);
 			easTmp3.start();
 		}
 		else if (strAck.startsWith(EzimAckSemantics.ON))
 		{
-			emIn.addContact
+			emTmp.addContact
 			(
 				strIp
 				, strAck.substring(EzimAckSemantics.ON.length())
@@ -148,11 +147,11 @@ public class EzimAckSemantics
 		}
 		else if (strAck.startsWith(EzimAckSemantics.OFF))
 		{
-			emIn.rmContact(strIp);
+			emTmp.rmContact(strIp);
 		}
 		else if (strAck.startsWith(EzimAckSemantics.STATE))
 		{
-			emIn.updContactState
+			emTmp.updContactState
 			(
 				strIp
 				, Integer.valueOf
@@ -166,7 +165,7 @@ public class EzimAckSemantics
 		}
 		else if (strAck.startsWith(EzimAckSemantics.STATUS))
 		{
-			emIn.updContactStatus
+			emTmp.updContactStatus
 			(
 				strIp
 				, strAck.substring(EzimAckSemantics.STATUS.length())
@@ -174,7 +173,7 @@ public class EzimAckSemantics
 		}
 		else if (strAck.startsWith(EzimAckSemantics.SPEECH))
 		{
-			emIn.epMain.addSpeech
+			emTmp.epMain.addSpeech
 			(
 				strIp
 				, strAck.substring(EzimAckSemantics.SPEECH.length())

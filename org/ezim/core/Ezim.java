@@ -61,12 +61,12 @@ public class Ezim
 		EzimLang.init();
 		EzimImage.init();
 
-		EzimMain emTmp = new EzimMain();
+		EzimMain emTmp = EzimMain.getInstance();
 
-		EzimDtxTaker edtTmp = new EzimDtxTaker(emTmp);
+		EzimDtxTaker edtTmp = new EzimDtxTaker();
 		edtTmp.start();
 
-		EzimAckTaker eatTmp = new EzimAckTaker(emTmp);
+		EzimAckTaker eatTmp = new EzimAckTaker();
 		eatTmp.start();
 
 		try

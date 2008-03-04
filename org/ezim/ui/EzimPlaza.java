@@ -49,8 +49,6 @@ public class EzimPlaza
 	extends JFrame
 	implements WindowListener
 {
-	private EzimMain emHwnd;
-
 	private static SimpleDateFormat sdfHHmm = new SimpleDateFormat("HH:mm");
 
 	private JPanel jpnlBase;
@@ -60,10 +58,8 @@ public class EzimPlaza
 	private JButton jbtnSpeak;
 
 	// C O N S T R U C T O R -----------------------------------------------
-	public EzimPlaza(EzimMain emIn)
+	public EzimPlaza()
 	{
-		this.emHwnd = emIn;
-
 		this.initGUI();
 
 		this.setIconImage(EzimImage.icoPlaza.getImage());
@@ -95,7 +91,7 @@ public class EzimPlaza
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					jtfdSpeak_ActionPerformed(evtTmp);
+					EzimPlaza.this.jtfdSpeak_ActionPerformed(evtTmp);
 					return;
 				}
 			}
@@ -108,7 +104,7 @@ public class EzimPlaza
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					jbtnSpeak_ActionPerformed(evtTmp);
+					EzimPlaza.this.jbtnSpeak_ActionPerformed(evtTmp);
 					return;
 				}
 			}
@@ -222,12 +218,11 @@ public class EzimPlaza
 
 	public void windowClosing(WindowEvent e)
 	{
-		this.emHwnd.localState = EzimContact.DEFAULT_STATE;
+		EzimMain.getInstance().localState = EzimContact.DEFAULT_STATE;
 
 		EzimAckSender easTmp = new EzimAckSender
 		(
-			this.emHwnd
-			, EzimAckSemantics.state(EzimContact.DEFAULT_STATE)
+			EzimAckSemantics.state(EzimContact.DEFAULT_STATE)
 		);
 		easTmp.start();
 
@@ -266,8 +261,7 @@ public class EzimPlaza
 
 			easTmp = new EzimAckSender
 			(
-				this.emHwnd
-				, EzimAckSemantics.speech(strTmp)
+				EzimAckSemantics.speech(strTmp)
 			);
 			easTmp.start();
 		}
