@@ -32,11 +32,8 @@ public class EzimContactListRenderer
 	extends JLabel
 	implements ListCellRenderer
 {
-	private EzimMain emHwnd;
-
-	public EzimContactListRenderer(EzimMain emIn)
+	public EzimContactListRenderer()
 	{
-		this.emHwnd = emIn;
 	}
 
 	public Component getListCellRendererComponent
@@ -48,6 +45,7 @@ public class EzimContactListRenderer
 		, boolean blnCellHasFocus
 	)
 	{
+		EzimMain emHwnd = EzimMain.getInstance();
 		EzimContact ecTmp = (EzimContact) objIn;
 		EzimConf ecnfTmp = EzimConf.getInstance();
 		Color clrSelf = new Color

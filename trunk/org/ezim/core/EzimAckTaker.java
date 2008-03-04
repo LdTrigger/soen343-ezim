@@ -29,11 +29,8 @@ import org.ezim.ui.EzimMain;
 
 public class EzimAckTaker extends Thread
 {
-	private EzimMain emHwnd;
-
-	public EzimAckTaker(EzimMain emIn)
+	public EzimAckTaker()
 	{
-		this.emHwnd = emIn;
 	}
 
 	public void run()
@@ -45,6 +42,7 @@ public class EzimAckTaker extends Thread
 		String strTmp = null;
 
 		EzimConf ecTmp = EzimConf.getInstance();
+		EzimMain emHwnd = EzimMain.getInstance();
 
 		try
 		{
@@ -79,8 +77,7 @@ public class EzimAckTaker extends Thread
 
 				EzimAckSemantics.parser
 				(
-					this.emHwnd
-					, dp.getAddress().getHostAddress()
+					dp.getAddress().getHostAddress()
 					, strTmp
 				);
 			}

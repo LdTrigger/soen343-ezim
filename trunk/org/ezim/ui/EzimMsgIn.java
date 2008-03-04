@@ -215,7 +215,7 @@ public class EzimMsgIn
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					jbtnReply_ActionPerformed(evtTmp);
+					EzimMsgIn.this.jbtnReply_ActionPerformed(evtTmp);
 					return;
 				}
 			}

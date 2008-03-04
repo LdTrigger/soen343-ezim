@@ -28,12 +28,10 @@ import org.ezim.ui.EzimMain;
 
 public class EzimAckSender extends Thread
 {
-	private EzimMain emHwnd;
 	private String msg;
 
-	public EzimAckSender(EzimMain emIn, String strIn)
+	public EzimAckSender(String strIn)
 	{
-		this.emHwnd = emIn;
 		this.msg = strIn;
 	}
 
@@ -79,7 +77,7 @@ public class EzimAckSender extends Thread
 		}
 		catch(Exception e)
 		{
-			emHwnd.errAlert(e.getMessage());
+			EzimMain.getInstance().errAlert(e.getMessage());
 		}
 		finally
 		{

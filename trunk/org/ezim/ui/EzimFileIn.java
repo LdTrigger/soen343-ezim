@@ -199,7 +199,7 @@ public class EzimFileIn
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					jbtnYes_ActionPerformed(evtTmp);
+					EzimFileIn.this.jbtnYes_ActionPerformed(evtTmp);
 					return;
 				}
 			}
@@ -212,7 +212,7 @@ public class EzimFileIn
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					jbtnNo_ActionPerformed(evtTmp);
+					EzimFileIn.this.jbtnNo_ActionPerformed(evtTmp);
 					return;
 				}
 			}
@@ -225,7 +225,7 @@ public class EzimFileIn
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					jbtnClose_ActionPerformed(evtTmp);
+					EzimFileIn.this.jbtnClose_ActionPerformed(evtTmp);
 					return;
 				}
 			}

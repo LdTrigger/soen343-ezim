@@ -77,6 +77,10 @@ public class EzimLang
 	public static String HasJoinedPlazaOfSpeech;
 	public static String HasLeftPlazaOfSpeech;
 
+	// tray icon pop-up menu
+	public static String Show;
+	public static String Exit;
+
 	public static void init()
 	{
 		try
@@ -143,6 +147,10 @@ public class EzimLang
 			Speak = rbTmp.getString("SPEAK");
 			HasJoinedPlazaOfSpeech = rbTmp.getString("HAS_JOINED_PLAZA_OF_SPEECH");
 			HasLeftPlazaOfSpeech = rbTmp.getString("HAS_LEFT_PLAZA_OF_SPEECH");
+
+			// tray icon pop-up menu
+			Show = rbTmp.getString("SHOW");
+			Exit = rbTmp.getString("EXIT");
 		}
 		catch(Exception e)
 		{
