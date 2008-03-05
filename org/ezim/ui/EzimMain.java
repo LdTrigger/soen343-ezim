@@ -677,12 +677,15 @@ public class EzimMain
 		// P O P - U P   M E N U -------------------------------------------
 		PopupMenu pmTmp = new PopupMenu();
 
-		MenuItem miRestore = new MenuItem(EzimLang.Show);
+		MenuItem miRestore = new MenuItem(EzimLang.ShowHide);
 		ActionListener alRestore = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				EzimMain.this.tiMain_Show();
+				EzimMain.this.tiMain_ShowHide
+				(
+					! EzimMain.this.isVisible()
+				);
 			}
 		};
 		miRestore.addActionListener(alRestore);
@@ -693,7 +696,7 @@ public class EzimMain
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				EzimMain.this.tiMain_Show();
+				EzimMain.this.tiMain_ShowHide(true);
 				EzimMain.this.saveConfAckOff();
 				System.exit(0);
 			}
@@ -719,7 +722,10 @@ public class EzimMain
 				{
 					if (me.getClickCount() == 2)
 					{
-						EzimMain.this.tiMain_Show();
+						EzimMain.this.tiMain_ShowHide
+						(
+							! EzimMain.this.isVisible()
+						);
 					}
 				}
 
@@ -896,10 +902,10 @@ public class EzimMain
 		return;
 	}
 
-	private void tiMain_Show()
+	private void tiMain_ShowHide(boolean blnIn)
 	{
 		this.setState(JFrame.NORMAL);
-		this.setVisible(true);
+		this.setVisible(blnIn);
 
 		return;
 	}

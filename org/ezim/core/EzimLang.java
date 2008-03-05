@@ -78,7 +78,7 @@ public class EzimLang
 	public static String HasLeftPlazaOfSpeech;
 
 	// tray icon pop-up menu
-	public static String Show;
+	public static String ShowHide;
 	public static String Exit;
 
 	public static void init()
@@ -149,7 +149,7 @@ public class EzimLang
 			HasLeftPlazaOfSpeech = rbTmp.getString("HAS_LEFT_PLAZA_OF_SPEECH");
 
 			// tray icon pop-up menu
-			Show = rbTmp.getString("SHOW");
+			ShowHide = rbTmp.getString("SHOW_HIDE");
 			Exit = rbTmp.getString("EXIT");
 		}
 		catch(Exception e)
