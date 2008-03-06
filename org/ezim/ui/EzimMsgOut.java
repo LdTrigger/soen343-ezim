@@ -68,6 +68,7 @@ public class EzimMsgOut
 	public EzimMsgOut(EzimContact ecIn, String strSbj, String strIn)
 	{
 		init(ecIn, strSbj, strIn);
+		this.etaMsg.requestFocusInWindow();
 	}
 
 	private void init(EzimContact ecIn, String strSbj, String strIn)

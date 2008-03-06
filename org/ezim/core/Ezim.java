@@ -29,7 +29,7 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "0.0.9";
+	public final static String appVer = "0.1.0";
 
 	// multicast group, port, TTL, and incoming buffer size
 	// where group should be from 224.0.0.0 to 239.255.255.255
