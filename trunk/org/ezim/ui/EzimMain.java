@@ -896,7 +896,6 @@ public class EzimMain
 		if (! this.epMain.isVisible())
 		{
 			this.epMain.reset();
-			this.epMain.setVisible(true);
 			this.changeState(EzimContact.PLAZA_STATE);
 		}
 		return;

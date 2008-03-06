@@ -289,6 +289,9 @@ public class EzimPlaza
 	{
 		this.jtaPlaza.setText("");
 		this.jtfdSpeak.setText("");
+		this.setVisible(true);
+		this.jtfdSpeak.requestFocusInWindow();
+
 		return;
 	}
 
