@@ -189,6 +189,7 @@ public class EzimFileIn
 		this.jtfdFName.setEditable(false);
 
 		this.jpbProgress = new JProgressBar();
+		this.jpbProgress.setStringPainted(true)
 
 		this.jlblSysMsg = new JLabel(EzimLang.ReceiveFile);
 
