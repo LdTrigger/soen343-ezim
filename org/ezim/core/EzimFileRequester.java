@@ -17,7 +17,6 @@
  */
 package org.ezim.core;
 
-import java.io.File;
 import java.lang.Thread;
 import java.net.Socket;
 import java.net.InetSocketAddress;
@@ -27,23 +26,24 @@ import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
+import org.ezim.ui.EzimFileOut;
 
 public class EzimFileRequester extends Thread
 {
 	private String ip = null;
 	private String id = null;
-	private File fOut = null;
+	private EzimFileOut efo = null;
 
 	public EzimFileRequester
 	(
 		String strIp
 		, String strId
-		, File fIn
+		, EzimFileOut efoIn
 	)
 	{
 		this.ip = strIp;
 		this.id = strId;
-		this.fOut = fIn;
+		this.efo = efoIn;
 	}
 
 	public void run()
@@ -66,7 +66,7 @@ public class EzimFileRequester extends Thread
 			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 
-			EzimDtxSemantics.sendFileReq(sckOut, this.id, this.fOut);
+			EzimDtxSemantics.sendFileReq(sckOut, this.id, this.efo);
 		}
 		catch(Exception e)
 		{
