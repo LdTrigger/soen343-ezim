@@ -72,8 +72,12 @@ public class EzimDtxSemantics
 	// valid content type: "File-Request"
 	private final static String HDR_FILENAME	= "Filename";
 
-	// header field "File-Response"
+	// header field "Filesize"
 	// valid content type: "File-Request"
+	private final static String HDR_FILESIZE	= "Filesize";
+
+	// header field "File-Response"
+	// valid content type: "File-Response"
 	private final static String HDR_FILERES		= "File-Response";
 	private final static String OK				= "OK";
 	private final static String NG				= "NG";
@@ -209,50 +213,77 @@ public class EzimDtxSemantics
 	(
 		Socket sckIn
 		, String strId
-		, File fIn
+		, EzimFileOut efoIn
 	)
 		throws Exception
 	{
 		if
 		(
-			fIn != null
+			efoIn != null
 			&& strId != null && strId.length() > 0
 		)
 		{
 			EzimDtxSemantics.initByteArrays();
 
-			OutputStream osTmp = sckIn.getOutputStream();
+			int iSize = 0;
 
-			// create necessary header fields
-			Hashtable<String, String> htTmp
-				= new Hashtable<String, String>();
+			FileInputStream fisTmp = null;
 
-			htTmp.put
-			(
-				EzimDtxSemantics.HDR_CTYPE
-				, EzimDtxSemantics.CTYPE_FILEREQ
-			);
-			htTmp.put
-			(
-				EzimDtxSemantics.HDR_CLEN
-				, "0"
-			);
-			htTmp.put
-			(
-				EzimDtxSemantics.HDR_FILEREQID
-				, strId
-			);
-			htTmp.put
-			(
-				EzimDtxSemantics.HDR_FILENAME
-				, fIn.getName()
-			);
+			try
+			{
+				OutputStream osTmp = sckIn.getOutputStream();
+				fisTmp = new FileInputStream(efoIn.getFile());
+				iSize = fisTmp.available();
 
-			// output header in bytes
-			sendHeaderBytes(sckIn, htTmp);
+				efoIn.setSize(iSize);
 
-			// make sure everything is sent
-			osTmp.flush();
+				// create necessary header fields
+				Hashtable<String, String> htTmp
+					= new Hashtable<String, String>();
+
+				htTmp.put
+				(
+					EzimDtxSemantics.HDR_CTYPE
+					, EzimDtxSemantics.CTYPE_FILEREQ
+				);
+				htTmp.put
+				(
+					EzimDtxSemantics.HDR_CLEN
+					, "0"
+				);
+				htTmp.put
+				(
+					EzimDtxSemantics.HDR_FILEREQID
+					, strId
+				);
+				htTmp.put
+				(
+					EzimDtxSemantics.HDR_FILENAME
+					, efoIn.getFile().getName()
+				);
+				htTmp.put
+				(
+					EzimDtxSemantics.HDR_FILESIZE
+					, Integer.toString(iSize)
+				);
+
+				// output header in bytes
+				sendHeaderBytes(sckIn, htTmp);
+
+				// make sure everything is sent
+				osTmp.flush();
+			}
+			finally
+			{
+				try
+				{
+					if (fisTmp != null) fisTmp.close();
+				}
+				catch(Exception e)
+				{
+					// ignore
+				}
+			}
 		}
 
 		return;
@@ -460,10 +491,14 @@ public class EzimDtxSemantics
 					// ignore
 				}
 
+				String strSysMsg = null;
+
 				if (iCnt < iCLen)
-					efoIn.abortProgress();
+					strSysMsg = EzimLang.TransmissionAbortedByRemote;
 				else if (iCnt == iCLen)
-					efoIn.finishProgress();
+					strSysMsg = EzimLang.Done;
+
+				efoIn.endProgress(strSysMsg);
 			}
 		}
 
@@ -594,10 +629,14 @@ public class EzimDtxSemantics
 		{
 			if (fosTmp != null) fosTmp.close();
 
+			String strSysMsg = null;
+
 			if (iCnt < iCLen)
-				efiIn.abortProgress();
+				strSysMsg = EzimLang.TransmissionAbortedByRemote;
 			else if (iCnt == iCLen)
-				efiIn.finishProgress();
+				strSysMsg = EzimLang.Done;
+
+			efiIn.endProgress(strSysMsg);
 		}
 
 		return;
@@ -686,6 +725,10 @@ public class EzimDtxSemantics
 					(
 						EzimDtxSemantics.HDR_FILEREQID
 					);
+					String strFilesize = htHdr.get
+					(
+						EzimDtxSemantics.HDR_FILESIZE
+					);
 
 					EzimFileIn efiTmp = new EzimFileIn
 					(
@@ -693,6 +736,10 @@ public class EzimDtxSemantics
 						, strFileReqId
 						, strFilename
 					);
+
+					// this is just a previewed size and may different from
+					// the actual one
+					efiTmp.setSize(Integer.parseInt(strFilesize));
 				}
 				// receive incoming file confirmation
 				else if (strCType.equals(EzimDtxSemantics.CTYPE_FILECFM))
@@ -712,9 +759,16 @@ public class EzimDtxSemantics
 					if (efiTmp != null)
 					{
 						if (strFileCfm.equals(EzimDtxSemantics.OK))
+						{
 							efiTmp.setSysMsg(EzimLang.Receiving);
+						}
 						else
-							efiTmp.abortProgress();
+						{
+							efiTmp.endProgress
+							(
+								EzimLang.TransmissionAbortedByRemote
+							);
+						}
 					}
 				}
 				// receive incoming file response
@@ -734,33 +788,57 @@ public class EzimDtxSemantics
 
 					if (efoTmp != null)
 					{
+						// the remote user has accepted the request
 						if (strFileRes.equals(EzimDtxSemantics.OK))
 						{
-							efoTmp.setSysMsg(EzimLang.Sending);
+							// everything looks fine
+							if (efoTmp.getFile().exists())
+							{
+								efoTmp.setSysMsg(EzimLang.Sending);
 
-							EzimFileConfirmer efcTmp = new EzimFileConfirmer
-							(
-								ecIn.getIp()
-								, strFileReqId
-								, true
-							);
-							efcTmp.start();
+								EzimFileConfirmer efcTmp
+									= new EzimFileConfirmer
+									(
+										ecIn.getIp()
+										, strFileReqId
+										, true
+									);
+								efcTmp.start();
 
-							EzimFileSender efsTmp = new EzimFileSender
-							(
-								efoTmp
-								, ecIn.getIp()
-							);
-							efsTmp.start();
+								EzimFileSender efsTmp = new EzimFileSender
+								(
+									efoTmp
+									, ecIn.getIp()
+								);
+								efsTmp.start();
+							}
+							// the file doesn't exist.  i.e. deleted
+							else
+							{
+								efoTmp.endProgress
+								(
+									EzimLang.FileNotFoundTransmissionAborted
+								);
+
+								EzimFileConfirmer efcTmp
+									= new EzimFileConfirmer
+									(
+										ecIn.getIp()
+										, strFileReqId
+										, false
+									);
+								efcTmp.start();
+							}
 						}
+						// the remote user has refused the request
 						else
 						{
-							efoTmp.setSysMsg(EzimLang.RefusedByRemote);
+							efoTmp.endProgress(EzimLang.RefusedByRemote);
 						}
 					}
+					// the outgoing file window is closed
 					else if (strFileRes.equals(EzimDtxSemantics.OK))
 					{
-						// if the outgoing file window is close...
 						EzimFileConfirmer efcTmp = new EzimFileConfirmer
 						(
 							ecIn.getIp()

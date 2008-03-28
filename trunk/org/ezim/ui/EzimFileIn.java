@@ -55,6 +55,8 @@ public class EzimFileIn
 	private JTextField jtfdName;
 	private JLabel jlblFName;
 	private JTextField jtfdFName;
+	private JLabel jlblSize;
+	private JTextField jtfdSize;
 	private JProgressBar jpbProgress;
 	private JLabel jlblSysMsg;
 	private JButton jbtnYes;
@@ -94,7 +96,7 @@ public class EzimFileIn
 		this.setIconImage(EzimImage.icoBtnFrx.getImage());
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setTitle(EzimLang.IncomingFile);
-		this.setMinimumSize(new Dimension(320, 180));
+		this.setMinimumSize(new Dimension(320, 220));
 		this.setVisible(true);
 
 		return;
@@ -188,6 +190,11 @@ public class EzimFileIn
 		if (this.remoteFName != null) this.jtfdFName.setText(this.remoteFName);
 		this.jtfdFName.setEditable(false);
 
+		this.jlblSize = new JLabel(EzimLang.Size);
+
+		this.jtfdSize = new JTextField();
+		this.jtfdSize.setEditable(false);
+
 		this.jpbProgress = new JProgressBar();
 		this.jpbProgress.setStringPainted(true);
 
@@ -268,6 +275,13 @@ public class EzimFileIn
 						, GroupLayout.PREFERRED_SIZE
 						, GroupLayout.PREFERRED_SIZE
 					)
+					.addComponent
+					(
+						this.jlblSize
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
 				)
 				.addGroup
 				(
@@ -282,6 +296,13 @@ public class EzimFileIn
 					.addComponent
 					(
 						this.jtfdFName
+						, GroupLayout.DEFAULT_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, Short.MAX_VALUE
+					)
+					.addComponent
+					(
+						this.jtfdSize
 						, GroupLayout.DEFAULT_SIZE
 						, GroupLayout.PREFERRED_SIZE
 						, Short.MAX_VALUE
@@ -365,6 +386,25 @@ public class EzimFileIn
 			.addComponent
 			(
 				this.jtfdFName
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+		);
+
+		vGrp.addGroup
+		(
+			glBase.createParallelGroup(Alignment.BASELINE)
+			.addComponent
+			(
+				this.jlblSize
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
+				this.jtfdSize
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
@@ -486,6 +526,7 @@ public class EzimFileIn
 
 	public void setSize(int iIn)
 	{
+		this.jtfdSize.setText(Integer.toString(iIn));
 		this.jpbProgress.setMaximum(iIn);
 		return;
 	}
@@ -496,17 +537,9 @@ public class EzimFileIn
 		return;
 	}
 
-	public void abortProgress()
+	public void endProgress(String strIn)
 	{
-		this.setSysMsg(EzimLang.TransmissionAbortedByRemote);
-		this.jbtnClose.setText(EzimLang.Close);
-
-		return;
-	}
-
-	public void finishProgress()
-	{
-		this.setSysMsg(EzimLang.Done);
+		this.setSysMsg(strIn);
 		this.jbtnClose.setText(EzimLang.Close);
 
 		return;

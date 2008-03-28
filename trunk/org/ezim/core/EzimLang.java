@@ -64,10 +64,12 @@ public class EzimLang
 	// outgoing file window
 	public static String OutgoingFile;
 	public static String Filename;
+	public static String Size;
 	public static String Cancel;
 	public static String WaitingForResponse;
 	public static String Sending;
 	public static String RefusedByRemote;
+	public static String FileNotFoundTransmissionAborted;
 	public static String TransmissionAbortedByRemote;
 	public static String Done;
 	public static String Close;
@@ -87,7 +89,7 @@ public class EzimLang
 		{
 			ResourceBundle rbTmp = ResourceBundle.getBundle
 			(
-				"org/ezim/properties/EzimUI"
+				"org.ezim.properties.EzimUI"
 			);
 
 			// username input dialog
@@ -135,10 +137,12 @@ public class EzimLang
 			// outgoing file window
 			OutgoingFile = rbTmp.getString("OUTGOING_FILE");
 			Filename = rbTmp.getString("FILENAME");
+			Size = rbTmp.getString("SIZE");
 			Cancel = rbTmp.getString("CANCEL");
 			WaitingForResponse = rbTmp.getString("WAITING_FOR_RESPONSE");
 			Sending = rbTmp.getString("SENDING");
 			RefusedByRemote = rbTmp.getString("REFUSED_BY_REMOTE");
+			FileNotFoundTransmissionAborted = rbTmp.getString("FILE_NOT_FOUND_TRANSMISSION_ABORTED");
 			TransmissionAbortedByRemote = rbTmp.getString("TRANSMISSION_ABORTED_BY_REMOTE");
 			Done = rbTmp.getString("DONE");
 			Close = rbTmp.getString("CLOSE");
