@@ -33,6 +33,7 @@ public class EzimConf
 	public final static String ezimColorSelf = "ezim.color.self";
 
 	public final static String ezimmainLocalname = "ezimmain.localname";
+	public final static String ezimmainVisible = "ezimmain.visible";
 	public final static String ezimmainLocationX = "ezimmain.location.x";
 	public final static String ezimmainLocationY = "ezimmain.location.y";
 	public final static String ezimmainSizeH = "ezimmain.size.h";
@@ -99,6 +100,7 @@ public class EzimConf
 			, Integer.toString(Ezim.colorSelf, 16)
 		);
 
+		this.settings.setProperty(EzimConf.ezimmainVisible, "true");
 		this.settings.setProperty(EzimConf.ezimmainLocationX, "0");
 		this.settings.setProperty(EzimConf.ezimmainLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimmainSizeH, "0");

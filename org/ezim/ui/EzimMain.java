@@ -91,13 +91,13 @@ public class EzimMain
 	private EzimMain()
 	{
 		this.initData();
-		this.loadConf();
 		this.initGUI();
 
 		this.setIconImage(EzimImage.icoMain.getImage());
 		this.setTitle(Ezim.appAbbrev);
 		this.setMinimumSize(new Dimension(230, 300));
-		this.setVisible(true);
+
+		this.loadConf();
 	}
 
 	/**
@@ -178,6 +178,17 @@ public class EzimMain
 		this.localName = ecTmp.settings.getProperty
 		(
 			EzimConf.ezimmainLocalname
+		);
+
+		this.showHide
+		(
+			Boolean.parseBoolean
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimmainVisible
+				)
+			)
 		);
 
 		// query username if isn't set yet
@@ -682,7 +693,7 @@ public class EzimMain
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				EzimMain.this.tiMain_ShowHide
+				EzimMain.this.showHide
 				(
 					! EzimMain.this.isVisible()
 				);
@@ -696,8 +707,18 @@ public class EzimMain
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				EzimMain.this.tiMain_ShowHide(true);
+				EzimConf ecTmp = EzimConf.getInstance();
+
+				// save whether window is visible
+				ecTmp.settings.setProperty
+				(
+					EzimConf.ezimmainVisible
+					, String.valueOf(EzimMain.this.isVisible())
+				);
+
+				EzimMain.this.showHide(true);
 				EzimMain.this.saveConfAckOff();
+
 				System.exit(0);
 			}
 		};
@@ -722,7 +743,7 @@ public class EzimMain
 				{
 					if (me.getClickCount() == 2)
 					{
-						EzimMain.this.tiMain_ShowHide
+						EzimMain.this.showHide
 						(
 							! EzimMain.this.isVisible()
 						);
@@ -901,10 +922,13 @@ public class EzimMain
 		return;
 	}
 
-	private void tiMain_ShowHide(boolean blnIn)
+	private void showHide(boolean blnIn)
 	{
-		this.setState(JFrame.NORMAL);
-		this.setVisible(blnIn);
+		boolean blnSysTray = SystemTray.isSupported();
+
+		if (blnSysTray) this.setState(JFrame.NORMAL);
+
+		this.setVisible(blnIn || ! blnSysTray);
 
 		return;
 	}
