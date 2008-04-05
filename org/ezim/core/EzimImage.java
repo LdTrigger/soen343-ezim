@@ -28,8 +28,8 @@ public class EzimImage
 	public static ImageIcon icoPlaza;
 
 	// state icons
-	public static ImageIcon icoMan00;
-	public static ImageIcon icoMan01;
+	public static ImageIcon[] icoSysStates;
+	public static ImageIcon[] icoStates;
 
 	// EzimMain buttons
 	public static ImageIcon icoBtnMsg;
@@ -66,19 +66,50 @@ public class EzimImage
 		);
 		icoPlaza = new ImageIcon(iconUrlTmp);
 
-		// status man icon 00
-		iconUrlTmp = ClassLoader.getSystemResource
-		(
-			"org/ezim/image/icon/man00.png"
-		);
-		icoMan00 = new ImageIcon(iconUrlTmp);
+		// system state icons
+		icoSysStates = new ImageIcon[]
+		{
+			new ImageIcon
+			(
+				ClassLoader.getSystemResource
+				(
+					"org/ezim/image/icon/sysstate00.png"
+				)
+			)
+			, new ImageIcon
+			(
+				ClassLoader.getSystemResource
+				(
+					"org/ezim/image/icon/sysstate01.png"
+				)
+			)
+		};
 
-		// status man icon 01
-		iconUrlTmp = ClassLoader.getSystemResource
-		(
-			"org/ezim/image/icon/man01.png"
-		);
-		icoMan01 = new ImageIcon(iconUrlTmp);
+		// system state icons
+		icoStates = new ImageIcon[]
+		{
+			new ImageIcon
+			(
+				ClassLoader.getSystemResource
+				(
+					"org/ezim/image/icon/state00.png"
+				)
+			)
+			, new ImageIcon
+			(
+				ClassLoader.getSystemResource
+				(
+					"org/ezim/image/icon/state01.png"
+				)
+			)
+			, new ImageIcon
+			(
+				ClassLoader.getSystemResource
+				(
+					"org/ezim/image/icon/state02.png"
+				)
+			)
+		};
 
 		// main window message button icon
 		iconUrlTmp = ClassLoader.getSystemResource

@@ -218,11 +218,11 @@ public class EzimPlaza
 
 	public void windowClosing(WindowEvent e)
 	{
-		EzimMain.getInstance().localState = EzimContact.DEFAULT_STATE;
+		EzimMain.getInstance().localSysState = EzimContact.SYSSTATE_DEFAULT;
 
 		EzimAckSender easTmp = new EzimAckSender
 		(
-			EzimAckSemantics.state(EzimContact.DEFAULT_STATE)
+			EzimAckSemantics.sysState(EzimContact.SYSSTATE_DEFAULT)
 		);
 		easTmp.start();
 

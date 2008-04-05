@@ -58,16 +58,10 @@ public class EzimContactListRenderer
 		);
 
 		// state icon
-		switch(ecTmp.getState())
-		{
-			case(EzimContact.PLAZA_STATE):
-				this.setIcon(EzimImage.icoMan01);
-				break;
-			case(EzimContact.DEFAULT_STATE):
-			default:
-				this.setIcon(EzimImage.icoMan00);
-				break;
-		}
+		if (ecTmp.getSysState() != EzimContact.SYSSTATE_DEFAULT)
+			this.setIcon(EzimImage.icoSysStates[ecTmp.getSysState()]);
+		else
+			this.setIcon(EzimImage.icoStates[ecTmp.getState()]);
 
 		// username + status
 		this.setText(ecTmp.getName() + " (" + ecTmp.getStatus() + ")");
