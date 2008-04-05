@@ -70,7 +70,6 @@ public class EzimMain
 	private static EzimMain emSngtn;
 
 	private JPanel jpnlBase;
-	private JLabel jlblStatus;
 	private JComboBox jcbState;
 	private JTextField jtfdStatus;
 	private JLabel jlblAbout;
@@ -302,8 +301,6 @@ public class EzimMain
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
-		this.jlblStatus = new JLabel(EzimLang.Status);
-
 		this.jcbState = new JComboBox(EzimImage.icoStates);
 		this.jcbState.setEditable(false);
 		this.jcbState.addActionListener
@@ -545,13 +542,6 @@ public class EzimMain
 				glBase.createSequentialGroup()
 					.addComponent
 					(
-						this.jlblStatus
-						, GroupLayout.PREFERRED_SIZE
-						, GroupLayout.PREFERRED_SIZE
-						, GroupLayout.PREFERRED_SIZE
-					)
-					.addComponent
-					(
 						this.jcbState
 						, GroupLayout.PREFERRED_SIZE
 						, GroupLayout.PREFERRED_SIZE
@@ -629,7 +619,6 @@ public class EzimMain
 		glBase.linkSize
 		(
 			SwingUtilities.VERTICAL
-			, this.jlblStatus
 			, this.jcbState
 			, this.jtfdStatus
 		);
@@ -637,13 +626,6 @@ public class EzimMain
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent
-			(
-				this.jlblStatus
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-			)
 			.addComponent
 			(
 				this.jcbState
