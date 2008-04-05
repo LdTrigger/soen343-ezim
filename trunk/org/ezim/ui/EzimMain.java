@@ -38,6 +38,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -46,6 +47,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimAckSemantics;
@@ -69,6 +71,7 @@ public class EzimMain
 
 	private JPanel jpnlBase;
 	private JLabel jlblStatus;
+	private JComboBox jcbState;
 	private JTextField jtfdStatus;
 	private JLabel jlblAbout;
 	private JList jlstContacts;
@@ -82,6 +85,7 @@ public class EzimMain
 
 	public String localAddress;
 	public String localName;
+	public int localSysState;
 	public int localState;
 	public String localStatus;
 
@@ -286,8 +290,9 @@ public class EzimMain
 			this.localAddress = "127.0.0.1";
 		}
 
-		this.localState = EzimContact.DEFAULT_STATE;
-		this.localStatus = EzimContact.DEFAULT_STATUS;
+		this.localSysState = EzimContact.SYSSTATE_DEFAULT;
+		this.localState = EzimContact.STATE_DEFAULT;
+		this.localStatus = EzimContact.STATUS_DEFAULT;
 
 		this.epMain = new EzimPlaza();
 
@@ -299,10 +304,24 @@ public class EzimMain
 		// C O M P O N E N T S ---------------------------------------------
 		this.jlblStatus = new JLabel(EzimLang.Status);
 
+		this.jcbState = new JComboBox(EzimImage.icoStates);
+		this.jcbState.setEditable(false);
+		this.jcbState.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent evtTmp)
+				{
+					EzimMain.this.jcbState_ActionPerformed(evtTmp);
+					return;
+				}
+			}
+		);
+
 		this.jtfdStatus = new JTextField
 		(
 			new EzimPlainDocument(Ezim.maxAckLength)
-			, EzimContact.DEFAULT_STATUS
+			, EzimContact.STATUS_DEFAULT
 			, 0
 		);
 		this.jtfdStatus.setEnabled(false);
@@ -533,6 +552,13 @@ public class EzimMain
 					)
 					.addComponent
 					(
+						this.jcbState
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+						, GroupLayout.PREFERRED_SIZE
+					)
+					.addComponent
+					(
 						this.jtfdStatus
 						, GroupLayout.DEFAULT_SIZE
 						, GroupLayout.PREFERRED_SIZE
@@ -600,12 +626,27 @@ public class EzimMain
 
 		GroupLayout.SequentialGroup vGrp = glBase.createSequentialGroup();
 
+		glBase.linkSize
+		(
+			SwingUtilities.VERTICAL
+			, this.jlblStatus
+			, this.jcbState
+			, this.jtfdStatus
+		);
+
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
 			.addComponent
 			(
 				this.jlblStatus
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+				, GroupLayout.PREFERRED_SIZE
+			)
+			.addComponent
+			(
+				this.jcbState
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
 				, GroupLayout.PREFERRED_SIZE
@@ -836,6 +877,12 @@ public class EzimMain
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
+	private void jcbState_ActionPerformed(ActionEvent evt)
+	{
+		this.changeState(this.jcbState.getSelectedIndex());
+		return;
+	}
+
 	private void jtfdStatus_ActionPerformed(ActionEvent evt)
 	{
 		this.changeStatus();
@@ -917,7 +964,7 @@ public class EzimMain
 		if (! this.epMain.isVisible())
 		{
 			this.epMain.reset();
-			this.changeState(EzimContact.PLAZA_STATE);
+			this.changeSysState(EzimContact.SYSSTATE_PLAZA);
 		}
 		return;
 	}
@@ -1023,11 +1070,11 @@ public class EzimMain
 	}
 
 	/**
-	 * update an existing contact with the new state
+	 * update an existing contact with the new system state
 	 * @param strIp IP address of the contact to be update
 	 * @param iState new state of the contact
 	 */
-	public void updContactState(String strIp, int iState)
+	public void updContactSysState(String strIp, int iState)
 	{
 		EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
 
@@ -1037,8 +1084,8 @@ public class EzimMain
 			{
 				if
 				(
-					ecTmp.getState() != EzimContact.PLAZA_STATE
-					&& iState == EzimContact.PLAZA_STATE
+					ecTmp.getSysState() != EzimContact.SYSSTATE_PLAZA
+					&& iState == EzimContact.SYSSTATE_PLAZA
 				)
 				{
 					this.epMain.addNarration
@@ -1049,8 +1096,8 @@ public class EzimMain
 				}
 				else if
 				(
-					ecTmp.getState() == EzimContact.PLAZA_STATE
-					&& iState != EzimContact.PLAZA_STATE
+					ecTmp.getSysState() == EzimContact.SYSSTATE_PLAZA
+					&& iState != EzimContact.SYSSTATE_PLAZA
 				)
 				{
 					this.epMain.addNarration
@@ -1061,6 +1108,24 @@ public class EzimMain
 				}
 			}
 
+			ecTmp.setSysState(iState);
+			this.refreshContactList();
+		}
+
+		return;
+	}
+
+	/**
+	 * update an existing contact with the new state
+	 * @param strIp IP address of the contact to be update
+	 * @param iState new state of the contact
+	 */
+	public void updContactState(String strIp, int iState)
+	{
+		EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
+
+		if (ecTmp != null)
+		{
 			ecTmp.setState(iState);
 			this.refreshContactList();
 		}
@@ -1097,11 +1162,11 @@ public class EzimMain
 
 		// change our state back to default, if it was something else
 		// (i.e. leave the plaza if we were there)
-		if (this.localState != EzimContact.DEFAULT_STATE)
+		if (this.localSysState != EzimContact.SYSSTATE_DEFAULT)
 		{
 			EzimAckSender easDS = new EzimAckSender
 			(
-				EzimAckSemantics.state(EzimContact.DEFAULT_STATE)
+				EzimAckSemantics.sysState(EzimContact.SYSSTATE_DEFAULT)
 			);
 			easDS.start();
 		}
@@ -1112,6 +1177,27 @@ public class EzimMain
 			EzimAckSemantics.offline()
 		);
 		easOff.start();
+
+		return;
+	}
+
+	/**
+	 * change system state and notify all peers for status change
+	 */
+	private void changeSysState(int iState)
+	{
+		EzimAckSender easTmp = null;
+
+		if (this.localSysState != iState)
+		{
+			this.localSysState = iState;
+
+			easTmp = new EzimAckSender
+			(
+				EzimAckSemantics.sysState(iState)
+			);
+			easTmp.start();
+		}
 
 		return;
 	}
@@ -1147,7 +1233,7 @@ public class EzimMain
 
 		if (strTmp.length() == 0)
 		{
-			strTmp = EzimContact.DEFAULT_STATUS;
+			strTmp = EzimContact.STATUS_DEFAULT;
 			this.jtfdStatus.setText(strTmp);
 		}
 

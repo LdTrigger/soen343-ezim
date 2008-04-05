@@ -21,15 +21,19 @@ import org.ezim.core.EzimContactException;
 
 public class EzimContact implements Comparable
 {
-	// default status
-	public final static int DEFAULT_STATE = 0;
-	public final static String DEFAULT_STATUS = "Online";
+	// system state
+	public final static int SYSSTATE_DEFAULT = 0;
+	public final static int SYSSTATE_PLAZA = 1;
 
-	// plaza status
-	public final static int PLAZA_STATE = 1;
+	// user state
+	public final static int STATE_DEFAULT = 0;
+
+	// status
+	public final static String STATUS_DEFAULT = "Online";
 
 	private String ip;
 	private String name;
+	private int sysState;
 	private int state;
 	private String status;
 
@@ -38,7 +42,8 @@ public class EzimContact implements Comparable
 	{
 		this.setIp(strIp);
 		this.setName(strName);
-		this.setState(EzimContact.DEFAULT_STATE);
+		this.setSysState(EzimContact.SYSSTATE_DEFAULT);
+		this.setState(EzimContact.STATE_DEFAULT);
 		this.setStatus(strStatus);
 	}
 
@@ -48,7 +53,7 @@ public class EzimContact implements Comparable
 		if (! (ecIn instanceof EzimContact))
 			throw new ClassCastException("An EzimContact object expected.");
 
-		return this.getName().compareTo(((EzimContact) ecIn).getName());
+		return this.getIp().compareTo(((EzimContact) ecIn).getIp());
 	}
 
 	public String getIp()
@@ -59,6 +64,11 @@ public class EzimContact implements Comparable
 	public String getName()
 	{
 		return this.name;
+	}
+
+	public int getSysState()
+	{
+		return this.sysState;
 	}
 
 	public int getState()
@@ -90,10 +100,18 @@ public class EzimContact implements Comparable
 		return;
 	}
 
+	public void setSysState(int iIn)
+	{
+		if (iIn >= 0) this.sysState = iIn;
+		else this.sysState = EzimContact.SYSSTATE_DEFAULT;
+
+		return;
+	}
+
 	public void setState(int iIn)
 	{
 		if (iIn >= 0) this.state = iIn;
-		else this.state = EzimContact.DEFAULT_STATE;
+		else this.state = EzimContact.STATE_DEFAULT;
 
 		return;
 	}

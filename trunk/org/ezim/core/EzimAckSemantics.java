@@ -23,12 +23,13 @@ import org.ezim.ui.EzimMain;
 
 public class EzimAckSemantics
 {
-	private final static String POLL	= Ezim.appAbbrev + "POLL:";
-	private final static String ON		= Ezim.appAbbrev + "ON:";
-	private final static String OFF		= Ezim.appAbbrev + "OFF:";
-	private final static String STATE	= Ezim.appAbbrev + "STATE:";
-	private final static String STATUS	= Ezim.appAbbrev + "STATUS:";
-	private final static String SPEECH	= Ezim.appAbbrev + "SPEECH:";
+	private final static String POLL		= Ezim.appAbbrev + "POLL:";
+	private final static String ON			= Ezim.appAbbrev + "ON:";
+	private final static String OFF			= Ezim.appAbbrev + "OFF:";
+	private final static String SYSSTATE	= Ezim.appAbbrev + "SYSSTATE:";
+	private final static String STATE		= Ezim.appAbbrev + "STATE:";
+	private final static String STATUS		= Ezim.appAbbrev + "STATUS:";
+	private final static String SPEECH		= Ezim.appAbbrev + "SPEECH:";
 
 	/**
 	 * used when the application starts to poll from all existing users
@@ -54,6 +55,14 @@ public class EzimAckSemantics
 	public static String offline()
 	{
 		return EzimAckSemantics.OFF;
+	}
+
+	/**
+	 * used to acknowledge all other users to change system state
+	 */
+	public static String sysState(int iState)
+	{
+		return EzimAckSemantics.SYSSTATE + Integer.toString(iState);
 	}
 
 	/**
@@ -96,7 +105,7 @@ public class EzimAckSemantics
 				(
 					strIp
 					, strAck.substring(EzimAckSemantics.POLL.length())
-					, EzimContact.DEFAULT_STATUS
+					, EzimContact.STATUS_DEFAULT
 				);
 			}
 
@@ -106,35 +115,23 @@ public class EzimAckSemantics
 			);
 			easTmp1.start();
 
-			try
-			{
-				Thread.sleep(500);
-			}
-			catch(Exception e)
-			{
-				// ignore whatever
-			}
-
 			EzimAckSender easTmp2 = new EzimAckSender
 			(
-				EzimAckSemantics.state(emTmp.localState)
+				EzimAckSemantics.sysState(emTmp.localSysState)
 			);
 			easTmp2.start();
 
-			try
-			{
-				Thread.sleep(500);
-			}
-			catch(Exception e)
-			{
-				// ignore whatever
-			}
-
 			EzimAckSender easTmp3 = new EzimAckSender
+			(
+				EzimAckSemantics.state(emTmp.localState)
+			);
+			easTmp3.start();
+
+			EzimAckSender easTmp4 = new EzimAckSender
 			(
 				EzimAckSemantics.status(emTmp.localStatus)
 			);
-			easTmp3.start();
+			easTmp4.start();
 		}
 		else if (strAck.startsWith(EzimAckSemantics.ON))
 		{
@@ -142,12 +139,26 @@ public class EzimAckSemantics
 			(
 				strIp
 				, strAck.substring(EzimAckSemantics.ON.length())
-				, EzimContact.DEFAULT_STATUS
+				, EzimContact.STATUS_DEFAULT
 			);
 		}
 		else if (strAck.startsWith(EzimAckSemantics.OFF))
 		{
 			emTmp.rmContact(strIp);
+		}
+		else if (strAck.startsWith(EzimAckSemantics.SYSSTATE))
+		{
+			emTmp.updContactSysState
+			(
+				strIp
+				, Integer.valueOf
+					(
+						strAck.substring
+						(
+							EzimAckSemantics.SYSSTATE.length()
+						)
+					)
+			);
 		}
 		else if (strAck.startsWith(EzimAckSemantics.STATE))
 		{
