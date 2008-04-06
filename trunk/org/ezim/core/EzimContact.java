@@ -121,7 +121,7 @@ public class EzimContact implements Comparable
 		if (strIn != null && strIn.length() > 0)
 			this.status = strIn;
 		else
-			this.status = "Online";
+			this.status = EzimContact.STATUS_DEFAULT;
 
 		return;
 	}
