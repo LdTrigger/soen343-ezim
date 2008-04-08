@@ -93,68 +93,68 @@ public class EzimLang
 			);
 
 			// username input dialog
-			PleaseInputYourName = rbTmp.getString("PLEASE_INPUT_YOUR_NAME");
+			PleaseInputYourName = rbTmp.getString("PleaseInputYourName");
 
 			// about dialog
 			Notice = Ezim.appName + "\n"
 			 + "version " + Ezim.appVer + "\n\n"
-			 + rbTmp.getString("NOTICE");
-			About = rbTmp.getString("ABOUT");
+			 + rbTmp.getString("Notice");
+			About = rbTmp.getString("About");
 
 			// main window
-			Status = rbTmp.getString("STATUS");
-			SendMessageToContact = rbTmp.getString("SEND_MESSAGE_TO_CONTACT");
-			SendFileToContact = rbTmp.getString("SEND_FILE_TO_CONTACT");
-			RefreshContactList = rbTmp.getString("REFRESH_CONTACT_LIST");
-			PlazaOfSpeech = rbTmp.getString("PLAZA_OF_SPEECH");
+			Status = rbTmp.getString("Status");
+			SendMessageToContact = rbTmp.getString("SendMessageToContact");
+			SendFileToContact = rbTmp.getString("SendFileToContact");
+			RefreshContactList = rbTmp.getString("RefreshContactList");
+			PlazaOfSpeech = rbTmp.getString("PlazaOfSpeech");
 
 			// error dialog
-			Error = rbTmp.getString("ERROR");
+			Error = rbTmp.getString("Error");
 
 			// incoming message window
-			IncomingMessage = rbTmp.getString("INCOMING_MESSAGE");
-			From = rbTmp.getString("FROM");
-			Subject = rbTmp.getString("SUBJECT");
-			ClickHereToOpenMessage = rbTmp.getString("CLICK_HERE_TO_OPEN_MESSAGE");
-			Reply = rbTmp.getString("REPLY");
-			OriginalMessageFrom = rbTmp.getString("ORIGINAL_MESSAGE_FROM");
+			IncomingMessage = rbTmp.getString("IncomingMessage");
+			From = rbTmp.getString("From");
+			Subject = rbTmp.getString("Subject");
+			ClickHereToOpenMessage = rbTmp.getString("ClickHereToOpenMessage");
+			Reply = rbTmp.getString("Reply");
+			OriginalMessageFrom = rbTmp.getString("OriginalMessageFrom");
 
 			// outgoing message window
-			OutgoingMessage = rbTmp.getString("OUTGOING_MESSAGE");
-			To = rbTmp.getString("TO");
-			Send = rbTmp.getString("SEND");
+			OutgoingMessage = rbTmp.getString("OutgoingMessage");
+			To = rbTmp.getString("To");
+			Send = rbTmp.getString("Send");
 
 			// send message error dialog
-			SendMessageError = rbTmp.getString("SEND_MESSAGE_ERROR");
+			SendMessageError = rbTmp.getString("SendMessageError");
 
 			// incoming file window
-			IncomingFile = rbTmp.getString("INCOMING_FILE");
-			ReceiveFile = rbTmp.getString("RECEIVE_FILE");
-			Yes = rbTmp.getString("YES");
-			No = rbTmp.getString("NO");
-			Receiving = rbTmp.getString("RECEIVING");
+			IncomingFile = rbTmp.getString("IncomingFile");
+			ReceiveFile = rbTmp.getString("ReceiveFile");
+			Yes = rbTmp.getString("Yes");
+			No = rbTmp.getString("No");
+			Receiving = rbTmp.getString("Receiving");
 
 			// outgoing file window
-			OutgoingFile = rbTmp.getString("OUTGOING_FILE");
-			Filename = rbTmp.getString("FILENAME");
-			Size = rbTmp.getString("SIZE");
-			Cancel = rbTmp.getString("CANCEL");
-			WaitingForResponse = rbTmp.getString("WAITING_FOR_RESPONSE");
-			Sending = rbTmp.getString("SENDING");
-			RefusedByRemote = rbTmp.getString("REFUSED_BY_REMOTE");
-			FileNotFoundTransmissionAborted = rbTmp.getString("FILE_NOT_FOUND_TRANSMISSION_ABORTED");
-			TransmissionAbortedByRemote = rbTmp.getString("TRANSMISSION_ABORTED_BY_REMOTE");
-			Done = rbTmp.getString("DONE");
-			Close = rbTmp.getString("CLOSE");
+			OutgoingFile = rbTmp.getString("OutgoingFile");
+			Filename = rbTmp.getString("Filename");
+			Size = rbTmp.getString("Size");
+			Cancel = rbTmp.getString("Cancel");
+			WaitingForResponse = rbTmp.getString("WaitingForResponse");
+			Sending = rbTmp.getString("Sending");
+			RefusedByRemote = rbTmp.getString("RefusedByRemote");
+			FileNotFoundTransmissionAborted = rbTmp.getString("FileNotFoundTransmissionAborted");
+			TransmissionAbortedByRemote = rbTmp.getString("TransmissionAbortedByRemote");
+			Done = rbTmp.getString("Done");
+			Close = rbTmp.getString("Close");
 
 			// plaza of speech
-			Speak = rbTmp.getString("SPEAK");
-			HasJoinedPlazaOfSpeech = rbTmp.getString("HAS_JOINED_PLAZA_OF_SPEECH");
-			HasLeftPlazaOfSpeech = rbTmp.getString("HAS_LEFT_PLAZA_OF_SPEECH");
+			Speak = rbTmp.getString("Speak");
+			HasJoinedPlazaOfSpeech = rbTmp.getString("HasJoinedPlazaOfSpeech");
+			HasLeftPlazaOfSpeech = rbTmp.getString("HasLeftPlazaOfSpeech");
 
 			// tray icon pop-up menu
-			ShowHide = rbTmp.getString("SHOW_HIDE");
-			Exit = rbTmp.getString("EXIT");
+			ShowHide = rbTmp.getString("ShowHide");
+			Exit = rbTmp.getString("Exit");
 		}
 		catch(Exception e)
 		{
