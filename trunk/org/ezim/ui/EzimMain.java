@@ -764,13 +764,10 @@ public class EzimMain
 			{
 				public void mouseClicked(MouseEvent me)
 				{
-					if (me.getClickCount() == 2)
-					{
-						EzimMain.this.showHide
-						(
-							! EzimMain.this.isVisible()
-						);
-					}
+					EzimMain.this.showHide
+					(
+						! EzimMain.this.isVisible()
+					);
 				}
 
 				public void mouseEntered(MouseEvent me)
