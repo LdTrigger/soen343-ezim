@@ -109,6 +109,20 @@ public class EzimImage
 					"org/ezim/image/icon/state02.png"
 				)
 			)
+			, new ImageIcon
+			(
+				ClassLoader.getSystemResource
+				(
+					"org/ezim/image/icon/state03.png"
+				)
+			)
+			, new ImageIcon
+			(
+				ClassLoader.getSystemResource
+				(
+					"org/ezim/image/icon/state04.png"
+				)
+			)
 		};
 
 		// main window message button icon
