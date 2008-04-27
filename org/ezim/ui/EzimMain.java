@@ -725,6 +725,20 @@ public class EzimMain
 		miRestore.addActionListener(alRestore);
 		pmTmp.add(miRestore);
 
+		MenuItem miAbout = new MenuItem(EzimLang.About);
+		ActionListener alAbout = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				EzimMain.this.showAboutDlg();
+			}
+		};
+		miAbout.addActionListener(alAbout);
+		pmTmp.add(miAbout);
+
+		MenuItem miSeparator = new MenuItem("-");
+		pmTmp.add(miSeparator);
+
 		MenuItem miExit = new MenuItem(EzimLang.Exit);
 		ActionListener alExit = new ActionListener()
 		{
