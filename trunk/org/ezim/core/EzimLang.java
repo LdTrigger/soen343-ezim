@@ -29,7 +29,8 @@ public class EzimLang
 	public static String About;
 
 	// main window
-	public static String Status;
+	public static String ClickToChangeState;
+	public static String ClickToChangeStatus;
 	public static String SendMessageToContact;
 	public static String SendFileToContact;
 	public static String RefreshContactList;
@@ -102,7 +103,8 @@ public class EzimLang
 			About = rbTmp.getString("About");
 
 			// main window
-			Status = rbTmp.getString("Status");
+			ClickToChangeState = rbTmp.getString("ClickToChangeState");
+			ClickToChangeStatus = rbTmp.getString("ClickToChangeStatus");
 			SendMessageToContact = rbTmp.getString("SendMessageToContact");
 			SendFileToContact = rbTmp.getString("SendFileToContact");
 			RefreshContactList = rbTmp.getString("RefreshContactList");

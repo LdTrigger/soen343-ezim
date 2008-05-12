@@ -314,6 +314,7 @@ public class EzimMain
 				}
 			}
 		);
+		this.jcbState.setToolTipText(EzimLang.ClickToChangeState);
 
 		this.jtfdStatus = new JTextField
 		(
@@ -380,6 +381,7 @@ public class EzimMain
 				}
 			}
 		);
+		this.jtfdStatus.setToolTipText(EzimLang.ClickToChangeStatus);
 
 		this.jlstContacts = new JList();
 		this.jlstContacts.setCellRenderer(new EzimContactListRenderer());
