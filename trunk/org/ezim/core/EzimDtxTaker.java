@@ -25,6 +25,7 @@ import java.net.Socket;
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimDtxTakerThread;
 import org.ezim.ui.EzimMain;
 
