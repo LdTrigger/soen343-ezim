@@ -937,11 +937,24 @@ public class EzimMain
 
 			if (iJfcRes == JFileChooser.APPROVE_OPTION)
 			{
-				EzimFileOut efoTmp = new EzimFileOut
-				(
-				 	(EzimContact) this.jlstContacts.getSelectedValue()
-					, jfcTmp.getSelectedFile()
-				);
+				if (this.jlstContacts.getSelectedValue() == null)
+				{
+					JOptionPane.showMessageDialog
+					(
+						null
+						, EzimLang.RecipientNotExists
+						, EzimLang.Error
+						, JOptionPane.ERROR_MESSAGE
+					);
+				}
+				else
+				{
+					EzimFileOut efoTmp = new EzimFileOut
+					(
+						(EzimContact) this.jlstContacts.getSelectedValue()
+						, jfcTmp.getSelectedFile()
+					);
+				}
 			}
 		}
 
