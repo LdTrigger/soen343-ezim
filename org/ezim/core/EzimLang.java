@@ -51,6 +51,7 @@ public class EzimLang
 	public static String OutgoingMessage;
 	public static String To;
 	public static String Send;
+	public static String RecipientNotExists;
 
 	// send message error dialog
 	public static String SendMessageError;
@@ -125,6 +126,7 @@ public class EzimLang
 			OutgoingMessage = rbTmp.getString("OutgoingMessage");
 			To = rbTmp.getString("To");
 			Send = rbTmp.getString("Send");
+			RecipientNotExists = rbTmp.getString("RecipientNotExists");
 
 			// send message error dialog
 			SendMessageError = rbTmp.getString("SendMessageError");

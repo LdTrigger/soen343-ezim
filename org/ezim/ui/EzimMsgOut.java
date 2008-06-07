@@ -30,6 +30,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -37,6 +38,7 @@ import javax.swing.JTextField;
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimMsgSender;
 import org.ezim.core.EzimImage;
@@ -390,7 +392,17 @@ public class EzimMsgOut
 	// E V E N T   H A N D L E R -------------------------------------------
 	private void jbtnSend_ActionPerformed(ActionEvent evt)
 	{
-		if (this.etaMsg.getText().length() > 0)
+		if (EzimContactList.getInstance().get(this.ec.getIp()) == null)
+		{
+			JOptionPane.showMessageDialog
+			(
+				null
+				, EzimLang.RecipientNotExists
+				, EzimLang.Error
+				, JOptionPane.ERROR_MESSAGE
+			);
+		}
+		else if (this.etaMsg.getText().length() > 0)
 		{
 			EzimMsgSender jmsTmp = new EzimMsgSender
 			(
