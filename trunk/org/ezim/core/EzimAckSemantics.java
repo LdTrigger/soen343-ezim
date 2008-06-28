@@ -23,13 +23,23 @@ import org.ezim.ui.EzimMain;
 
 public class EzimAckSemantics
 {
-	private final static String POLL		= Ezim.appAbbrev + "POLL:";
-	private final static String ON			= Ezim.appAbbrev + "ON:";
-	private final static String OFF			= Ezim.appAbbrev + "OFF:";
-	private final static String SYSSTATE	= Ezim.appAbbrev + "SYSSTATE:";
-	private final static String STATE		= Ezim.appAbbrev + "STATE:";
-	private final static String STATUS		= Ezim.appAbbrev + "STATUS:";
-	private final static String SPEECH		= Ezim.appAbbrev + "SPEECH:";
+	private final static String IDENTIFIER
+		= Ezim.appAbbrev.toUpperCase() + " ";
+
+	private final static String POLL
+		= EzimAckSemantics.IDENTIFIER + "POLL:";
+	private final static String ON
+		= EzimAckSemantics.IDENTIFIER + "ON:";
+	private final static String OFF
+		= EzimAckSemantics.IDENTIFIER + "OFF:";
+	private final static String SYSSTATE
+		= EzimAckSemantics.IDENTIFIER + "SYSSTATE:";
+	private final static String STATE
+		= EzimAckSemantics.IDENTIFIER + "STATE:";
+	private final static String STATUS
+		= EzimAckSemantics.IDENTIFIER + "STATUS:";
+	private final static String SPEECH
+		= EzimAckSemantics.IDENTIFIER + "SPEECH:";
 
 	/**
 	 * used when the application starts to poll from all existing users
