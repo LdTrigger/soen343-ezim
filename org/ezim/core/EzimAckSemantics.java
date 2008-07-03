@@ -19,6 +19,7 @@ package org.ezim.core;
 
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
 
 public class EzimAckSemantics
@@ -119,29 +120,31 @@ public class EzimAckSemantics
 				);
 			}
 
+			EzimThreadPool etpTmp = EzimThreadPool.getInstance();
+
 			EzimAckSender easTmp1 = new EzimAckSender
 			(
 				EzimAckSemantics.online(emTmp.localName)
 			);
-			easTmp1.start();
+			etpTmp.execute(easTmp1);
 
 			EzimAckSender easTmp2 = new EzimAckSender
 			(
 				EzimAckSemantics.sysState(emTmp.localSysState)
 			);
-			easTmp2.start();
+			etpTmp.execute(easTmp2);
 
 			EzimAckSender easTmp3 = new EzimAckSender
 			(
 				EzimAckSemantics.state(emTmp.localState)
 			);
-			easTmp3.start();
+			etpTmp.execute(easTmp3);
 
 			EzimAckSender easTmp4 = new EzimAckSender
 			(
 				EzimAckSemantics.status(emTmp.localStatus)
 			);
-			easTmp4.start();
+			etpTmp.execute(easTmp4);
 		}
 		else if (strAck.startsWith(EzimAckSemantics.ON))
 		{

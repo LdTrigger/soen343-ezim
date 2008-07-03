@@ -17,7 +17,7 @@
  */
 package org.ezim.core;
 
-import java.lang.Thread;
+import java.lang.Runnable;
 import java.net.Socket;
 import java.net.InetSocketAddress;
 import javax.swing.JOptionPane;
@@ -27,7 +27,7 @@ import org.ezim.core.EzimConf;
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
 
-public class EzimFileConfirmer extends Thread
+public class EzimFileConfirmer implements Runnable
 {
 	private String ip = null;
 	private String id = null;

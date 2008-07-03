@@ -20,13 +20,13 @@ package org.ezim.core;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.lang.Thread;
+import java.lang.Runnable;
 import java.net.Socket;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimContact;
 
-public class EzimDtxTakerThread extends Thread
+public class EzimDtxTakerThread implements Runnable
 {
 	private EzimContact ec;
 	private Socket sck;

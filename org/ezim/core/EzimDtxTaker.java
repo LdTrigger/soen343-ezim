@@ -17,7 +17,7 @@
  */
 package org.ezim.core;
 
-import java.lang.Thread;
+import java.lang.Runnable;
 import java.net.ServerSocket;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -27,9 +27,10 @@ import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimDtxTakerThread;
+import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
 
-public class EzimDtxTaker extends Thread
+public class EzimDtxTaker implements Runnable
 {
 	public EzimDtxTaker()
 	{
@@ -90,7 +91,10 @@ public class EzimDtxTaker extends Thread
 						ecTmp
 						, sckIn
 					);
-					emttTmp.start();
+
+					EzimThreadPool etpTmp = EzimThreadPool.getInstance();
+
+					etpTmp.execute(emttTmp);
 				}
 				else if (sckIn != null && ! sckIn.isClosed())
 				{

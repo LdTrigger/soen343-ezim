@@ -44,6 +44,7 @@ import org.ezim.core.EzimMsgSender;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
+import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimTextArea;
 
 public class EzimMsgOut
@@ -411,7 +412,7 @@ public class EzimMsgOut
 				, this.jtfdSbj.getText()
 				, this.etaMsg.getText()
 			);
-			jmsTmp.start();
+			EzimThreadPool.getInstance().execute(jmsTmp);
 		}
 
 		return;

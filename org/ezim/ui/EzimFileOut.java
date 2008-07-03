@@ -40,6 +40,7 @@ import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimFileRequester;
+import org.ezim.core.EzimThreadPool;
 
 public class EzimFileOut
 	extends JFrame
@@ -71,7 +72,11 @@ public class EzimFileOut
 		init(ecIn, fIn);
 
 		EzimFtxList.getInstance().put(this.id, this);
-		new EzimFileRequester(ecIn.getIp(), this.id, this).start();
+
+		EzimThreadPool.getInstance().execute
+		(
+			new EzimFileRequester(ecIn.getIp(), this.id, this)
+		);
 	}
 
 	private void init(EzimContact ecIn, File fIn)
