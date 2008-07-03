@@ -18,7 +18,7 @@
 package org.ezim.core;
 
 import java.io.File;
-import java.lang.Thread;
+import java.lang.Runnable;
 import java.net.Socket;
 import java.net.InetSocketAddress;
 import javax.swing.JOptionPane;
@@ -29,7 +29,7 @@ import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
 import org.ezim.ui.EzimFileOut;
 
-public class EzimFileSender extends Thread
+public class EzimFileSender implements Runnable
 {
 	private EzimFileOut efo;
 	private String ip;

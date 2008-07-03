@@ -43,6 +43,7 @@ import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
+import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
 
 public class EzimPlaza
@@ -224,7 +225,7 @@ public class EzimPlaza
 		(
 			EzimAckSemantics.sysState(EzimContact.SYSSTATE_DEFAULT)
 		);
-		easTmp.start();
+		EzimThreadPool.getInstance().execute(easTmp);
 
 		return;
 	}
@@ -263,7 +264,7 @@ public class EzimPlaza
 			(
 				EzimAckSemantics.speech(strTmp)
 			);
-			easTmp.start();
+			EzimThreadPool.getInstance().execute(easTmp);
 		}
 
 		return;

@@ -17,11 +17,14 @@
  */
 package org.ezim.core;
 
+import java.lang.Thread;
+
 import javax.swing.UIManager;
 
 import org.ezim.core.EzimAckTaker;
 import org.ezim.core.EzimDtxTaker;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
 
 public class Ezim
@@ -30,6 +33,11 @@ public class Ezim
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
 	public final static String appVer = "0.1.3";
+
+	// thread pool sizes and keep alive time (in minutes)
+	public final static int corePoolSize = 8;
+	public final static int maxPoolSize = 16;
+	public final static int keepAlive = 30;
 
 	// multicast group, port, TTL, and incoming buffer size
 	// where group should be from 224.0.0.0 to 239.255.255.255
@@ -63,11 +71,13 @@ public class Ezim
 
 		EzimMain emTmp = EzimMain.getInstance();
 
+		EzimThreadPool etpTmp = EzimThreadPool.getInstance();
+
 		EzimDtxTaker edtTmp = new EzimDtxTaker();
-		edtTmp.start();
+		etpTmp.execute(edtTmp);
 
 		EzimAckTaker eatTmp = new EzimAckTaker();
-		eatTmp.start();
+		etpTmp.execute(eatTmp);
 
 		try
 		{

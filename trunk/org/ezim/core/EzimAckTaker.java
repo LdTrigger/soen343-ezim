@@ -17,7 +17,7 @@
  */
 package org.ezim.core;
 
-import java.lang.Thread;
+import java.lang.Runnable;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -27,7 +27,7 @@ import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimConf;
 import org.ezim.ui.EzimMain;
 
-public class EzimAckTaker extends Thread
+public class EzimAckTaker implements Runnable
 {
 	public EzimAckTaker()
 	{

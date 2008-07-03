@@ -18,7 +18,7 @@
 package org.ezim.core;
 
 import java.awt.event.WindowEvent;
-import java.lang.Thread;
+import java.lang.Runnable;
 import java.net.Socket;
 import java.net.InetSocketAddress;
 import javax.swing.JOptionPane;
@@ -29,7 +29,7 @@ import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
 import org.ezim.ui.EzimMsgOut;
 
-public class EzimMsgSender extends Thread
+public class EzimMsgSender implements Runnable
 {
 	private EzimMsgOut emo;
 	private String ip;

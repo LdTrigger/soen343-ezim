@@ -17,7 +17,7 @@
  */
 package org.ezim.core;
 
-import java.lang.Thread;
+import java.lang.Runnable;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -26,7 +26,7 @@ import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.ui.EzimMain;
 
-public class EzimAckSender extends Thread
+public class EzimAckSender implements Runnable
 {
 	private String msg;
 

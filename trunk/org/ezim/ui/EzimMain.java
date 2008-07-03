@@ -59,6 +59,7 @@ import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
+import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimFileOut;
 import org.ezim.ui.EzimMsgOut;
 import org.ezim.ui.EzimPlaza;
@@ -932,12 +933,18 @@ public class EzimMain
 	{
 		if (this.jlstContacts.getSelectedValue() != null)
 		{
+			EzimContact ecTmp
+				= (EzimContact) this.jlstContacts.getSelectedValue();
+			String strIp = ecTmp.getIp();
+
 			JFileChooser jfcTmp = new JFileChooser();
 			int iJfcRes = jfcTmp.showOpenDialog(this);
 
 			if (iJfcRes == JFileChooser.APPROVE_OPTION)
 			{
-				if (this.jlstContacts.getSelectedValue() == null)
+				ecTmp = EzimContactList.getInstance().get(strIp);
+
+				if (ecTmp == null)
 				{
 					JOptionPane.showMessageDialog
 					(
@@ -951,7 +958,7 @@ public class EzimMain
 				{
 					EzimFileOut efoTmp = new EzimFileOut
 					(
-						(EzimContact) this.jlstContacts.getSelectedValue()
+						ecTmp
 						, jfcTmp.getSelectedFile()
 					);
 				}
@@ -1168,6 +1175,8 @@ public class EzimMain
 		// save configurations
 		this.saveConf();
 
+		EzimThreadPool etpTmp = EzimThreadPool.getInstance();
+
 		// change our state back to default, if it was something else
 		// (i.e. leave the plaza if we were there)
 		if (this.localSysState != EzimContact.SYSSTATE_DEFAULT)
@@ -1176,7 +1185,7 @@ public class EzimMain
 			(
 				EzimAckSemantics.sysState(EzimContact.SYSSTATE_DEFAULT)
 			);
-			easDS.start();
+			etpTmp.execute(easDS);
 		}
 
 		// acknowledge other peers we're going offline
@@ -1184,7 +1193,7 @@ public class EzimMain
 		(
 			EzimAckSemantics.offline()
 		);
-		easOff.start();
+		etpTmp.execute(easOff);
 
 		return;
 	}
@@ -1204,7 +1213,7 @@ public class EzimMain
 			(
 				EzimAckSemantics.sysState(iState)
 			);
-			easTmp.start();
+			EzimThreadPool.getInstance().execute(easTmp);
 		}
 
 		return;
@@ -1225,7 +1234,7 @@ public class EzimMain
 			(
 				EzimAckSemantics.state(iState)
 			);
-			easTmp.start();
+			EzimThreadPool.getInstance().execute(easTmp);
 		}
 
 		return;
@@ -1253,7 +1262,7 @@ public class EzimMain
 			(
 				EzimAckSemantics.status(this.localStatus)
 			);
-			easTmp.start();
+			EzimThreadPool.getInstance().execute(easTmp);
 		}
 
 		this.jtfdStatus.setEnabled(false);
@@ -1273,6 +1282,6 @@ public class EzimMain
 		(
 			EzimAckSemantics.poll(this.localName)
 		);
-		easTmp.start();
+		EzimThreadPool.getInstance().execute(easTmp);
 	}
 }

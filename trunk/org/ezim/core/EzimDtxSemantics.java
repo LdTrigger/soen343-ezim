@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.lang.Thread;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -34,6 +33,7 @@ import org.ezim.core.EzimFileConfirmer;
 import org.ezim.core.EzimFileSender;
 import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimFileIn;
 import org.ezim.ui.EzimFileOut;
 import org.ezim.ui.EzimMsgIn;
@@ -786,6 +786,8 @@ public class EzimDtxSemantics
 					EzimFileOut efoTmp = EzimFtxList.getInstance()
 						.get(strFileReqId);
 
+					EzimThreadPool etpTmp = EzimThreadPool.getInstance();
+
 					if (efoTmp != null)
 					{
 						// the remote user has accepted the request
@@ -803,14 +805,14 @@ public class EzimDtxSemantics
 										, strFileReqId
 										, true
 									);
-								efcTmp.start();
+								etpTmp.execute(efcTmp);
 
 								EzimFileSender efsTmp = new EzimFileSender
 								(
 									efoTmp
 									, ecIn.getIp()
 								);
-								efsTmp.start();
+								etpTmp.execute(efsTmp);
 							}
 							// the file doesn't exist.  i.e. deleted
 							else
@@ -827,7 +829,7 @@ public class EzimDtxSemantics
 										, strFileReqId
 										, false
 									);
-								efcTmp.start();
+								etpTmp.execute(efcTmp);
 							}
 						}
 						// the remote user has refused the request
@@ -845,7 +847,7 @@ public class EzimDtxSemantics
 							, strFileReqId
 							, false
 						);
-						efcTmp.start();
+						etpTmp.execute(efcTmp);
 					}
 				}
 			}

@@ -40,6 +40,7 @@ import org.ezim.core.EzimFileResponsor;
 import org.ezim.core.EzimFrxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimThreadPool;
 
 public class EzimFileIn
 	extends JFrame
@@ -580,12 +581,15 @@ public class EzimFileIn
 		boolean blnFinalRes = (blnRes && this.file != null);
 
 		// respond back to the request
-		new EzimFileResponsor
+		EzimThreadPool.getInstance().execute
 		(
-			this.ec.getIp()
-			, this.id
-			, blnFinalRes
-		).start();
+			new EzimFileResponsor
+			(
+				this.ec.getIp()
+				, this.id
+				, blnFinalRes
+			)
+		);
 
 		// close this incoming file window if the user has declined the
 		// transmission or has not chosen where to save the file
