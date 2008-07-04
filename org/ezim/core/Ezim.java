@@ -32,12 +32,12 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "0.1.3";
+	public final static String appVer = "0.1.4";
 
 	// thread pool sizes and keep alive time (in minutes)
-	public final static int corePoolSize = 8;
-	public final static int maxPoolSize = 16;
-	public final static int keepAlive = 30;
+	public final static int thPoolSizeCore = 8;
+	public final static int thPoolSizeMax = 16;
+	public final static int thPoolKeepAlive = 30;
 
 	// multicast group, port, TTL, and incoming buffer size
 	// where group should be from 224.0.0.0 to 239.255.255.255

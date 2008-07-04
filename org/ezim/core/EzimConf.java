@@ -27,6 +27,10 @@ import org.ezim.core.Ezim;
 public class EzimConf
 {
 	// configuration item name
+	public final static String ezimThPoolSizeCore = "ezim.thpoolsize.core";
+	public final static String ezimThPoolSizeMax = "ezim.thpoolsize.max";
+	public final static String ezimThPoolKeepAlive = "ezim.thpool.KeepAlive";
+
 	public final static String ezimMcGroup = "ezim.multicast.group";
 	public final static String ezimMcPort = "ezim.multicast.port";
 	public final static String ezimDtxPort = "ezim.dtx.port";
@@ -83,6 +87,22 @@ public class EzimConf
 		this.settings = new Properties();
 
 		// default values
+		this.settings.setProperty
+		(
+			EzimConf.ezimThPoolSizeCore
+			, Integer.toString(Ezim.thPoolSizeCore)
+		);
+		this.settings.setProperty
+		(
+			EzimConf.ezimThPoolSizeMax
+			, Integer.toString(Ezim.thPoolSizeMax)
+		);
+		this.settings.setProperty
+		(
+			EzimConf.ezimThPoolKeepAlive
+			, Integer.toString(Ezim.thPoolKeepAlive)
+		);
+
 		this.settings.setProperty(EzimConf.ezimMcGroup, Ezim.mcGroup);
 		this.settings.setProperty
 		(
