@@ -21,20 +21,38 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.ezim.core.Ezim;
+import org.ezim.core.EzimConf;
 
 public class EzimThreadPool extends ThreadPoolExecutor
 {
 	private static EzimThreadPool etpool = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
-	private EzimThreadPool()
+	private EzimThreadPool(EzimConf ecIn)
 	{
 		super
 		(
-			Ezim.corePoolSize
-			, Ezim.maxPoolSize
-			, Ezim.keepAlive
+			Integer.parseInt
+			(
+				ecIn.settings.getProperty
+				(
+					EzimConf.ezimThPoolSizeCore
+				)
+			)
+			, Integer.parseInt
+			(
+				ecIn.settings.getProperty
+				(
+					EzimConf.ezimThPoolSizeMax
+				)
+			)
+			, Integer.parseInt
+			(
+				ecIn.settings.getProperty
+				(
+					EzimConf.ezimThPoolKeepAlive
+				)
+			)
 			, TimeUnit.MINUTES
 			, new LinkedBlockingQueue<Runnable>()
 		);
@@ -45,7 +63,8 @@ public class EzimThreadPool extends ThreadPoolExecutor
 	{
 		if (EzimThreadPool.etpool == null)
 		{
-			EzimThreadPool.etpool = new EzimThreadPool();
+			EzimThreadPool.etpool
+				= new EzimThreadPool(EzimConf.getInstance());
 		}
 
 		return EzimThreadPool.etpool;
