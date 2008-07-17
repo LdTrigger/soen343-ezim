@@ -38,7 +38,6 @@ import org.ezim.core.Ezim;
 import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContact;
-import org.ezim.core.EzimContactException;
 import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
