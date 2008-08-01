@@ -1,0 +1,139 @@
+                           EZ Intranet Messenger
+                                User Manual
+
+                        http://ezim.sourceforge.net/
+
+                                                     Author: Chun-Kwong Wong
+                                                       Date: July 18, 2008
+----------------------------------------------------------------------------
+Table of Contents
+
+
+    1.0 System Requirements
+    2.0 Installation
+    3.0 Running EZIM
+    4.0 FAQ
+    5.0 Trouble Shooting
+
+
+----------------------------------------------------------------------------
+1.0 System Requirement
+
+
+    In order to run EZ Intranet Messenger, Java Runtime Environment 1.6.0 is
+needed.
+
+
+----------------------------------------------------------------------------
+2.0 Installation
+
+
+    Extract contents from the archive.  For example, if your PC is running
+Linux and have "unzip" installed, simply type in "unzip ezim-1.x.x.zip".  A
+directory containing all the necessary contents to run EZIM will be created.
+
+
+----------------------------------------------------------------------------
+3.0 Running EZIM
+
+
+    Execute EZIM with the following command:
+
+    on Linux:
+
+        $ java -jar <path to EZIM's directory>/ezim.jar &
+
+    on Windows:
+
+        C:\> javaw -jar <path to EZIM's directory>\ezim.jar
+
+    * Windows users should be able to execute EZIM by double clicking on the
+JAR file directly.
+
+
+----------------------------------------------------------------------------
+4.0 FAQ
+
+
+Q: What is the listbox with little icons inside for?
+
+A: It is the state icon which represents your current state and gives your
+   peers a general idea how you are being or what you are doing.  For
+   example, your can tell the other users that you're talking on the phone
+   by simply selecting the classic black phone state icon.  Or you can tell
+   your peers that you don't want to be disturbed by showing them the "no
+   entry" sign.
+
+
+Q: Why I can't leave the status textbox empty?
+A: Due to our connection policy, every connected user must have a brief
+   verbal description to tell the other users that he/she is indeed
+   connected to the network.  If you leave the status textbox empty, a
+   single word "Online" will be used to describe about your status.
+
+
+Q: How do I change my nickname?
+
+A: We don't encourage users changing their nickname often because it is the
+   only way a user can be recognized.  Nonetheless, If you really want to
+   change your nickname, you can delete the whole configuration directory,
+   then all settings will be re-initialized and you will be asked to enter
+   the nickname again.
+
+   On Windows, the configuration directory is known as "%HOME%\.ezim".
+   On Linux, it is "$HOME/.ezim".
+
+
+Q: Why does the state icon change to something which is not I have chosen
+   when I open the plaza (public chat) window?
+
+A: When the plaza window is open, a user is supposed to be chatting in the
+   plaza instead of being away or whatsoever.  The plaza state icon here
+   works as an indicator which tells other users who is/are chatting in the
+   plaza.  When the user finishes chatting and closes the plaza window, the
+   state icon will be restored to what is being selected.
+
+
+----------------------------------------------------------------------------
+5.0 Trouble Shooting
+
+
+Q: Why I can't see other users?
+
+A: First of all, make sure that you are on the same network segment with the
+   other users.  If you were in the same network segment with your peers,
+   make sure your network supports multicast.  If you have no idea about it,
+   ask your network administrator.  If all these are cleared and you still
+   cannot see other users, try clicking on the refresh button to query the
+   contact list manually.
+
+
+Q: There users on the contact whom I can't send message to, why?
+
+A: Either the users you are trying to send message to have their firewalls
+   blocking the transmissions, or there are firewalls in your machine
+   preventing connections getting out.
+
+   In order to receive messages from the peers, the port 6666 has to be
+   open for incoming direct transmission. If there is any firewall running
+   on the system, you'll have to make sure the specific port is open to your
+   peers. 
+ 
+   On Linux, you can do something like this with iptables as root: 
+   # iptables -A INPUT -i eth0 -p tcp -s 192.168.1.0/24 -dport 6666 -j ACCEPT 
+ 
+   Also, if you can't see your peers, or the status update does not seem to
+   work, check and see if the firewall is blocking any multicast signals.
+   With iptables, see if there is something like this, if so, remove it: 
+ 
+   iptables -A INPUT -i eth0 -d 229.0.0.1 -j DROP 
+
+
+NOTE:
+
+   If you have problem which is not listed here, please visit our help
+   forum and leave us a message:
+
+   http://sourceforge.net/forum/forum.php?forum_id=728745
+
+----------------------------------------------------------------------------
