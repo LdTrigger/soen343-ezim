@@ -1,6 +1,9 @@
 /*
     EZ Intranet Messenger
-    Copyright (C) 2007 - 2008  Chun-Kwong Wong <chunkwong.wong@gmail.com>
+
+    Copyright (C) 2007 - 2008  Chun-Kwong Wong
+    chunkwong.wong@gmail.com
+    http://ezim.sourceforge.net/
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,7 +35,7 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "0.1.4";
+	public final static String appVer = "1.0.0";
 
 	// thread pool sizes and keep alive time (in minutes)
 	public final static int thPoolSizeCore = 8;
