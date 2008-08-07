@@ -20,11 +20,9 @@
  */
 package org.ezim.core;
 
-import java.awt.event.WindowEvent;
 import java.lang.Thread;
 import javax.swing.UIManager;
 
-import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckTaker;
 import org.ezim.core.EzimDtxTaker;
 import org.ezim.core.EzimLang;
