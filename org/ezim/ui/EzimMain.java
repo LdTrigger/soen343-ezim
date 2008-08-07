@@ -1286,5 +1286,19 @@ public class EzimMain
 			EzimAckSemantics.poll(this.localName)
 		);
 		EzimThreadPool.getInstance().execute(easTmp);
+
+		return;
+	}
+
+	/**
+	 * execute proper ending processes when JVM shuts down unexpectedly
+	 */
+	public void panic()
+	{
+		if (this.tiMain != null) this.showHide(true);
+
+		this.saveConfAckOff();
+
+		return;
 	}
 }
