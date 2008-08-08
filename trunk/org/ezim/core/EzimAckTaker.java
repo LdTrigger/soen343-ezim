@@ -28,6 +28,7 @@ import java.net.MulticastSocket;
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimConf;
+import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
 
 public class EzimAckTaker implements Runnable
@@ -42,7 +43,6 @@ public class EzimAckTaker implements Runnable
 		InetAddress ia = null;
 		DatagramPacket dp = null;
 		byte[] arrBytes = new byte[Ezim.inBuf];
-		String strTmp = null;
 
 		EzimConf ecTmp = EzimConf.getInstance();
 		EzimMain emHwnd = EzimMain.getInstance();
@@ -70,7 +70,9 @@ public class EzimAckTaker implements Runnable
 			{
 				ms.receive(dp);
 
-				strTmp = new String
+				final String strHAdr = dp.getAddress().getHostAddress();
+
+				final String strDtx = new String
 				(
 					dp.getData()
 					, 0
@@ -78,10 +80,20 @@ public class EzimAckTaker implements Runnable
 					, Ezim.dtxMsgEnc
 				);
 
-				EzimAckSemantics.parser
+				EzimThreadPool etpTmp = EzimThreadPool.getInstance();
+				etpTmp.execute
 				(
-					dp.getAddress().getHostAddress()
-					, strTmp
+					new Runnable()
+					{
+						public void run()
+						{
+							EzimAckSemantics.parser
+							(
+								strHAdr
+								, strDtx
+							);
+						}
+					}
 				);
 			}
 		}
