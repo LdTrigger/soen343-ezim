@@ -329,7 +329,8 @@ public class EzimPlaza
 	{
 		if (this.isVisible())
 		{
-			EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
+			EzimContact ecTmp
+				= EzimContactList.getInstance().getContact(strIp);
 
 			if (ecTmp != null)
 			{
@@ -367,7 +368,8 @@ public class EzimPlaza
 	{
 		if (this.isVisible())
 		{
-			EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
+			EzimContact ecTmp
+				= EzimContactList.getInstance().getContact(strIp);
 
 			if (ecTmp != null)
 			{

@@ -36,7 +36,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.InetAddress;
-import java.util.Arrays;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ListSelectionModel;
@@ -57,7 +56,6 @@ import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
-import org.ezim.core.EzimContactException;
 import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
@@ -387,7 +385,7 @@ public class EzimMain
 		);
 		this.jtfdStatus.setToolTipText(EzimLang.ClickToChangeStatus);
 
-		this.jlstContacts = new JList();
+		this.jlstContacts = new JList(EzimContactList.getInstance());
 		this.jlstContacts.setCellRenderer(new EzimContactListRenderer());
 		this.jlstContacts.setSelectionMode
 		(
@@ -945,7 +943,7 @@ public class EzimMain
 
 			if (iJfcRes == JFileChooser.APPROVE_OPTION)
 			{
-				ecTmp = EzimContactList.getInstance().get(strIp);
+				ecTmp = EzimContactList.getInstance().getContact(strIp);
 
 				if (ecTmp == null)
 				{
@@ -1021,150 +1019,6 @@ public class EzimMain
 			, EzimLang.Error
 			, JOptionPane.ERROR_MESSAGE
 		);
-
-		return;
-	}
-
-	// C O N T A C T   M A N I P U L A T I O N -----------------------------
-	/**
-	 * refresh contact list contents
-	 */
-	private void refreshContactList()
-	{
-		EzimContact[] ecTmp = EzimContactList.getInstance().toArray();
-
-		Arrays.sort(ecTmp);
-
-		this.jlstContacts.setListData(ecTmp);
-		this.jlstContacts.repaint();
-
-		return;
-	}
-
-	/**
-	 * add a new contact to the list if not yet exists
-	 * @param strIp IP address of the new contact
-	 * @param strname name of the new contact
-	 * @param strStatus status of the new contact
-	 */
-	public void addContact(String strIp, String strName, String strStatus)
-	{
-		try
-		{
-			EzimContactList.getInstance().add(strIp, strName, strStatus);
-		}
-		catch(EzimContactException eceTmp)
-		{
-			this.errAlert(eceTmp.getMessage());
-		}
-		finally
-		{
-			this.refreshContactList();
-		}
-
-		return;
-	}
-
-	/**
-	 * remove contact from the list if exists
-	 * @param strIp IP address of the contact to be removed
-	 */
-	public void rmContact(String strIp)
-	{
-		try
-		{
-			EzimContactList.getInstance().remove(strIp);
-		}
-		catch(Exception e)
-		{
-			this.errAlert(e.getMessage());
-		}
-		finally
-		{
-			this.refreshContactList();
-		}
-
-		return;
-	}
-
-	/**
-	 * update an existing contact with the new system state
-	 * @param strIp IP address of the contact to be update
-	 * @param iState new state of the contact
-	 */
-	public void updContactSysState(String strIp, int iState)
-	{
-		EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
-
-		if (ecTmp != null)
-		{
-			if (this.epMain.isVisible())
-			{
-				if
-				(
-					ecTmp.getSysState() != EzimContact.SYSSTATE_PLAZA
-					&& iState == EzimContact.SYSSTATE_PLAZA
-				)
-				{
-					this.epMain.addNarration
-					(
-						strIp
-						, EzimLang.HasJoinedPlazaOfSpeech
-					);
-				}
-				else if
-				(
-					ecTmp.getSysState() == EzimContact.SYSSTATE_PLAZA
-					&& iState != EzimContact.SYSSTATE_PLAZA
-				)
-				{
-					this.epMain.addNarration
-					(
-						strIp
-						, EzimLang.HasLeftPlazaOfSpeech
-					);
-				}
-			}
-
-			ecTmp.setSysState(iState);
-			this.refreshContactList();
-		}
-
-		return;
-	}
-
-	/**
-	 * update an existing contact with the new state
-	 * @param strIp IP address of the contact to be update
-	 * @param iState new state of the contact
-	 */
-	public void updContactState(String strIp, int iState)
-	{
-		EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
-
-		if (ecTmp != null)
-		{
-			ecTmp.setState(iState);
-			this.refreshContactList();
-		}
-
-		return;
-	}
-
-	/**
-	 * update an existing contact with the new status
-	 * @param strIp IP address of the contact to be updated
-	 * @param strStatus new status of the contact
-	 */
-	public void updContactStatus(String strIp, String strStatus)
-	{
-		EzimContact ecTmp = EzimContactList.getInstance().get(strIp);
-
-		if (ecTmp != null)
-		{
-			ecTmp.setStatus(strStatus);
-			this.refreshContactList();
-		}
 
 		return;
 	}
@@ -1279,12 +1133,12 @@ public class EzimMain
 	public void freshPoll()
 	{
 		EzimContactList.getInstance(true);
-		this.refreshContactList();
 
 		EzimAckSender easTmp = new EzimAckSender
 		(
 			EzimAckSemantics.poll(this.localName)
 		);
+
 		EzimThreadPool.getInstance().execute(easTmp);
 
 		return;
@@ -1295,8 +1149,7 @@ public class EzimMain
 	 */
 	public void panic()
 	{
-		if (this.tiMain != null) this.showHide(true);
-
+		this.showHide(true);
 		this.saveConfAckOff();
 
 		return;
