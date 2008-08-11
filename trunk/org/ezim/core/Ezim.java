@@ -90,6 +90,7 @@ public class Ezim
 			// ignore whatever
 		}
 
+/*
 		// execute proper ending processes when JVM shuts down
 		Runtime.getRuntime().addShutdownHook
 		(
@@ -102,6 +103,7 @@ public class Ezim
 				}
 			}
 		);
+*/
 
 		emTmp.freshPoll();
 

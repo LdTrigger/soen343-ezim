@@ -21,20 +21,170 @@
 package org.ezim.core;
 
 import java.util.ArrayList;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.ListModel;
 
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
 
-public class EzimContactList
+import org.ezim.ui.EzimMain;
+import org.ezim.ui.EzimPlaza;
+
+public class EzimContactList implements ListModel
 {
 	private static EzimContactList contacts = null;
 
 	private ArrayList<EzimContact> list = null;
+	private ArrayList<ListDataListener> listeners = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
 	private EzimContactList()
 	{
 		this.list = new ArrayList<EzimContact>();
+		this.listeners = new ArrayList<ListDataListener>();
+	}
+
+	// I N T E R F A C E   M E T H O D   I M P L E M E N T A T I O N -------
+	/**
+	 * add list data listener to the call list
+	 * @param l listener to be added
+	 */
+	public void addListDataListener(ListDataListener l)
+	{
+		this.listeners.add(l);
+		return;
+	}
+
+	/**
+	 * get size of the contact list
+	 * @return size of the contact list
+	 */
+	public int getSize()
+	{
+		this.list.trimToSize();
+		return this.list.size();
+	}
+
+	/**
+	 * get element at the specified index
+	 * @param iIdx the target element's index
+	 */
+	public EzimContact getElementAt(int iIdx)
+	{
+		return this.list.get(iIdx);
+	}
+
+	/**
+	 * remove list data listener from the call list
+	 * @param l listener to be added
+	 */
+	public void removeListDataListener(ListDataListener l)
+	{
+		this.listeners.remove(l);
+		return;
+	}
+
+	// P R I V A T E   M E T H O D S ---------------------------------------
+	/**
+	 * fire "contents changed" event to all listeners
+	 * @param iIdx0 end of the changed interval (inclusive)
+	 * @param iIdx1 the other end of the changed interval (inclusive)
+	 */
+	private void fireContentsChanged(int iIdx0, int iIdx1)
+	{
+		int iCnt = 0;
+		int iLen = this.listeners.size();
+		ListDataEvent ldeTmp = new ListDataEvent
+		(
+			this
+			, ListDataEvent.CONTENTS_CHANGED
+			, iIdx0
+			, iIdx1
+		);
+
+		for(iCnt = 0; iCnt < iLen; iCnt ++)
+		{
+			this.listeners.get(iCnt).contentsChanged(ldeTmp);
+		}
+
+		return;
+	}
+
+	/**
+	 * fire "interval added" event to all listeners
+	 * @param iIdx0 end of the new interval (inclusive)
+	 * @param iIdx1 the other end of the new interval (inclusive)
+	 */
+	private void fireIntervalAdded(int iIdx0, int iIdx1)
+	{
+		int iCnt = 0;
+		int iLen = this.listeners.size();
+		ListDataEvent ldeTmp = new ListDataEvent
+		(
+			this
+			, ListDataEvent.INTERVAL_ADDED
+			, iIdx0
+			, iIdx1
+		);
+
+		for(iCnt = 0; iCnt < iLen; iCnt ++)
+		{
+			this.listeners.get(iCnt).intervalAdded(ldeTmp);
+		}
+
+		return;
+	}
+
+	/**
+	 * fire "interval removed" event to all listeners
+	 * @param iIdx0 end of the removed interval (inclusive)
+	 * @param iIdx1 the other end of the removed interval (inclusive)
+	 */
+	private void fireIntervalRemoved(int iIdx0, int iIdx1)
+	{
+		int iCnt = 0;
+		int iLen = this.listeners.size();
+		ListDataEvent ldeTmp = new ListDataEvent
+		(
+			this
+			, ListDataEvent.INTERVAL_REMOVED
+			, iIdx0
+			, iIdx1
+		);
+
+		for(iCnt = 0; iCnt < iLen; iCnt ++)
+		{
+			this.listeners.get(iCnt).intervalRemoved(ldeTmp);
+		}
+
+		return;
+	}
+
+	/**
+	 * find and return index of the contact specified by the IP address
+	 * @param strIp IP address to look for
+	 * @return index of the contact, or -1 if not found
+	 */
+	private int idxContact(String strIp)
+	{
+		int iOut = -1;
+		int iCnt = 0;
+		int iLen = this.getSize();
+		EzimContact ecTmp = null;
+
+		for(iCnt = 0; iCnt < iLen; iCnt ++)
+		{
+			ecTmp = (EzimContact) this.list.get(iCnt);
+
+			if (strIp.equals(ecTmp.getIp()))
+			{
+				iOut = iCnt;
+				break;
+			}
+		}
+
+		return iOut;
 	}
 
 	// P U B L I C   M E T H O D S -----------------------------------------
@@ -54,49 +204,36 @@ public class EzimContactList
 	 */
 	public static EzimContactList getInstance(boolean blnReset)
 	{
-		if (EzimContactList.contacts == null || blnReset)
+		if (EzimContactList.contacts == null)
+		{
 			EzimContactList.contacts = new EzimContactList();
+		}
+		else if (blnReset)
+		{
+			EzimContactList.contacts.clear();
+		}
 
 		return EzimContactList.contacts;
 	}
 
 	/**
-	 * return all list contents in array
+	 * remove all elements from this list
 	 */
-	public EzimContact[] toArray()
+	public void clear()
 	{
-		EzimContact[] ecTmp = (EzimContact[]) this.list.toArray
-		(
-			new EzimContact[0]
-		);
+		int iSize = this.getSize();
 
-		return ecTmp;
-	}
-
-	/**
-	 * find and return index of the contact specified by the IP address
-	 * @param strIp IP address to look for
-	 * @return index of the contact, or -1 if not found
-	 */
-	private int idxContact(String strIp)
-	{
-		int iOut = -1;
-		int iCnt = 0;
-		int iLen = list.size();
-		EzimContact ecTmp = null;
-
-		for(iCnt = 0; iCnt < iLen; iCnt ++)
+		if (iSize > 0)
 		{
-			ecTmp = (EzimContact) this.list.get(iCnt);
-
-			if (strIp.equals(ecTmp.getIp()))
+			synchronized(this.list)
 			{
-				iOut = iCnt;
-				break;
+				this.list.clear();
 			}
+
+			this.fireIntervalRemoved(0, iSize - 1);
 		}
 
-		return iOut;
+		return;
 	}
 
 	/**
@@ -104,32 +241,58 @@ public class EzimContactList
 	 * @param strIp IP address to look for
 	 * @return instance of the contact, or null if not found
 	 */
-	public EzimContact get(String strIp)
+	public EzimContact getContact(String strIp)
 	{
 		EzimContact ecOut = null;
 		int iIdx = idxContact(strIp);
 
 		if (iIdx != -1)
-			ecOut = this.list.get(iIdx);
+			ecOut = this.getElementAt(iIdx);
 
 		return ecOut;
 	}
 
 	/**
-	 * add a new contact to the list if not yet exists
+	 * add a new contact to the list (ordered by name) if not yet exists
 	 * @param strIp IP address of the new contact
 	 * @param strname name of the new contact
 	 * @param strStatus status of the new contact
 	 */
-	public void add(String strIp, String strName, String strStatus)
-		throws EzimContactException
+	public void addContact(String strIp, String strName, String strStatus)
 	{
 		if (this.idxContact(strIp) == -1)
 		{
-			this.list.add
-			(
-				new EzimContact(strIp, strName, strStatus)
-			);
+			try
+			{
+				EzimContact ecTmp = null;
+
+				int iIdx = 0;
+				int iLen = this.getSize();
+
+				while(iIdx < iLen)
+				{
+					ecTmp = this.getElementAt(iIdx);
+
+					if (strName.compareTo(ecTmp.getName()) < 0) break;
+
+					iIdx ++;
+				}
+
+				synchronized(this.list)
+				{
+					this.list.add
+					(
+						iIdx
+						, new EzimContact(strIp, strName, strStatus)
+					);
+				}
+
+				this.fireIntervalAdded(iIdx, iIdx);
+			}
+			catch(EzimContactException eceTmp)
+			{
+				// ignore
+			}
 		}
 
 		return;
@@ -139,14 +302,106 @@ public class EzimContactList
 	 * remove contact from the list if exists
 	 * @param strIp IP address of the contact to be removed
 	 */
-	public void remove(String strIp)
-		throws Exception
+	public void rmContact(String strIp)
 	{
 		int iIdx = idxContact(strIp);
 
 		if (iIdx != -1)
 		{
-			this.list.remove(iIdx);
+			synchronized(this.list)
+			{
+				this.list.remove(iIdx);
+			}
+
+			this.fireIntervalRemoved(iIdx, iIdx);
+		}
+
+		return;
+	}
+
+	/**
+	 * update an existing contact with the new system state
+	 * @param strIp IP address of the contact to be update
+	 * @param iState new state of the contact
+	 */
+	public void updContactSysState(String strIp, int iState)
+	{
+		int iIdx = this.idxContact(strIp);
+
+		if (iIdx >= 0)
+		{
+			EzimContact ecTmp = this.getElementAt(iIdx);
+
+			// post auto narration in the plaza
+			EzimPlaza epTmp = EzimMain.getInstance().epMain;
+			if (epTmp.isVisible())
+			{
+				if
+				(
+					ecTmp.getSysState() != EzimContact.SYSSTATE_PLAZA
+					&& iState == EzimContact.SYSSTATE_PLAZA
+				)
+				{
+					epTmp.addNarration
+					(
+						strIp
+						, EzimLang.HasJoinedPlazaOfSpeech
+					);
+				}
+				else if
+				(
+					ecTmp.getSysState() == EzimContact.SYSSTATE_PLAZA
+					&& iState != EzimContact.SYSSTATE_PLAZA
+				)
+				{
+					epTmp.addNarration
+					(
+						strIp
+						, EzimLang.HasLeftPlazaOfSpeech
+					);
+				}
+			}
+
+			ecTmp.setSysState(iState);
+			this.fireContentsChanged(iIdx, iIdx);
+		}
+
+		return;
+	}
+
+	/**
+	 * update an existing contact with the new state
+	 * @param strIp IP address of the contact to be update
+	 * @param iState new state of the contact
+	 */
+	public void updContactState(String strIp, int iState)
+	{
+		int iIdx = this.idxContact(strIp);
+
+		if (iIdx >= 0)
+		{
+			EzimContact ecTmp = this.getElementAt(iIdx);
+			ecTmp.setState(iState);
+			this.fireContentsChanged(iIdx, iIdx);
+		}
+
+		return;
+	}
+
+	/**
+	 * update an existing contact with the new status
+	 * @param strIp IP address of the contact to be updated
+	 * @param strStatus new status of the contact
+	 */
+	public void updContactStatus(String strIp, String strStatus)
+	{
+		int iIdx = this.idxContact(strIp);
+
+		if (iIdx >= 0)
+		{
+			EzimContact ecTmp = this.getElementAt(iIdx);
+			ecTmp.setStatus(strStatus);
+			this.fireContentsChanged(iIdx, iIdx);
 		}
 
 		return;

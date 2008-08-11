@@ -394,7 +394,13 @@ public class EzimMsgOut
 	// E V E N T   H A N D L E R -------------------------------------------
 	private void jbtnSend_ActionPerformed(ActionEvent evt)
 	{
-		if (EzimContactList.getInstance().get(this.ec.getIp()) == null)
+		if
+		(
+			EzimContactList.getInstance().getContact
+			(
+				this.ec.getIp()
+			) == null
+		)
 		{
 			JOptionPane.showMessageDialog
 			(

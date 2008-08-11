@@ -80,7 +80,7 @@ public class EzimDtxTaker implements Runnable
 				sckIn = ssck.accept();
 				sckIn.setSoTimeout(Ezim.dtxTimeout);
 
-				EzimContact ecTmp = EzimContactList.getInstance().get
+				EzimContact ecTmp = EzimContactList.getInstance().getContact
 				(
 					((InetSocketAddress) sckIn.getRemoteSocketAddress())
 						.getAddress().getHostAddress()

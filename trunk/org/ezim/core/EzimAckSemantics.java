@@ -22,6 +22,7 @@ package org.ezim.core;
 
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
 
@@ -109,13 +110,15 @@ public class EzimAckSemantics
 	 */
 	public static void parser(String strIp, String strAck)
 	{
-		EzimMain emTmp = EzimMain.getInstance();
+		EzimContactList eclTmp = EzimContactList.getInstance();
 
 		if (strAck.startsWith(EzimAckSemantics.POLL))
 		{
+			EzimMain emTmp = EzimMain.getInstance();
+
 			if (! strIp.equals(emTmp.localAddress))
 			{
-				emTmp.addContact
+				eclTmp.addContact
 				(
 					strIp
 					, strAck.substring(EzimAckSemantics.POLL.length())
@@ -151,7 +154,7 @@ public class EzimAckSemantics
 		}
 		else if (strAck.startsWith(EzimAckSemantics.ON))
 		{
-			emTmp.addContact
+			eclTmp.addContact
 			(
 				strIp
 				, strAck.substring(EzimAckSemantics.ON.length())
@@ -160,11 +163,11 @@ public class EzimAckSemantics
 		}
 		else if (strAck.startsWith(EzimAckSemantics.OFF))
 		{
-			emTmp.rmContact(strIp);
+			eclTmp.rmContact(strIp);
 		}
 		else if (strAck.startsWith(EzimAckSemantics.SYSSTATE))
 		{
-			emTmp.updContactSysState
+			eclTmp.updContactSysState
 			(
 				strIp
 				, Integer.valueOf
@@ -178,7 +181,7 @@ public class EzimAckSemantics
 		}
 		else if (strAck.startsWith(EzimAckSemantics.STATE))
 		{
-			emTmp.updContactState
+			eclTmp.updContactState
 			(
 				strIp
 				, Integer.valueOf
@@ -192,7 +195,7 @@ public class EzimAckSemantics
 		}
 		else if (strAck.startsWith(EzimAckSemantics.STATUS))
 		{
-			emTmp.updContactStatus
+			eclTmp.updContactStatus
 			(
 				strIp
 				, strAck.substring(EzimAckSemantics.STATUS.length())
@@ -200,6 +203,8 @@ public class EzimAckSemantics
 		}
 		else if (strAck.startsWith(EzimAckSemantics.SPEECH))
 		{
+			EzimMain emTmp = EzimMain.getInstance();
+
 			emTmp.epMain.addSpeech
 			(
 				strIp
