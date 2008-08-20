@@ -28,40 +28,64 @@ import org.ezim.ui.EzimMain;
 
 public class EzimAckSemantics
 {
-	private final static String PREFIX
-		= Ezim.appAbbrev.toUpperCase() + " ";
-
-	private final static String POLL
-		= EzimAckSemantics.PREFIX + "POLL:";
-	private final static String ON
-		= EzimAckSemantics.PREFIX + "ON:";
-	private final static String OFF
-		= EzimAckSemantics.PREFIX + "OFF:";
-	private final static String SYSSTATE
-		= EzimAckSemantics.PREFIX + "SYSSTATE:";
-	private final static String STATE
-		= EzimAckSemantics.PREFIX + "STATE:";
-	private final static String STATUS
-		= EzimAckSemantics.PREFIX + "STATUS:";
-	private final static String SPEECH
-		= EzimAckSemantics.PREFIX + "SPEECH:";
+	private final static String NEWLINE		= "\n";
+	private final static String PREFIX		= Ezim.appAbbrev.toUpperCase();
+	private final static String NAME		= "NAME:";
+	private final static String SYSSTATE	= "SYSSTATE:";
+	private final static String STATE		= "STATE:";
+	private final static String STATUS		= "STATUS:";
+	private final static String SPEECH		= "SPEECH:";
+	private final static String POLL		= "POLL:";
+	private final static String OFF			= "OFF:";
 
 	/**
-	 * used when the application starts to poll from all existing users
-	 * @param strName local user name
+	 * used to poll from a user specified by IP address
+	 * @param strIp IP address of the user to poll from
 	 */
-	public static String poll(String strName)
+	public static String poll(String strIp)
 	{
-		return EzimAckSemantics.POLL + strName;
+		StringBuffer sbOut = new StringBuffer();
+
+		sbOut.append(EzimAckSemantics.PREFIX);
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.POLL);
+		sbOut.append(strIp);
+
+		return sbOut.toString();
 	}
 
 	/**
 	 * used to reply someone else's polling
 	 * @param strName local user name
+	 * @param iSysState system state
+	 * @param iState user state
+	 * @param strStatus status
 	 */
-	public static String online(String strName)
+	public static String allInfo
+	(
+		String strName
+		, int iSysState
+		, int iState
+		, String strStatus
+	)
 	{
-		return EzimAckSemantics.ON + strName;
+		StringBuffer sbOut = new StringBuffer();
+
+		sbOut.append(EzimAckSemantics.PREFIX);
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.NAME);
+		sbOut.append(strName);
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.SYSSTATE);
+		sbOut.append(Integer.toString(iSysState));
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.STATE);
+		sbOut.append(Integer.toString(iState));
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.STATUS);
+		sbOut.append(strStatus);
+
+		return sbOut.toString();
 	}
 
 	/**
@@ -69,148 +93,281 @@ public class EzimAckSemantics
 	 */
 	public static String offline()
 	{
-		return EzimAckSemantics.OFF;
+		StringBuffer sbOut = new StringBuffer();
+
+		sbOut.append(EzimAckSemantics.PREFIX);
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.OFF);
+
+		return sbOut.toString();
 	}
 
 	/**
 	 * used to acknowledge all other users to change system state
+	 * @param iState system state
 	 */
 	public static String sysState(int iState)
 	{
-		return EzimAckSemantics.SYSSTATE + Integer.toString(iState);
+		StringBuffer sbOut = new StringBuffer();
+
+		sbOut.append(EzimAckSemantics.PREFIX);
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.SYSSTATE);
+		sbOut.append(Integer.toString(iState));
+
+		return sbOut.toString();
 	}
 
 	/**
 	 * used to acknowledge all other users to change state
+	 * @param iState user state
 	 */
 	public static String state(int iState)
 	{
-		return EzimAckSemantics.STATE + Integer.toString(iState);
+		StringBuffer sbOut = new StringBuffer();
+
+		sbOut.append(EzimAckSemantics.PREFIX);
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.STATE);
+		sbOut.append(Integer.toString(iState));
+
+		return sbOut.toString();
 	}
 
 	/**
 	 * used to acknowledge all users to change the status
+	 * @param strStatus status
 	 */
 	public static String status(String strStatus)
 	{
-		return EzimAckSemantics.STATUS + strStatus;
+		StringBuffer sbOut = new StringBuffer();
+
+		sbOut.append(EzimAckSemantics.PREFIX);
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.STATUS);
+		sbOut.append(strStatus);
+
+		return sbOut.toString();
 	}
 
 	/**
 	 * used to speak publicly in the plaza
+	 * @param strSpeech speech
 	 */
 	public static String speech(String strSpeech)
 	{
-		return EzimAckSemantics.SPEECH + strSpeech;
+		StringBuffer sbOut = new StringBuffer();
+
+		sbOut.append(EzimAckSemantics.PREFIX);
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.SPEECH);
+		sbOut.append(strSpeech);
+
+		return sbOut.toString();
 	}
 
 	/**
 	 * parse all incoming acknowledge broadcast messages and react
 	 * accordingly
+	 * @param strIp sender's IP address
+	 * @param strAck acknowledge broadcast message to be parsed
 	 */
 	public static void parser(String strIp, String strAck)
 	{
+		EzimMain emTmp = EzimMain.getInstance();
 		EzimContactList eclTmp = EzimContactList.getInstance();
 
-		if (strAck.startsWith(EzimAckSemantics.POLL))
-		{
-			EzimMain emTmp = EzimMain.getInstance();
+		String[] arrAckLines = strAck.split(EzimAckSemantics.NEWLINE);
 
-			if (! strIp.equals(emTmp.localAddress))
+		int iCnt = 0;
+		int iLen = arrAckLines.length;
+		String strLine = null;
+
+		boolean blnAllInfo = false;
+		boolean blnOff = false;
+
+		String strName = null;
+		int iSysState = -1;
+		int iState = -1;
+		String strStatus = null;
+		String strSpeech = null;
+
+		if
+		(
+			arrAckLines == null
+			|| arrAckLines.length == 0
+			|| ! arrAckLines[0].equals(EzimAckSemantics.PREFIX)
+		)
+		{
+			return;
+		}
+
+		for(iCnt = 1; iCnt < iLen; iCnt ++)
+		{
+			strLine = arrAckLines[iCnt];
+
+			if
+			(
+				strLine.startsWith(EzimAckSemantics.POLL)
+				&& ! strIp.equals(emTmp.localAddress)
+			)
 			{
-				eclTmp.addContact
+				String strPollIp = strLine.substring
 				(
-					strIp
-					, strAck.substring(EzimAckSemantics.POLL.length())
-					, EzimContact.STATUS_DEFAULT
+					EzimAckSemantics.POLL.length()
+				);
+
+				if
+				(
+					strPollIp.length() == 0
+					|| strPollIp.equals(emTmp.localAddress)
+				)
+				{
+					blnAllInfo = true;
+				}
+			}
+			else if (strLine.startsWith(EzimAckSemantics.OFF))
+			{
+				blnOff = true;
+			}
+			else if (strLine.startsWith(EzimAckSemantics.NAME))
+			{
+				strName = strLine.substring(EzimAckSemantics.NAME.length());
+			}
+			else if (strLine.startsWith(EzimAckSemantics.SYSSTATE))
+			{
+				iSysState = Integer.valueOf
+				(
+					strLine.substring
+					(
+						EzimAckSemantics.SYSSTATE.length()
+					)
 				);
 			}
-
-			EzimThreadPool etpTmp = EzimThreadPool.getInstance();
-
-			EzimAckSender easTmp1 = new EzimAckSender
-			(
-				EzimAckSemantics.online(emTmp.localName)
-			);
-			etpTmp.execute(easTmp1);
-
-			EzimAckSender easTmp2 = new EzimAckSender
-			(
-				EzimAckSemantics.sysState(emTmp.localSysState)
-			);
-			etpTmp.execute(easTmp2);
-
-			EzimAckSender easTmp3 = new EzimAckSender
-			(
-				EzimAckSemantics.state(emTmp.localState)
-			);
-			etpTmp.execute(easTmp3);
-
-			EzimAckSender easTmp4 = new EzimAckSender
-			(
-				EzimAckSemantics.status(emTmp.localStatus)
-			);
-			etpTmp.execute(easTmp4);
+			else if (strLine.startsWith(EzimAckSemantics.STATE))
+			{
+				iState = Integer.valueOf
+				(
+					strLine.substring
+					(
+						EzimAckSemantics.STATE.length()
+					)
+				);
+			}
+			else if (strLine.startsWith(EzimAckSemantics.STATUS))
+			{
+				strStatus = strLine.substring
+				(
+					EzimAckSemantics.STATUS.length()
+				);
+			}
+			else if (strLine.startsWith(EzimAckSemantics.SPEECH))
+			{
+				strSpeech = strLine.substring
+				(
+					EzimAckSemantics.SPEECH.length()
+				);
+			}
 		}
-		else if (strAck.startsWith(EzimAckSemantics.ON))
+
+		// update ACK info of the sender
+		if (blnOff)
+		{
+			eclTmp.rmContact(strIp);
+		}
+		else if (eclTmp.getContact(strIp) == null)
 		{
 			eclTmp.addContact
 			(
 				strIp
-				, strAck.substring(EzimAckSemantics.ON.length())
-				, EzimContact.STATUS_DEFAULT
+				, strName
+				, iSysState
+				, iState
+				, strStatus
 			);
-		}
-		else if (strAck.startsWith(EzimAckSemantics.OFF))
-		{
-			eclTmp.rmContact(strIp);
-		}
-		else if (strAck.startsWith(EzimAckSemantics.SYSSTATE))
-		{
-			eclTmp.updContactSysState
-			(
-				strIp
-				, Integer.valueOf
-					(
-						strAck.substring
-						(
-							EzimAckSemantics.SYSSTATE.length()
-						)
-					)
-			);
-		}
-		else if (strAck.startsWith(EzimAckSemantics.STATE))
-		{
-			eclTmp.updContactState
-			(
-				strIp
-				, Integer.valueOf
-					(
-						strAck.substring
-						(
-							EzimAckSemantics.STATE.length()
-						)
-					)
-			);
-		}
-		else if (strAck.startsWith(EzimAckSemantics.STATUS))
-		{
-			eclTmp.updContactStatus
-			(
-				strIp
-				, strAck.substring(EzimAckSemantics.STATUS.length())
-			);
-		}
-		else if (strAck.startsWith(EzimAckSemantics.SPEECH))
-		{
-			EzimMain emTmp = EzimMain.getInstance();
 
+			if (! strIp.equals(emTmp.localAddress))
+			{
+				blnAllInfo = true;
+			}
+		}
+		else
+		{
+			if (strName != null && strName.length() > 0)
+			{
+				eclTmp.updContactName
+				(
+					strIp
+					, strName
+				);
+			}
+
+			if (iSysState > -1)
+			{
+				eclTmp.updContactSysState
+				(
+					strIp
+					, iSysState
+				);
+			}
+
+			if (iState > -1)
+			{
+				eclTmp.updContactState
+				(
+					strIp
+					, iState
+				);
+			}
+
+			if (strStatus != null && strStatus.length() > 0)
+			{
+				eclTmp.updContactStatus
+				(
+					strIp
+					, strStatus
+				);
+			}
+		}
+
+		// update plaza speech
+		if (! blnOff && strSpeech != null && strSpeech.length() > 0)
+		{
 			emTmp.epMain.addSpeech
 			(
 				strIp
-				, strAck.substring(EzimAckSemantics.SPEECH.length())
+				, strSpeech
 			);
 		}
+
+		// send back info if necessary
+		if (blnAllInfo)
+		{
+			EzimAckSemantics.sendAllInfo();
+		}
+
+		return;
+	}
+
+	/**
+	 * send out all local ACK info
+	 */
+	public static void sendAllInfo()
+	{
+		EzimMain emTmp = EzimMain.getInstance();
+		EzimThreadPool etpTmp = EzimThreadPool.getInstance();
+		EzimAckSender easTmp = new EzimAckSender
+		(
+			EzimAckSemantics.allInfo
+			(
+				emTmp.localName
+				, emTmp.localSysState
+				, emTmp.localState
+				, emTmp.localStatus
+			)
+		);
+
+		etpTmp.execute(easTmp);
 
 		return;
 	}
