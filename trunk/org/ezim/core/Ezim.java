@@ -23,6 +23,7 @@ package org.ezim.core;
 import java.lang.Thread;
 import javax.swing.UIManager;
 
+import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckTaker;
 import org.ezim.core.EzimDtxTaker;
 import org.ezim.core.EzimLang;
@@ -46,7 +47,7 @@ public class Ezim
 	public final static String mcGroup = "229.0.0.1";
 	public final static int mcPort = 5555;
 	public final static int ttl = 1;
-	public final static int inBuf = 1024;
+	public final static int inBuf = 4096;
 
 	// maximum textfield lengths (for Ack messages)
 	public final static int maxAckLength = inBuf / 4;
@@ -70,8 +71,7 @@ public class Ezim
 
 		EzimLang.init();
 		EzimImage.init();
-
-		EzimMain emTmp = EzimMain.getInstance();
+		EzimMain.getInstance();
 
 		EzimThreadPool etpTmp = EzimThreadPool.getInstance();
 
@@ -105,7 +105,7 @@ public class Ezim
 		);
 */
 
-		emTmp.freshPoll();
+		EzimAckSemantics.sendAllInfo();
 
 		return;
 	}

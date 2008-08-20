@@ -40,13 +40,20 @@ public class EzimContact implements Comparable
 	private int state;
 	private String status;
 
-	public EzimContact(String strIp, String strName, String strStatus)
+	public EzimContact
+	(
+		String strIp
+		, String strName
+		, int iSysState
+		, int iState
+		, String strStatus
+	)
 		throws EzimContactException
 	{
 		this.setIp(strIp);
 		this.setName(strName);
-		this.setSysState(EzimContact.SYSSTATE_DEFAULT);
-		this.setState(EzimContact.STATE_DEFAULT);
+		this.setSysState(iSysState);
+		this.setState(iState);
 		this.setStatus(strStatus);
 	}
 

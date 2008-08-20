@@ -255,10 +255,19 @@ public class EzimContactList implements ListModel
 	/**
 	 * add a new contact to the list (ordered by name) if not yet exists
 	 * @param strIp IP address of the new contact
-	 * @param strname name of the new contact
+	 * @param strName name of the new contact
+	 * @param iSysState system state of the new contact
+	 * @param iState (user) state of the new contact
 	 * @param strStatus status of the new contact
 	 */
-	public void addContact(String strIp, String strName, String strStatus)
+	public void addContact
+	(
+		String strIp
+		, String strName
+		, int iSysState
+		, int iState
+		, String strStatus
+	)
 	{
 		if (this.idxContact(strIp) == -1)
 		{
@@ -283,7 +292,14 @@ public class EzimContactList implements ListModel
 					this.list.add
 					(
 						iIdx
-						, new EzimContact(strIp, strName, strStatus)
+						, new EzimContact
+						(
+							strIp
+							, strName
+							, iSysState
+							, iState
+							, strStatus
+						)
 					);
 				}
 
@@ -314,6 +330,25 @@ public class EzimContactList implements ListModel
 			}
 
 			this.fireIntervalRemoved(iIdx, iIdx);
+		}
+
+		return;
+	}
+
+	/**
+	 * update an existing contact with the new name
+	 * @param strIp IP address of the contact to be updated
+	 * @param strName new name of the contact
+	 */
+	public void updContactName(String strIp, String strName)
+	{
+		int iIdx = this.idxContact(strIp);
+
+		if (iIdx >= 0)
+		{
+			EzimContact ecTmp = this.getElementAt(iIdx);
+			ecTmp.setName(strName);
+			this.fireContentsChanged(iIdx, iIdx);
 		}
 
 		return;

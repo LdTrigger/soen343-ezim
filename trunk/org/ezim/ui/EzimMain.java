@@ -1132,11 +1132,20 @@ public class EzimMain
 	 */
 	public void freshPoll()
 	{
-		EzimContactList.getInstance(true);
+		EzimContactList eclTmp = EzimContactList.getInstance(true);
+
+		eclTmp.addContact
+		(
+			this.localAddress
+			, this.localName
+			, this.localSysState
+			, this.localState
+			, this.localStatus
+		);
 
 		EzimAckSender easTmp = new EzimAckSender
 		(
-			EzimAckSemantics.poll(this.localName)
+			EzimAckSemantics.poll("")
 		);
 
 		EzimThreadPool.getInstance().execute(easTmp);
