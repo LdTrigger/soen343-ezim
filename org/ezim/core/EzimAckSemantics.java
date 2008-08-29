@@ -21,7 +21,6 @@
 package org.ezim.core;
 
 import org.ezim.core.EzimAckSender;
-import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;

@@ -339,7 +339,7 @@ public class EzimPlaza
 				// add timestamp
 				sbTmp.append
 				(
-					"[" + sdfHHmm.format(new Date()) + "] "
+					"[" + EzimPlaza.sdfHHmm.format(new Date()) + "] "
 				);
 				// add contact name
 				sbTmp.append
