@@ -276,14 +276,30 @@ public class EzimAckSemantics
 		}
 		else if (eclTmp.getContact(strIp) == null)
 		{
-			eclTmp.addContact
-			(
-				strIp
-				, strName
-				, iSysState
-				, iState
-				, strStatus
-			);
+			if (strName != null)
+			{
+				eclTmp.addContact
+				(
+					strIp
+					, strName
+					, iSysState
+					, iState
+					, strStatus
+				);
+			}
+			else
+			{
+				EzimThreadPool etpTmp = EzimThreadPool.getInstance();
+				EzimAckSender easTmp = new EzimAckSender
+				(
+					EzimAckSemantics.poll
+					(
+						strIp
+					)
+				);
+
+				etpTmp.execute(easTmp);
+			}
 
 			if (! strIp.equals(emTmp.localAddress))
 			{

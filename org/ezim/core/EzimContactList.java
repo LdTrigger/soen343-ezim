@@ -282,7 +282,7 @@ public class EzimContactList implements ListModel
 				{
 					ecTmp = this.getElementAt(iIdx);
 
-					if (strName.compareTo(ecTmp.getName()) < 0) break;
+					if (ecTmp.getName().compareTo(strName) < 0) break;
 
 					iIdx ++;
 				}

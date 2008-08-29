@@ -71,7 +71,7 @@ public class Ezim
 
 		EzimLang.init();
 		EzimImage.init();
-		EzimMain.getInstance();
+		EzimMain emTmp = EzimMain.getInstance();
 
 		EzimThreadPool etpTmp = EzimThreadPool.getInstance();
 
@@ -106,6 +106,7 @@ public class Ezim
 */
 
 		EzimAckSemantics.sendAllInfo();
+		emTmp.freshPoll();
 
 		return;
 	}
