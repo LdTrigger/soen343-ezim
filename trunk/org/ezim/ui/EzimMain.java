@@ -957,7 +957,7 @@ public class EzimMain
 				}
 				else
 				{
-					EzimFileOut efoTmp = new EzimFileOut
+					new EzimFileOut
 					(
 						ecTmp
 						, jfcTmp.getSelectedFile()
