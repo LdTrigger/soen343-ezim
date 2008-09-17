@@ -20,6 +20,7 @@
  */
 package org.ezim.core;
 
+import java.awt.Image;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
@@ -40,6 +41,7 @@ public class EzimImage
 	public static ImageIcon icoBtnFrx;
 	public static ImageIcon icoBtnRefresh;
 	public static ImageIcon icoBtnPlaza;
+	public static ImageIcon icoBtnPrefs;
 
 	// EzimMain labels
 	public static ImageIcon icoLblAbout;
@@ -171,12 +173,27 @@ public class EzimImage
 		);
 		icoBtnPlaza = new ImageIcon(iconUrlTmp);
 
+		// main window control panel button icon
+		iconUrlTmp = ClassLoader.getSystemResource
+		(
+			"org/ezim/image/icon/btnprefs.png"
+		);
+		icoBtnPrefs = new ImageIcon(iconUrlTmp);
+
 		// main window about label icon
 		iconUrlTmp = ClassLoader.getSystemResource
 		(
 			"org/ezim/image/icon/lblabout.png"
 		);
-		icoLblAbout = new ImageIcon(iconUrlTmp);
+		icoLblAbout = new ImageIcon
+		(
+			new ImageIcon(iconUrlTmp).getImage().getScaledInstance
+			(
+				16
+				, 16
+				, Image.SCALE_DEFAULT
+			)
+		);
 
 		return;
 	}
