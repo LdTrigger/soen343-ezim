@@ -84,6 +84,21 @@ public class EzimLang
 	public static String HasJoinedPlazaOfSpeech;
 	public static String HasLeftPlazaOfSpeech;
 
+	// control panel
+	public static String Prefs;
+	public static String Network;
+	public static String McGroup;
+	public static String McPort;
+	public static String DtxPort;
+	public static String Design;
+	public static String ColorSelf;
+	public static String ColorSelfR;
+	public static String ColorSelfG;
+	public static String ColorSelfB;
+	public static String Save;
+	public static String Restore;
+	public static String RestartNeeded;
+
 	// tray icon pop-up menu
 	public static String ShowHide;
 	public static String Exit;
@@ -158,6 +173,21 @@ public class EzimLang
 			Speak = rbTmp.getString("Speak");
 			HasJoinedPlazaOfSpeech = rbTmp.getString("HasJoinedPlazaOfSpeech");
 			HasLeftPlazaOfSpeech = rbTmp.getString("HasLeftPlazaOfSpeech");
+
+			// control panel
+			Prefs = rbTmp.getString("Prefs");
+			Network = rbTmp.getString("Network");
+			McGroup = rbTmp.getString("McGroup");
+			McPort = rbTmp.getString("McPort");
+			DtxPort = rbTmp.getString("DtxPort");
+			Design = rbTmp.getString("Design");
+			ColorSelf = rbTmp.getString("ColorSelf");
+			ColorSelfR = rbTmp.getString("ColorSelfR");
+			ColorSelfG = rbTmp.getString("ColorSelfG");
+			ColorSelfB = rbTmp.getString("ColorSelfB");
+			Save = rbTmp.getString("Save");
+			Restore = rbTmp.getString("Restore");
+			RestartNeeded = rbTmp.getString("RestartNeeded");
 
 			// tray icon pop-up menu
 			ShowHide = rbTmp.getString("ShowHide");
