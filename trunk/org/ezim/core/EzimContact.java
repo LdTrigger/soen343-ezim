@@ -35,6 +35,7 @@ public class EzimContact implements Comparable
 	public final static String STATUS_DEFAULT = "Online";
 
 	private String ip;
+	private int port;
 	private String name;
 	private int sysState;
 	private int state;
@@ -43,6 +44,7 @@ public class EzimContact implements Comparable
 	public EzimContact
 	(
 		String strIp
+		, int iPort
 		, String strName
 		, int iSysState
 		, int iState
@@ -51,6 +53,7 @@ public class EzimContact implements Comparable
 		throws EzimContactException
 	{
 		this.setIp(strIp);
+		this.setPort(iPort);
 		this.setName(strName);
 		this.setSysState(iSysState);
 		this.setState(iState);
@@ -69,6 +72,11 @@ public class EzimContact implements Comparable
 	public String getIp()
 	{
 		return this.ip;
+	}
+
+	public int getPort()
+	{
+		return this.port;
 	}
 
 	public String getName()
@@ -94,8 +102,21 @@ public class EzimContact implements Comparable
 	public void setIp(String strIn)
 		throws EzimContactException
 	{
-		if (strIn == null) throw new EzimContactException("IP is null.");
+		if (strIn == null)
+			throw new EzimContactException("IP is null.");
+
 		this.ip = strIn;
+
+		return;
+	}
+
+	public void setPort(int iIn)
+		throws EzimContactException
+	{
+		if (iIn < 0 || iIn > 65535)
+			throw new EzimContactException("Invalid port number.");
+
+		this.port = iIn;
 
 		return;
 	}

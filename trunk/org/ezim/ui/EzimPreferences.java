@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -67,6 +68,11 @@ public class EzimPreferences
 
 	private JLabel jlblColorSelf;
 	private JColorChooser jccColorSelf;
+
+	private JPanel jpnlUI;
+
+	private JCheckBox jcbAlwaysOnTop;
+	private JCheckBox jcbAutoOpenMsgIn;
 
 	private JButton jbtnSave;
 	private JButton jbtnRestore;
@@ -183,8 +189,12 @@ public class EzimPreferences
 		this.jlblColorSelf = new JLabel(EzimLang.ColorSelf);
 		this.jccColorSelf = new JColorChooser();
 
+		this.jcbAlwaysOnTop = new JCheckBox(EzimLang.AlwaysOnTop);
+		this.jcbAutoOpenMsgIn = new JCheckBox(EzimLang.AutoOpenMsgIn);
+
 		this.jpnlNetwork = new JPanel();
 		this.jpnlDesign = new JPanel();
+		this.jpnlUI = new JPanel();
 
 		this.jtpBase = new JTabbedPane();
 
@@ -444,9 +454,68 @@ public class EzimPreferences
 
 		glDs.setVerticalGroup(vDsGrp);
 
+		// I N T E R F A C E   P A N E   L A Y O U T -----------------------
+		GroupLayout glUI = new GroupLayout(this.jpnlUI);
+		this.jpnlUI.setLayout(glUI);
+
+		glUI.setAutoCreateGaps(true);
+		glUI.setAutoCreateContainerGaps(true);
+
+		GroupLayout.SequentialGroup hUIGrp = glUI.createSequentialGroup();
+
+		hUIGrp.addGroup
+		(
+			glUI.createParallelGroup()
+				.addComponent
+				(
+					this.jcbAlwaysOnTop
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jcbAutoOpenMsgIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		glUI.setHorizontalGroup(hUIGrp);
+
+		GroupLayout.SequentialGroup vUIGrp = glUI.createSequentialGroup();
+
+		vUIGrp.addGroup
+		(
+			glUI.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jcbAlwaysOnTop
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vUIGrp.addGroup
+		(
+			glUI.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jcbAutoOpenMsgIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		glUI.setVerticalGroup(vUIGrp);
+
 		// T A B B E D   P A N E   L A Y O U T -----------------------------
-		this.jtpBase.addTab(EzimLang.Network, jpnlNetwork);
+		this.jtpBase.addTab(EzimLang.UI, jpnlUI);
 		this.jtpBase.addTab(EzimLang.Design, jpnlDesign);
+		this.jtpBase.addTab(EzimLang.Network, jpnlNetwork);
 
 		// O V E R A L L   L A Y O U T -------------------------------------
 		GroupLayout glBase = new GroupLayout(this.jpnlBase);
@@ -571,6 +640,28 @@ public class EzimPreferences
 
 		this.jccColorSelf.setColor(Integer.parseInt(strColorSelf, 16));
 
+		// always on top
+		String strAlwaysOnTop = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimmainAlwaysontop
+		);
+
+		this.jcbAlwaysOnTop.setSelected
+		(
+			Boolean.parseBoolean(strAlwaysOnTop)
+		);
+
+		// auto open incoming message
+		String strAutoOpenMsgIn = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimmsginAutoopen
+		);
+
+		this.jcbAutoOpenMsgIn.setSelected
+		(
+			Boolean.parseBoolean(strAutoOpenMsgIn)
+		);
+
 		return;
 	}
 
@@ -615,6 +706,20 @@ public class EzimPreferences
 			)
 		);
 
+		// always on top
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmainAlwaysontop
+			, Boolean.toString(this.jcbAlwaysOnTop.isSelected())
+		);
+
+		// auto open incoming message
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimmsginAutoopen
+			, Boolean.toString(this.jcbAutoOpenMsgIn.isSelected())
+		);
+
 		return;
 	}
 
@@ -625,7 +730,7 @@ public class EzimPreferences
 
 		JOptionPane.showMessageDialog
 		(
-			null
+			this
 			, EzimLang.RestartNeeded
 			, EzimLang.Prefs
 			, JOptionPane.INFORMATION_MESSAGE

@@ -87,6 +87,7 @@ public class EzimMain
 	private TrayIcon tiMain;
 
 	public String localAddress;
+	public int localPort;
 	public String localName;
 	public int localSysState;
 	public int localState;
@@ -188,6 +189,17 @@ public class EzimMain
 			EzimConf.ezimmainLocalname
 		);
 
+		this.setAlwaysOnTop
+		(
+			Boolean.parseBoolean
+			(
+				ecTmp.settings.getProperty
+				(
+					EzimConf.ezimmainAlwaysontop
+				)
+			)
+		);
+
 		this.showHide
 		(
 			Boolean.parseBoolean
@@ -214,6 +226,13 @@ public class EzimMain
 			}
 
 			this.localName = strTmp;
+
+			// save username
+			ecTmp.settings.setProperty
+			(
+				EzimConf.ezimmainLocalname
+				, this.localName
+			);
 		}
 
 		return;
@@ -225,13 +244,6 @@ public class EzimMain
 	private void saveConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
-
-		// save username
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainLocalname
-			, this.localName
-		);
 
 		// save window location and size
 		Point ptTmp = this.getLocationOnScreen();
@@ -294,6 +306,12 @@ public class EzimMain
 			this.localAddress = "127.0.0.1";
 		}
 
+		EzimConf ecnfTmp = EzimConf.getInstance();
+
+		this.localPort = Integer.parseInt
+		(
+			ecnfTmp.settings.getProperty(EzimConf.ezimDtxPort)
+		);
 		this.localSysState = EzimContact.SYSSTATE_DEFAULT;
 		this.localState = EzimContact.STATE_DEFAULT;
 		this.localStatus = EzimContact.STATUS_DEFAULT;
@@ -1185,6 +1203,7 @@ public class EzimMain
 		eclTmp.addContact
 		(
 			this.localAddress
+			, this.localPort
 			, this.localName
 			, this.localSysState
 			, this.localState

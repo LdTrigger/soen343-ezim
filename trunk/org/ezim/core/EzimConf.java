@@ -37,30 +37,38 @@ public class EzimConf
 	public final static String ezimMcGroup = "ezim.multicast.group";
 	public final static String ezimMcPort = "ezim.multicast.port";
 	public final static String ezimDtxPort = "ezim.dtx.port";
+
 	public final static String ezimColorSelf = "ezim.color.self";
 
 	public final static String ezimmainLocalname = "ezimmain.localname";
+	public final static String ezimmainAlwaysontop = "ezimmain.alwaysontop";
 	public final static String ezimmainVisible = "ezimmain.visible";
 	public final static String ezimmainLocationX = "ezimmain.location.x";
 	public final static String ezimmainLocationY = "ezimmain.location.y";
 	public final static String ezimmainSizeH = "ezimmain.size.h";
 	public final static String ezimmainSizeW = "ezimmain.size.w";
+
 	public final static String ezimplazaLocationX = "ezimplaza.location.x";
 	public final static String ezimplazaLocationY = "ezimplaza.location.y";
 	public final static String ezimplazaSizeH = "ezimplaza.size.h";
 	public final static String ezimplazaSizeW = "ezimplaza.size.w";
+
 	public final static String ezimmsgoutLocationX = "ezimmsgout.location.x";
 	public final static String ezimmsgoutLocationY = "ezimmsgout.location.y";
 	public final static String ezimmsgoutSizeH = "ezimmsgout.size.h";
 	public final static String ezimmsgoutSizeW = "ezimmsgout.size.w";
+
+	public final static String ezimmsginAutoopen = "ezimmsgin.autoopen";
 	public final static String ezimmsginLocationX = "ezimmsgin.location.x";
 	public final static String ezimmsginLocationY = "ezimmsgin.location.y";
 	public final static String ezimmsginSizeH = "ezimmsgin.size.h";
 	public final static String ezimmsginSizeW = "ezimmsgin.size.w";
+
 	public final static String ezimfileoutLocationX = "ezimfileout.location.x";
 	public final static String ezimfileoutLocationY = "ezimfileout.location.y";
 	public final static String ezimfileoutSizeH = "ezimfileout.size.h";
 	public final static String ezimfileoutSizeW = "ezimfileout.size.w";
+
 	public final static String ezimfileinLocationX = "ezimfilein.location.x";
 	public final static String ezimfileinLocationY = "ezimfilein.location.y";
 	public final static String ezimfileinSizeH = "ezimfilein.size.h";
@@ -117,33 +125,41 @@ public class EzimConf
 			EzimConf.ezimDtxPort
 			, Integer.toString(Ezim.dtxPort)
 		);
+
 		this.settings.setProperty
 		(
 			EzimConf.ezimColorSelf
 			, Integer.toString(Ezim.colorSelf, 16)
 		);
 
+		this.settings.setProperty(EzimConf.ezimmainAlwaysontop, "false");
 		this.settings.setProperty(EzimConf.ezimmainVisible, "true");
 		this.settings.setProperty(EzimConf.ezimmainLocationX, "0");
 		this.settings.setProperty(EzimConf.ezimmainLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimmainSizeH, "0");
 		this.settings.setProperty(EzimConf.ezimmainSizeW, "0");
+
 		this.settings.setProperty(EzimConf.ezimplazaLocationX, "0");
 		this.settings.setProperty(EzimConf.ezimplazaLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimplazaSizeH, "0");
 		this.settings.setProperty(EzimConf.ezimplazaSizeW, "0");
+
 		this.settings.setProperty(EzimConf.ezimmsgoutLocationX, "0");
 		this.settings.setProperty(EzimConf.ezimmsgoutLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimmsgoutSizeH, "0");
 		this.settings.setProperty(EzimConf.ezimmsgoutSizeW, "0");
+
+		this.settings.setProperty(EzimConf.ezimmsginAutoopen, "false");
 		this.settings.setProperty(EzimConf.ezimmsginLocationX, "0");
 		this.settings.setProperty(EzimConf.ezimmsginLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimmsginSizeH, "0");
 		this.settings.setProperty(EzimConf.ezimmsginSizeW, "0");
+
 		this.settings.setProperty(EzimConf.ezimfileoutLocationX, "0");
 		this.settings.setProperty(EzimConf.ezimfileoutLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimfileoutSizeH, "0");
 		this.settings.setProperty(EzimConf.ezimfileoutSizeW, "0");
+
 		this.settings.setProperty(EzimConf.ezimfileinLocationX, "0");
 		this.settings.setProperty(EzimConf.ezimfileinLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimfileinSizeH, "0");

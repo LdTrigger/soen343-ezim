@@ -31,17 +31,20 @@ import org.ezim.core.EzimDtxSemantics;
 public class EzimFileConfirmer implements Runnable
 {
 	private String ip = null;
+	private int port = -1;
 	private String id = null;
 	private boolean blnConfirm = false;
 
 	public EzimFileConfirmer
 	(
 		String strIp
+		, int iPort
 		, String strId
 		, boolean blnIn
 	)
 	{
 		this.ip = strIp;
+		this.port = iPort;
 		this.id = strId;
 		this.blnConfirm = blnIn;
 	}
@@ -59,10 +62,7 @@ public class EzimFileConfirmer implements Runnable
 			isaTmp = new InetSocketAddress
 			(
 				this.ip
-				, Integer.parseInt
-				(
-					ecTmp.settings.getProperty(EzimConf.ezimDtxPort)
-				)
+				, this.port
 			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 

@@ -34,21 +34,24 @@ import org.ezim.ui.EzimMsgOut;
 
 public class EzimMsgSender implements Runnable
 {
-	private EzimMsgOut emo;
-	private String ip;
-	private String sbj;
-	private String msg;
+	private EzimMsgOut emo = null;
+	private String ip = null;
+	private int port = -1;
+	private String sbj = null;
+	private String msg = null;
 
 	public EzimMsgSender
 	(
 		EzimMsgOut emoIn
 		, String strIp
+		, int iPort
 		, String strSbj
 		, String strMsg
 	)
 	{
 		this.emo = emoIn;
 		this.ip = strIp;
+		this.port = iPort;
 		this.sbj = strSbj;
 		this.msg = strMsg;
 	}
@@ -69,10 +72,7 @@ public class EzimMsgSender implements Runnable
 			isaTmp = new InetSocketAddress
 			(
 				this.ip
-				, Integer.parseInt
-				(
-					ecTmp.settings.getProperty(EzimConf.ezimDtxPort)
-				)
+				, this.port
 			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 

@@ -33,17 +33,20 @@ import org.ezim.core.EzimLang;
 public class EzimFileResponsor implements Runnable
 {
 	private String ip = null;
+	private int port = -1;
 	private String id = null;
 	private boolean blnRes = false;
 
 	public EzimFileResponsor
 	(
 		String strIp
+		, int iPort
 		, String strId
 		, boolean blnIn
 	)
 	{
 		this.ip = strIp;
+		this.port = iPort;
 		this.id = strId;
 		this.blnRes = blnIn;
 	}
@@ -61,10 +64,7 @@ public class EzimFileResponsor implements Runnable
 			isaTmp = new InetSocketAddress
 			(
 				this.ip
-				, Integer.parseInt
-				(
-					ecTmp.settings.getProperty(EzimConf.ezimDtxPort)
-				)
+				, this.port
 			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 
