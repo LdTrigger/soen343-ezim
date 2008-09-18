@@ -34,17 +34,20 @@ import org.ezim.ui.EzimFileOut;
 public class EzimFileRequester implements Runnable
 {
 	private String ip = null;
+	private int port = -1;
 	private String id = null;
 	private EzimFileOut efo = null;
 
 	public EzimFileRequester
 	(
 		String strIp
+		, int iPort
 		, String strId
 		, EzimFileOut efoIn
 	)
 	{
 		this.ip = strIp;
+		this.port = iPort;
 		this.id = strId;
 		this.efo = efoIn;
 	}
@@ -62,10 +65,7 @@ public class EzimFileRequester implements Runnable
 			isaTmp = new InetSocketAddress
 			(
 				this.ip
-				, Integer.parseInt
-				(
-					ecTmp.settings.getProperty(EzimConf.ezimDtxPort)
-				)
+				, this.port
 			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 

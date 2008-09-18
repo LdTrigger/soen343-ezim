@@ -29,6 +29,7 @@ public class EzimAckSemantics
 {
 	private final static String NEWLINE		= "\n";
 	private final static String PREFIX		= Ezim.appAbbrev.toUpperCase();
+	private final static String PORT		= "PORT:";
 	private final static String NAME		= "NAME:";
 	private final static String SYSSTATE	= "SYSSTATE:";
 	private final static String STATE		= "STATE:";
@@ -55,6 +56,7 @@ public class EzimAckSemantics
 
 	/**
 	 * used to reply someone else's polling
+	 * @param iPort DTX port
 	 * @param strName local user name
 	 * @param iSysState system state
 	 * @param iState user state
@@ -62,7 +64,8 @@ public class EzimAckSemantics
 	 */
 	public static String allInfo
 	(
-		String strName
+		int iPort
+		, String strName
 		, int iSysState
 		, int iState
 		, String strStatus
@@ -71,6 +74,9 @@ public class EzimAckSemantics
 		StringBuffer sbOut = new StringBuffer();
 
 		sbOut.append(EzimAckSemantics.PREFIX);
+		sbOut.append(EzimAckSemantics.NEWLINE);
+		sbOut.append(EzimAckSemantics.PORT);
+		sbOut.append(Integer.toString(iPort));
 		sbOut.append(EzimAckSemantics.NEWLINE);
 		sbOut.append(EzimAckSemantics.NAME);
 		sbOut.append(strName);
@@ -185,6 +191,7 @@ public class EzimAckSemantics
 		boolean blnAllInfo = false;
 		boolean blnOff = false;
 
+		int iPort = -1;
 		String strName = null;
 		int iSysState = -1;
 		int iState = -1;
@@ -228,6 +235,16 @@ public class EzimAckSemantics
 			else if (strLine.startsWith(EzimAckSemantics.OFF))
 			{
 				blnOff = true;
+			}
+			else if (strLine.startsWith(EzimAckSemantics.PORT))
+			{
+				iPort = Integer.valueOf
+				(
+					strLine.substring
+					(
+						EzimAckSemantics.PORT.length()
+					)
+				);
 			}
 			else if (strLine.startsWith(EzimAckSemantics.NAME))
 			{
@@ -276,11 +293,12 @@ public class EzimAckSemantics
 		}
 		else if (eclTmp.getContact(strIp) == null)
 		{
-			if (strName != null)
+			if (iPort > -1 && iPort < 65536 && strName != null)
 			{
 				eclTmp.addContact
 				(
 					strIp
+					, iPort
 					, strName
 					, iSysState
 					, iState
@@ -308,6 +326,15 @@ public class EzimAckSemantics
 		}
 		else
 		{
+			if (iPort > -1 && iPort < 65536)
+			{
+				eclTmp.updContactPort
+				(
+					strIp
+					, iPort
+				);
+			}
+
 			if (strName != null && strName.length() > 0)
 			{
 				eclTmp.updContactName
@@ -375,7 +402,8 @@ public class EzimAckSemantics
 		(
 			EzimAckSemantics.allInfo
 			(
-				emTmp.localName
+				emTmp.localPort
+				, emTmp.localName
 				, emTmp.localSysState
 				, emTmp.localState
 				, emTmp.localStatus

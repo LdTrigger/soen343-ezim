@@ -33,11 +33,18 @@ public class EzimFileSender implements Runnable
 {
 	private EzimFileOut efo;
 	private String ip;
+	private int port;
 
-	public EzimFileSender(EzimFileOut efoIn, String strIp)
+	public EzimFileSender
+	(
+		EzimFileOut efoIn
+		, String strIp
+		, int iPort
+	)
 	{
 		this.efo = efoIn;
 		this.ip = strIp;
+		this.port = iPort;
 	}
 
 	public void run()
@@ -53,10 +60,7 @@ public class EzimFileSender implements Runnable
 			isaTmp = new InetSocketAddress
 			(
 				this.ip
-				, Integer.parseInt
-				(
-					ecTmp.settings.getProperty(EzimConf.ezimDtxPort)
-				)
+				, this.port
 			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 

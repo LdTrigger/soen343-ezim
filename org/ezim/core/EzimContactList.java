@@ -255,6 +255,7 @@ public class EzimContactList implements ListModel
 	/**
 	 * add a new contact to the list (ordered by name) if not yet exists
 	 * @param strIp IP address of the new contact
+	 * @param iPort DTX port of the new contact
 	 * @param strName name of the new contact
 	 * @param iSysState system state of the new contact
 	 * @param iState (user) state of the new contact
@@ -263,6 +264,7 @@ public class EzimContactList implements ListModel
 	public void addContact
 	(
 		String strIp
+		, int iPort
 		, String strName
 		, int iSysState
 		, int iState
@@ -295,6 +297,7 @@ public class EzimContactList implements ListModel
 						, new EzimContact
 						(
 							strIp
+							, iPort
 							, strName
 							, iSysState
 							, iState
@@ -330,6 +333,32 @@ public class EzimContactList implements ListModel
 			}
 
 			this.fireIntervalRemoved(iIdx, iIdx);
+		}
+
+		return;
+	}
+
+	/**
+	 * update an existing contact with the new DTX port
+	 * @param strIp IP address of the contact to be updated
+	 * @param iPort new DTX port of the contact
+	 */
+	public void updContactPort(String strIp, int iPort)
+	{
+		int iIdx = this.idxContact(strIp);
+
+		if (iIdx >= 0)
+		{
+			try
+			{
+				EzimContact ecTmp = this.getElementAt(iIdx);
+				ecTmp.setPort(iPort);
+				this.fireContentsChanged(iIdx, iIdx);
+			}
+			catch(Exception e)
+			{
+				// ignore for the time being
+			}
 		}
 
 		return;

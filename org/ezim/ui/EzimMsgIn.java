@@ -81,6 +81,20 @@ public class EzimMsgIn
 		this.setMinimumSize(new Dimension(320, 200));
 		this.setVisible(true);
 		this.toFront();
+
+		if
+		(
+			Boolean.parseBoolean
+			(
+				EzimConf.getInstance().settings.getProperty
+				(
+					EzimConf.ezimmsginAutoopen
+				)
+			)
+		)
+		{
+			jlblOpen_MouseClicked(null);
+		}
 	}
 
 	private void loadConf()

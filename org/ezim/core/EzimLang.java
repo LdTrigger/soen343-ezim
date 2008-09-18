@@ -95,6 +95,9 @@ public class EzimLang
 	public static String ColorSelfR;
 	public static String ColorSelfG;
 	public static String ColorSelfB;
+	public static String UI;
+	public static String AlwaysOnTop;
+	public static String AutoOpenMsgIn;
 	public static String Save;
 	public static String Restore;
 	public static String RestartNeeded;
@@ -185,6 +188,9 @@ public class EzimLang
 			ColorSelfR = rbTmp.getString("ColorSelfR");
 			ColorSelfG = rbTmp.getString("ColorSelfG");
 			ColorSelfB = rbTmp.getString("ColorSelfB");
+			UI = rbTmp.getString("UI");
+			AlwaysOnTop = rbTmp.getString("AlwaysOnTop");
+			AutoOpenMsgIn = rbTmp.getString("AutoOpenMsgIn");
 			Save = rbTmp.getString("Save");
 			Restore = rbTmp.getString("Restore");
 			RestartNeeded = rbTmp.getString("RestartNeeded");

@@ -416,6 +416,7 @@ public class EzimMsgOut
 			(
 				this
 				, this.ec.getIp()
+				, this.ec.getPort()
 				, this.jtfdSbj.getText()
 				, this.etaMsg.getText()
 			);

@@ -77,7 +77,13 @@ public class EzimFileOut
 
 		EzimThreadPool.getInstance().execute
 		(
-			new EzimFileRequester(ecIn.getIp(), this.id, this)
+			new EzimFileRequester
+			(
+				ecIn.getIp()
+				, ecIn.getPort()
+				, this.id
+				, this
+			)
 		);
 	}
 
