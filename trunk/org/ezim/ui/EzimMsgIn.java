@@ -43,6 +43,7 @@ import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.ui.EzimMain;
 import org.ezim.ui.EzimMsgOut;
 
 public class EzimMsgIn
@@ -84,16 +85,10 @@ public class EzimMsgIn
 
 		if
 		(
-			Boolean.parseBoolean
-			(
-				EzimConf.getInstance().settings.getProperty
-				(
-					EzimConf.ezimmsginAutoopen
-				)
-			)
+			EzimMain.getInstance().autoOpenMsgIn
 		)
 		{
-			jlblOpen_MouseClicked(null);
+			jlblOpen_MouseClicked();
 		}
 	}
 
@@ -198,7 +193,7 @@ public class EzimMsgIn
 			{
 				public void mouseClicked(MouseEvent evtTmp)
 				{
-					jlblOpen_MouseClicked(evtTmp);
+					jlblOpen_MouseClicked();
 					return;
 				}
 
@@ -231,7 +226,7 @@ public class EzimMsgIn
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimMsgIn.this.jbtnReply_ActionPerformed(evtTmp);
+					EzimMsgIn.this.jbtnReply_ActionPerformed();
 					return;
 				}
 			}
@@ -439,7 +434,7 @@ public class EzimMsgIn
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
-	private void jbtnReply_ActionPerformed(ActionEvent evt)
+	private void jbtnReply_ActionPerformed()
 	{
 		StringBuffer sbSbj = new StringBuffer();
 		if (! this.jtfdSbj.getText().startsWith("Re: "))
@@ -462,7 +457,7 @@ public class EzimMsgIn
 		return;
 	}
 
-	private void jlblOpen_MouseClicked(MouseEvent evt)
+	private void jlblOpen_MouseClicked()
 	{
 		this.jspMsg.setViewportView(this.jtaMsg);
 		this.jbtnReply.setEnabled(true);

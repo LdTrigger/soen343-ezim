@@ -26,7 +26,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimImage;
 
@@ -49,15 +48,7 @@ public class EzimContactListRenderer
 	{
 		EzimMain emHwnd = EzimMain.getInstance();
 		EzimContact ecTmp = (EzimContact) objIn;
-		EzimConf ecnfTmp = EzimConf.getInstance();
-		Color clrSelf = new Color
-		(
-			Integer.parseInt
-			(
-				ecnfTmp.settings.getProperty(EzimConf.ezimColorSelf)
-				, 16
-			)
-		);
+		Color clrSelf = new Color(emHwnd.colorSelf);
 
 		// state icon
 		if (ecTmp.getSysState() != EzimContact.SYSSTATE_DEFAULT)

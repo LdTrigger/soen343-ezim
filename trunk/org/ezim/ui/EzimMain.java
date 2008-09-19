@@ -93,6 +93,9 @@ public class EzimMain
 	public int localState;
 	public String localStatus;
 
+	public boolean autoOpenMsgIn;
+	public int colorSelf;
+
 	public EzimPlaza epMain;
 
 	// C O N S T R U C T O R -----------------------------------------------
@@ -209,6 +212,20 @@ public class EzimMain
 					EzimConf.ezimmainVisible
 				)
 			)
+		);
+
+		this.autoOpenMsgIn = Boolean.parseBoolean
+		(
+			ecTmp.settings.getProperty
+			(
+				EzimConf.ezimmsginAutoopen
+			)
+		);
+
+		this.colorSelf = Integer.parseInt
+		(
+			ecTmp.settings.getProperty(EzimConf.ezimColorSelf)
+			, 16
 		);
 
 		// query username if isn't set yet
@@ -332,7 +349,7 @@ public class EzimMain
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimMain.this.jcbState_ActionPerformed(evtTmp);
+					EzimMain.this.jcbState_ActionPerformed();
 					return;
 				}
 			}
@@ -352,7 +369,7 @@ public class EzimMain
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimMain.this.jtfdStatus_ActionPerformed(evtTmp);
+					EzimMain.this.jtfdStatus_ActionPerformed();
 					return;
 				}
 			}
@@ -363,7 +380,7 @@ public class EzimMain
 			{
 				public void mouseClicked(MouseEvent evtTmp)
 				{
-					EzimMain.this.jtfdStatus_MouseClicked(evtTmp);
+					EzimMain.this.jtfdStatus_MouseClicked();
 					return;
 				}
 
@@ -399,7 +416,7 @@ public class EzimMain
 
 				public void focusLost(FocusEvent evtTmp)
 				{
-					EzimMain.this.jtfdStatus_FocusLost(evtTmp);
+					EzimMain.this.jtfdStatus_FocusLost();
 					return;
 				}
 			}
@@ -424,7 +441,7 @@ public class EzimMain
 						&& evtTmp.getClickCount() > 1
 					)
 					{
-						EzimMain.this.jlstContacts_MouseDblClicked(evtTmp);
+						EzimMain.this.jlstContacts_MouseDblClicked();
 					}
 					return;
 				}
@@ -463,7 +480,7 @@ public class EzimMain
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimMain.this.jbtnMsg_ActionPerformed(evtTmp);
+					EzimMain.this.jbtnMsg_ActionPerformed();
 					return;
 				}
 			}
@@ -478,7 +495,7 @@ public class EzimMain
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimMain.this.jbtnFtx_ActionPerformed(evtTmp);
+					EzimMain.this.jbtnFtx_ActionPerformed();
 					return;
 				}
 			}
@@ -493,7 +510,7 @@ public class EzimMain
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimMain.this.jbtnRfh_ActionPerformed(evtTmp);
+					EzimMain.this.jbtnRfh_ActionPerformed();
 					return;
 				}
 			}
@@ -508,7 +525,7 @@ public class EzimMain
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimMain.this.jbtnPlz_ActionPerformed(evtTmp);
+					EzimMain.this.jbtnPlz_ActionPerformed();
 					return;
 				}
 			}
@@ -523,7 +540,7 @@ public class EzimMain
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimMain.this.jbtnPrefs_ActionPerformed(evtTmp);
+					EzimMain.this.jbtnPrefs_ActionPerformed();
 					return;
 				}
 			}
@@ -537,7 +554,7 @@ public class EzimMain
 			{
 				public void mouseClicked(MouseEvent evtTmp)
 				{
-					EzimMain.this.jlblAbout_MouseClicked(evtTmp);
+					EzimMain.this.jlblAbout_MouseClicked();
 					return;
 				}
 
@@ -934,32 +951,32 @@ public class EzimMain
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
-	private void jcbState_ActionPerformed(ActionEvent evt)
+	private void jcbState_ActionPerformed()
 	{
 		this.changeState(this.jcbState.getSelectedIndex());
 		return;
 	}
 
-	private void jtfdStatus_ActionPerformed(ActionEvent evt)
+	private void jtfdStatus_ActionPerformed()
 	{
 		this.changeStatus();
 		return;
 	}
 
-	private void jtfdStatus_MouseClicked(MouseEvent evt)
+	private void jtfdStatus_MouseClicked()
 	{
 		this.jtfdStatus.setEnabled(true);
 		this.jtfdStatus.grabFocus();	// maybe inappropriate
 		return;
 	}
 
-	private void jtfdStatus_FocusLost(FocusEvent evt)
+	private void jtfdStatus_FocusLost()
 	{
 		this.changeStatus();
 		return;
 	}
 
-	private void jlblAbout_MouseClicked(MouseEvent evt)
+	private void jlblAbout_MouseClicked()
 	{
 		this.showAboutDlg();
 		return;
@@ -969,7 +986,7 @@ public class EzimMain
 	{
 		if (this.jlstContacts.getSelectedValue() != null)
 		{
-			EzimMsgOut jmoTmp = new EzimMsgOut
+			new EzimMsgOut
 			(
 				(EzimContact) this.jlstContacts.getSelectedValue()
 			);
@@ -978,19 +995,19 @@ public class EzimMain
 		return;
 	}
 
-	private void jlstContacts_MouseDblClicked(MouseEvent evt)
+	private void jlstContacts_MouseDblClicked()
 	{
 		this.openMsgOut();
 		return;
 	}
 
-	private void jbtnMsg_ActionPerformed(ActionEvent evt)
+	private void jbtnMsg_ActionPerformed()
 	{
 		this.openMsgOut();
 		return;
 	}
 
-	private void jbtnFtx_ActionPerformed(ActionEvent evt)
+	private void jbtnFtx_ActionPerformed()
 	{
 		if (this.jlstContacts.getSelectedValue() != null)
 		{
@@ -1029,13 +1046,13 @@ public class EzimMain
 		return;
 	}
 
-	private void jbtnRfh_ActionPerformed(ActionEvent evt)
+	private void jbtnRfh_ActionPerformed()
 	{
 		this.freshPoll();
 		return;
 	}
 
-	private void jbtnPlz_ActionPerformed(ActionEvent evt)
+	private void jbtnPlz_ActionPerformed()
 	{
 		if (! this.epMain.isVisible())
 		{
@@ -1056,7 +1073,7 @@ public class EzimMain
 		return;
 	}
 
-	private void jbtnPrefs_ActionPerformed(ActionEvent evt)
+	private void jbtnPrefs_ActionPerformed()
 	{
 		new EzimPreferences(this);
 		return;
