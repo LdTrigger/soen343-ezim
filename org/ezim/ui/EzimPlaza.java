@@ -94,7 +94,7 @@ public class EzimPlaza
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimPlaza.this.jtfdSpeak_ActionPerformed(evtTmp);
+					EzimPlaza.this.jtfdSpeak_ActionPerformed();
 					return;
 				}
 			}
@@ -107,7 +107,7 @@ public class EzimPlaza
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimPlaza.this.jbtnSpeak_ActionPerformed(evtTmp);
+					EzimPlaza.this.jbtnSpeak_ActionPerformed();
 					return;
 				}
 			}
@@ -272,13 +272,13 @@ public class EzimPlaza
 		return;
 	}
 
-	private void jtfdSpeak_ActionPerformed(ActionEvent evt)
+	private void jtfdSpeak_ActionPerformed()
 	{
 		sendSpeech();
 		return;
 	}
 
-	private void jbtnSpeak_ActionPerformed(ActionEvent evt)
+	private void jbtnSpeak_ActionPerformed()
 	{
 		sendSpeech();
 		return;

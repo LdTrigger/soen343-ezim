@@ -207,7 +207,7 @@ public class EzimMsgOut
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimMsgOut.this.jbtnSend_ActionPerformed(evtTmp);
+					EzimMsgOut.this.jbtnSend_ActionPerformed();
 					return;
 				}
 			}
@@ -392,7 +392,7 @@ public class EzimMsgOut
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
-	private void jbtnSend_ActionPerformed(ActionEvent evt)
+	private void jbtnSend_ActionPerformed()
 	{
 		if
 		(

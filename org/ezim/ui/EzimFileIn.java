@@ -210,7 +210,7 @@ public class EzimFileIn
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimFileIn.this.jbtnYes_ActionPerformed(evtTmp);
+					EzimFileIn.this.jbtnYes_ActionPerformed();
 					return;
 				}
 			}
@@ -223,7 +223,7 @@ public class EzimFileIn
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimFileIn.this.jbtnNo_ActionPerformed(evtTmp);
+					EzimFileIn.this.jbtnNo_ActionPerformed();
 					return;
 				}
 			}
@@ -236,7 +236,7 @@ public class EzimFileIn
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimFileIn.this.jbtnClose_ActionPerformed(evtTmp);
+					EzimFileIn.this.jbtnClose_ActionPerformed();
 					return;
 				}
 			}
@@ -486,19 +486,19 @@ public class EzimFileIn
 		return;
 	}
 
-	private void jbtnYes_ActionPerformed(ActionEvent evt)
+	private void jbtnYes_ActionPerformed()
 	{
 		acceptTransmission(true);
 		return;
 	}
 
-	private void jbtnNo_ActionPerformed(ActionEvent evt)
+	private void jbtnNo_ActionPerformed()
 	{
 		acceptTransmission(false);
 		return;
 	}
 
-	private void jbtnClose_ActionPerformed(ActionEvent evt)
+	private void jbtnClose_ActionPerformed()
 	{
 		this.unregSaveDispose();
 		return;

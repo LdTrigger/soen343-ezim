@@ -20,9 +20,6 @@
  */
 package org.ezim.ui;
 
-import java.awt.Color;
-import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
@@ -35,7 +32,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JSpinner.NumberEditor;
 import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 
@@ -205,7 +201,7 @@ public class EzimPreferences
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimPreferences.this.jbtnSave_ActionPerformed(evtTmp);
+					EzimPreferences.this.jbtnSave_ActionPerformed();
 					return;
 				}
 			}
@@ -218,7 +214,7 @@ public class EzimPreferences
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimPreferences.this
-						.jbtnRestore_ActionPerformed(evtTmp);
+						.jbtnRestore_ActionPerformed();
 
 					return;
 				}
@@ -724,7 +720,7 @@ public class EzimPreferences
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
-	private void jbtnSave_ActionPerformed(ActionEvent evt)
+	private void jbtnSave_ActionPerformed()
 	{
 		this.saveCurConf();
 
@@ -741,7 +737,7 @@ public class EzimPreferences
 		return;
 	}
 
-	private void jbtnRestore_ActionPerformed(ActionEvent evt)
+	private void jbtnRestore_ActionPerformed()
 	{
 		this.loadCurConf();
 		return;

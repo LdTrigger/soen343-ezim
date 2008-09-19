@@ -26,7 +26,6 @@ import java.net.InetSocketAddress;
 import javax.swing.JOptionPane;
 
 import org.ezim.core.Ezim;
-import org.ezim.core.EzimConf;
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
 
@@ -55,8 +54,6 @@ public class EzimFileResponsor implements Runnable
 	{
 		Socket sckOut = null;
 		InetSocketAddress isaTmp = null;
-
-		EzimConf ecTmp = EzimConf.getInstance();
 
 		try
 		{

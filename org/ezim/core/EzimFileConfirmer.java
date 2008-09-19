@@ -25,7 +25,6 @@ import java.net.Socket;
 import java.net.InetSocketAddress;
 
 import org.ezim.core.Ezim;
-import org.ezim.core.EzimConf;
 import org.ezim.core.EzimDtxSemantics;
 
 public class EzimFileConfirmer implements Runnable
@@ -53,8 +52,6 @@ public class EzimFileConfirmer implements Runnable
 	{
 		Socket sckOut = null;
 		InetSocketAddress isaTmp = null;
-
-		EzimConf ecTmp = EzimConf.getInstance();
 
 		try
 		{
