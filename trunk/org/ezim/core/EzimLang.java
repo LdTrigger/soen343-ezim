@@ -98,6 +98,7 @@ public class EzimLang
 	public static String UI;
 	public static String AlwaysOnTop;
 	public static String AutoOpenMsgIn;
+	public static String Locale;
 	public static String Save;
 	public static String Restore;
 	public static String RestartNeeded;
@@ -191,6 +192,7 @@ public class EzimLang
 			UI = rbTmp.getString("UI");
 			AlwaysOnTop = rbTmp.getString("AlwaysOnTop");
 			AutoOpenMsgIn = rbTmp.getString("AutoOpenMsgIn");
+			Locale = rbTmp.getString("Locale");
 			Save = rbTmp.getString("Save");
 			Restore = rbTmp.getString("Restore");
 			RestartNeeded = rbTmp.getString("RestartNeeded");

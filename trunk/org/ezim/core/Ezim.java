@@ -21,10 +21,12 @@
 package org.ezim.core;
 
 import java.lang.Thread;
+import java.util.Locale;
 import javax.swing.UIManager;
 
 import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimAckTaker;
+import org.ezim.core.EzimConf;
 import org.ezim.core.EzimDtxTaker;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimThreadPool;
@@ -35,7 +37,7 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "1.0.2";
+	public final static String appVer = "1.0.3";
 
 	// thread pool sizes and keep alive time (in minutes)
 	public final static int thPoolSizeCore = 8;
@@ -65,8 +67,32 @@ public class Ezim
 	// self-entry background color on the contact list
 	public final static int colorSelf = (int) 0xDEEFFF;
 
+	// available locales
+	public final static Locale[] locales =
+	{
+		Locale.US
+		, Locale.JAPAN
+		, Locale.SIMPLIFIED_CHINESE
+		, Locale.TRADITIONAL_CHINESE
+	};
+
 	public static void main(String[] arrArgs)
 	{
+		// locale change has to be here in order to work properly
+		EzimConf ecTmp = EzimConf.getInstance();
+		String strLocale = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimUserLocale
+		);
+		for(int iCnt = 0; iCnt < Ezim.locales.length; iCnt ++)
+		{
+			if (strLocale.equals(Ezim.locales[iCnt].toString()))
+			{
+				Locale.setDefault(Ezim.locales[iCnt]);
+				break;
+			}
+		}
+
 		UIManager.put("Button.defaultButtonFollowsFocus", true);
 
 		EzimLang.init();

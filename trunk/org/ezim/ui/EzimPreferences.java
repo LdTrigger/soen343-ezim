@@ -22,11 +22,13 @@ package org.ezim.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,9 +37,11 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.ui.EzimLocaleListRenderer;
 
 public class EzimPreferences
 	extends JDialog
@@ -69,6 +73,8 @@ public class EzimPreferences
 
 	private JCheckBox jcbAlwaysOnTop;
 	private JCheckBox jcbAutoOpenMsgIn;
+	private JLabel jlblLocale;
+	private JComboBox jcbUserLocale;
 
 	private JButton jbtnSave;
 	private JButton jbtnRestore;
@@ -184,9 +190,15 @@ public class EzimPreferences
 
 		this.jlblColorSelf = new JLabel(EzimLang.ColorSelf);
 		this.jccColorSelf = new JColorChooser();
+		this.jlblColorSelf.setLabelFor(this.jccColorSelf);
 
 		this.jcbAlwaysOnTop = new JCheckBox(EzimLang.AlwaysOnTop);
 		this.jcbAutoOpenMsgIn = new JCheckBox(EzimLang.AutoOpenMsgIn);
+		this.jlblLocale = new JLabel(EzimLang.Locale);
+		this.jcbUserLocale = new JComboBox(Ezim.locales);
+		this.jcbUserLocale.setRenderer(new EzimLocaleListRenderer());
+		this.jcbUserLocale.setEditable(false);
+		this.jlblLocale.setLabelFor(this.jcbUserLocale);
 
 		this.jpnlNetwork = new JPanel();
 		this.jpnlDesign = new JPanel();
@@ -476,6 +488,24 @@ public class EzimPreferences
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 				)
+				.addGroup
+				(
+					glUI.createSequentialGroup()
+						.addComponent
+						(
+							this.jlblLocale
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
+						.addComponent
+						(
+							this.jcbUserLocale
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
+				)
 		);
 
 		glUI.setHorizontalGroup(hUIGrp);
@@ -500,6 +530,25 @@ public class EzimPreferences
 				.addComponent
 				(
 					this.jcbAutoOpenMsgIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vUIGrp.addGroup
+		(
+			glUI.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jlblLocale
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jcbUserLocale
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -658,6 +707,28 @@ public class EzimPreferences
 			Boolean.parseBoolean(strAutoOpenMsgIn)
 		);
 
+		// locale
+		String strUserLocale = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimUserLocale
+		);
+
+		int iLen = this.jcbUserLocale.getItemCount();
+		for(int iCnt = 0; iCnt < iLen; iCnt ++)
+		{
+			if
+			(
+				strUserLocale.equals
+				(
+					((Locale) this.jcbUserLocale.getItemAt(iCnt)).toString()
+				)
+			)
+			{
+				this.jcbUserLocale.setSelectedIndex(iCnt);
+				break;
+			}
+		}
+
 		return;
 	}
 
@@ -714,6 +785,13 @@ public class EzimPreferences
 		(
 			EzimConf.ezimmsginAutoopen
 			, Boolean.toString(this.jcbAutoOpenMsgIn.isSelected())
+		);
+
+		// locale
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimUserLocale
+			, ((Locale) this.jcbUserLocale.getSelectedItem()).toString()
 		);
 
 		return;

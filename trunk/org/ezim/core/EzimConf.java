@@ -23,6 +23,7 @@ package org.ezim.core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.ezim.core.Ezim;
@@ -39,6 +40,8 @@ public class EzimConf
 	public final static String ezimDtxPort = "ezim.dtx.port";
 
 	public final static String ezimColorSelf = "ezim.color.self";
+
+	public final static String ezimUserLocale = "ezim.user.locale";
 
 	public final static String ezimmainLocalname = "ezimmain.localname";
 	public final static String ezimmainAlwaysontop = "ezimmain.alwaysontop";
@@ -130,6 +133,23 @@ public class EzimConf
 		(
 			EzimConf.ezimColorSelf
 			, Integer.toString(Ezim.colorSelf, 16)
+		);
+
+		String strLocale = Locale.getDefault().toString();
+		boolean blnInvalidLocale = true;
+		for(int iCnt = 0; iCnt < Ezim.locales.length; iCnt ++)
+		{
+			if (strLocale.equals(Ezim.locales[iCnt].toString()))
+			{
+				blnInvalidLocale = false;
+				break;
+			}
+		}
+		if (blnInvalidLocale) strLocale = Ezim.locales[0].toString();
+		this.settings.setProperty
+		(
+			EzimConf.ezimUserLocale
+			, strLocale
 		);
 
 		this.settings.setProperty(EzimConf.ezimmainAlwaysontop, "false");
