@@ -35,6 +35,7 @@ import org.ezim.core.EzimFileConfirmer;
 import org.ezim.core.EzimFileSender;
 import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimFileIn;
 import org.ezim.ui.EzimFileOut;
@@ -283,7 +284,7 @@ public class EzimDtxSemantics
 				}
 				catch(Exception e)
 				{
-					// ignore
+					EzimLogger.getInstance().severe(e.getMessage(), e);
 				}
 			}
 		}
@@ -490,7 +491,7 @@ public class EzimDtxSemantics
 				}
 				catch(Exception e)
 				{
-					// ignore
+					EzimLogger.getInstance().severe(e.getMessage(), e);
 				}
 
 				String strSysMsg = null;
@@ -860,7 +861,7 @@ public class EzimDtxSemantics
 		}
 		catch(Exception e)
 		{
-			// ignore
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 		finally
 		{
@@ -870,7 +871,7 @@ public class EzimDtxSemantics
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 

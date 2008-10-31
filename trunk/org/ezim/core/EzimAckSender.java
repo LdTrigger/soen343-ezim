@@ -27,6 +27,7 @@ import java.net.MulticastSocket;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
+import org.ezim.core.EzimLogger;
 import org.ezim.ui.EzimMain;
 
 public class EzimAckSender implements Runnable
@@ -81,6 +82,7 @@ public class EzimAckSender implements Runnable
 		catch(Exception e)
 		{
 			EzimMain.getInstance().errAlert(e.getMessage());
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 		finally
 		{
@@ -90,7 +92,7 @@ public class EzimAckSender implements Runnable
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 

@@ -26,6 +26,7 @@ import java.net.InetSocketAddress;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimDtxSemantics;
+import org.ezim.core.EzimLogger;
 import org.ezim.ui.EzimFileOut;
 
 public class EzimFileSender implements Runnable
@@ -72,6 +73,8 @@ public class EzimFileSender implements Runnable
 		}
 		catch(Exception e)
 		{
+			EzimLogger.getInstance().warning(e.getMessage(), e);
+
 			// re-enable the send message window upon failure
 			this.efo.setEnabled(true);
 		}
@@ -83,7 +86,7 @@ public class EzimFileSender implements Runnable
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 	}

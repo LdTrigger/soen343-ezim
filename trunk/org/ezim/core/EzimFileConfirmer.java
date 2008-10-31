@@ -26,6 +26,7 @@ import java.net.InetSocketAddress;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimDtxSemantics;
+import org.ezim.core.EzimLogger;
 
 public class EzimFileConfirmer implements Runnable
 {
@@ -72,7 +73,7 @@ public class EzimFileConfirmer implements Runnable
 		}
 		catch(Exception e)
 		{
-			// ignore
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 		finally
 		{
@@ -82,7 +83,7 @@ public class EzimFileConfirmer implements Runnable
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 	}

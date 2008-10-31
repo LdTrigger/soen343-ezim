@@ -31,6 +31,7 @@ import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimDtxTakerThread;
 import org.ezim.core.EzimThreadPool;
+import org.ezim.core.EzimLogger;
 import org.ezim.ui.EzimMain;
 
 public class EzimDtxTaker implements Runnable
@@ -59,6 +60,7 @@ public class EzimDtxTaker implements Runnable
 		catch(Exception e)
 		{
 			EzimMain.getInstance().errAlert(e.getMessage());
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 
 			try
 			{
@@ -66,7 +68,7 @@ public class EzimDtxTaker implements Runnable
 			}
 			catch(Exception exp)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(exp.getMessage(), exp);
 			}
 
 			// only one instance of the application is allowed at one time
@@ -109,6 +111,7 @@ public class EzimDtxTaker implements Runnable
 		catch(Exception e)
 		{
 			EzimMain.getInstance().errAlert(e.getMessage());
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 		finally
 		{
@@ -118,7 +121,7 @@ public class EzimDtxTaker implements Runnable
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 	}

@@ -59,6 +59,7 @@ import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimPlainDocument;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimPreferences;
@@ -320,6 +321,8 @@ public class EzimMain
 		}
 		catch(Exception e)
 		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+
 			this.localAddress = "127.0.0.1";
 		}
 
@@ -893,6 +896,7 @@ public class EzimMain
 		}
 		catch(AWTException awtE)
 		{
+			EzimLogger.getInstance().severe(awtE.getMessage(), awtE);
 			this.errAlert(awtE.getMessage());
 			System.exit(1);
 		}

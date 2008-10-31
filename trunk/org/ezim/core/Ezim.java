@@ -20,6 +20,7 @@
  */
 package org.ezim.core;
 
+import java.io.File;
 import java.lang.Thread;
 import java.util.Locale;
 import javax.swing.UIManager;
@@ -29,6 +30,7 @@ import org.ezim.core.EzimAckTaker;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimDtxTaker;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
 
@@ -37,7 +39,7 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "1.0.3";
+	public final static String appVer = "1.1.0";
 
 	// thread pool sizes and keep alive time (in minutes)
 	public final static int thPoolSizeCore = 8;
@@ -76,14 +78,38 @@ public class Ezim
 		, Locale.TRADITIONAL_CHINESE
 	};
 
-	public static void main(String[] arrArgs)
+	/**
+	 * prepare the save data directory if not exist
+	 */
+	private static void mkSaveDataDir()
 	{
-		// locale change has to be here in order to work properly
+		File fTmp = new File(EzimConf.getConfDir());
+
+		try
+		{
+			if (! fTmp.isDirectory()) fTmp.mkdirs();
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+			System.exit(1);
+		}
+
+		return;
+	}
+
+	/**
+	 * locale change has to be here in order to work properly
+	 */
+	private static void setDefaultLocale()
+	{
 		EzimConf ecTmp = EzimConf.getInstance();
+
 		String strLocale = ecTmp.settings.getProperty
 		(
 			EzimConf.ezimUserLocale
 		);
+
 		for(int iCnt = 0; iCnt < Ezim.locales.length; iCnt ++)
 		{
 			if (strLocale.equals(Ezim.locales[iCnt].toString()))
@@ -92,6 +118,14 @@ public class Ezim
 				break;
 			}
 		}
+
+		return;
+	}
+
+	public static void main(String[] arrArgs)
+	{
+		Ezim.mkSaveDataDir();
+		Ezim.setDefaultLocale();
 
 		UIManager.put("Button.defaultButtonFollowsFocus", true);
 
@@ -113,7 +147,7 @@ public class Ezim
 		}
 		catch(Exception e)
 		{
-			// ignore whatever
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 
 /*
