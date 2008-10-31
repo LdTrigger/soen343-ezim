@@ -27,6 +27,7 @@ import javax.swing.ListModel;
 
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
+import org.ezim.core.EzimLogger;
 
 import org.ezim.ui.EzimMain;
 import org.ezim.ui.EzimPlaza;
@@ -271,26 +272,26 @@ public class EzimContactList implements ListModel
 		, String strStatus
 	)
 	{
-		if (this.idxContact(strIp) == -1)
+		synchronized(this.list)
 		{
-			try
+			if (this.idxContact(strIp) == -1)
 			{
-				EzimContact ecTmp = null;
-
-				int iIdx = 0;
-				int iLen = this.getSize();
-
-				while(iIdx < iLen)
+				try
 				{
-					ecTmp = this.getElementAt(iIdx);
+					EzimContact ecTmp = null;
 
-					if (strName.compareTo(ecTmp.getName()) < 0) break;
+					int iIdx = 0;
+					int iLen = this.getSize();
 
-					iIdx ++;
-				}
+					while(iIdx < iLen)
+					{
+						ecTmp = this.getElementAt(iIdx);
 
-				synchronized(this.list)
-				{
+						if (strName.compareTo(ecTmp.getName()) < 0) break;
+
+						iIdx ++;
+					}
+
 					this.list.add
 					(
 						iIdx
@@ -304,13 +305,17 @@ public class EzimContactList implements ListModel
 							, strStatus
 						)
 					);
-				}
 
-				this.fireIntervalAdded(iIdx, iIdx);
-			}
-			catch(EzimContactException eceTmp)
-			{
-				// ignore
+					this.fireIntervalAdded(iIdx, iIdx);
+				}
+				catch(EzimContactException eceTmp)
+				{
+					EzimLogger.getInstance().severe
+					(
+						eceTmp.getMessage()
+						, eceTmp
+					);
+				}
 			}
 		}
 
@@ -323,16 +328,16 @@ public class EzimContactList implements ListModel
 	 */
 	public void rmContact(String strIp)
 	{
-		int iIdx = idxContact(strIp);
-
-		if (iIdx != -1)
+		synchronized(this.list)
 		{
-			synchronized(this.list)
+			int iIdx = idxContact(strIp);
+
+			if (iIdx != -1)
 			{
 				this.list.remove(iIdx);
-			}
 
-			this.fireIntervalRemoved(iIdx, iIdx);
+				this.fireIntervalRemoved(iIdx, iIdx);
+			}
 		}
 
 		return;
@@ -357,7 +362,7 @@ public class EzimContactList implements ListModel
 			}
 			catch(Exception e)
 			{
-				// ignore for the time being
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 

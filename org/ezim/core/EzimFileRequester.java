@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimLogger;
 import org.ezim.ui.EzimFileOut;
 
 public class EzimFileRequester implements Runnable
@@ -70,6 +71,8 @@ public class EzimFileRequester implements Runnable
 		}
 		catch(Exception e)
 		{
+			EzimLogger.getInstance().warning(e.getMessage(), e);
+
 			JOptionPane.showMessageDialog
 			(
 				null
@@ -86,7 +89,7 @@ public class EzimFileRequester implements Runnable
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 	}

@@ -20,6 +20,8 @@
  */
 package org.ezim.core;
 
+import org.ezim.core.EzimLogger;
+
 import java.util.ResourceBundle;
 
 public class EzimLang
@@ -203,6 +205,8 @@ public class EzimLang
 		}
 		catch(Exception e)
 		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+
 			// properties file is obligatory
 			System.out.println(e.getMessage());
 			System.exit(1);

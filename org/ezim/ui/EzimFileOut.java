@@ -41,6 +41,7 @@ import org.ezim.core.EzimContact;
 import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimFileRequester;
 import org.ezim.core.EzimThreadPool;
 
@@ -413,7 +414,7 @@ public class EzimFileOut
 		}
 		catch(Exception e)
 		{
-			// ignore
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 
 		EzimFtxList.getInstance().remove(this.id);

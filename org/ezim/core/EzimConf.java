@@ -22,11 +22,13 @@ package org.ezim.core;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Locale;
 import java.util.Properties;
 
 import org.ezim.core.Ezim;
+import org.ezim.core.EzimLogger;
 
 public class EzimConf
 {
@@ -246,9 +248,14 @@ public class EzimConf
 			fisTmp = new FileInputStream(EzimConf.getConfFilename());
 			this.settings.load(fisTmp);
 		}
+		catch(FileNotFoundException fnfe)
+		{
+			// we can safely ignore this
+//			EzimLogger.getInstance().warning(fnfe.getMessage(), fnfe);
+		}
 		catch(Exception e)
 		{
-			// ignore
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 		finally
 		{
@@ -258,7 +265,7 @@ public class EzimConf
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 
@@ -285,7 +292,7 @@ public class EzimConf
 		}
 		catch(Exception e)
 		{
-			// OMG!
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 		finally
 		{
@@ -299,7 +306,7 @@ public class EzimConf
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 

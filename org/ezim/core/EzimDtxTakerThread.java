@@ -25,6 +25,7 @@ import java.net.Socket;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimLogger;
 
 public class EzimDtxTakerThread implements Runnable
 {
@@ -81,7 +82,7 @@ public class EzimDtxTakerThread implements Runnable
 		}
 		catch(Exception e)
 		{
-			// ignore (safe?)
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 		finally
 		{
@@ -91,7 +92,7 @@ public class EzimDtxTakerThread implements Runnable
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 
 			try
@@ -100,7 +101,7 @@ public class EzimDtxTakerThread implements Runnable
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 
 			fHdr.delete();

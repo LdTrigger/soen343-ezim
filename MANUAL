@@ -3,8 +3,9 @@
 
                         http://ezim.sourceforge.net/
 
-                                                     Author: Chun-Kwong Wong
-                                                       Date: July 18, 2008
+                                                  Author: Chun-Kwong Wong
+                                              Created On: July 18, 2008
+                                         Last Revised On: October 21, 2008
 ----------------------------------------------------------------------------
 Table of Contents
 
@@ -17,7 +18,7 @@ Table of Contents
 
 
 ----------------------------------------------------------------------------
-1.0 System Requirement
+1.0 System Requirements
 
 
     In order to run EZ Intranet Messenger, Java Runtime Environment 1.6.0 is
@@ -66,6 +67,7 @@ A: It is the state icon which represents your current state and gives your
 
 
 Q: Why I can't leave the status textbox empty?
+
 A: Due to our connection policy, every connected user must have a brief
    verbal description to tell the other users that he/she is indeed
    connected to the network.  If you leave the status textbox empty, a
@@ -74,11 +76,12 @@ A: Due to our connection policy, every connected user must have a brief
 
 Q: How do I change my nickname?
 
-A: We don't encourage users changing their nickname often because it is the
-   only way a user can be recognized.  Nonetheless, If you really want to
-   change your nickname, you can delete the whole configuration directory,
-   then all settings will be re-initialized and you will be asked to enter
-   the nickname again.
+A: We don't encourage users to change their nickname often because it is the
+   only way a user can be recognized.  That is why we don't provide an easy
+   GUI way to do the task.  Nonetheless, if you really want to change your
+   nickname, you can delete the whole configuration directory, then all
+   settings will be re-initialized and you will be asked to enter the
+   nickname again.
 
    On Windows, the configuration directory is known as "%HOME%\.ezim".
    On Linux, it is "$HOME/.ezim".
@@ -92,6 +95,26 @@ A: When the plaza window is open, a user is supposed to be chatting in the
    works as an indicator which tells other users who is/are chatting in the
    plaza.  When the user finishes chatting and closes the plaza window, the
    state icon will be restored to what is being selected.
+
+
+Q: What are multicast group IP, multicast group port, and direct
+   transmission port used for?  Why should I care about them?
+
+A: Multicast group IP (default: 229.0.0.1) and multicast group port
+   (default: 5555) are used for network-segment-wide communications.  This
+   kind of transmissions will reach all the peers in the same network
+   segment.  Contact information retrievals, status change notifications,
+   and plaza conversations fall into this category.  In order to communicate
+   with other peers in the same network segment, these settings have to
+   match with your peers'.
+
+   Direct transmission port (default: 6666) is opened to receive
+   communications which are destinated to you directly from the peers.  You
+   can change it to something else to avoid conflict if you have other
+   applications alreadily listening to the default port.
+
+   If you have no idea what the above means, simply leave the settings to
+   default and everything should work just fine.
 
 
 ----------------------------------------------------------------------------
@@ -108,28 +131,37 @@ A: First of all, make sure that you are on the same network segment with the
    contact list manually.
 
 
-Q: There users on the contact whom I can't send message to, why?
+Q: There are users on the contact whom I can't send message to, why?
 
 A: Either the users you are trying to send message to have their firewalls
    blocking the transmissions, or there are firewalls in your machine
    preventing connections getting out.
 
-   In order to receive messages from the peers, the port 6666 has to be
-   open for incoming direct transmission. If there is any firewall running
-   on the system, you'll have to make sure the specific port is open to your
-   peers. 
+   In order to receive messages from the peers, the direct transmission port
+   (default: 6666) has to be open for incoming direct transmission. If there
+   is any firewall running on the system, you'll have to make sure the
+   specific port is open to your peers. 
  
    On Linux, you can do something like this with iptables as root: 
    # iptables -A INPUT -i eth0 -p tcp -s 192.168.1.0/24 -dport 6666 -j ACCEPT 
+
+   Or alternatively, you can change the direct transmission port's setting
+   to avoid it from being blocked.
  
    Also, if you can't see your peers, or the status update does not seem to
    work, check and see if the firewall is blocking any multicast signals.
-   With iptables, see if there is something like this, if so, remove it: 
+   With iptables, see if there is anything like these, if so, remove it: 
  
-   iptables -A INPUT -i eth0 -d 229.0.0.1 -j DROP 
+   iptables -A -p all -d 229.0.0.1 -j DROP
+   iptables -A INPUT -m pkttype --pkt-type broadcast -j DROP
+   iptables -A INPUT -m pkttype --pkt-type multicast -j DROP
 
 
 NOTE:
+
+   The above scenarios are based on the assumption that all network settings
+   are set to default.
+
 
    If you have problem which is not listed here, please visit our help
    forum and leave us a message:

@@ -28,6 +28,7 @@ import java.net.MulticastSocket;
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimAckSemantics;
 import org.ezim.core.EzimConf;
+import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
 
@@ -99,6 +100,7 @@ public class EzimAckTaker implements Runnable
 		}
 		catch(Exception e)
 		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 			emHwnd.errAlert(e.getMessage());
 		}
 		finally
@@ -110,7 +112,7 @@ public class EzimAckTaker implements Runnable
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 
 			try
@@ -119,7 +121,7 @@ public class EzimAckTaker implements Runnable
 			}
 			catch(Exception e)
 			{
-				// ignore
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 

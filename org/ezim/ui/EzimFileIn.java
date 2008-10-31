@@ -42,6 +42,7 @@ import org.ezim.core.EzimFileResponsor;
 import org.ezim.core.EzimFrxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimThreadPool;
 
 public class EzimFileIn
@@ -476,7 +477,7 @@ public class EzimFileIn
 		}
 		catch(Exception e)
 		{
-			// ignore
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 
 		EzimFrxList.getInstance().remove(this.id);
