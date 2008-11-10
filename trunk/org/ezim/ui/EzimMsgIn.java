@@ -442,7 +442,7 @@ public class EzimMsgIn
 		sbSbj.append(this.jtfdSbj.getText());
 
 		StringBuffer sbMsg = new StringBuffer();
-		sbMsg.append("----- ");
+		sbMsg.append("\n\n----- ");
 		sbMsg.append(EzimLang.OriginalMessageFrom);
 		sbMsg.append(" ");
 		sbMsg.append(ec.getName());
