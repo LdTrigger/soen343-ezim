@@ -76,6 +76,7 @@ public class Ezim
 		, Locale.JAPAN
 		, Locale.SIMPLIFIED_CHINESE
 		, Locale.TRADITIONAL_CHINESE
+		, new Locale("es")	// how come no static field for Spanish?!
 	};
 
 	/**

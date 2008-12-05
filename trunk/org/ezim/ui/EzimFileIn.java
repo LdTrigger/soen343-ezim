@@ -43,6 +43,7 @@ import org.ezim.core.EzimFrxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimLogger;
+import org.ezim.core.EzimSound;
 import org.ezim.core.EzimThreadPool;
 
 public class EzimFileIn
@@ -102,6 +103,9 @@ public class EzimFileIn
 		this.setTitle(EzimLang.IncomingFile);
 		this.setMinimumSize(new Dimension(320, 220));
 		this.setVisible(true);
+
+		if (EzimSound.getInstance() != null)
+			EzimSound.getInstance().playFileIn();
 
 		return;
 	}
@@ -473,7 +477,8 @@ public class EzimFileIn
 	{
 		try
 		{
-			this.sck.close();
+			if (this.sck != null && ! this.sck.isClosed())
+				this.sck.close();
 		}
 		catch(Exception e)
 		{
