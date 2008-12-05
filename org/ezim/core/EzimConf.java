@@ -79,6 +79,8 @@ public class EzimConf
 	public final static String ezimfileinSizeH = "ezimfilein.size.h";
 	public final static String ezimfileinSizeW = "ezimfilein.size.w";
 
+	public final static String ezimsoundEnabled = "ezimsound.enabled";
+
 	// configuration item
 	public Properties settings;
 
@@ -186,6 +188,8 @@ public class EzimConf
 		this.settings.setProperty(EzimConf.ezimfileinLocationY, "0");
 		this.settings.setProperty(EzimConf.ezimfileinSizeH, "0");
 		this.settings.setProperty(EzimConf.ezimfileinSizeW, "0");
+
+		this.settings.setProperty(EzimConf.ezimsoundEnabled, "true");
 
 		return;
 	}

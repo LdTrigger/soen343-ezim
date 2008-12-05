@@ -28,6 +28,7 @@ import javax.swing.ListModel;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
 import org.ezim.core.EzimLogger;
+import org.ezim.core.EzimSound;
 
 import org.ezim.ui.EzimMain;
 import org.ezim.ui.EzimPlaza;
@@ -307,6 +308,9 @@ public class EzimContactList implements ListModel
 					);
 
 					this.fireIntervalAdded(iIdx, iIdx);
+
+					if (EzimSound.getInstance() != null)
+						EzimSound.getInstance().playStateChg();
 				}
 				catch(EzimContactException eceTmp)
 				{
@@ -337,6 +341,9 @@ public class EzimContactList implements ListModel
 				this.list.remove(iIdx);
 
 				this.fireIntervalRemoved(iIdx, iIdx);
+
+				if (EzimSound.getInstance() != null)
+					EzimSound.getInstance().playStateChg();
 			}
 		}
 
@@ -433,6 +440,10 @@ public class EzimContactList implements ListModel
 
 			ecTmp.setSysState(iState);
 			this.fireContentsChanged(iIdx, iIdx);
+
+
+			if (EzimSound.getInstance() != null)
+				EzimSound.getInstance().playStateChg();
 		}
 
 		return;
@@ -452,6 +463,9 @@ public class EzimContactList implements ListModel
 			EzimContact ecTmp = this.getElementAt(iIdx);
 			ecTmp.setState(iState);
 			this.fireContentsChanged(iIdx, iIdx);
+
+			if (EzimSound.getInstance() != null)
+				EzimSound.getInstance().playStateChg();
 		}
 
 		return;
@@ -471,6 +485,9 @@ public class EzimContactList implements ListModel
 			EzimContact ecTmp = this.getElementAt(iIdx);
 			ecTmp.setStatus(strStatus);
 			this.fireContentsChanged(iIdx, iIdx);
+
+			if (EzimSound.getInstance() != null)
+				EzimSound.getInstance().playStatusChg();
 		}
 
 		return;

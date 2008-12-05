@@ -75,6 +75,7 @@ public class EzimPreferences
 	private JCheckBox jcbAutoOpenMsgIn;
 	private JLabel jlblLocale;
 	private JComboBox jcbUserLocale;
+	private JCheckBox jcbEnableSound;
 
 	private JButton jbtnSave;
 	private JButton jbtnRestore;
@@ -199,6 +200,7 @@ public class EzimPreferences
 		this.jcbUserLocale.setRenderer(new EzimLocaleListRenderer());
 		this.jcbUserLocale.setEditable(false);
 		this.jlblLocale.setLabelFor(this.jcbUserLocale);
+		this.jcbEnableSound = new JCheckBox(EzimLang.EnableSound);
 
 		this.jpnlNetwork = new JPanel();
 		this.jpnlDesign = new JPanel();
@@ -506,6 +508,13 @@ public class EzimPreferences
 							, GroupLayout.PREFERRED_SIZE
 						)
 				)
+				.addComponent
+				(
+					this.jcbEnableSound
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
 		);
 
 		glUI.setHorizontalGroup(hUIGrp);
@@ -549,6 +558,18 @@ public class EzimPreferences
 				.addComponent
 				(
 					this.jcbUserLocale
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vUIGrp.addGroup
+		(
+			glUI.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jcbEnableSound
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -729,6 +750,17 @@ public class EzimPreferences
 			}
 		}
 
+		// enable sound
+		String strEnableSound = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimsoundEnabled
+		);
+
+		this.jcbEnableSound.setSelected
+		(
+			Boolean.parseBoolean(strEnableSound)
+		);
+
 		return;
 	}
 
@@ -792,6 +824,13 @@ public class EzimPreferences
 		(
 			EzimConf.ezimUserLocale
 			, ((Locale) this.jcbUserLocale.getSelectedItem()).toString()
+		);
+
+		// enable sound
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimsoundEnabled
+			, Boolean.toString(this.jcbEnableSound.isSelected())
 		);
 
 		return;

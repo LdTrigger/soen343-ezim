@@ -43,6 +43,7 @@ import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimSound;
 import org.ezim.ui.EzimMain;
 import org.ezim.ui.EzimMsgOut;
 
@@ -90,6 +91,9 @@ public class EzimMsgIn
 		{
 			jlblOpen_MouseClicked();
 		}
+
+		if (EzimSound.getInstance() != null)
+			EzimSound.getInstance().playMsgIn();
 	}
 
 	private void loadConf()

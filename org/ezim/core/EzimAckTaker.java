@@ -73,7 +73,7 @@ public class EzimAckTaker implements Runnable
 
 				final String strHAdr = dp.getAddress().getHostAddress();
 
-				final String strDtx = new String
+				final String strAck = new String
 				(
 					dp.getData()
 					, 0
@@ -91,7 +91,7 @@ public class EzimAckTaker implements Runnable
 							EzimAckSemantics.parser
 							(
 								strHAdr
-								, strDtx
+								, strAck
 							);
 						}
 					}

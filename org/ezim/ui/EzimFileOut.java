@@ -410,7 +410,8 @@ public class EzimFileOut
 	{
 		try
 		{
-			this.sck.close();
+			if (this.sck != null && ! this.sck.isClosed())
+				this.sck.close();
 		}
 		catch(Exception e)
 		{
