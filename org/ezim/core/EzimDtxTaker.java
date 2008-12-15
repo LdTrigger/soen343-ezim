@@ -75,9 +75,9 @@ public class EzimDtxTaker implements Runnable
 			System.exit(1);
 		}
 
-		try
+		while(true)
 		{
-			while(true)
+			try
 			{
 				sckIn = ssck.accept();
 				sckIn.setSoTimeout(Ezim.dtxTimeout);
@@ -107,20 +107,9 @@ public class EzimDtxTaker implements Runnable
 					sckIn = null;
 				}
 			}
-		}
-		catch(Exception e)
-		{
-			EzimMain.getInstance().errAlert(e.getMessage());
-			EzimLogger.getInstance().severe(e.getMessage(), e);
-		}
-		finally
-		{
-			try
-			{
-				if (ssck != null && ! ssck.isClosed()) ssck.close();
-			}
 			catch(Exception e)
 			{
+//				EzimMain.getInstance().errAlert(e.getMessage());
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
