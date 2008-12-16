@@ -39,7 +39,7 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "1.1.0";
+	public final static String appVer = "1.1.1";
 
 	// thread pool sizes and keep alive time (in minutes)
 	public final static int thPoolSizeCore = 8;
@@ -76,7 +76,7 @@ public class Ezim
 		, Locale.JAPAN
 		, Locale.SIMPLIFIED_CHINESE
 		, Locale.TRADITIONAL_CHINESE
-		, new Locale("es")	// how come no static field for Spanish?!
+		, new Locale("es")	// how come no class constant for Spanish?!
 	};
 
 	/**
