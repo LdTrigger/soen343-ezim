@@ -43,7 +43,6 @@ public class EzimDtxTaker implements Runnable
 	public void run()
 	{
 		ServerSocket ssck = null;
-		Socket sckIn = null;
 
 		EzimConf ecnfTmp = EzimConf.getInstance();
 
@@ -56,12 +55,16 @@ public class EzimDtxTaker implements Runnable
 					ecnfTmp.settings.getProperty(EzimConf.ezimDtxPort)
 				)
 			);
+
+			this.loop(ssck);
 		}
 		catch(Exception e)
 		{
 			EzimMain.getInstance().errAlert(e.getMessage());
 			EzimLogger.getInstance().severe(e.getMessage(), e);
-
+		}
+		finally
+		{
 			try
 			{
 				if (ssck != null && ! ssck.isClosed()) ssck.close();
@@ -75,16 +78,26 @@ public class EzimDtxTaker implements Runnable
 			System.exit(1);
 		}
 
+	}
+
+	/**
+	 * DTX data receiving loop
+	 * @param ssckIn server socket where DTX data comes from
+	 */
+	private void loop(ServerSocket ssckIn)
+	{
+		Socket sckTmp = null;
+
 		while(true)
 		{
 			try
 			{
-				sckIn = ssck.accept();
-				sckIn.setSoTimeout(Ezim.dtxTimeout);
+				sckTmp = ssckIn.accept();
+				sckTmp.setSoTimeout(Ezim.dtxTimeout);
 
 				EzimContact ecTmp = EzimContactList.getInstance().getContact
 				(
-					((InetSocketAddress) sckIn.getRemoteSocketAddress())
+					((InetSocketAddress) sckTmp.getRemoteSocketAddress())
 						.getAddress().getHostAddress()
 				);
 
@@ -94,22 +107,21 @@ public class EzimDtxTaker implements Runnable
 					EzimDtxTakerThread emttTmp = new EzimDtxTakerThread
 					(
 						ecTmp
-						, sckIn
+						, sckTmp
 					);
 
 					EzimThreadPool etpTmp = EzimThreadPool.getInstance();
 
 					etpTmp.execute(emttTmp);
 				}
-				else if (sckIn != null && ! sckIn.isClosed())
+				else if (sckTmp != null && ! sckTmp.isClosed())
 				{
-					sckIn.close();
-					sckIn = null;
+					sckTmp.close();
+					sckTmp = null;
 				}
 			}
 			catch(Exception e)
 			{
-//				EzimMain.getInstance().errAlert(e.getMessage());
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}

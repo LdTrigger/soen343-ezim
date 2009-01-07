@@ -175,15 +175,24 @@ public class EzimContactList implements ListModel
 		int iLen = this.getSize();
 		EzimContact ecTmp = null;
 
-		for(iCnt = 0; iCnt < iLen; iCnt ++)
+		try
 		{
-			ecTmp = (EzimContact) this.list.get(iCnt);
-
-			if (strIp.equals(ecTmp.getIp()))
+			for(iCnt = 0; iCnt < iLen; iCnt ++)
 			{
-				iOut = iCnt;
-				break;
+				ecTmp = (EzimContact) this.list.get(iCnt);
+
+				if (strIp.equals(ecTmp.getIp()))
+				{
+					iOut = iCnt;
+					break;
+				}
 			}
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().warning(e.getMessage(), e);
+
+			iOut = -1;
 		}
 
 		return iOut;
