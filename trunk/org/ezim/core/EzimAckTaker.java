@@ -42,8 +42,6 @@ public class EzimAckTaker implements Runnable
 	{
 		MulticastSocket ms = null;
 		InetAddress ia = null;
-		DatagramPacket dp = null;
-		byte[] arrBytes = new byte[Ezim.inBuf];
 
 		EzimConf ecTmp = EzimConf.getInstance();
 		EzimMain emHwnd = EzimMain.getInstance();
@@ -65,11 +63,54 @@ public class EzimAckTaker implements Runnable
 			ms.setReuseAddress(true);
 			ms.joinGroup(ia);
 
-			dp = new DatagramPacket(arrBytes, arrBytes.length);
-
-			while(true)
+			this.loop(ms);
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+			emHwnd.errAlert(e.getMessage());
+		}
+		finally
+		{
+			try
 			{
-				ms.receive(dp);
+				if (ia != null && ms != null && ! ms.isClosed())
+					ms.leaveGroup(ia);
+			}
+			catch(Exception e)
+			{
+				EzimLogger.getInstance().severe(e.getMessage(), e);
+			}
+
+			try
+			{
+				if (ms != null && ! ms.isClosed()) ms.close();
+			}
+			catch(Exception e)
+			{
+				EzimLogger.getInstance().severe(e.getMessage(), e);
+			}
+
+			System.exit(1);
+		}
+
+		return;
+	}
+
+	/**
+	 * ACK data receiving loop
+	 * @param msIn multicast socket where ACK data comes from
+	 */
+	private void loop(MulticastSocket msIn)
+	{
+		byte[] arrBytes = new byte[Ezim.inBuf];
+		DatagramPacket dp = new DatagramPacket(arrBytes, arrBytes.length);
+
+		while(true)
+		{
+			try
+			{
+				msIn.receive(dp);
 
 				final String strHAdr = dp.getAddress().getHostAddress();
 
@@ -97,34 +138,10 @@ public class EzimAckTaker implements Runnable
 					}
 				);
 			}
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().severe(e.getMessage(), e);
-			emHwnd.errAlert(e.getMessage());
-		}
-		finally
-		{
-			try
-			{
-				if (ia != null && ms != null && ! ms.isClosed())
-					ms.leaveGroup(ia);
-			}
-			catch(Exception e)
-			{
-				EzimLogger.getInstance().severe(e.getMessage(), e);
-			}
-
-			try
-			{
-				if (ms != null && ! ms.isClosed()) ms.close();
-			}
 			catch(Exception e)
 			{
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
-
-		return;
 	}
 }
