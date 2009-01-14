@@ -66,6 +66,10 @@ public class Ezim
 	// direct transmission buffer length (in bytes)
 	public final static int dtxBufLen = 1024;
 
+	// time interval for the refresh button to be re-enabled after being
+	// clicked (to avoid DTX flooding)
+	public final static int rfhBtnTI = 5000;
+
 	// self-entry background color on the contact list
 	public final static int colorSelf = (int) 0xDEEFFF;
 
@@ -76,7 +80,8 @@ public class Ezim
 		, Locale.JAPAN
 		, Locale.SIMPLIFIED_CHINESE
 		, Locale.TRADITIONAL_CHINESE
-		, new Locale("es")	// how come no class constant for Spanish?!
+		, new Locale("es")			// Spanish
+		, new Locale("pt", "BR")	// Portuguese (Brazil)
 	};
 
 	/**
