@@ -1052,7 +1052,35 @@ public class EzimMain
 
 	private void jbtnRfh_ActionPerformed()
 	{
+		this.jbtnRfh.setEnabled(false);
 		this.freshPoll();
+
+		EzimThreadPool.getInstance().execute
+		(
+			new Thread()
+			{
+				public void run()
+				{
+					try
+					{
+						Thread.sleep(Ezim.rfhBtnTI);
+					}
+					catch(Exception e)
+					{
+						EzimLogger.getInstance().severe
+						(
+							e.getMessage()
+							, e
+						);
+					}
+
+					EzimMain.this.jbtnRfh.setEnabled(true);
+
+					return;
+				}
+			}
+		);
+
 		return;
 	}
 

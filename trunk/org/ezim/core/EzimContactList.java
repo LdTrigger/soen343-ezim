@@ -52,7 +52,7 @@ public class EzimContactList implements ListModel
 	 * add list data listener to the call list
 	 * @param l listener to be added
 	 */
-	public void addListDataListener(ListDataListener l)
+	public synchronized void addListDataListener(ListDataListener l)
 	{
 		this.listeners.add(l);
 		return;
@@ -64,7 +64,6 @@ public class EzimContactList implements ListModel
 	 */
 	public int getSize()
 	{
-		this.list.trimToSize();
 		return this.list.size();
 	}
 
@@ -74,14 +73,25 @@ public class EzimContactList implements ListModel
 	 */
 	public EzimContact getElementAt(int iIdx)
 	{
-		return this.list.get(iIdx);
+		EzimContact ecOut = null;
+
+		try
+		{
+			ecOut = this.list.get(iIdx);
+		}
+		catch(Exception e)
+		{
+			ecOut = null;
+		}
+
+		return ecOut;
 	}
 
 	/**
 	 * remove list data listener from the call list
 	 * @param l listener to be added
 	 */
-	public void removeListDataListener(ListDataListener l)
+	public synchronized void removeListDataListener(ListDataListener l)
 	{
 		this.listeners.remove(l);
 		return;
@@ -175,24 +185,25 @@ public class EzimContactList implements ListModel
 		int iLen = this.getSize();
 		EzimContact ecTmp = null;
 
-		try
+		if (strIp != null && strIp.length() > 0)
 		{
-			for(iCnt = 0; iCnt < iLen; iCnt ++)
+			try
 			{
-				ecTmp = (EzimContact) this.list.get(iCnt);
-
-				if (strIp.equals(ecTmp.getIp()))
+				for(iCnt = 0; iCnt < iLen; iCnt ++)
 				{
-					iOut = iCnt;
-					break;
+					ecTmp = (EzimContact) this.list.get(iCnt);
+
+					if (ecTmp != null && strIp.equals(ecTmp.getIp()))
+					{
+						iOut = iCnt;
+						break;
+					}
 				}
 			}
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().warning(e.getMessage(), e);
-
-			iOut = -1;
+			catch(Exception e)
+			{
+				iOut = -1;
+			}
 		}
 
 		return iOut;
@@ -232,16 +243,15 @@ public class EzimContactList implements ListModel
 	 */
 	public void clear()
 	{
-		int iSize = this.getSize();
-
-		if (iSize > 0)
+		synchronized(this.list)
 		{
-			synchronized(this.list)
+			int iSize = this.getSize();
+
+			if (iSize > 0)
 			{
 				this.list.clear();
+				this.fireIntervalRemoved(0, iSize - 1);
 			}
-
-			this.fireIntervalRemoved(0, iSize - 1);
 		}
 
 		return;
@@ -257,8 +267,13 @@ public class EzimContactList implements ListModel
 		EzimContact ecOut = null;
 		int iIdx = idxContact(strIp);
 
-		if (iIdx != -1)
+		if (iIdx > -1)
+		{
 			ecOut = this.getElementAt(iIdx);
+
+			if (ecOut != null && ! ecOut.getIp().equals(strIp))
+				ecOut = null;
+		}
 
 		return ecOut;
 	}
@@ -345,9 +360,10 @@ public class EzimContactList implements ListModel
 		{
 			int iIdx = idxContact(strIp);
 
-			if (iIdx != -1)
+			if (iIdx > -1)
 			{
 				this.list.remove(iIdx);
+				this.list.trimToSize();
 
 				this.fireIntervalRemoved(iIdx, iIdx);
 
@@ -368,13 +384,17 @@ public class EzimContactList implements ListModel
 	{
 		int iIdx = this.idxContact(strIp);
 
-		if (iIdx >= 0)
+		if (iIdx > -1)
 		{
 			try
 			{
 				EzimContact ecTmp = this.getElementAt(iIdx);
-				ecTmp.setPort(iPort);
-				this.fireContentsChanged(iIdx, iIdx);
+
+				if (ecTmp != null && ecTmp.getIp().equals(strIp))
+				{
+					ecTmp.setPort(iPort);
+					this.fireContentsChanged(iIdx, iIdx);
+				}
 			}
 			catch(Exception e)
 			{
@@ -394,11 +414,15 @@ public class EzimContactList implements ListModel
 	{
 		int iIdx = this.idxContact(strIp);
 
-		if (iIdx >= 0)
+		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
-			ecTmp.setName(strName);
-			this.fireContentsChanged(iIdx, iIdx);
+
+			if (ecTmp != null && ecTmp.getIp().equals(strIp))
+			{
+				ecTmp.setName(strName);
+				this.fireContentsChanged(iIdx, iIdx);
+			}
 		}
 
 		return;
@@ -413,46 +437,48 @@ public class EzimContactList implements ListModel
 	{
 		int iIdx = this.idxContact(strIp);
 
-		if (iIdx >= 0)
+		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
 
-			// post auto narration in the plaza
-			EzimPlaza epTmp = EzimMain.getInstance().epMain;
-			if (epTmp.isVisible())
+			if (ecTmp != null && ecTmp.getIp().equals(strIp))
 			{
-				if
-				(
-					ecTmp.getSysState() != EzimContact.SYSSTATE_PLAZA
-					&& iState == EzimContact.SYSSTATE_PLAZA
-				)
+				// post auto narration in the plaza
+				EzimPlaza epTmp = EzimMain.getInstance().epMain;
+				if (epTmp.isVisible())
 				{
-					epTmp.addNarration
+					if
 					(
-						strIp
-						, EzimLang.HasJoinedPlazaOfSpeech
-					);
-				}
-				else if
-				(
-					ecTmp.getSysState() == EzimContact.SYSSTATE_PLAZA
-					&& iState != EzimContact.SYSSTATE_PLAZA
-				)
-				{
-					epTmp.addNarration
+						ecTmp.getSysState() != EzimContact.SYSSTATE_PLAZA
+						&& iState == EzimContact.SYSSTATE_PLAZA
+					)
+					{
+						epTmp.addNarration
+						(
+							strIp
+							, EzimLang.HasJoinedPlazaOfSpeech
+						);
+					}
+					else if
 					(
-						strIp
-						, EzimLang.HasLeftPlazaOfSpeech
-					);
+						ecTmp.getSysState() == EzimContact.SYSSTATE_PLAZA
+						&& iState != EzimContact.SYSSTATE_PLAZA
+					)
+					{
+						epTmp.addNarration
+						(
+							strIp
+							, EzimLang.HasLeftPlazaOfSpeech
+						);
+					}
 				}
+
+				ecTmp.setSysState(iState);
+				this.fireContentsChanged(iIdx, iIdx);
+
+				if (EzimSound.getInstance() != null)
+					EzimSound.getInstance().playStateChg();
 			}
-
-			ecTmp.setSysState(iState);
-			this.fireContentsChanged(iIdx, iIdx);
-
-
-			if (EzimSound.getInstance() != null)
-				EzimSound.getInstance().playStateChg();
 		}
 
 		return;
@@ -467,14 +493,18 @@ public class EzimContactList implements ListModel
 	{
 		int iIdx = this.idxContact(strIp);
 
-		if (iIdx >= 0)
+		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
-			ecTmp.setState(iState);
-			this.fireContentsChanged(iIdx, iIdx);
 
-			if (EzimSound.getInstance() != null)
-				EzimSound.getInstance().playStateChg();
+			if (ecTmp != null && ecTmp.getIp().equals(strIp))
+			{
+				ecTmp.setState(iState);
+				this.fireContentsChanged(iIdx, iIdx);
+
+				if (EzimSound.getInstance() != null)
+					EzimSound.getInstance().playStateChg();
+			}
 		}
 
 		return;
@@ -489,14 +519,18 @@ public class EzimContactList implements ListModel
 	{
 		int iIdx = this.idxContact(strIp);
 
-		if (iIdx >= 0)
+		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
-			ecTmp.setStatus(strStatus);
-			this.fireContentsChanged(iIdx, iIdx);
 
-			if (EzimSound.getInstance() != null)
-				EzimSound.getInstance().playStatusChg();
+			if (ecTmp != null && ecTmp.getIp().equals(strIp))
+			{
+				ecTmp.setStatus(strStatus);
+				this.fireContentsChanged(iIdx, iIdx);
+
+				if (EzimSound.getInstance() != null)
+					EzimSound.getInstance().playStatusChg();
+			}
 		}
 
 		return;
