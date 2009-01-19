@@ -1107,7 +1107,7 @@ public class EzimMain
 
 	private void jbtnPrefs_ActionPerformed()
 	{
-		new EzimPreferences(this);
+		new EzimPreferences();
 		return;
 	}
 
