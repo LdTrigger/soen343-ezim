@@ -67,7 +67,7 @@ public class Ezim
 	public final static int dtxBufLen = 1024;
 
 	// time interval for the refresh button to be re-enabled after being
-	// clicked (to avoid DTX flooding)
+	// clicked (to avoid ACK flooding)
 	public final static int rfhBtnTI = 5000;
 
 	// self-entry background color on the contact list

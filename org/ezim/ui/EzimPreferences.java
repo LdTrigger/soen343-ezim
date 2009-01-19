@@ -81,9 +81,9 @@ public class EzimPreferences
 	private JButton jbtnRestore;
 
 	// C O N S T R U C T O R -----------------------------------------------
-	public EzimPreferences(EzimMain emIn)
+	public EzimPreferences()
 	{
-		super(emIn, EzimLang.Prefs, true);
+		super(EzimMain.getInstance(), EzimLang.Prefs, true);
 
 		this.init();
 
