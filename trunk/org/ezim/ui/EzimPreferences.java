@@ -94,7 +94,7 @@ public class EzimPreferences
 		this.setVisible(true);
 	}
 
-	public void init()
+	private void init()
 	{
 		this.initGUI();
 		this.loadCurConf();
@@ -105,7 +105,7 @@ public class EzimPreferences
 	/**
 	 * initialize all GUI components
 	 */
-	public void initGUI()
+	private void initGUI()
 	{
 		SpinnerNumberModel mdlMcGrp1 = new SpinnerNumberModel
 		(
