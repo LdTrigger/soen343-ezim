@@ -790,7 +790,7 @@ public class EzimMain
 		return;
 	}
 
-	public void initTrayIcon()
+	private void initTrayIcon()
 	{
 		// P O P - U P   M E N U -------------------------------------------
 		PopupMenu pmTmp = new PopupMenu();
