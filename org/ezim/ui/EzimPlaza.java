@@ -1,7 +1,7 @@
 /*
     EZ Intranet Messenger
 
-    Copyright (C) 2007 - 2008  Chun-Kwong Wong
+    Copyright (C) 2007 - 2009  Chun-Kwong Wong
     chunkwong.wong@gmail.com
     http://ezim.sourceforge.net/
 
@@ -128,35 +128,35 @@ public class EzimPlaza
 		hGrp.addGroup
 		(
 			glBase.createParallelGroup()
-			.addGroup
-			(
-				glBase.createSequentialGroup()
-				.addComponent
+				.addGroup
 				(
-					this.jspPlaza
-					, GroupLayout.DEFAULT_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, Short.MAX_VALUE
+					glBase.createSequentialGroup()
+						.addComponent
+						(
+							this.jspPlaza
+							, GroupLayout.DEFAULT_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, Short.MAX_VALUE
+						)
 				)
-			)
-			.addGroup
-			(
-				glBase.createSequentialGroup()
-				.addComponent
+				.addGroup
 				(
-					this.jtfdSpeak
-					, GroupLayout.DEFAULT_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, Short.MAX_VALUE
+					glBase.createSequentialGroup()
+						.addComponent
+						(
+							this.jtfdSpeak
+							, GroupLayout.DEFAULT_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, Short.MAX_VALUE
+						)
+						.addComponent
+						(
+							this.jbtnSpeak
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
 				)
-				.addComponent
-				(
-					this.jbtnSpeak
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-			)
 		);
 
 		glBase.setHorizontalGroup(hGrp);
@@ -166,37 +166,37 @@ public class EzimPlaza
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent
-			(
-				this.jspPlaza
+				.addComponent
+				(
+					this.jspPlaza
 /*
-				, GroupLayout.DEFAULT_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, Short.MAX_VALUE
+					, GroupLayout.DEFAULT_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, Short.MAX_VALUE
 */
-				, GroupLayout.DEFAULT_SIZE
-				, 100
-				, Short.MAX_VALUE
-			)
+					, GroupLayout.DEFAULT_SIZE
+					, 100
+					, Short.MAX_VALUE
+				)
 		);
 
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent
-			(
-				this.jtfdSpeak
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-			)
-			.addComponent
-			(
-				this.jbtnSpeak
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-			)
+				.addComponent
+				(
+					this.jtfdSpeak
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jbtnSpeak
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
 		);
 
 		glBase.setVerticalGroup(vGrp);
