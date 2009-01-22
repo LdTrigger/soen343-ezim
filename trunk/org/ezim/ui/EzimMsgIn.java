@@ -1,7 +1,7 @@
 /*
     EZ Intranet Messenger
 
-    Copyright (C) 2007 - 2008  Chun-Kwong Wong
+    Copyright (C) 2007 - 2009  Chun-Kwong Wong
     chunkwong.wong@gmail.com
     http://ezim.sourceforge.net/
 
@@ -252,71 +252,71 @@ public class EzimMsgIn
 		hGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.TRAILING)
-			.addGroup
-			(
-				glBase.createSequentialGroup()
 				.addGroup
 				(
-					glBase.createParallelGroup(Alignment.LEADING)
-					.addComponent
-					(
-						this.jlblName
-						, GroupLayout.PREFERRED_SIZE
-						, GroupLayout.PREFERRED_SIZE
-						, GroupLayout.PREFERRED_SIZE
-					)
-					.addComponent
-					(
-						this.jlblSbj
-						, GroupLayout.PREFERRED_SIZE
-						, GroupLayout.PREFERRED_SIZE
-						, GroupLayout.PREFERRED_SIZE
-					)
+					glBase.createSequentialGroup()
+						.addGroup
+						(
+							glBase.createParallelGroup(Alignment.LEADING)
+								.addComponent
+								(
+									this.jlblName
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+								.addComponent
+								(
+									this.jlblSbj
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+						)
+						.addGroup
+						(
+							glBase.createParallelGroup(Alignment.LEADING)
+								.addComponent
+								(
+									this.jtfdName
+									, GroupLayout.DEFAULT_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, Short.MAX_VALUE
+								)
+								.addComponent
+								(
+									this.jtfdSbj
+									, GroupLayout.DEFAULT_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, Short.MAX_VALUE
+								)
+						)
 				)
-				.addGroup
-				(
-					glBase.createParallelGroup(Alignment.LEADING)
-					.addComponent
-					(
-						this.jtfdName
-						, GroupLayout.DEFAULT_SIZE
-						, GroupLayout.PREFERRED_SIZE
-						, Short.MAX_VALUE
-					)
-					.addComponent
-					(
-						this.jtfdSbj
-						, GroupLayout.DEFAULT_SIZE
-						, GroupLayout.PREFERRED_SIZE
-						, Short.MAX_VALUE
-					)
-				)
-			)
-			.addComponent
-			(
-				this.jspMsg
-				, GroupLayout.DEFAULT_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, Short.MAX_VALUE
-			)
-			.addGroup
-			(
-				glBase.createSequentialGroup()
 				.addComponent
 				(
-					this.jlblOpen
+					this.jspMsg
 					, GroupLayout.DEFAULT_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, Short.MAX_VALUE
 				)
-				.addComponent
+				.addGroup
 				(
-					this.jbtnReply
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
+					glBase.createSequentialGroup()
+						.addComponent
+						(
+							this.jlblOpen
+							, GroupLayout.DEFAULT_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, Short.MAX_VALUE
+						)
+						.addComponent
+						(
+							this.jbtnReply
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
 				)
-			)
 		);
 
 		glBase.setHorizontalGroup(hGrp);
@@ -326,39 +326,39 @@ public class EzimMsgIn
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent
-			(
-				this.jlblName
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-			)
-			.addComponent
-			(
-				this.jtfdName
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-			)
+				.addComponent
+				(
+					this.jlblName
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jtfdName
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
 		);
 
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent
-			(
-				this.jlblSbj
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-			)
-			.addComponent
-			(
-				this.jtfdSbj
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-			)
+				.addComponent
+				(
+					this.jlblSbj
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jtfdSbj
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
 		);
 
 		vGrp.addComponent
@@ -377,20 +377,20 @@ public class EzimMsgIn
 		vGrp.addGroup
 		(
 			glBase.createParallelGroup(Alignment.BASELINE)
-			.addComponent
-			(
-				this.jlblOpen
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-			)
-			.addComponent
-			(
-				this.jbtnReply
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-				, GroupLayout.PREFERRED_SIZE
-			)
+				.addComponent
+				(
+					this.jlblOpen
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jbtnReply
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
 		);
 
 		glBase.setVerticalGroup(vGrp);
