@@ -175,6 +175,22 @@ public class EzimContactList implements ListModel
 	}
 
 	/**
+	 * normalize the given address if it is local
+	 * @param iaIn address to be normalized
+	 * @return untouched remote address / normalized local address
+	 */
+	private InetAddress normalizeAddressIfLocal(InetAddress iaIn)
+	{
+		InetAddress iaOut = iaIn;
+		EzimMain emTmp = EzimMain.getInstance();
+
+		if (emTmp.localAddresses.contains(iaIn))
+			iaOut = emTmp.localAddresses.get(0);
+
+		return iaOut;
+	}
+
+	/**
 	 * find and return index of the contact specified by the IP address
 	 * @param iaIn address to look for
 	 * @return index of the contact, or -1 if not found
@@ -190,11 +206,13 @@ public class EzimContactList implements ListModel
 		{
 			try
 			{
+				InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
+
 				for(iCnt = 0; iCnt < iLen; iCnt ++)
 				{
 					ecTmp = (EzimContact) this.list.get(iCnt);
 
-					if (ecTmp != null && iaIn.equals(ecTmp.getAddress()))
+					if (ecTmp != null && iaTmp.equals(ecTmp.getAddress()))
 					{
 						iOut = iCnt;
 						break;
@@ -266,14 +284,22 @@ public class EzimContactList implements ListModel
 	public EzimContact getContact(InetAddress iaIn)
 	{
 		EzimContact ecOut = null;
-		int iIdx = idxContact(iaIn);
+		InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
+		int iIdx = idxContact(iaTmp);
 
 		if (iIdx > -1)
 		{
 			ecOut = this.getElementAt(iIdx);
 
-			if (ecOut != null && ! ecOut.getAddress().equals(iaIn))
+			if
+			(
+				ecOut != null
+				&& iaTmp.equals(iaIn)
+				&& ! ecOut.getAddress().equals(iaTmp)
+			)
+			{
 				ecOut = null;
+			}
 		}
 
 		return ecOut;
@@ -298,9 +324,11 @@ public class EzimContactList implements ListModel
 		, String strStatus
 	)
 	{
+		InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
+
 		synchronized(this.list)
 		{
-			if (this.idxContact(iaIn) == -1)
+			if (this.idxContact(iaTmp) == -1)
 			{
 				try
 				{
@@ -332,7 +360,7 @@ public class EzimContactList implements ListModel
 						iIdx
 						, new EzimContact
 						(
-							iaIn
+							iaTmp
 							, iPort
 							, strName
 							, iSysState
@@ -366,9 +394,11 @@ public class EzimContactList implements ListModel
 	 */
 	public void rmContact(InetAddress iaIn)
 	{
+		InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
+
 		synchronized(this.list)
 		{
-			int iIdx = idxContact(iaIn);
+			int iIdx = idxContact(iaTmp);
 
 			if (iIdx > -1)
 			{
@@ -392,7 +422,8 @@ public class EzimContactList implements ListModel
 	 */
 	public void updContactPort(InetAddress iaIn, int iPort)
 	{
-		int iIdx = this.idxContact(iaIn);
+		InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
+		int iIdx = this.idxContact(iaTmp);
 
 		if (iIdx > -1)
 		{
@@ -400,7 +431,7 @@ public class EzimContactList implements ListModel
 			{
 				EzimContact ecTmp = this.getElementAt(iIdx);
 
-				if (ecTmp != null && ecTmp.getAddress().equals(iaIn))
+				if (ecTmp != null && ecTmp.getAddress().equals(iaTmp))
 				{
 					ecTmp.setPort(iPort);
 					this.fireContentsChanged(iIdx, iIdx);
@@ -422,13 +453,14 @@ public class EzimContactList implements ListModel
 	 */
 	public void updContactName(InetAddress iaIn, String strName)
 	{
-		int iIdx = this.idxContact(iaIn);
+		InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
+		int iIdx = this.idxContact(iaTmp);
 
 		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
 
-			if (ecTmp != null && ecTmp.getAddress().equals(iaIn))
+			if (ecTmp != null && ecTmp.getAddress().equals(iaTmp))
 			{
 				ecTmp.setName(strName);
 				this.fireContentsChanged(iIdx, iIdx);
@@ -445,13 +477,14 @@ public class EzimContactList implements ListModel
 	 */
 	public void updContactSysState(InetAddress iaIn, int iState)
 	{
-		int iIdx = this.idxContact(iaIn);
+		InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
+		int iIdx = this.idxContact(iaTmp);
 
 		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
 
-			if (ecTmp != null && ecTmp.getAddress().equals(iaIn))
+			if (ecTmp != null && ecTmp.getAddress().equals(iaTmp))
 			{
 				// post auto narration in the plaza
 				EzimPlaza epTmp = EzimMain.getInstance().epMain;
@@ -465,7 +498,7 @@ public class EzimContactList implements ListModel
 					{
 						epTmp.addNarration
 						(
-							iaIn
+							iaTmp
 							, EzimLang.HasJoinedPlazaOfSpeech
 						);
 					}
@@ -477,7 +510,7 @@ public class EzimContactList implements ListModel
 					{
 						epTmp.addNarration
 						(
-							iaIn
+							iaTmp
 							, EzimLang.HasLeftPlazaOfSpeech
 						);
 					}
@@ -501,13 +534,14 @@ public class EzimContactList implements ListModel
 	 */
 	public void updContactState(InetAddress iaIn, int iState)
 	{
-		int iIdx = this.idxContact(iaIn);
+		InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
+		int iIdx = this.idxContact(iaTmp);
 
 		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
 
-			if (ecTmp != null && ecTmp.getAddress().equals(iaIn))
+			if (ecTmp != null && ecTmp.getAddress().equals(iaTmp))
 			{
 				ecTmp.setState(iState);
 				this.fireContentsChanged(iIdx, iIdx);
@@ -527,13 +561,14 @@ public class EzimContactList implements ListModel
 	 */
 	public void updContactStatus(InetAddress iaIn, String strStatus)
 	{
-		int iIdx = this.idxContact(iaIn);
+		InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
+		int iIdx = this.idxContact(iaTmp);
 
 		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
 
-			if (ecTmp != null && ecTmp.getAddress().equals(iaIn))
+			if (ecTmp != null && ecTmp.getAddress().equals(iaTmp))
 			{
 				ecTmp.setStatus(strStatus);
 				this.fireContentsChanged(iIdx, iIdx);

@@ -226,7 +226,7 @@ public class EzimAckSemantics
 			if
 			(
 				strLine.startsWith(EzimAckSemantics.POLL)
-				&& ! iaIn.equals(emTmp.localAddress)
+				&& ! emTmp.localAddresses.contains(iaIn)
 			)
 			{
 				String strPollIp = strLine.substring
@@ -234,13 +234,23 @@ public class EzimAckSemantics
 					EzimAckSemantics.POLL.length()
 				);
 
-				if
-				(
-					strPollIp.length() == 0
-					|| strPollIp.equals(emTmp.localAddress)
-				)
+				try
 				{
-					blnAllInfo = true;
+					if
+					(
+						strPollIp.length() == 0
+						|| emTmp.localAddresses.contains
+							(
+								InetAddress.getByName(strPollIp)
+							)
+					)
+					{
+						blnAllInfo = true;
+					}
+				}
+				catch(Exception e)
+				{
+					EzimLogger.getInstance().warning(e.getMessage(), e);
 				}
 			}
 			else if (strLine.startsWith(EzimAckSemantics.OFF))
@@ -330,7 +340,7 @@ public class EzimAckSemantics
 				etpTmp.execute(easTmp);
 			}
 
-			if (! iaIn.equals(emTmp.localAddress))
+			if (! emTmp.localAddresses.contains(iaIn))
 			{
 				blnAllInfo = true;
 			}

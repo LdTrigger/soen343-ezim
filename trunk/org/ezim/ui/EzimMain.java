@@ -38,6 +38,7 @@ import java.awt.event.WindowListener;
 import java.net.InetAddress;
 import java.net.Inet4Address;
 import java.net.NetworkInterface;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -90,7 +91,7 @@ public class EzimMain
 
 	private TrayIcon tiMain;
 
-	public InetAddress localAddress;
+	public ArrayList<InetAddress> localAddresses;
 	public int localPort;
 	public String localName;
 	public int localSysState;
@@ -323,42 +324,46 @@ public class EzimMain
 		Enumeration<InetAddress> enumIa = null;
 		InetAddress iaTmp = null;
 
+		this.localAddresses = new ArrayList<InetAddress>();
+
 		try
 		{
 			enumIf = NetworkInterface.getNetworkInterfaces();
 
-			while(enumIf.hasMoreElements() && this.localAddress == null)
+			while(enumIf.hasMoreElements())
 			{
 				niTmp = enumIf.nextElement();
 				 enumIa = niTmp.getInetAddresses();
 
-				while(enumIa.hasMoreElements() && this.localAddress == null)
+				while(enumIa.hasMoreElements())
 				{
 					iaTmp = enumIa.nextElement();
 
-					if
-					(
-						iaTmp instanceof Inet4Address
-						&& ! iaTmp.isLoopbackAddress()
-					)
+					if (! this.localAddresses.contains(iaTmp))
 					{
-						this.localAddress = iaTmp;
+						if
+						(
+							iaTmp instanceof Inet4Address
+							&& ! iaTmp.isLoopbackAddress()
+						)
+						{
+							this.localAddresses.add(0, iaTmp);
+						}
+						else
+						{
+							this.localAddresses.add(iaTmp);
+						}
 					}
 				}
 			}
+
+			this.localAddresses.trimToSize();
 		}
 		catch(Exception e)
 		{
 			EzimLogger.getInstance().severe(e.getMessage(), e);
-
-			try
-			{
-				this.localAddress = InetAddress.getByName("localhost");
-			}
-			catch(Exception e1)
-			{
-				EzimLogger.getInstance().severe(e1.getMessage(), e1);
-			}
+			this.errAlert(e.getMessage());
+			System.exit(1);
 		}
 
 		EzimConf ecnfTmp = EzimConf.getInstance();
@@ -1286,7 +1291,7 @@ public class EzimMain
 
 		eclTmp.addContact
 		(
-			this.localAddress
+			this.localAddresses.get(0)
 			, this.localPort
 			, this.localName
 			, this.localSysState
