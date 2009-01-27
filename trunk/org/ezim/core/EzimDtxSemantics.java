@@ -804,7 +804,7 @@ public class EzimDtxSemantics
 								EzimFileConfirmer efcTmp
 									= new EzimFileConfirmer
 									(
-										ecIn.getIp()
+										ecIn.getAddress()
 										, ecIn.getPort()
 										, strFileReqId
 										, true
@@ -814,7 +814,7 @@ public class EzimDtxSemantics
 								EzimFileSender efsTmp = new EzimFileSender
 								(
 									efoTmp
-									, ecIn.getIp()
+									, ecIn.getAddress()
 									, ecIn.getPort()
 								);
 								etpTmp.execute(efsTmp);
@@ -830,7 +830,7 @@ public class EzimDtxSemantics
 								EzimFileConfirmer efcTmp
 									= new EzimFileConfirmer
 									(
-										ecIn.getIp()
+										ecIn.getAddress()
 										, ecIn.getPort()
 										, strFileReqId
 										, false
@@ -849,7 +849,7 @@ public class EzimDtxSemantics
 					{
 						EzimFileConfirmer efcTmp = new EzimFileConfirmer
 						(
-							ecIn.getIp()
+							ecIn.getAddress()
 							, ecIn.getPort()
 							, strFileReqId
 							, false

@@ -36,6 +36,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.InetAddress;
+import java.net.Inet4Address;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ListSelectionModel;
@@ -87,7 +90,7 @@ public class EzimMain
 
 	private TrayIcon tiMain;
 
-	public String localAddress;
+	public InetAddress localAddress;
 	public int localPort;
 	public String localName;
 	public int localSysState;
@@ -315,15 +318,47 @@ public class EzimMain
 
 	private void initData()
 	{
+		Enumeration<NetworkInterface> enumIf = null;
+		NetworkInterface niTmp = null;
+		Enumeration<InetAddress> enumIa = null;
+		InetAddress iaTmp = null;
+
 		try
 		{
-			this.localAddress = InetAddress.getLocalHost().getHostAddress();
+			enumIf = NetworkInterface.getNetworkInterfaces();
+
+			while(enumIf.hasMoreElements() && this.localAddress == null)
+			{
+				niTmp = enumIf.nextElement();
+				 enumIa = niTmp.getInetAddresses();
+
+				while(enumIa.hasMoreElements() && this.localAddress == null)
+				{
+					iaTmp = enumIa.nextElement();
+
+					if
+					(
+						iaTmp instanceof Inet4Address
+						&& ! iaTmp.isLoopbackAddress()
+					)
+					{
+						this.localAddress = iaTmp;
+					}
+				}
+			}
 		}
 		catch(Exception e)
 		{
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 
-			this.localAddress = "127.0.0.1";
+			try
+			{
+				this.localAddress = InetAddress.getByName("localhost");
+			}
+			catch(Exception e1)
+			{
+				EzimLogger.getInstance().severe(e1.getMessage(), e1);
+			}
 		}
 
 		EzimConf ecnfTmp = EzimConf.getInstance();
@@ -1017,14 +1052,14 @@ public class EzimMain
 		{
 			EzimContact ecTmp
 				= (EzimContact) this.jlstContacts.getSelectedValue();
-			String strIp = ecTmp.getIp();
+			InetAddress iaTmp = ecTmp.getAddress();
 
 			JFileChooser jfcTmp = new JFileChooser();
 			int iJfcRes = jfcTmp.showOpenDialog(this);
 
 			if (iJfcRes == JFileChooser.APPROVE_OPTION)
 			{
-				ecTmp = EzimContactList.getInstance().getContact(strIp);
+				ecTmp = EzimContactList.getInstance().getContact(iaTmp);
 
 				if (ecTmp == null)
 				{
@@ -1261,7 +1296,7 @@ public class EzimMain
 
 		EzimAckSender easTmp = new EzimAckSender
 		(
-			EzimAckSemantics.poll("")
+			EzimAckSemantics.poll()
 		);
 
 		EzimThreadPool.getInstance().execute(easTmp);

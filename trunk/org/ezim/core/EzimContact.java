@@ -20,6 +20,8 @@
  */
 package org.ezim.core;
 
+import java.net.InetAddress;
+
 import org.ezim.core.EzimContactException;
 
 public class EzimContact implements Comparable
@@ -34,7 +36,7 @@ public class EzimContact implements Comparable
 	// status
 	public final static String STATUS_DEFAULT = "Online";
 
-	private String ip;
+	private InetAddress addr;
 	private int port;
 	private String name;
 	private int sysState;
@@ -43,7 +45,7 @@ public class EzimContact implements Comparable
 
 	public EzimContact
 	(
-		String strIp
+		InetAddress iaIn
 		, int iPort
 		, String strName
 		, int iSysState
@@ -52,7 +54,7 @@ public class EzimContact implements Comparable
 	)
 		throws EzimContactException
 	{
-		this.setIp(strIp);
+		this.setAddress(iaIn);
 		this.setPort(iPort);
 		this.setName(strName);
 		this.setSysState(iSysState);
@@ -66,12 +68,15 @@ public class EzimContact implements Comparable
 		if (! (ecIn instanceof EzimContact))
 			throw new ClassCastException("An EzimContact object expected.");
 
-		return this.getIp().compareTo(((EzimContact) ecIn).getIp());
+		return this.getAddress().getHostAddress().compareTo
+		(
+			((EzimContact) ecIn).getAddress().getHostAddress()
+		);
 	}
 
-	public String getIp()
+	public InetAddress getAddress()
 	{
-		return this.ip;
+		return this.addr;
 	}
 
 	public int getPort()
@@ -99,13 +104,13 @@ public class EzimContact implements Comparable
 		return this.status;
 	}
 
-	public void setIp(String strIn)
+	public void setAddress(InetAddress iaIn)
 		throws EzimContactException
 	{
-		if (strIn == null)
-			throw new EzimContactException("IP is null.");
+		if (iaIn == null)
+			throw new EzimContactException("Address is null.");
 
-		this.ip = strIn;
+		this.addr = iaIn;
 
 		return;
 	}
@@ -126,7 +131,7 @@ public class EzimContact implements Comparable
 		if (strIn != null && strIn.length() > 0)
 			this.name = strIn;
 		else
-			this.name = this.ip;
+			this.name = this.addr.getHostAddress();
 
 		return;
 	}

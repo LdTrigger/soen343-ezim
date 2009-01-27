@@ -20,6 +20,8 @@
  */
 package org.ezim.core;
 
+import java.net.InetAddress;
+
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimThreadPool;
@@ -40,18 +42,27 @@ public class EzimAckSemantics
 
 	/**
 	 * used to poll from a user specified by IP address
-	 * @param strIp IP address of the user to poll from
+	 * @param iaIn address of the user to poll from
 	 */
-	public static String poll(String strIp)
+	public static String poll(InetAddress iaIn)
 	{
 		StringBuffer sbOut = new StringBuffer();
 
 		sbOut.append(EzimAckSemantics.PREFIX);
 		sbOut.append(EzimAckSemantics.NEWLINE);
 		sbOut.append(EzimAckSemantics.POLL);
-		sbOut.append(strIp);
+
+		if (iaIn != null) sbOut.append(iaIn.getHostAddress());
 
 		return sbOut.toString();
+	}
+
+	/**
+	 * used to poll from a user specified by IP address
+	 */
+	public static String poll()
+	{
+		return EzimAckSemantics.poll(null);
 	}
 
 	/**
@@ -174,10 +185,10 @@ public class EzimAckSemantics
 	/**
 	 * parse all incoming acknowledge broadcast messages and react
 	 * accordingly
-	 * @param strIp sender's IP address
+	 * @param iaIn sender's address
 	 * @param strAck acknowledge broadcast message to be parsed
 	 */
-	public static void parser(String strIp, String strAck)
+	public static void parser(InetAddress iaIn, String strAck)
 	{
 		EzimMain emTmp = EzimMain.getInstance();
 		EzimContactList eclTmp = EzimContactList.getInstance();
@@ -215,7 +226,7 @@ public class EzimAckSemantics
 			if
 			(
 				strLine.startsWith(EzimAckSemantics.POLL)
-				&& ! strIp.equals(emTmp.localAddress)
+				&& ! iaIn.equals(emTmp.localAddress)
 			)
 			{
 				String strPollIp = strLine.substring
@@ -289,15 +300,15 @@ public class EzimAckSemantics
 		// update ACK info of the sender
 		if (blnOff)
 		{
-			eclTmp.rmContact(strIp);
+			eclTmp.rmContact(iaIn);
 		}
-		else if (eclTmp.getContact(strIp) == null)
+		else if (eclTmp.getContact(iaIn) == null)
 		{
 			if (iPort > -1 && iPort < 65536 && strName != null)
 			{
 				eclTmp.addContact
 				(
-					strIp
+					iaIn
 					, iPort
 					, strName
 					, iSysState
@@ -312,14 +323,14 @@ public class EzimAckSemantics
 				(
 					EzimAckSemantics.poll
 					(
-						strIp
+						iaIn
 					)
 				);
 
 				etpTmp.execute(easTmp);
 			}
 
-			if (! strIp.equals(emTmp.localAddress))
+			if (! iaIn.equals(emTmp.localAddress))
 			{
 				blnAllInfo = true;
 			}
@@ -330,7 +341,7 @@ public class EzimAckSemantics
 			{
 				eclTmp.updContactPort
 				(
-					strIp
+					iaIn
 					, iPort
 				);
 			}
@@ -339,7 +350,7 @@ public class EzimAckSemantics
 			{
 				eclTmp.updContactName
 				(
-					strIp
+					iaIn
 					, strName
 				);
 			}
@@ -348,7 +359,7 @@ public class EzimAckSemantics
 			{
 				eclTmp.updContactSysState
 				(
-					strIp
+					iaIn
 					, iSysState
 				);
 			}
@@ -357,7 +368,7 @@ public class EzimAckSemantics
 			{
 				eclTmp.updContactState
 				(
-					strIp
+					iaIn
 					, iState
 				);
 			}
@@ -366,7 +377,7 @@ public class EzimAckSemantics
 			{
 				eclTmp.updContactStatus
 				(
-					strIp
+					iaIn
 					, strStatus
 				);
 			}
@@ -377,7 +388,7 @@ public class EzimAckSemantics
 		{
 			emTmp.epMain.addSpeech
 			(
-				strIp
+				iaIn
 				, strSpeech
 			);
 		}

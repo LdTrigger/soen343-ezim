@@ -20,6 +20,7 @@
  */
 package org.ezim.core;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -175,17 +176,17 @@ public class EzimContactList implements ListModel
 
 	/**
 	 * find and return index of the contact specified by the IP address
-	 * @param strIp IP address to look for
+	 * @param iaIn address to look for
 	 * @return index of the contact, or -1 if not found
 	 */
-	private int idxContact(String strIp)
+	private int idxContact(InetAddress iaIn)
 	{
 		int iOut = -1;
 		int iCnt = 0;
 		int iLen = this.getSize();
 		EzimContact ecTmp = null;
 
-		if (strIp != null && strIp.length() > 0)
+		if (iaIn != null)
 		{
 			try
 			{
@@ -193,7 +194,7 @@ public class EzimContactList implements ListModel
 				{
 					ecTmp = (EzimContact) this.list.get(iCnt);
 
-					if (ecTmp != null && strIp.equals(ecTmp.getIp()))
+					if (ecTmp != null && iaIn.equals(ecTmp.getAddress()))
 					{
 						iOut = iCnt;
 						break;
@@ -259,19 +260,19 @@ public class EzimContactList implements ListModel
 
 	/**
 	 * find and return the contact specified by the IP address
-	 * @param strIp IP address to look for
+	 * @param iaIn address to look for
 	 * @return instance of the contact, or null if not found
 	 */
-	public EzimContact getContact(String strIp)
+	public EzimContact getContact(InetAddress iaIn)
 	{
 		EzimContact ecOut = null;
-		int iIdx = idxContact(strIp);
+		int iIdx = idxContact(iaIn);
 
 		if (iIdx > -1)
 		{
 			ecOut = this.getElementAt(iIdx);
 
-			if (ecOut != null && ! ecOut.getIp().equals(strIp))
+			if (ecOut != null && ! ecOut.getAddress().equals(iaIn))
 				ecOut = null;
 		}
 
@@ -280,7 +281,7 @@ public class EzimContactList implements ListModel
 
 	/**
 	 * add a new contact to the list (ordered by name) if not yet exists
-	 * @param strIp IP address of the new contact
+	 * @param iaIn address of the new contact
 	 * @param iPort DTX port of the new contact
 	 * @param strName name of the new contact
 	 * @param iSysState system state of the new contact
@@ -289,7 +290,7 @@ public class EzimContactList implements ListModel
 	 */
 	public void addContact
 	(
-		String strIp
+		InetAddress iaIn
 		, int iPort
 		, String strName
 		, int iSysState
@@ -299,7 +300,7 @@ public class EzimContactList implements ListModel
 	{
 		synchronized(this.list)
 		{
-			if (this.idxContact(strIp) == -1)
+			if (this.idxContact(iaIn) == -1)
 			{
 				try
 				{
@@ -312,7 +313,16 @@ public class EzimContactList implements ListModel
 					{
 						ecTmp = this.getElementAt(iIdx);
 
-						if (strName.compareTo(ecTmp.getName()) < 0) break;
+						if
+						(
+							strName.compareToIgnoreCase
+							(
+								ecTmp.getName()
+							) < 0
+						)
+						{
+							break;
+						}
 
 						iIdx ++;
 					}
@@ -322,7 +332,7 @@ public class EzimContactList implements ListModel
 						iIdx
 						, new EzimContact
 						(
-							strIp
+							iaIn
 							, iPort
 							, strName
 							, iSysState
@@ -352,13 +362,13 @@ public class EzimContactList implements ListModel
 
 	/**
 	 * remove contact from the list if exists
-	 * @param strIp IP address of the contact to be removed
+	 * @param iaIn address of the contact to be removed
 	 */
-	public void rmContact(String strIp)
+	public void rmContact(InetAddress iaIn)
 	{
 		synchronized(this.list)
 		{
-			int iIdx = idxContact(strIp);
+			int iIdx = idxContact(iaIn);
 
 			if (iIdx > -1)
 			{
@@ -377,12 +387,12 @@ public class EzimContactList implements ListModel
 
 	/**
 	 * update an existing contact with the new DTX port
-	 * @param strIp IP address of the contact to be updated
+	 * @param iaIn address of the contact to be updated
 	 * @param iPort new DTX port of the contact
 	 */
-	public void updContactPort(String strIp, int iPort)
+	public void updContactPort(InetAddress iaIn, int iPort)
 	{
-		int iIdx = this.idxContact(strIp);
+		int iIdx = this.idxContact(iaIn);
 
 		if (iIdx > -1)
 		{
@@ -390,7 +400,7 @@ public class EzimContactList implements ListModel
 			{
 				EzimContact ecTmp = this.getElementAt(iIdx);
 
-				if (ecTmp != null && ecTmp.getIp().equals(strIp))
+				if (ecTmp != null && ecTmp.getAddress().equals(iaIn))
 				{
 					ecTmp.setPort(iPort);
 					this.fireContentsChanged(iIdx, iIdx);
@@ -407,18 +417,18 @@ public class EzimContactList implements ListModel
 
 	/**
 	 * update an existing contact with the new name
-	 * @param strIp IP address of the contact to be updated
+	 * @param iaIn address of the contact to be updated
 	 * @param strName new name of the contact
 	 */
-	public void updContactName(String strIp, String strName)
+	public void updContactName(InetAddress iaIn, String strName)
 	{
-		int iIdx = this.idxContact(strIp);
+		int iIdx = this.idxContact(iaIn);
 
 		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
 
-			if (ecTmp != null && ecTmp.getIp().equals(strIp))
+			if (ecTmp != null && ecTmp.getAddress().equals(iaIn))
 			{
 				ecTmp.setName(strName);
 				this.fireContentsChanged(iIdx, iIdx);
@@ -430,18 +440,18 @@ public class EzimContactList implements ListModel
 
 	/**
 	 * update an existing contact with the new system state
-	 * @param strIp IP address of the contact to be update
+	 * @param iaIn address of the contact to be update
 	 * @param iState new state of the contact
 	 */
-	public void updContactSysState(String strIp, int iState)
+	public void updContactSysState(InetAddress iaIn, int iState)
 	{
-		int iIdx = this.idxContact(strIp);
+		int iIdx = this.idxContact(iaIn);
 
 		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
 
-			if (ecTmp != null && ecTmp.getIp().equals(strIp))
+			if (ecTmp != null && ecTmp.getAddress().equals(iaIn))
 			{
 				// post auto narration in the plaza
 				EzimPlaza epTmp = EzimMain.getInstance().epMain;
@@ -455,7 +465,7 @@ public class EzimContactList implements ListModel
 					{
 						epTmp.addNarration
 						(
-							strIp
+							iaIn
 							, EzimLang.HasJoinedPlazaOfSpeech
 						);
 					}
@@ -467,7 +477,7 @@ public class EzimContactList implements ListModel
 					{
 						epTmp.addNarration
 						(
-							strIp
+							iaIn
 							, EzimLang.HasLeftPlazaOfSpeech
 						);
 					}
@@ -486,18 +496,18 @@ public class EzimContactList implements ListModel
 
 	/**
 	 * update an existing contact with the new state
-	 * @param strIp IP address of the contact to be update
+	 * @param iaIn address of the contact to be update
 	 * @param iState new state of the contact
 	 */
-	public void updContactState(String strIp, int iState)
+	public void updContactState(InetAddress iaIn, int iState)
 	{
-		int iIdx = this.idxContact(strIp);
+		int iIdx = this.idxContact(iaIn);
 
 		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
 
-			if (ecTmp != null && ecTmp.getIp().equals(strIp))
+			if (ecTmp != null && ecTmp.getAddress().equals(iaIn))
 			{
 				ecTmp.setState(iState);
 				this.fireContentsChanged(iIdx, iIdx);
@@ -512,18 +522,18 @@ public class EzimContactList implements ListModel
 
 	/**
 	 * update an existing contact with the new status
-	 * @param strIp IP address of the contact to be updated
+	 * @param iaIn address of the contact to be updated
 	 * @param strStatus new status of the contact
 	 */
-	public void updContactStatus(String strIp, String strStatus)
+	public void updContactStatus(InetAddress iaIn, String strStatus)
 	{
-		int iIdx = this.idxContact(strIp);
+		int iIdx = this.idxContact(iaIn);
 
 		if (iIdx > -1)
 		{
 			EzimContact ecTmp = this.getElementAt(iIdx);
 
-			if (ecTmp != null && ecTmp.getIp().equals(strIp))
+			if (ecTmp != null && ecTmp.getAddress().equals(iaIn))
 			{
 				ecTmp.setStatus(strStatus);
 				this.fireContentsChanged(iIdx, iIdx);

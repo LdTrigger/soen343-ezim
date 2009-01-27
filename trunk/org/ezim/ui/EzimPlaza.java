@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.GroupLayout;
@@ -322,15 +323,15 @@ public class EzimPlaza
 
 	/**
 	 * add speech to the window with the given IP and contents
-	 * @param strIp IP address of the contact who makes the speech
+	 * @param iaIn address of the contact who makes the speech
 	 * @param strSpeech contents of the speech
 	 */
-	public void addSpeech(String strIp, String strSpeech)
+	public void addSpeech(InetAddress iaIn, String strSpeech)
 	{
 		if (this.isVisible())
 		{
 			EzimContact ecTmp
-				= EzimContactList.getInstance().getContact(strIp);
+				= EzimContactList.getInstance().getContact(iaIn);
 
 			if (ecTmp != null)
 			{
@@ -361,15 +362,15 @@ public class EzimPlaza
 
 	/**
 	 * add narration to the window with the given IP and contents
-	 * @param strIp IP address of the contact to be narrated
+	 * @param iaIn address of the contact to be narrated
 	 * @param strNarration contents of the narration
 	 */
-	public void addNarration(String strIp, String strNarration)
+	public void addNarration(InetAddress iaIn, String strNarration)
 	{
 		if (this.isVisible())
 		{
 			EzimContact ecTmp
-				= EzimContactList.getInstance().getContact(strIp);
+				= EzimContactList.getInstance().getContact(iaIn);
 
 			if (ecTmp != null)
 			{

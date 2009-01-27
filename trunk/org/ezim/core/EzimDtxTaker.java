@@ -98,7 +98,7 @@ public class EzimDtxTaker implements Runnable
 				EzimContact ecTmp = EzimContactList.getInstance().getContact
 				(
 					((InetSocketAddress) sckTmp.getRemoteSocketAddress())
-						.getAddress().getHostAddress()
+						.getAddress()
 				);
 
 				// only take messages from known contacts

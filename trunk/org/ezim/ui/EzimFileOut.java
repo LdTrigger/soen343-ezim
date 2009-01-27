@@ -80,7 +80,7 @@ public class EzimFileOut
 		(
 			new EzimFileRequester
 			(
-				ecIn.getIp()
+				ecIn.getAddress()
 				, ecIn.getPort()
 				, this.id
 				, this

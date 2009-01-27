@@ -21,8 +21,9 @@
 package org.ezim.core;
 
 import java.lang.Runnable;
-import java.net.Socket;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimDtxSemantics;
@@ -32,18 +33,18 @@ import org.ezim.ui.EzimFileOut;
 public class EzimFileSender implements Runnable
 {
 	private EzimFileOut efo;
-	private String ip;
+	private InetAddress addr;
 	private int port;
 
 	public EzimFileSender
 	(
 		EzimFileOut efoIn
-		, String strIp
+		, InetAddress iaIn
 		, int iPort
 	)
 	{
 		this.efo = efoIn;
-		this.ip = strIp;
+		this.addr = iaIn;
 		this.port = iPort;
 	}
 
@@ -57,7 +58,7 @@ public class EzimFileSender implements Runnable
 			sckOut = new Socket();
 			isaTmp = new InetSocketAddress
 			(
-				this.ip
+				this.addr
 				, this.port
 			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
