@@ -398,7 +398,7 @@ public class EzimMsgOut
 		(
 			EzimContactList.getInstance().getContact
 			(
-				this.ec.getIp()
+				this.ec.getAddress()
 			) == null
 		)
 		{
@@ -415,7 +415,7 @@ public class EzimMsgOut
 			EzimMsgSender jmsTmp = new EzimMsgSender
 			(
 				this
-				, this.ec.getIp()
+				, this.ec.getAddress()
 				, this.ec.getPort()
 				, this.jtfdSbj.getText()
 				, this.etaMsg.getText()

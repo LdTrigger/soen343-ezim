@@ -593,7 +593,7 @@ public class EzimFileIn
 		(
 			new EzimFileResponsor
 			(
-				this.ec.getIp()
+				this.ec.getAddress()
 				, this.ec.getPort()
 				, this.id
 				, blnFinalRes

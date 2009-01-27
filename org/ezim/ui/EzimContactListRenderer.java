@@ -66,7 +66,7 @@ public class EzimContactListRenderer
 		}
 		else
 		{
-			if (ecTmp.getIp().equals(emHwnd.localAddress))
+			if (ecTmp.getAddress().equals(emHwnd.localAddress))
 				this.setBackground(clrSelf);
 			else
 				this.setBackground(jlstIn.getBackground());

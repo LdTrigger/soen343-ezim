@@ -22,8 +22,9 @@ package org.ezim.core;
 
 import java.awt.event.WindowEvent;
 import java.lang.Runnable;
-import java.net.Socket;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import javax.swing.JOptionPane;
 
 import org.ezim.core.Ezim;
@@ -35,7 +36,7 @@ import org.ezim.ui.EzimMsgOut;
 public class EzimMsgSender implements Runnable
 {
 	private EzimMsgOut emo = null;
-	private String ip = null;
+	private InetAddress addr = null;
 	private int port = -1;
 	private String sbj = null;
 	private String msg = null;
@@ -43,14 +44,14 @@ public class EzimMsgSender implements Runnable
 	public EzimMsgSender
 	(
 		EzimMsgOut emoIn
-		, String strIp
+		, InetAddress iaIn
 		, int iPort
 		, String strSbj
 		, String strMsg
 	)
 	{
 		this.emo = emoIn;
-		this.ip = strIp;
+		this.addr = iaIn;
 		this.port = iPort;
 		this.sbj = strSbj;
 		this.msg = strMsg;
@@ -69,7 +70,7 @@ public class EzimMsgSender implements Runnable
 			sckOut = new Socket();
 			isaTmp = new InetSocketAddress
 			(
-				this.ip
+				this.addr
 				, this.port
 			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);

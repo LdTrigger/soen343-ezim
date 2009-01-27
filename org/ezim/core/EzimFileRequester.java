@@ -21,8 +21,9 @@
 package org.ezim.core;
 
 import java.lang.Runnable;
-import java.net.Socket;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import javax.swing.JOptionPane;
 
 import org.ezim.core.Ezim;
@@ -33,20 +34,20 @@ import org.ezim.ui.EzimFileOut;
 
 public class EzimFileRequester implements Runnable
 {
-	private String ip = null;
+	private InetAddress addr = null;
 	private int port = -1;
 	private String id = null;
 	private EzimFileOut efo = null;
 
 	public EzimFileRequester
 	(
-		String strIp
+		InetAddress iaIn
 		, int iPort
 		, String strId
 		, EzimFileOut efoIn
 	)
 	{
-		this.ip = strIp;
+		this.addr = iaIn;
 		this.port = iPort;
 		this.id = strId;
 		this.efo = efoIn;
@@ -62,7 +63,7 @@ public class EzimFileRequester implements Runnable
 			sckOut = new Socket();
 			isaTmp = new InetSocketAddress
 			(
-				this.ip
+				this.addr
 				, this.port
 			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);

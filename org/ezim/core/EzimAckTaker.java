@@ -112,7 +112,7 @@ public class EzimAckTaker implements Runnable
 			{
 				msIn.receive(dp);
 
-				final String strHAdr = dp.getAddress().getHostAddress();
+				final InetAddress iaAck = dp.getAddress();
 
 				final String strAck = new String
 				(
@@ -131,7 +131,7 @@ public class EzimAckTaker implements Runnable
 						{
 							EzimAckSemantics.parser
 							(
-								strHAdr
+								iaAck
 								, strAck
 							);
 						}
