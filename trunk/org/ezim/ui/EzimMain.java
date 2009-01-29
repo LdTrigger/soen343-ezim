@@ -1055,11 +1055,18 @@ public class EzimMain
 	{
 		if (this.jlstContacts.getSelectedValue() != null)
 		{
+			EzimConf econf = EzimConf.getInstance();
 			EzimContact ecTmp
 				= (EzimContact) this.jlstContacts.getSelectedValue();
 			InetAddress iaTmp = ecTmp.getAddress();
 
-			JFileChooser jfcTmp = new JFileChooser();
+			JFileChooser jfcTmp = new JFileChooser
+			(
+				econf.settings.getProperty
+				(
+					EzimConf.ezimfileoutDirectory
+				)
+			);
 			int iJfcRes = jfcTmp.showOpenDialog(this);
 
 			if (iJfcRes == JFileChooser.APPROVE_OPTION)
@@ -1078,6 +1085,12 @@ public class EzimMain
 				}
 				else
 				{
+					econf.settings.setProperty
+					(
+						EzimConf.ezimfileoutDirectory
+						, jfcTmp.getCurrentDirectory().getAbsolutePath()
+					);
+
 					new EzimFileOut
 					(
 						ecTmp

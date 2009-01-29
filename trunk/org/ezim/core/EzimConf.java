@@ -73,11 +73,13 @@ public class EzimConf
 	public final static String ezimfileoutLocationY = "ezimfileout.location.y";
 	public final static String ezimfileoutSizeH = "ezimfileout.size.h";
 	public final static String ezimfileoutSizeW = "ezimfileout.size.w";
+	public final static String ezimfileoutDirectory = "ezimfileout.directory";
 
 	public final static String ezimfileinLocationX = "ezimfilein.location.x";
 	public final static String ezimfileinLocationY = "ezimfilein.location.y";
 	public final static String ezimfileinSizeH = "ezimfilein.size.h";
 	public final static String ezimfileinSizeW = "ezimfilein.size.w";
+	public final static String ezimfileinDirectory = "ezimfilein.directory";
 
 	public final static String ezimsoundEnabled = "ezimsound.enabled";
 
