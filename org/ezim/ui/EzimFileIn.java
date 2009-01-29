@@ -566,15 +566,21 @@ public class EzimFileIn
 		// let the user choose where to save the incoming file
 		if (blnRes)
 		{
-			JFileChooser jfcTmp = new JFileChooser();
+			EzimConf econf = EzimConf.getInstance();
+			JFileChooser jfcTmp = new JFileChooser
+			(
+				econf.settings.getProperty
+				(
+					EzimConf.ezimfileinDirectory
+				)
+			);
 
 			jfcTmp.setSelectedFile
 			(
 				new File
 				(
-					System.getProperty("user.home")
-					+ System.getProperty("file.separator")
-					+ this.remoteFName
+					jfcTmp.getCurrentDirectory().getAbsolutePath()
+					, this.remoteFName
 				)
 			);
 
@@ -582,6 +588,12 @@ public class EzimFileIn
 
 			if (iJfcRes == JFileChooser.APPROVE_OPTION)
 			{
+				econf.settings.setProperty
+				(
+					EzimConf.ezimfileinDirectory
+					, jfcTmp.getCurrentDirectory().getAbsolutePath()
+				);
+
 				this.file = jfcTmp.getSelectedFile();
 			}
 		}
