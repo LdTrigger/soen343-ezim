@@ -20,21 +20,18 @@
  */
 package org.ezim.ui;
 
-import java.awt.Color;
 import java.awt.Component;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import org.ezim.core.Ezim;
-import org.ezim.core.EzimContact;
-import org.ezim.core.EzimImage;
-
-public class EzimContactListRenderer
+public class EzimLocalAddressListRenderer
 	extends JLabel
 	implements ListCellRenderer
 {
-	public EzimContactListRenderer()
+	public EzimLocalAddressListRenderer()
 	{
 	}
 
@@ -47,33 +44,36 @@ public class EzimContactListRenderer
 		, boolean blnCellHasFocus
 	)
 	{
-		EzimMain emHwnd = EzimMain.getInstance();
-		EzimContact ecTmp = (EzimContact) objIn;
-		Color clrSelf = new Color(emHwnd.colorSelf);
+		InetAddress iaTmp = (InetAddress) objIn;
+		StringBuffer sbTmp = new StringBuffer
+		(
+			iaTmp.getHostAddress().replaceAll("%.*$", "")
+		);
+		NetworkInterface niTmp = null;
 
-		// state icon
-		if (ecTmp.getSysState() != EzimContact.SYSSTATE_DEFAULT)
-			this.setIcon(EzimImage.icoSysStates[ecTmp.getSysState()]);
-		else
-			this.setIcon(EzimImage.icoStates[ecTmp.getState()]);
-
-		// username + status
-		this.setText(ecTmp.getName() + " (" + ecTmp.getStatus() + ")");
-
-		if (blnSelected)
+		try
 		{
-			this.setBackground(jlstIn.getSelectionBackground());
-			this.setForeground(jlstIn.getSelectionForeground());
-		}
-		else
-		{
-			if (Ezim.localAddresses.contains(ecTmp.getAddress()))
-				this.setBackground(clrSelf);
-			else
-				this.setBackground(jlstIn.getBackground());
+			niTmp = NetworkInterface.getByInetAddress(iaTmp);
 
-			this.setForeground(jlstIn.getForeground());
+			if
+			(
+				niTmp != null
+				&& niTmp.getName() != null
+				&& niTmp.getName().length() > 0
+			)
+			{
+				sbTmp.insert(0, ") ");
+				sbTmp.insert(0, niTmp.getName());
+				sbTmp.insert(0, "(");
+			}
 		}
+		catch(Exception e)
+		{
+			niTmp = null;
+		}
+
+		// display IP of the InetAddress
+		this.setText(sbTmp.toString());
 
 		this.setEnabled(jlstIn.isEnabled());
 		this.setFont(jlstIn.getFont());

@@ -21,8 +21,15 @@
 package org.ezim.core;
 
 import java.io.File;
+import java.lang.Integer;
 import java.lang.Thread;
+import java.net.InetAddress;
+import java.net.Inet4Address;
+import java.net.NetworkInterface;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Locale;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.ezim.core.EzimAckSemantics;
@@ -36,6 +43,7 @@ import org.ezim.ui.EzimMain;
 
 public class Ezim
 {
+	// D E F A U L T   C O N S T A N T S -----------------------------------
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
@@ -82,8 +90,25 @@ public class Ezim
 		, Locale.TRADITIONAL_CHINESE
 		, new Locale("es")			// Spanish
 		, new Locale("pt", "BR")	// Portuguese (Brazil)
+		, Locale.ITALY
 	};
 
+	// regexp for validating IPv4 address
+	public static final String regexpIPv4
+		= "\\A(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)"
+		+ "(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z";
+
+	// regexp for validating IPv6 address
+	public static final String regexpIPv6
+		= "\\A(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\\z";
+
+	// P R O P E R T I E S -------------------------------------------------
+	public static ArrayList<InetAddress> localAddresses = null;
+	public static InetAddress localAddress = null;
+	public static int localDtxPort = 0;
+	public static String localName = null;
+
+	// P R I V A T E   M E T H O D S ---------------------------------------
 	/**
 	 * prepare the save data directory if not exist
 	 */
@@ -128,6 +153,252 @@ public class Ezim
 		return;
 	}
 
+	/**
+	 * initialize local addresses
+	 */
+	private static void initLocalAddresses()
+	{
+		Enumeration<NetworkInterface> enumNI = null;
+		NetworkInterface niTmp = null;
+		Enumeration<InetAddress> enumIA = null;
+		InetAddress iaTmp = null;
+		Ezim.localAddresses = new ArrayList<InetAddress>();
+
+		try
+		{
+			enumNI = NetworkInterface.getNetworkInterfaces();
+
+			while(enumNI.hasMoreElements())
+			{
+				niTmp = enumNI.nextElement();
+
+				if (! niTmp.isUp() || ! niTmp.supportsMulticast()) continue;
+
+				enumIA = niTmp.getInetAddresses();
+
+				while(enumIA.hasMoreElements())
+				{
+					iaTmp = enumIA.nextElement();
+
+					if
+					(
+						! Ezim.localAddresses.contains(iaTmp)
+					)
+					{
+						Ezim.localAddresses.add(iaTmp);
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+			System.exit(1);
+		}
+
+		Ezim.localAddresses.trimToSize();
+
+		return;
+	}
+
+	/**
+	 * parse and instantiate an InetAddress
+	 */
+	private static InetAddress parseInetAddress(String strIn)
+	{
+		int iCnt = 0;
+		InetAddress iaOut = null;
+		String[] strBytes = null;
+		byte[] arrBytes = null;
+		int iByte = 0;
+
+		if (strIn.matches(Ezim.regexpIPv4))
+		{
+			strBytes = strIn.split("\\.");
+			arrBytes = new byte[4];
+
+			for(iCnt = 0; iCnt < 4; iCnt ++)
+			{
+				arrBytes[iCnt] = (byte) Integer.parseInt
+				(
+					strBytes[iCnt]
+				);
+			}
+		}
+		else if (strIn.matches(Ezim.regexpIPv6))
+		{
+			strBytes = strIn.split(":");
+			arrBytes = new byte[16];
+
+			for(iCnt = 0; iCnt < 16; iCnt += 2)
+			{
+				iByte = Integer.parseInt
+				(
+					strBytes[iCnt / 2]
+					, 16
+				);
+
+				arrBytes[iCnt] = (byte) ((iByte >> 8) & 0xff);
+				arrBytes[iCnt + 1] = (byte) (iByte & 0xff);
+			}
+		}
+
+		try
+		{
+			iaOut = InetAddress.getByAddress(arrBytes);
+		}
+		catch(Exception e)
+		{
+			iaOut = null;
+		}
+
+		return iaOut;
+	}
+
+	/**
+	 * set local address
+	 */
+	private static void setLocalAddress()
+	{
+		int iCnt = 0, iLen = Ezim.localAddresses.size();
+		EzimConf ecTmp = EzimConf.getInstance();
+		String strLclAdr = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimLocaladdress
+		);
+		InetAddress iaTmp = null;
+
+		try
+		{
+			if (strLclAdr != null && strLclAdr.length() > 0)
+				Ezim.localAddress = Ezim.parseInetAddress(strLclAdr);
+		}
+		catch(Exception e)
+		{
+			Ezim.localAddress = null;
+		}
+
+		if
+		(
+			Ezim.localAddress == null
+			|| ! Ezim.localAddresses.contains(Ezim.localAddress)
+		)
+		{
+			// try to pick a IPv4 non-loopback address
+			for(iCnt = 0; iCnt < iLen; iCnt ++)
+			{
+				iaTmp = Ezim.localAddresses.get(iCnt);
+
+				if
+				(
+					! iaTmp.isLoopbackAddress()
+					&& iaTmp instanceof Inet4Address
+				)
+				{
+					Ezim.localAddress = iaTmp;
+					break;
+				}
+			}
+
+			// try to pick a non-loopback address
+			if (Ezim.localAddress == null)
+			{
+				for(iCnt = 0; iCnt < iLen; iCnt ++)
+				{
+					iaTmp = Ezim.localAddresses.get(iCnt);
+
+					if (! iaTmp.isLoopbackAddress())
+					{
+						Ezim.localAddress = iaTmp;
+						break;
+					}
+				}
+			}
+
+			// pick the first available address when all failed
+			if (Ezim.localAddress == null)
+			{
+				Ezim.localAddress = Ezim.localAddresses.get(0);
+			}
+
+			ecTmp.settings.setProperty
+			(
+				EzimConf.ezimLocaladdress
+				, Ezim.localAddress.getHostAddress().replaceAll("%.*$", "")
+			);
+		}
+
+		return;
+	}
+
+	/**
+	 * set local DTX port
+	 */
+	private static void setLocalDtxPort()
+	{
+		EzimConf ecfTmp = EzimConf.getInstance();
+
+		Ezim.localDtxPort = Integer.parseInt
+		(
+			ecfTmp.settings.getProperty(EzimConf.ezimDtxPort)
+		);
+
+		return;
+	}
+
+	/**
+	 * set local name
+	 */
+	private static void setLocalName()
+	{
+		EzimConf ecTmp = EzimConf.getInstance();
+
+		Ezim.localName = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimLocalname
+		);
+
+		// query username if isn't set yet
+		if (Ezim.localName == null || Ezim.localName.length() == 0)
+		{
+			String strTmp = null;
+
+			// obtain user name
+			while(strTmp == null || strTmp.length() == 0)
+			{
+				strTmp = JOptionPane.showInputDialog
+				(
+					EzimLang.PleaseInputYourName
+				);
+			}
+
+			Ezim.localName = strTmp;
+
+			// save username
+			ecTmp.settings.setProperty
+			(
+				EzimConf.ezimLocalname
+				, Ezim.localName
+			);
+		}
+
+		return;
+	}
+
+	/**
+	 * initialize network configurations
+	 */
+	private static void initNetConf()
+	{
+		Ezim.initLocalAddresses();
+		Ezim.setLocalAddress();
+		Ezim.setLocalDtxPort();
+		Ezim.setLocalName();
+
+		return;
+	}
+
+	// P U B L I C   M E T H O D S -----------------------------------------
 	public static void main(String[] arrArgs)
 	{
 		Ezim.mkSaveDataDir();
@@ -137,6 +408,9 @@ public class Ezim
 
 		EzimLang.init();
 		EzimImage.init();
+
+		Ezim.initNetConf();
+
 		EzimMain emTmp = EzimMain.getInstance();
 
 		EzimThreadPool etpTmp = EzimThreadPool.getInstance();
@@ -156,7 +430,6 @@ public class Ezim
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 
-/*
 		// execute proper ending processes when JVM shuts down
 		Runtime.getRuntime().addShutdownHook
 		(
@@ -169,7 +442,6 @@ public class Ezim
 				}
 			}
 		);
-*/
 
 		EzimAckSemantics.sendAllInfo();
 		emTmp.freshPoll();

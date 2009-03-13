@@ -22,6 +22,7 @@ package org.ezim.core;
 
 import java.net.InetAddress;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimThreadPool;
@@ -226,7 +227,7 @@ public class EzimAckSemantics
 			if
 			(
 				strLine.startsWith(EzimAckSemantics.POLL)
-				&& ! emTmp.localAddresses.contains(iaIn)
+				&& ! Ezim.localAddress.equals(iaIn)
 			)
 			{
 				String strPollIp = strLine.substring
@@ -239,7 +240,7 @@ public class EzimAckSemantics
 					if
 					(
 						strPollIp.length() == 0
-						|| emTmp.localAddresses.contains
+						|| Ezim.localAddress.equals
 							(
 								InetAddress.getByName(strPollIp)
 							)
@@ -314,7 +315,7 @@ public class EzimAckSemantics
 		}
 		else if (eclTmp.getContact(iaIn) == null)
 		{
-			if (iPort > -1 && iPort < 65536 && strName != null)
+			if (iPort > 0 && iPort < 65536 && strName != null)
 			{
 				eclTmp.addContact
 				(
@@ -340,14 +341,14 @@ public class EzimAckSemantics
 				etpTmp.execute(easTmp);
 			}
 
-			if (! emTmp.localAddresses.contains(iaIn))
+			if (! Ezim.localAddress.equals(iaIn))
 			{
 				blnAllInfo = true;
 			}
 		}
 		else
 		{
-			if (iPort > -1 && iPort < 65536)
+			if (iPort > 0 && iPort < 65536)
 			{
 				eclTmp.updContactPort
 				(
@@ -423,8 +424,8 @@ public class EzimAckSemantics
 		(
 			EzimAckSemantics.allInfo
 			(
-				emTmp.localPort
-				, emTmp.localName
+				Ezim.localDtxPort
+				, Ezim.localName
 				, emTmp.localSysState
 				, emTmp.localState
 				, emTmp.localStatus

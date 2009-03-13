@@ -62,6 +62,7 @@ public class EzimAckSender implements Runnable
 			);
 
 			ms = new MulticastSocket(iMcPort);
+			ms.setInterface(Ezim.localAddress);
 			ms.setReuseAddress(true);
 			ms.setTimeToLive(Ezim.ttl);
 			if (ms.getLoopbackMode()) ms.setLoopbackMode(false);

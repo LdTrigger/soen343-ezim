@@ -26,7 +26,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import org.ezim.core.Ezim;
-import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimDtxTakerThread;
@@ -44,15 +43,15 @@ public class EzimDtxTaker implements Runnable
 	{
 		ServerSocket ssck = null;
 
-		EzimConf ecnfTmp = EzimConf.getInstance();
-
 		try
 		{
-			ssck = new ServerSocket
+			ssck = new ServerSocket();
+			ssck.bind
 			(
-				Integer.parseInt
+				new InetSocketAddress
 				(
-					ecnfTmp.settings.getProperty(EzimConf.ezimDtxPort)
+					Ezim.localAddress
+					, Ezim.localDtxPort
 				)
 			);
 

@@ -41,11 +41,13 @@ public class EzimConf
 	public final static String ezimMcPort = "ezim.multicast.port";
 	public final static String ezimDtxPort = "ezim.dtx.port";
 
+	public final static String ezimLocaladdress = "ezim.localaddress";
+	public final static String ezimLocalname = "ezim.localname";
+
 	public final static String ezimColorSelf = "ezim.color.self";
 
 	public final static String ezimUserLocale = "ezim.user.locale";
 
-	public final static String ezimmainLocalname = "ezimmain.localname";
 	public final static String ezimmainAlwaysontop = "ezimmain.alwaysontop";
 	public final static String ezimmainVisible = "ezimmain.visible";
 	public final static String ezimmainLocationX = "ezimmain.location.x";

@@ -68,6 +68,14 @@ public class EzimMsgSender implements Runnable
 			this.emo.setEnabled(false);
 
 			sckOut = new Socket();
+			sckOut.bind
+			(
+				new InetSocketAddress
+				(
+					Ezim.localAddress
+					, 0
+				)
+			);
 			isaTmp = new InetSocketAddress
 			(
 				this.addr

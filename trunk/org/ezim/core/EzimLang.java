@@ -92,6 +92,7 @@ public class EzimLang
 	public static String McGroup;
 	public static String McPort;
 	public static String DtxPort;
+	public static String LocalAddress;
 	public static String Design;
 	public static String ColorSelf;
 	public static String ColorSelfR;
@@ -187,6 +188,7 @@ public class EzimLang
 			McGroup = rbTmp.getString("McGroup");
 			McPort = rbTmp.getString("McPort");
 			DtxPort = rbTmp.getString("DtxPort");
+			LocalAddress = rbTmp.getString("LocalAddress");
 			Design = rbTmp.getString("Design");
 			ColorSelf = rbTmp.getString("ColorSelf");
 			ColorSelfR = rbTmp.getString("ColorSelfR");
