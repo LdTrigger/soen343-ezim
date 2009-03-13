@@ -58,6 +58,14 @@ public class EzimFileConfirmer implements Runnable
 		try
 		{
 			sckOut = new Socket();
+			sckOut.bind
+			(
+				new InetSocketAddress
+				(
+					Ezim.localAddress
+					, 0
+				)
+			);
 			isaTmp = new InetSocketAddress
 			(
 				this.addr

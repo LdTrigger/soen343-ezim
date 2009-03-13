@@ -22,6 +22,7 @@ package org.ezim.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
 import java.util.Locale;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -41,6 +42,7 @@ import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.ui.EzimLocalAddressListRenderer;
 import org.ezim.ui.EzimLocaleListRenderer;
 
 public class EzimPreferences
@@ -63,6 +65,9 @@ public class EzimPreferences
 
 	private JLabel jlblDtxPort;
 	private JSpinner jspnDtxPort;
+
+	private JLabel jlblLocalAddress;
+	private JComboBox jcbLocalAddress;
 
 	private JPanel jpnlDesign;
 
@@ -188,6 +193,16 @@ public class EzimPreferences
 			new JSpinner.NumberEditor(this.jspnDtxPort, "#")
 		);
 		this.jlblDtxPort.setLabelFor(this.jspnDtxPort);
+		this.jcbLocalAddress = new JComboBox
+		(
+			Ezim.localAddresses.toArray()
+		);
+		this.jcbLocalAddress.setRenderer
+		(
+			new EzimLocalAddressListRenderer()
+		);
+		this.jlblLocalAddress = new JLabel(EzimLang.LocalAddress);
+		this.jlblLocalAddress.setLabelFor(this.jcbLocalAddress);
 
 		this.jlblColorSelf = new JLabel(EzimLang.ColorSelf);
 		this.jccColorSelf = new JColorChooser();
@@ -270,6 +285,13 @@ public class EzimPreferences
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 				)
+				.addComponent
+				(
+					this.jlblLocalAddress
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
 		);
 
 		hNwGrp.addGroup
@@ -317,6 +339,13 @@ public class EzimPreferences
 				.addComponent
 				(
 					this.jspnDtxPort
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jcbLocalAddress
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -399,6 +428,25 @@ public class EzimPreferences
 				.addComponent
 				(
 					this.jspnDtxPort
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vNwGrp.addGroup
+		(
+			glNw.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jlblLocalAddress
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jcbLocalAddress
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -666,6 +714,8 @@ public class EzimPreferences
 	 */
 	private void loadCurConf()
 	{
+		int iCnt = 0, iLen = 0;
+
 		// C U R R E N T   S E T T I N G S ---------------------------------
 		EzimConf ecTmp = EzimConf.getInstance();
 
@@ -697,6 +747,28 @@ public class EzimPreferences
 		);
 
 		this.jspnDtxPort.setValue(Integer.valueOf(strDtxPort));
+
+		// local address
+		String strLocalAddress = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimLocaladdress
+		);
+
+		iLen = this.jcbLocalAddress.getItemCount();
+		for(iCnt = 0; iCnt < iLen; iCnt ++)
+		{
+			if
+			(
+				this.jcbLocalAddress.getItemAt(iCnt).toString()
+					.endsWith("/" + strLocalAddress)
+				|| this.jcbLocalAddress.getItemAt(iCnt).toString()
+					.indexOf("/" + strLocalAddress + "%") > -1
+			)
+			{
+				this.jcbLocalAddress.setSelectedIndex(iCnt);
+				break;
+			}
+		}
 
 		// self color
 		String strColorSelf = ecTmp.settings.getProperty
@@ -734,8 +806,8 @@ public class EzimPreferences
 			EzimConf.ezimUserLocale
 		);
 
-		int iLen = this.jcbUserLocale.getItemCount();
-		for(int iCnt = 0; iCnt < iLen; iCnt ++)
+		iLen = this.jcbUserLocale.getItemCount();
+		for(iCnt = 0; iCnt < iLen; iCnt ++)
 		{
 			if
 			(
@@ -803,6 +875,14 @@ public class EzimPreferences
 			(
 				this.jccColorSelf.getColor().getRGB() & 0xffffff
 			)
+		);
+
+		// local address
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimLocaladdress
+			, ((InetAddress) this.jcbLocalAddress.getSelectedItem())
+				.getHostAddress().replaceAll("%.*$", "")
 		);
 
 		// always on top

@@ -36,10 +36,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.InetAddress;
-import java.net.Inet4Address;
-import java.net.NetworkInterface;
-import java.util.ArrayList;
-import java.util.Enumeration;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ListSelectionModel;
@@ -90,10 +86,6 @@ public class EzimMain
 	private JButton jbtnPrefs;
 
 	private TrayIcon tiMain;
-
-	public ArrayList<InetAddress> localAddresses;
-	public int localPort;
-	public String localName;
 	public int localSysState;
 	public int localState;
 	public String localStatus;
@@ -192,10 +184,6 @@ public class EzimMain
 				)
 			)
 		);
-		this.localName = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimmainLocalname
-		);
 
 		this.setAlwaysOnTop
 		(
@@ -232,30 +220,6 @@ public class EzimMain
 			ecTmp.settings.getProperty(EzimConf.ezimColorSelf)
 			, 16
 		);
-
-		// query username if isn't set yet
-		if (this.localName == null || this.localName.length() == 0)
-		{
-			String strTmp = null;
-
-			// obtain user name
-			while(strTmp == null || strTmp.length() == 0)
-			{
-				strTmp = JOptionPane.showInputDialog
-				(
-					EzimLang.PleaseInputYourName
-				);
-			}
-
-			this.localName = strTmp;
-
-			// save username
-			ecTmp.settings.setProperty
-			(
-				EzimConf.ezimmainLocalname
-				, this.localName
-			);
-		}
 
 		return;
 	}
@@ -319,59 +283,6 @@ public class EzimMain
 
 	private void initData()
 	{
-		Enumeration<NetworkInterface> enumIf = null;
-		NetworkInterface niTmp = null;
-		Enumeration<InetAddress> enumIa = null;
-		InetAddress iaTmp = null;
-
-		this.localAddresses = new ArrayList<InetAddress>();
-
-		try
-		{
-			enumIf = NetworkInterface.getNetworkInterfaces();
-
-			while(enumIf.hasMoreElements())
-			{
-				niTmp = enumIf.nextElement();
-				 enumIa = niTmp.getInetAddresses();
-
-				while(enumIa.hasMoreElements())
-				{
-					iaTmp = enumIa.nextElement();
-
-					if (! this.localAddresses.contains(iaTmp))
-					{
-						if
-						(
-							iaTmp instanceof Inet4Address
-							&& ! iaTmp.isLoopbackAddress()
-						)
-						{
-							this.localAddresses.add(0, iaTmp);
-						}
-						else
-						{
-							this.localAddresses.add(iaTmp);
-						}
-					}
-				}
-			}
-
-			this.localAddresses.trimToSize();
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().severe(e.getMessage(), e);
-			this.errAlert(e.getMessage());
-			System.exit(1);
-		}
-
-		EzimConf ecnfTmp = EzimConf.getInstance();
-
-		this.localPort = Integer.parseInt
-		(
-			ecnfTmp.settings.getProperty(EzimConf.ezimDtxPort)
-		);
 		this.localSysState = EzimContact.SYSSTATE_DEFAULT;
 		this.localState = EzimContact.STATE_DEFAULT;
 		this.localStatus = EzimContact.STATUS_DEFAULT;
@@ -1304,9 +1215,9 @@ public class EzimMain
 
 		eclTmp.addContact
 		(
-			this.localAddresses.get(0)
-			, this.localPort
-			, this.localName
+			Ezim.localAddress
+			, Ezim.localDtxPort
+			, Ezim.localName
 			, this.localSysState
 			, this.localState
 			, this.localStatus

@@ -60,6 +60,7 @@ public class EzimAckTaker implements Runnable
 					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
 				)
 			);
+			ms.setInterface(Ezim.localAddress);
 			ms.setReuseAddress(true);
 			ms.joinGroup(ia);
 

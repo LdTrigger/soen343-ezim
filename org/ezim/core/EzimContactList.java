@@ -182,10 +182,9 @@ public class EzimContactList implements ListModel
 	private InetAddress normalizeAddressIfLocal(InetAddress iaIn)
 	{
 		InetAddress iaOut = iaIn;
-		EzimMain emTmp = EzimMain.getInstance();
 
-		if (emTmp.localAddresses.contains(iaIn))
-			iaOut = emTmp.localAddresses.get(0);
+		if (Ezim.localAddresses.contains(iaIn))
+			iaOut = Ezim.localAddress;
 
 		return iaOut;
 	}
