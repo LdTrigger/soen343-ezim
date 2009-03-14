@@ -47,7 +47,7 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "1.1.3";
+	public final static String appVer = "1.1.4";
 
 	// thread pool sizes and keep alive time (in minutes)
 	public final static int thPoolSizeCore = 8;
@@ -430,6 +430,7 @@ public class Ezim
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 
+/*
 		// execute proper ending processes when JVM shuts down
 		Runtime.getRuntime().addShutdownHook
 		(
@@ -442,6 +443,7 @@ public class Ezim
 				}
 			}
 		);
+*/
 
 		EzimAckSemantics.sendAllInfo();
 		emTmp.freshPoll();
