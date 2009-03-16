@@ -24,6 +24,7 @@ import java.lang.Runnable;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.NetworkInterface;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
@@ -62,7 +63,13 @@ public class EzimAckSender implements Runnable
 			);
 
 			ms = new MulticastSocket(iMcPort);
-			ms.setInterface(Ezim.localAddress);
+			ms.setNetworkInterface
+			(
+				NetworkInterface.getByInetAddress
+				(
+					Ezim.localAddress
+				)
+			);
 			ms.setReuseAddress(true);
 			ms.setTimeToLive(Ezim.ttl);
 			if (ms.getLoopbackMode()) ms.setLoopbackMode(false);
