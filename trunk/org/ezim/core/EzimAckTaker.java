@@ -24,6 +24,7 @@ import java.lang.Runnable;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.NetworkInterface;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimAckSemantics;
@@ -60,7 +61,13 @@ public class EzimAckTaker implements Runnable
 					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
 				)
 			);
-			ms.setInterface(Ezim.localAddress);
+			ms.setNetworkInterface
+			(
+				NetworkInterface.getByInetAddress
+				(
+					Ezim.localAddress
+				)
+			);
 			ms.setReuseAddress(true);
 			ms.joinGroup(ia);
 
