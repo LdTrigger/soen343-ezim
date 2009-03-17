@@ -25,6 +25,7 @@ import java.lang.Integer;
 import java.lang.Thread;
 import java.net.InetAddress;
 import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -100,11 +101,12 @@ public class Ezim
 
 	// regexp for validating IPv6 address
 	public static final String regexpIPv6
-		= "\\A(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\\z";
+		= "\\A(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}%[0-9]+\\z";
 
 	// P R O P E R T I E S -------------------------------------------------
 	public static ArrayList<InetAddress> localAddresses = null;
 	public static InetAddress localAddress = null;
+	public static NetworkInterface operatingNI = null;
 	public static int localDtxPort = 0;
 	public static String localName = null;
 
@@ -211,6 +213,7 @@ public class Ezim
 		String[] strBytes = null;
 		byte[] arrBytes = null;
 		int iByte = 0;
+		int iScopeId = 0;
 
 		if (strIn.matches(Ezim.regexpIPv4))
 		{
@@ -224,11 +227,22 @@ public class Ezim
 					strBytes[iCnt]
 				);
 			}
+
+			try
+			{
+				iaOut = InetAddress.getByAddress(arrBytes);
+			}
+			catch(Exception e)
+			{
+				iaOut = null;
+			}
 		}
 		else if (strIn.matches(Ezim.regexpIPv6))
 		{
-			strBytes = strIn.split(":");
+			String strParts[] = strIn.split("%");
+			strBytes = strParts[0].split(":");
 			arrBytes = new byte[16];
+			iScopeId = Integer.parseInt(strParts[1]);
 
 			for(iCnt = 0; iCnt < 16; iCnt += 2)
 			{
@@ -241,15 +255,20 @@ public class Ezim
 				arrBytes[iCnt] = (byte) ((iByte >> 8) & 0xff);
 				arrBytes[iCnt + 1] = (byte) (iByte & 0xff);
 			}
-		}
 
-		try
-		{
-			iaOut = InetAddress.getByAddress(arrBytes);
-		}
-		catch(Exception e)
-		{
-			iaOut = null;
+			try
+			{
+				iaOut = Inet6Address.getByAddress
+				(
+					null
+					, arrBytes
+					, iScopeId
+				);
+			}
+			catch(Exception e)
+			{
+				iaOut = null;
+			}
 		}
 
 		return iaOut;
@@ -324,8 +343,29 @@ public class Ezim
 			ecTmp.settings.setProperty
 			(
 				EzimConf.ezimLocaladdress
-				, Ezim.localAddress.getHostAddress().replaceAll("%.*$", "")
+				, Ezim.localAddress.getHostAddress()
 			);
+		}
+
+		return;
+	}
+
+	/**
+	 * set operating network interface
+	 */
+	private static void setOperatingNI()
+	{
+		try
+		{
+			Ezim.operatingNI = NetworkInterface.getByInetAddress
+			(
+				Ezim.localAddress
+			);
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+			System.exit(1);
 		}
 
 		return;
@@ -392,6 +432,7 @@ public class Ezim
 	{
 		Ezim.initLocalAddresses();
 		Ezim.setLocalAddress();
+		Ezim.setOperatingNI();
 		Ezim.setLocalDtxPort();
 		Ezim.setLocalName();
 

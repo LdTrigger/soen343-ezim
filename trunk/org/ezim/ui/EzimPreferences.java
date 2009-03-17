@@ -882,7 +882,7 @@ public class EzimPreferences
 		(
 			EzimConf.ezimLocaladdress
 			, ((InetAddress) this.jcbLocalAddress.getSelectedItem())
-				.getHostAddress().replaceAll("%.*$", "")
+				.getHostAddress()
 		);
 
 		// always on top

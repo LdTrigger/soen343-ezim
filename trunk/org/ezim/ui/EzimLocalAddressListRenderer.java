@@ -47,7 +47,7 @@ public class EzimLocalAddressListRenderer
 		InetAddress iaTmp = (InetAddress) objIn;
 		StringBuffer sbTmp = new StringBuffer
 		(
-			iaTmp.getHostAddress().replaceAll("%.*$", "")
+			iaTmp.getHostAddress()
 		);
 		NetworkInterface niTmp = null;
 
