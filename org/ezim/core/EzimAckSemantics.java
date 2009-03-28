@@ -55,6 +55,8 @@ public class EzimAckSemantics
 
 		if (iaIn != null) sbOut.append(iaIn.getHostAddress());
 
+		sbOut.append(EzimAckSemantics.NEWLINE);
+
 		return sbOut.toString();
 	}
 
@@ -101,6 +103,7 @@ public class EzimAckSemantics
 		sbOut.append(EzimAckSemantics.NEWLINE);
 		sbOut.append(EzimAckSemantics.STATUS);
 		sbOut.append(strStatus);
+		sbOut.append(EzimAckSemantics.NEWLINE);
 
 		return sbOut.toString();
 	}
@@ -115,6 +118,7 @@ public class EzimAckSemantics
 		sbOut.append(EzimAckSemantics.PREFIX);
 		sbOut.append(EzimAckSemantics.NEWLINE);
 		sbOut.append(EzimAckSemantics.OFF);
+		sbOut.append(EzimAckSemantics.NEWLINE);
 
 		return sbOut.toString();
 	}
@@ -131,6 +135,7 @@ public class EzimAckSemantics
 		sbOut.append(EzimAckSemantics.NEWLINE);
 		sbOut.append(EzimAckSemantics.SYSSTATE);
 		sbOut.append(Integer.toString(iState));
+		sbOut.append(EzimAckSemantics.NEWLINE);
 
 		return sbOut.toString();
 	}
@@ -147,6 +152,7 @@ public class EzimAckSemantics
 		sbOut.append(EzimAckSemantics.NEWLINE);
 		sbOut.append(EzimAckSemantics.STATE);
 		sbOut.append(Integer.toString(iState));
+		sbOut.append(EzimAckSemantics.NEWLINE);
 
 		return sbOut.toString();
 	}
@@ -163,6 +169,7 @@ public class EzimAckSemantics
 		sbOut.append(EzimAckSemantics.NEWLINE);
 		sbOut.append(EzimAckSemantics.STATUS);
 		sbOut.append(strStatus);
+		sbOut.append(EzimAckSemantics.NEWLINE);
 
 		return sbOut.toString();
 	}
@@ -179,6 +186,7 @@ public class EzimAckSemantics
 		sbOut.append(EzimAckSemantics.NEWLINE);
 		sbOut.append(EzimAckSemantics.SPEECH);
 		sbOut.append(strSpeech);
+		sbOut.append(EzimAckSemantics.NEWLINE);
 
 		return sbOut.toString();
 	}
@@ -224,7 +232,11 @@ public class EzimAckSemantics
 		{
 			strLine = arrAckLines[iCnt];
 
-			if
+			if (strLine.length() == 0)
+			{
+				continue;
+			}
+			else if
 			(
 				strLine.startsWith(EzimAckSemantics.POLL)
 				&& ! Ezim.localAddress.equals(iaIn)
