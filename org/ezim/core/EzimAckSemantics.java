@@ -234,7 +234,7 @@ public class EzimAckSemantics
 
 			if (strLine.length() == 0)
 			{
-				continue;
+				break;
 			}
 			else if
 			(
