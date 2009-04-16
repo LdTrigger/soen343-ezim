@@ -5,7 +5,7 @@
 
                                                   Author: Chun-Kwong Wong
                                               Created On: July 18, 2008
-                                         Last Revised On: October 21, 2008
+                                         Last Revised On: April 16, 2008
 ----------------------------------------------------------------------------
 Table of Contents
 
@@ -42,11 +42,11 @@ directory containing all the necessary contents to run EZIM will be created.
 
     on Linux:
 
-        $ java -jar <path to EZIM's directory>/ezim.jar &
+        $ java -jar PATH_TO_EZIM.JAR &
 
     on Windows:
 
-        C:\> javaw -jar <path to EZIM's directory>\ezim.jar
+        C:\> javaw -jar PATH_TO_EZIM.JAR
 
     * Windows users should be able to execute EZIM by double clicking on the
 JAR file directly.
@@ -115,6 +115,30 @@ A: Multicast group IP (default: 229.0.0.1) and multicast group port
 
    If you have no idea what the above means, simply leave the settings to
    default and everything should work just fine.
+
+
+Q: There are some funny entries in the Local IP dropdown list on the
+   preference window.  What are they?  How can I get rid of them?
+
+A: If there are entries like "(eth0) fe80:0:0:0:222:15ff:fe87:4287%2" in the
+   Local IP dropdown list under the Network tab in the preference window, it
+   simply means your machine is IPv6 ready.  Those funny looking entries,
+   which is composed of alphanumeric characters, colons, and ampersand, are
+   actually IPv6 addresses.  You can find out more about IPv6 at the
+   following links:
+
+   - http://en.wikipedia.org/wiki/IPv6
+   - http://www.faqs.org/rfcs/rfc2460.html
+
+   If you want to disable the use of IPv6 addresses on EZIM, you can invoke
+   the special option on the command line:
+
+   $ java -Djava.net.preferIPv4Stack=true -jar PATH_TO_EZIM.JAR &
+  
+   On the other hand, if you prefer IPv6 to IPv4, issue the following
+   command when starting up EZIM to favor the use of IPv6 addresses:
+
+   $ java -Djava.net.preferIPv6Addresses=true -jar PATH_TO_EZIM.JAR &
 
 
 ----------------------------------------------------------------------------
