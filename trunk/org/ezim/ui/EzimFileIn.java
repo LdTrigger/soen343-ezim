@@ -98,7 +98,7 @@ public class EzimFileIn
 		this.loadConf();
 		this.initGUI();
 
-		this.setIconImage(EzimImage.icoBtnFrx.getImage());
+		this.setIconImage(EzimImage.icoButtons[6].getImage());
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setTitle(EzimLang.IncomingFile);
 		this.setMinimumSize(new Dimension(320, 220));

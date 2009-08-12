@@ -22,6 +22,7 @@ package org.ezim.ui;
 
 import java.awt.AWTException;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.Point;
 import java.awt.PopupMenu;
@@ -36,9 +37,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.InetAddress;
-import javax.swing.GroupLayout;
+import java.util.ArrayList;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.ListSelectionModel;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -49,6 +50,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 import org.ezim.core.Ezim;
@@ -57,15 +59,16 @@ import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactList;
+import org.ezim.core.EzimContactTransferHandler;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimPlainDocument;
 import org.ezim.core.EzimThreadPool;
-import org.ezim.ui.EzimPreferences;
 import org.ezim.ui.EzimFileOut;
 import org.ezim.ui.EzimMsgOut;
 import org.ezim.ui.EzimPlaza;
+import org.ezim.ui.EzimPreferences;
 
 public class EzimMain
 	extends JFrame
@@ -381,8 +384,13 @@ public class EzimMain
 		this.jlstContacts.setCellRenderer(new EzimContactListRenderer());
 		this.jlstContacts.setSelectionMode
 		(
-			ListSelectionModel.SINGLE_SELECTION
+			ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
 		);
+		this.jlstContacts.setTransferHandler
+		(
+			EzimContactTransferHandler.getInstance()
+		);
+		this.jlstContacts.setDragEnabled(true);
 		this.jlstContacts.addMouseListener
 		(
 			new MouseListener()
@@ -425,7 +433,7 @@ public class EzimMain
 		this.jspContacts = new JScrollPane(this.jlstContacts);
 		this.jspContacts.setPreferredSize(new Dimension(1, 100));
 
-		this.jbtnMsg = new JButton(EzimImage.icoBtnMsg);
+		this.jbtnMsg = new JButton(EzimImage.icoButtons[0]);
 		this.jbtnMsg.setPreferredSize(new Dimension(32, 32));
 		this.jbtnMsg.setToolTipText(EzimLang.SendMessageToContact);
 		this.jbtnMsg.addActionListener
@@ -440,7 +448,7 @@ public class EzimMain
 			}
 		);
 
-		this.jbtnFtx = new JButton(EzimImage.icoBtnFtx);
+		this.jbtnFtx = new JButton(EzimImage.icoButtons[1]);
 		this.jbtnFtx.setPreferredSize(new Dimension(32, 32));
 		this.jbtnFtx.setToolTipText(EzimLang.SendFileToContact);
 		this.jbtnFtx.addActionListener
@@ -455,7 +463,7 @@ public class EzimMain
 			}
 		);
 
-		this.jbtnRfh = new JButton(EzimImage.icoBtnRefresh);
+		this.jbtnRfh = new JButton(EzimImage.icoButtons[2]);
 		this.jbtnRfh.setPreferredSize(new Dimension(32, 32));
 		this.jbtnRfh.setToolTipText(EzimLang.RefreshContactList);
 		this.jbtnRfh.addActionListener
@@ -470,7 +478,7 @@ public class EzimMain
 			}
 		);
 
-		this.jbtnPlz = new JButton(EzimImage.icoBtnPlaza);
+		this.jbtnPlz = new JButton(EzimImage.icoButtons[3]);
 		this.jbtnPlz.setPreferredSize(new Dimension(32, 32));
 		this.jbtnPlz.setToolTipText(EzimLang.PlazaOfSpeech);
 		this.jbtnPlz.addActionListener
@@ -485,7 +493,7 @@ public class EzimMain
 			}
 		);
 
-		this.jbtnPrefs = new JButton(EzimImage.icoBtnPrefs);
+		this.jbtnPrefs = new JButton(EzimImage.icoButtons[4]);
 		this.jbtnPrefs.setPreferredSize(new Dimension(32, 32));
 		this.jbtnPrefs.setToolTipText(EzimLang.Prefs);
 		this.jbtnPrefs.addActionListener
@@ -939,12 +947,22 @@ public class EzimMain
 
 	private void openMsgOut()
 	{
-		if (this.jlstContacts.getSelectedValue() != null)
+		Object obj[] = this.jlstContacts.getSelectedValues();
+
+		if (obj != null && obj.length > 0)
 		{
-			new EzimMsgOut
-			(
-				(EzimContact) this.jlstContacts.getSelectedValue()
-			);
+			ArrayList<EzimContact> alTmp = new ArrayList<EzimContact>();
+
+			for(int iCnt = 0; iCnt < obj.length; iCnt ++)
+			{
+				alTmp.add((EzimContact) obj[iCnt]);
+			}
+
+			new EzimMsgOut(alTmp);
+		}
+		else
+		{
+			new EzimMsgOut();
 		}
 
 		return;
@@ -964,7 +982,9 @@ public class EzimMain
 
 	private void jbtnFtx_ActionPerformed()
 	{
-		if (this.jlstContacts.getSelectedValue() != null)
+		Object obj[] = this.jlstContacts.getSelectedValues();
+
+		if (obj != null && obj.length == 1)
 		{
 			EzimConf econf = EzimConf.getInstance();
 			EzimContact ecTmp

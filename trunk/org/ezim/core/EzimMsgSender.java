@@ -21,13 +21,18 @@
 package org.ezim.core;
 
 import java.awt.event.WindowEvent;
+import java.lang.InterruptedException;
 import java.lang.Runnable;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 
 import org.ezim.core.Ezim;
+import org.ezim.core.EzimContact;
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimLogger;
@@ -36,89 +41,129 @@ import org.ezim.ui.EzimMsgOut;
 public class EzimMsgSender implements Runnable
 {
 	private EzimMsgOut emo = null;
-	private InetAddress addr = null;
-	private int port = -1;
-	private String sbj = null;
-	private String msg = null;
 
-	public EzimMsgSender
-	(
-		EzimMsgOut emoIn
-		, InetAddress iaIn
-		, int iPort
-		, String strSbj
-		, String strMsg
-	)
+	public EzimMsgSender(EzimMsgOut emoIn)
 	{
 		this.emo = emoIn;
-		this.addr = iaIn;
-		this.port = iPort;
-		this.sbj = strSbj;
-		this.msg = strMsg;
 	}
 
 	public void run()
 	{
-		Socket sckOut = null;
-		InetSocketAddress isaTmp = null;
+		ArrayList<EzimContact> alEc = this.emo.getContacts();
+		final ArrayList<EzimContact> alNg
+			= new ArrayList<EzimContact>(alEc);
+		final String sbj = this.emo.getSubject();
+		final String msg = this.emo.getBody();
+
+		// close the send message window
+		WindowEvent weTmp = new WindowEvent
+		(
+			this.emo
+			, WindowEvent.WINDOW_CLOSING
+		);
+		this.emo.dispatchEvent(weTmp);
+
+		ThreadPoolExecutor extr = new ThreadPoolExecutor
+		(
+			alEc.size()
+			, alEc.size()
+			, 1
+			, TimeUnit.MINUTES
+			, new LinkedBlockingQueue<Runnable>()
+		);
+
+		for(final EzimContact ec: alEc)
+		{
+			final Socket sckOut = new Socket();
+
+			final InetSocketAddress isaTmp = new InetSocketAddress
+			(
+				ec.getAddress()
+				, ec.getPort()
+			);
+
+			extr.execute
+			(
+				new Runnable()
+				{
+					public void run()
+					{
+						try
+						{
+							sckOut.bind
+							(
+								new InetSocketAddress
+								(
+									Ezim.localAddress
+									, 0
+								)
+							);
+							sckOut.connect(isaTmp, Ezim.dtxTimeout);
+
+							EzimDtxSemantics.sendMsg(sckOut, sbj, msg);
+
+							synchronized(alNg)
+							{
+								alNg.remove(ec);
+								alNg.trimToSize();
+							}
+						}
+						catch(Exception e)
+						{
+							EzimLogger.getInstance().warning
+							(
+								e.getMessage()
+								, e
+							);
+						}
+						finally
+						{
+							try
+							{
+								if (sckOut != null && ! sckOut.isClosed())
+									sckOut.close();
+							}
+							catch(Exception e)
+							{
+								EzimLogger.getInstance().severe
+								(
+									e.getMessage()
+									, e
+								);
+							}
+						}
+					}
+				}
+			);
+		}
+
+		extr.shutdown();
 
 		try
 		{
-			// disable the send message window before proceeding
-			this.emo.setEnabled(false);
-
-			sckOut = new Socket();
-			sckOut.bind
-			(
-				new InetSocketAddress
-				(
-					Ezim.localAddress
-					, 0
-				)
-			);
-			isaTmp = new InetSocketAddress
-			(
-				this.addr
-				, this.port
-			);
-			sckOut.connect(isaTmp, Ezim.dtxTimeout);
-
-			EzimDtxSemantics.sendMsg(sckOut, this.sbj, this.msg);
-
-			// close the send message window upon success
-			WindowEvent weTmp = new WindowEvent
-			(
-				this.emo
-				, WindowEvent.WINDOW_CLOSING
-			);
-
-			this.emo.dispatchEvent(weTmp);
+			extr.awaitTermination(1, TimeUnit.MINUTES);
 		}
-		catch(Exception e)
+		catch(InterruptedException ie)
 		{
-			EzimLogger.getInstance().warning(e.getMessage(), e);
+			EzimLogger.getInstance().warning
+			(
+				ie.getMessage()
+				, ie
+			);
+		}
+
+		// open outgoing message window for contacts could not sent
+		if (alNg.size() > 0)
+		{
+			EzimMsgOut emoTmp = new EzimMsgOut(alNg, sbj, msg);
 
 			JOptionPane.showMessageDialog
 			(
-				null
-				, e.getMessage()
+				emoTmp
+				, EzimLang.RecipientsError
 				, EzimLang.SendMessageError
 				, JOptionPane.ERROR_MESSAGE
 			);
-
-			// re-enable the send message window upon failure
-			this.emo.setEnabled(true);
-		}
-		finally
-		{
-			try
-			{
-				if (sckOut != null && ! sckOut.isClosed()) sckOut.close();
-			}
-			catch(Exception e)
-			{
-				EzimLogger.getInstance().severe(e.getMessage(), e);
-			}
 		}
 	}
 }
