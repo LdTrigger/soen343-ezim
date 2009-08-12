@@ -21,178 +21,183 @@
 package org.ezim.core;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
+import org.ezim.core.EzimLogger;
 
 public class EzimImage
 {
-	// frame window icons
+	// main window icon
 	public static ImageIcon icoMain;
-	public static ImageIcon icoMsg;
-	public static ImageIcon icoPlaza;
+
+	// about icon
+	public static ImageIcon icoLblAbout;
 
 	// state icons
 	public static ImageIcon[] icoSysStates;
 	public static ImageIcon[] icoStates;
 
 	// EzimMain buttons
-	public static ImageIcon icoBtnMsg;
-	public static ImageIcon icoBtnFtx;
-	public static ImageIcon icoBtnFrx;
-	public static ImageIcon icoBtnRefresh;
-	public static ImageIcon icoBtnPlaza;
-	public static ImageIcon icoBtnPrefs;
+	public static ImageIcon[] icoButtons;
 
-	// EzimMain labels
-	public static ImageIcon icoLblAbout;
+	/**
+	 * retrieve icons from the sprite sheet specified by the given URL
+	 * @param strUrl URL of the sprite sheet
+	 * @param iW width of the icons on the sprite sheet
+	 * @param iH height of the icons on the sprite sheet
+	 * @param iI width of the icons to be scaled to
+	 * @param iJ height of the icons to be scaled to
+	 * @return icons
+	 */
+	private static ImageIcon[] loadIcons
+	(
+		String strUrl
+		, int iW
+		, int iH
+		, int iI
+		, int iJ
+	)
+	{
+		ImageIcon[] arrOut = null;
+		URL urlImg = null;
+		BufferedImage biTmp = null;
+		ArrayList<ImageIcon> alTmp = new ArrayList<ImageIcon>();
+
+		// determine the sprite sheet's URL
+		urlImg = ClassLoader.getSystemResource(strUrl);
+
+		// load sprite sheet
+		try
+		{
+			biTmp = ImageIO.read(urlImg);
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+		}
+
+		// find out the dimensions of the sprite sheet
+		int iWidth = biTmp.getWidth();
+		int iHeight = biTmp.getHeight();
+
+		// load icons from the sprite sheet
+		if (iW == iI && iH == iJ)
+		{
+			for(int iX = 0; iX < iWidth; iX += iW)
+			{
+				for(int iY = 0; iY < iHeight; iY += iH)
+				{
+					alTmp.add
+					(
+						new ImageIcon
+						(
+							biTmp.getSubimage(iX, iY, iW, iH)
+						)
+					);
+				}
+			}
+		}
+		// load and scale icons to 32x32 from the sprite sheet
+		else
+		{
+			for(int iX = 0; iX < iWidth; iX += iW)
+			{
+				for(int iY = 0; iY < iHeight; iY += iH)
+				{
+					alTmp.add
+					(
+						new ImageIcon
+						(
+							biTmp.getSubimage(iX, iY, iW, iH)
+								.getScaledInstance
+								(
+									iI
+									, iJ
+									, Image.SCALE_SMOOTH
+								)
+						)
+					);
+				}
+			}
+		}
+
+		// convert the icons for output
+		alTmp.trimToSize();
+		arrOut = new ImageIcon[alTmp.size()];
+		arrOut = alTmp.toArray(arrOut);
+
+		return arrOut;
+	}
+
+	/**
+	 * retrieve icons from the sprite sheet specified by the given URL and
+	 * scale them to 32x32
+	 * @param strUrl URL of the sprite sheet
+	 * @param iW width of the icons on the sprite sheet
+	 * @param iH height of the icons on the sprite sheet
+	 * @return icons
+	 */
+	private static ImageIcon[] loadIcons
+	(
+		String strUrl
+		, int iW
+		, int iH
+	)
+	{
+		return EzimImage.loadIcons(strUrl, iW, iH, 32, 32);
+	}
 
 	public static void init()
 	{
-		URL iconUrlTmp = null;
+		URL urlImg = null;
 
-		// main window frame icon
-		iconUrlTmp = ClassLoader.getSystemResource
+		// load main window frame icon
+		urlImg = ClassLoader.getSystemResource
 		(
 			"org/ezim/image/icon/ezim.png"
 		);
-		icoMain = new ImageIcon(iconUrlTmp);
+		EzimImage.icoMain = new ImageIcon(urlImg);
 
-		// (incoming + outgoing) message window frame icon
-		iconUrlTmp = ClassLoader.getSystemResource
-		(
-			"org/ezim/image/icon/msg.png"
-		);
-		icoMsg = new ImageIcon(iconUrlTmp);
-
-		// speech plaza window frame icon
-		iconUrlTmp = ClassLoader.getSystemResource
-		(
-			"org/ezim/image/icon/plaza.png"
-		);
-		icoPlaza = new ImageIcon(iconUrlTmp);
-
-		// system state icons
-		icoSysStates = new ImageIcon[]
-		{
-			new ImageIcon
-			(
-				ClassLoader.getSystemResource
-				(
-					"org/ezim/image/icon/sysstate00.png"
-				)
-			)
-			, new ImageIcon
-			(
-				ClassLoader.getSystemResource
-				(
-					"org/ezim/image/icon/sysstate01.png"
-				)
-			)
-		};
-
-		// system state icons
-		icoStates = new ImageIcon[]
-		{
-			new ImageIcon
-			(
-				ClassLoader.getSystemResource
-				(
-					"org/ezim/image/icon/state00.png"
-				)
-			)
-			, new ImageIcon
-			(
-				ClassLoader.getSystemResource
-				(
-					"org/ezim/image/icon/state01.png"
-				)
-			)
-			, new ImageIcon
-			(
-				ClassLoader.getSystemResource
-				(
-					"org/ezim/image/icon/state02.png"
-				)
-			)
-			, new ImageIcon
-			(
-				ClassLoader.getSystemResource
-				(
-					"org/ezim/image/icon/state03.png"
-				)
-			)
-			, new ImageIcon
-			(
-				ClassLoader.getSystemResource
-				(
-					"org/ezim/image/icon/state04.png"
-				)
-			)
-			, new ImageIcon
-			(
-				ClassLoader.getSystemResource
-				(
-					"org/ezim/image/icon/state05.png"
-				)
-			)
-		};
-
-		// main window message button icon
-		iconUrlTmp = ClassLoader.getSystemResource
-		(
-			"org/ezim/image/icon/btnmsg.png"
-		);
-		icoBtnMsg = new ImageIcon(iconUrlTmp);
-
-		// main window file transmission button icon
-		// outgoing file window frame icon
-		iconUrlTmp = ClassLoader.getSystemResource
-		(
-			"org/ezim/image/icon/btnftx.png"
-		);
-		icoBtnFtx = new ImageIcon(iconUrlTmp);
-
-		// incoming file window frame icon
-		iconUrlTmp = ClassLoader.getSystemResource
-		(
-			"org/ezim/image/icon/btnfrx.png"
-		);
-		icoBtnFrx = new ImageIcon(iconUrlTmp);
-
-		// main window refresh button icon
-		iconUrlTmp = ClassLoader.getSystemResource
-		(
-			"org/ezim/image/icon/btnrefresh.png"
-		);
-		icoBtnRefresh = new ImageIcon(iconUrlTmp);
-
-		// main window plaza button icon
-		iconUrlTmp = ClassLoader.getSystemResource
-		(
-			"org/ezim/image/icon/btnplaza.png"
-		);
-		icoBtnPlaza = new ImageIcon(iconUrlTmp);
-
-		// main window control panel button icon
-		iconUrlTmp = ClassLoader.getSystemResource
-		(
-			"org/ezim/image/icon/btnprefs.png"
-		);
-		icoBtnPrefs = new ImageIcon(iconUrlTmp);
-
-		// main window about label icon
-		iconUrlTmp = ClassLoader.getSystemResource
+		// load about icon
+		urlImg = ClassLoader.getSystemResource
 		(
 			"org/ezim/image/icon/lblabout.png"
 		);
-		icoLblAbout = new ImageIcon
+		EzimImage.icoLblAbout = new ImageIcon
 		(
-			new ImageIcon(iconUrlTmp).getImage().getScaledInstance
+			new ImageIcon(urlImg).getImage().getScaledInstance
 			(
 				16
 				, 16
-				, Image.SCALE_DEFAULT
+				, Image.SCALE_SMOOTH
 			)
+		);
+
+		// load system state icons
+		EzimImage.icoSysStates = EzimImage.loadIcons
+		(
+			"org/ezim/image/icon/sysstates.png"
+			, 32, 32
+			, 16, 16
+		);
+
+		// load user state icons
+		EzimImage.icoStates = EzimImage.loadIcons
+		(
+			"org/ezim/image/icon/states.png"
+			, 32, 32
+			, 16, 16
+		);
+
+		// load button images
+		EzimImage.icoButtons = EzimImage.loadIcons
+		(
+			"org/ezim/image/icon/buttons.png"
+			, 32, 32
 		);
 
 		return;

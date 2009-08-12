@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -77,7 +78,7 @@ public class EzimMsgIn
 		if (strIn != null && strIn.length() > 0)
 			this.jtaMsg.setText(strIn);
 
-		this.setIconImage(EzimImage.icoMsg.getImage());
+		this.setIconImage(EzimImage.icoButtons[0].getImage());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setTitle(EzimLang.IncomingMessage);
 		this.setMinimumSize(new Dimension(320, 200));
@@ -440,6 +441,9 @@ public class EzimMsgIn
 	// E V E N T   H A N D L E R -------------------------------------------
 	private void jbtnReply_ActionPerformed()
 	{
+		ArrayList<EzimContact> alEc = new ArrayList<EzimContact>();
+		alEc.add(this.ec);
+
 		StringBuffer sbSbj = new StringBuffer();
 		if (! this.jtfdSbj.getText().startsWith("Re: "))
 			sbSbj.append("Re: ");
@@ -453,7 +457,7 @@ public class EzimMsgIn
 		sbMsg.append(" -----\n");
 		sbMsg.append(this.jtaMsg.getText());
 
-		new EzimMsgOut(this.ec, sbSbj.toString(), sbMsg.toString());
+		new EzimMsgOut(alEc, sbSbj.toString(), sbMsg.toString());
 
 		this.saveConf();
 		this.dispose();

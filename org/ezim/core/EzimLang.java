@@ -56,10 +56,12 @@ public class EzimLang
 	public static String OutgoingMessage;
 	public static String To;
 	public static String Send;
+	public static String DeleteLastRecipient;
 	public static String RecipientNotExists;
 
 	// send message error dialog
 	public static String SendMessageError;
+	public static String RecipientsError;
 
 	// incoming file window
 	public static String IncomingFile;
@@ -152,10 +154,12 @@ public class EzimLang
 			OutgoingMessage = rbTmp.getString("OutgoingMessage");
 			To = rbTmp.getString("To");
 			Send = rbTmp.getString("Send");
+			DeleteLastRecipient = rbTmp.getString("DeleteLastRecipient");
 			RecipientNotExists = rbTmp.getString("RecipientNotExists");
 
 			// send message error dialog
 			SendMessageError = rbTmp.getString("SendMessageError");
+			RecipientsError = rbTmp.getString("RecipientsError");
 
 			// incoming file window
 			IncomingFile = rbTmp.getString("IncomingFile");

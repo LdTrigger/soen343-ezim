@@ -92,7 +92,7 @@ public class EzimPreferences
 
 		this.init();
 
-		this.setIconImage(EzimImage.icoBtnPrefs.getImage());
+		this.setIconImage(EzimImage.icoButtons[4].getImage());
 		this.pack();
 		this.setMinimumSize(this.getSize());
 		this.setLocationRelativeTo(null);

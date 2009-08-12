@@ -66,7 +66,7 @@ public class EzimPlaza
 	{
 		this.initGUI();
 
-		this.setIconImage(EzimImage.icoPlaza.getImage());
+		this.setIconImage(EzimImage.icoButtons[3].getImage());
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setTitle(EzimLang.PlazaOfSpeech);
 		this.setMinimumSize(new Dimension(320, 200));

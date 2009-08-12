@@ -22,13 +22,16 @@ package org.ezim.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.GroupLayout;
+import java.util.ArrayList;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -41,6 +44,7 @@ import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactList;
+import org.ezim.core.EzimContactTransferHandler;
 import org.ezim.core.EzimMsgSender;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
@@ -52,11 +56,12 @@ public class EzimMsgOut
 	extends JFrame
 	implements WindowListener
 {
-	private EzimContact ec;
+	private ArrayList<EzimContact> contacts;
 
 	private JPanel jpnlBase;
 	private JLabel jlblName;
 	private JTextField jtfdName;
+	private JButton jbtnDelLastRcpt;
 	private JLabel jlblSbj;
 	private JTextField jtfdSbj;
 	private EzimTextArea etaMsg;
@@ -64,23 +69,46 @@ public class EzimMsgOut
 	private JButton jbtnSend;
 
 	// C O N S T R U C T O R -----------------------------------------------
-	public EzimMsgOut(EzimContact ecIn)
+	public EzimMsgOut()
 	{
-		init(ecIn, (String) null, (String) null);
+		init((ArrayList<EzimContact>) null, (String) null, (String) null);
 	}
 
-	public EzimMsgOut(EzimContact ecIn, String strSbj, String strIn)
+	public EzimMsgOut(ArrayList<EzimContact> alIn)
 	{
-		init(ecIn, strSbj, strIn);
+		init(alIn, (String) null, (String) null);
+	}
+
+	public EzimMsgOut
+	(
+		ArrayList<EzimContact> alIn
+		, String strSbj
+		, String strIn
+	)
+	{
+		init(alIn, strSbj, strIn);
 		this.etaMsg.requestFocusInWindow();
 	}
 
-	private void init(EzimContact ecIn, String strSbj, String strIn)
+	private void init
+	(
+		ArrayList<EzimContact> alIn
+		, String strSbj
+		, String strIn
+	)
 	{
-		this.ec = ecIn;
-
 		this.loadConf();
 		this.initGUI();
+
+		if (alIn != null && alIn.size() > 0)
+		{
+			this.contacts = alIn;
+			this.updateContactNames();
+		}
+		else
+		{
+			this.contacts = new ArrayList<EzimContact>();
+		}
 
 		if (strSbj != null && strSbj.length() > 0)
 		{
@@ -93,7 +121,7 @@ public class EzimMsgOut
 			this.etaMsg.setCaretPosition(0);
 		}
 
-		this.setIconImage(EzimImage.icoMsg.getImage());
+		this.setIconImage(EzimImage.icoButtons[0].getImage());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setTitle(EzimLang.OutgoingMessage);
 		this.setMinimumSize(new Dimension(320, 200));
@@ -181,8 +209,38 @@ public class EzimMsgOut
 		// C O M P O N E N T S ---------------------------------------------
 		this.jlblName = new JLabel(EzimLang.To);
 
-		this.jtfdName = new JTextField(this.ec.getName());
+		this.jtfdName = new JTextField();
 		this.jtfdName.setEnabled(false);
+		this.jtfdName.setTransferHandler
+		(
+			EzimContactTransferHandler.getInstance()
+		);
+
+//		this.jbtnDelLastRcpt = new JButton(EzimImage.icoButtons[5]);
+		this.jbtnDelLastRcpt = new JButton
+		(
+			new ImageIcon
+			(
+				EzimImage.icoButtons[5].getImage().getScaledInstance
+				(
+					16, 16
+					, Image.SCALE_SMOOTH
+				)
+			)
+		);
+		this.jbtnDelLastRcpt.setPreferredSize(new Dimension(16, 16));
+		this.jbtnDelLastRcpt.setToolTipText(EzimLang.DeleteLastRecipient);
+		this.jbtnDelLastRcpt.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent evtTmp)
+				{
+					EzimMsgOut.this.jbtnDelLastRcpt_ActionPerformed();
+					return;
+				}
+			}
+		);
 
 		this.jlblSbj = new JLabel(EzimLang.Subject);
 
@@ -267,6 +325,17 @@ public class EzimMsgOut
 									, Short.MAX_VALUE
 								)
 						)
+						.addGroup
+						(
+							glBase.createParallelGroup(Alignment.LEADING)
+								.addComponent
+								(
+									this.jbtnDelLastRcpt
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+						)
 				)
 				.addComponent
 				(
@@ -301,6 +370,13 @@ public class EzimMsgOut
 				.addComponent
 				(
 					this.jtfdName
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jbtnDelLastRcpt
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -354,6 +430,26 @@ public class EzimMsgOut
 		return;
 	}
 
+	private void updateContactNames()
+	{
+		StringBuffer sbOut = new StringBuffer();
+
+		for(EzimContact ec: this.contacts)
+		{
+			sbOut.append(ec.getName());
+			sbOut.append(" ,");
+		}
+
+		if (sbOut.length() > 1)
+		{
+			this.jtfdName.setText(sbOut.substring(0, sbOut.length() - 2));
+		}
+		else
+		{
+			this.jtfdName.setText(sbOut.toString());
+		}
+	}
+
 	// W I N D O W   L I S T E N E R ---------------------------------------
 	public void windowActivated(WindowEvent e)
 	{
@@ -396,33 +492,66 @@ public class EzimMsgOut
 	{
 		if
 		(
-			EzimContactList.getInstance().getContact
-			(
-				this.ec.getAddress()
-			) == null
+			this.contacts != null && this.contacts.size() > 0
+			&& this.etaMsg.getText().length() > 0
 		)
 		{
-			JOptionPane.showMessageDialog
-			(
-				null
-				, EzimLang.RecipientNotExists
-				, EzimLang.Error
-				, JOptionPane.ERROR_MESSAGE
-			);
-		}
-		else if (this.etaMsg.getText().length() > 0)
-		{
-			EzimMsgSender jmsTmp = new EzimMsgSender
-			(
-				this
-				, this.ec.getAddress()
-				, this.ec.getPort()
-				, this.jtfdSbj.getText()
-				, this.etaMsg.getText()
-			);
+			EzimMsgSender jmsTmp = new EzimMsgSender(this);
 			EzimThreadPool.getInstance().execute(jmsTmp);
 		}
 
 		return;
+	}
+
+	private void jbtnDelLastRcpt_ActionPerformed()
+	{
+		if (this.contacts != null && this.contacts.size() > 0)
+		{
+			synchronized(this.contacts)
+			{
+				this.contacts.remove(this.contacts.size() - 1);
+			}
+
+			this.updateContactNames();
+		}
+
+		return;
+	}
+
+	// P U B L I C   M E T H O D -------------------------------------------
+	public void addContacts(ArrayList<EzimContact> alIn)
+	{
+		if (this.contacts != null)
+		{
+			synchronized(this.contacts)
+			{
+				for(EzimContact ecTmp: alIn)
+				{
+					if (! this.contacts.contains(ecTmp))
+					{
+						this.contacts.add(ecTmp);
+					}
+				}
+			}
+
+			this.updateContactNames();
+		}
+
+		return;
+	}
+
+	public ArrayList<EzimContact> getContacts()
+	{
+		return this.contacts;
+	}
+
+	public String getSubject()
+	{
+		return this.jtfdSbj.getText();
+	}
+
+	public String getBody()
+	{
+		return this.etaMsg.getText();
 	}
 }
