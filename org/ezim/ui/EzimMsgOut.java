@@ -35,7 +35,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -43,11 +42,10 @@ import javax.swing.JTextField;
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
-import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimContactTransferHandler;
-import org.ezim.core.EzimMsgSender;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimMsgSender;
 import org.ezim.core.EzimPlainDocument;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimTextArea;
@@ -87,7 +85,6 @@ public class EzimMsgOut
 	)
 	{
 		init(alIn, strSbj, strIn);
-		this.etaMsg.requestFocusInWindow();
 	}
 
 	private void init
@@ -126,6 +123,15 @@ public class EzimMsgOut
 		this.setTitle(EzimLang.OutgoingMessage);
 		this.setMinimumSize(new Dimension(320, 200));
 		this.setVisible(true);
+
+		if (strSbj != null && strSbj.length() > 0)
+		{
+			this.etaMsg.requestFocusInWindow();
+		}
+		else
+		{
+			this.jtfdSbj.requestFocusInWindow();
+		}
 
 		return;
 	}

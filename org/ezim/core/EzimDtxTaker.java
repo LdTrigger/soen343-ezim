@@ -21,16 +21,16 @@
 package org.ezim.core;
 
 import java.lang.Runnable;
-import java.net.ServerSocket;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactList;
 import org.ezim.core.EzimDtxTakerThread;
-import org.ezim.core.EzimThreadPool;
 import org.ezim.core.EzimLogger;
+import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
 
 public class EzimDtxTaker implements Runnable

@@ -21,9 +21,9 @@
 package org.ezim.ui;
 
 import java.awt.AWTKeyStroke;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.KeyboardFocusManager;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JTextArea;
