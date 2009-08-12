@@ -22,7 +22,6 @@ package org.ezim.ui;
 
 import java.awt.AWTException;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.Point;
 import java.awt.PopupMenu;

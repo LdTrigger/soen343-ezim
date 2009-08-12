@@ -27,8 +27,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.Socket;
 import java.util.Date;
-import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,11 +38,11 @@ import javax.swing.JTextField;
 
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
+import org.ezim.core.EzimFileRequester;
 import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimLogger;
-import org.ezim.core.EzimFileRequester;
 import org.ezim.core.EzimThreadPool;
 
 public class EzimFileOut

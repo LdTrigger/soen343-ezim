@@ -22,15 +22,14 @@ package org.ezim.core;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import javax.swing.ListModel;
 
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimContactException;
 import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimSound;
-
 import org.ezim.ui.EzimMain;
 import org.ezim.ui.EzimPlaza;
 
