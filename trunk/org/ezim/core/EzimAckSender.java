@@ -34,11 +34,20 @@ public class EzimAckSender implements Runnable
 {
 	private String msg;
 
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the ACK sender class
+	 * @param strIn ACK message to be sent
+	 */
 	public EzimAckSender(String strIn)
 	{
 		this.msg = strIn;
 	}
 
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * the method to be invoked
+	 */
 	public void run()
 	{
 		MulticastSocket ms = null;

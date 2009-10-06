@@ -86,6 +86,9 @@ public class EzimPreferences
 	private JButton jbtnRestore;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the preferences window
+	 */
 	public EzimPreferences()
 	{
 		super(EzimMain.getInstance(), EzimLang.Prefs, true);
@@ -99,6 +102,9 @@ public class EzimPreferences
 		this.setVisible(true);
 	}
 
+	/**
+	 * initialize class members and GUI
+	 */
 	private void init()
 	{
 		this.initGUI();
@@ -108,7 +114,7 @@ public class EzimPreferences
 	}
 
 	/**
-	 * initialize all GUI components
+	 * initialize GUI components
 	 */
 	private void initGUI()
 	{
@@ -917,6 +923,9 @@ public class EzimPreferences
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
+	/**
+	 * "Save" button event handler
+	 */
 	private void jbtnSave_ActionPerformed()
 	{
 		this.saveCurConf();
@@ -934,6 +943,9 @@ public class EzimPreferences
 		return;
 	}
 
+	/**
+	 * "Restore" button event handler
+	 */
 	private void jbtnRestore_ActionPerformed()
 	{
 		this.loadCurConf();

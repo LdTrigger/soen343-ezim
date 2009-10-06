@@ -43,6 +43,9 @@ public class EzimSound
 	private static EzimSound es = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the sound class
+	 */
 	private EzimSound()
 	{
 		this.init();

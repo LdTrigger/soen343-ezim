@@ -65,11 +65,20 @@ public class EzimFileOut
 	private JButton jbtnClose;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the outgoing file GUI
+	 * @param ecIn contact of the file recipient
+	 */
 	public EzimFileOut(EzimContact ecIn)
 	{
 		init(ecIn, (File) null);
 	}
 
+	/**
+	 * construct an instance of the outgoing file GUI
+	 * @param ecIn contact of the file recipient
+	 * @param fIn the associated physical file
+	 */
 	public EzimFileOut(EzimContact ecIn, File fIn)
 	{
 		init(ecIn, fIn);
@@ -88,6 +97,11 @@ public class EzimFileOut
 		);
 	}
 
+	/**
+	 * initialize class members and GUI
+	 * @param ecIn contact of the file recipient
+	 * @param fIn the associated physical file
+	 */
 	private void init(EzimContact ecIn, File fIn)
 	{
 		this.id = Long.toString(new Date().getTime());
@@ -107,6 +121,9 @@ public class EzimFileOut
 	}
 
 	// P R I V A T E   M E T H O D S ---------------------------------------
+	/**
+	 * load window position and size from configuration settings
+	 */
 	private void loadConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
@@ -149,6 +166,9 @@ public class EzimFileOut
 		return;
 	}
 
+	/**
+	 * save window position and size to configuration settings
+	 */
 	private void saveConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
@@ -180,6 +200,9 @@ public class EzimFileOut
 		return;
 	}
 
+	/**
+	 * initialize GUI components
+	 */
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
@@ -406,6 +429,10 @@ public class EzimFileOut
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
+	/**
+	 * unregister file from the outgoing file queue, save window position
+	 * and size, then dispose itself
+	 */
 	private void unregSaveDispose()
 	{
 		try
@@ -425,6 +452,9 @@ public class EzimFileOut
 		return;
 	}
 
+	/**
+	 * "Close" button event handler
+	 */
 	private void jbtnClose_ActionPerformed()
 	{
 		this.unregSaveDispose();
@@ -432,28 +462,48 @@ public class EzimFileOut
 	}
 
 	// O P E R A T I O N ---------------------------------------------------
+	/**
+	 * get ID of the outgoing file
+	 * @return ID of the outgoing file
+	 */
 	public String getId()
 	{
 		return this.id;
 	}
 
+	/**
+	 * get file associated with this user interface
+	 * @return the associated physical file
+	 */
 	public File getFile()
 	{
 		return this.file;
 	}
 
+	/**
+	 * set socket associated with this user interface
+	 * @param sckIn socket to be applied
+	 */
 	public void setSocket(Socket sckIn)
 	{
 		this.sck = sckIn;
 		return;
 	}
 
+	/**
+	 * set text of the system message label
+	 * @param strIn text to be set
+	 */
 	public void setSysMsg(String strIn)
 	{
 		this.jlblSysMsg.setText(strIn);
 		return;
 	}
 
+	/**
+	 * set value of the file size textfield
+	 * @param int value to be set
+	 */
 	public void setSize(int iIn)
 	{
 		this.jtfdSize.setText(Integer.toString(iIn));
@@ -461,12 +511,21 @@ public class EzimFileOut
 		return;
 	}
 
+	/**
+	 * set value of the progress bar
+	 * @param iIn value to be set
+	 */
 	public void setProgressed(int iIn)
 	{
 		this.jpbProgress.setValue(iIn);
 		return;
 	}
 
+	/**
+	 * change text in the system message label and close button to indicate
+	 * the progress has ended
+	 * @param strIn text to be set in the system message label
+	 */
 	public void endProgress(String strIn)
 	{
 		this.setSysMsg(strIn);

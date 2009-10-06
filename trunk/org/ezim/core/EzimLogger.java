@@ -37,6 +37,9 @@ public class EzimLogger
 	private static EzimLogger ezlogger = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the logger
+	 */
 	private EzimLogger()
 	{
 		FileHandler fhTmp = null;

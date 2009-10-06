@@ -41,6 +41,9 @@ public class EzimContactList implements ListModel
 	private ArrayList<ListDataListener> listeners = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the contact list
+	 */
 	private EzimContactList()
 	{
 		this.list = new ArrayList<EzimContact>();

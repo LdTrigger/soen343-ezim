@@ -36,6 +36,14 @@ public class EzimFileConfirmer implements Runnable
 	private String id = null;
 	private boolean blnConfirm = false;
 
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the file confirmer
+	 * @param iaIn address of the recipient
+	 * @param iPort DTX port of the recipient
+	 * @param strId file ID in the outgoing file queue (File-Request-ID)
+	 * @param blnIn indicates whether the transmission is confirmed
+	 */
 	public EzimFileConfirmer
 	(
 		InetAddress iaIn
@@ -50,6 +58,10 @@ public class EzimFileConfirmer implements Runnable
 		this.blnConfirm = blnIn;
 	}
 
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * the method to be invoked
+	 */
 	public void run()
 	{
 		Socket sckOut = null;

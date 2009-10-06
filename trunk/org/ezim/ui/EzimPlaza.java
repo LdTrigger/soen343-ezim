@@ -62,6 +62,9 @@ public class EzimPlaza
 	private JButton jbtnSpeak;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the plaza (chat) window
+	 */
 	public EzimPlaza()
 	{
 		this.initGUI();
@@ -72,6 +75,9 @@ public class EzimPlaza
 		this.setMinimumSize(new Dimension(320, 200));
 	}
 
+	/**
+	 * initialize GUI components
+	 */
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
@@ -254,6 +260,9 @@ public class EzimPlaza
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
+	/**
+	 * send out a speech (plaza message)
+	 */
 	private void sendSpeech()
 	{
 		String strTmp = this.jtfdSpeak.getText().trim();
@@ -273,12 +282,18 @@ public class EzimPlaza
 		return;
 	}
 
+	/**
+	 * "Speak" textfield event handler
+	 */
 	private void jtfdSpeak_ActionPerformed()
 	{
 		sendSpeech();
 		return;
 	}
 
+	/**
+	 * "Speak" button event handler
+	 */
 	private void jbtnSpeak_ActionPerformed()
 	{
 		sendSpeech();

@@ -35,50 +35,15 @@ import org.ezim.ui.EzimMain;
 
 public class EzimDtxTaker implements Runnable
 {
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the DTX taker class
+	 */
 	public EzimDtxTaker()
 	{
 	}
 
-	public void run()
-	{
-		ServerSocket ssck = null;
-
-		try
-		{
-			ssck = new ServerSocket();
-			ssck.bind
-			(
-				new InetSocketAddress
-				(
-					Ezim.localAddress
-					, Ezim.localDtxPort
-				)
-			);
-
-			this.loop(ssck);
-		}
-		catch(Exception e)
-		{
-			EzimMain.getInstance().errAlert(e.getMessage());
-			EzimLogger.getInstance().severe(e.getMessage(), e);
-		}
-		finally
-		{
-			try
-			{
-				if (ssck != null && ! ssck.isClosed()) ssck.close();
-			}
-			catch(Exception exp)
-			{
-				EzimLogger.getInstance().severe(exp.getMessage(), exp);
-			}
-
-			// only one instance of the application is allowed at one time
-			System.exit(1);
-		}
-
-	}
-
+	// P R I V A T E -------------------------------------------------------
 	/**
 	 * DTX data receiving loop
 	 * @param ssckIn server socket where DTX data comes from
@@ -123,6 +88,49 @@ public class EzimDtxTaker implements Runnable
 			{
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
+		}
+	}
+
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * the method to be invoked
+	 */
+	public void run()
+	{
+		ServerSocket ssck = null;
+
+		try
+		{
+			ssck = new ServerSocket();
+			ssck.bind
+			(
+				new InetSocketAddress
+				(
+					Ezim.localAddress
+					, Ezim.localDtxPort
+				)
+			);
+
+			this.loop(ssck);
+		}
+		catch(Exception e)
+		{
+			EzimMain.getInstance().errAlert(e.getMessage());
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+		}
+		finally
+		{
+			try
+			{
+				if (ssck != null && ! ssck.isClosed()) ssck.close();
+			}
+			catch(Exception exp)
+			{
+				EzimLogger.getInstance().severe(exp.getMessage(), exp);
+			}
+
+			// only one instance of the application is allowed at one time
+			System.exit(1);
 		}
 	}
 }

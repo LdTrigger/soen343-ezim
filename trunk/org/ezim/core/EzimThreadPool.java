@@ -31,6 +31,10 @@ public class EzimThreadPool extends ThreadPoolExecutor
 	private static EzimThreadPool etpool = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the thread pool
+	 * @param ecIn configuration settings
+	 */
 	private EzimThreadPool(EzimConf ecIn)
 	{
 		super
@@ -62,6 +66,10 @@ public class EzimThreadPool extends ThreadPoolExecutor
 	}
 
 	// P U B L I C   M E T H O D S -----------------------------------------
+	/**
+	 * return the only instance of this class
+	 * @return instance of this class
+	 */
 	public static EzimThreadPool getInstance()
 	{
 		if (EzimThreadPool.etpool == null)

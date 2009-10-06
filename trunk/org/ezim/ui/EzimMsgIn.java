@@ -65,6 +65,12 @@ public class EzimMsgIn
 	private JButton jbtnReply;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the incoming message window
+	 * @param ecIn contact of the message sender
+	 * @param strSbj subject line
+	 * @param strIn message body
+	 */
 	public EzimMsgIn(EzimContact ecIn, String strSbj, String strIn)
 	{
 		this.ec = ecIn;
@@ -97,6 +103,9 @@ public class EzimMsgIn
 			EzimSound.getInstance().playMsgIn();
 	}
 
+	/**
+	 * load window position and size from configuration settings
+	 */
 	private void loadConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
@@ -139,6 +148,9 @@ public class EzimMsgIn
 		return;
 	}
 
+	/**
+	 * save window position and size to configuration settings
+	 */
 	private void saveConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
@@ -170,6 +182,9 @@ public class EzimMsgIn
 		return;
 	}
 
+	/**
+	 * initialize GUI components
+	 */
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
@@ -439,6 +454,9 @@ public class EzimMsgIn
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
+	/**
+	 * "Reply" button event handler
+	 */
 	private void jbtnReply_ActionPerformed()
 	{
 		ArrayList<EzimContact> alEc = new ArrayList<EzimContact>();
@@ -465,6 +483,9 @@ public class EzimMsgIn
 		return;
 	}
 
+	/**
+	 * "Open" label event handler on mouse click
+	 */
 	private void jlblOpen_MouseClicked()
 	{
 		this.jspMsg.setViewportView(this.jtaMsg);

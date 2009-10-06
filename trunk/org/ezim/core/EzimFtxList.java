@@ -30,6 +30,9 @@ public class EzimFtxList
 	private Hashtable<String, EzimFileOut> list = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the (outgoing) file transmission list
+	 */
 	private EzimFtxList()
 	{
 		this.list = new Hashtable<String, EzimFileOut>();

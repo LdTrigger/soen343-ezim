@@ -39,6 +39,14 @@ public class EzimFileRequester implements Runnable
 	private String id = null;
 	private EzimFileOut efo = null;
 
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the file requester
+	 * @param iaIn address of the recipient
+	 * @param iPort DTX port of the recipient
+	 * @param strId file ID in the outgoing file queue (File-Request-ID)
+	 * @param efoIn the associated outgoing file window
+	 */
 	public EzimFileRequester
 	(
 		InetAddress iaIn
@@ -53,6 +61,10 @@ public class EzimFileRequester implements Runnable
 		this.efo = efoIn;
 	}
 
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * the method to be invoked
+	 */
 	public void run()
 	{
 		Socket sckOut = null;

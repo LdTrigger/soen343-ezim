@@ -151,6 +151,9 @@ public class EzimImage
 		return EzimImage.loadIcons(strUrl, iW, iH, 32, 32);
 	}
 
+	/**
+	 * initialize public static class members
+	 */
 	public static void init()
 	{
 		URL urlImg = null;

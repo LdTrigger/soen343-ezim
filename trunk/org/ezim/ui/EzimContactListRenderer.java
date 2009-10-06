@@ -34,10 +34,24 @@ public class EzimContactListRenderer
 	extends JLabel
 	implements ListCellRenderer
 {
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct a list cell renderer for contact display
+	 */
 	public EzimContactListRenderer()
 	{
 	}
 
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * return a component that has been configured to display the specified
+	 * value
+	 * @param jlstIn the JList we're painting
+	 * @param objIn value returned by list.getModel().getElementAt(index)
+	 * @param iIdx the cells index
+	 * @param blnSelected true if the specified cell was selected
+	 * @param blnCellHasFocus true if the specified cell has the focus
+	 */
 	public Component getListCellRendererComponent
 	(
 		JList jlstIn

@@ -48,6 +48,9 @@ public class EzimContactTransferHandler
 	private JList jlstSrc = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the transfer handler
+	 */
 	private EzimContactTransferHandler()
 	{
 		try
@@ -68,6 +71,10 @@ public class EzimContactTransferHandler
 	// S I N G L E T O N ---------------------------------------------------
 	private static EzimContactTransferHandler token = null;
 
+	/**
+	 * return the singleton class instance
+	 * @return the singleton class instance
+	 */
 	public static EzimContactTransferHandler getInstance()
 	{
 		if (EzimContactTransferHandler.token == null)
@@ -262,11 +269,22 @@ public class EzimContactTransferHandler
 	{
 		ArrayList list;
 
+		// C O N S T R U C T O R -------------------------------------------
+		/**
+		 * construct an instance of the contact transferable class
+		 * @param alIn list of data to be transferred
+		 */
 		public EzimContactTransferable(ArrayList alIn)
 		{
 			this.list = alIn;
 		}
 
+		// P U B L I C -----------------------------------------------------
+		/**
+		 * get an object which represents the data to be transferred
+		 * @param dfIn the requested flavor for the data
+		 * @return an object which represents the data to be transferred
+		 */
 		public Object getTransferData(DataFlavor dfIn)
 			throws UnsupportedFlavorException
 		{
@@ -278,6 +296,12 @@ public class EzimContactTransferHandler
 			return this.list;
 		}
 
+		/**
+		 * Returns an array of DataFlavor objects indicating the flavors the
+		 * data can be provided in
+		 * @return an array of data flavors in which this data can be
+		 *   transferred
+		 */
 		public DataFlavor[] getTransferDataFlavors()
 		{
 			return new DataFlavor[]
@@ -287,6 +311,13 @@ public class EzimContactTransferHandler
 			};
 		}
 
+		/**
+		 * check whether or not the specified data flavor is supported for
+		 * this object
+		 * @param dfIn the requested flavor for the data
+		 * @return boolean indicating whether or not the data flavor is
+		 *   supported
+		 */
 		public boolean isDataFlavorSupported(DataFlavor dfIn)
 		{
 			boolean blnOut = false;

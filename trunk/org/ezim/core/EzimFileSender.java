@@ -36,6 +36,13 @@ public class EzimFileSender implements Runnable
 	private InetAddress addr;
 	private int port;
 
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the file sender
+	 * @param efoIn the associated outgoing file window
+	 * @param iaIn address of the recipient
+	 * @param iPort DTX port of the recipient
+	 */
 	public EzimFileSender
 	(
 		EzimFileOut efoIn
@@ -48,6 +55,10 @@ public class EzimFileSender implements Runnable
 		this.port = iPort;
 	}
 
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * the method to be invoked
+	 */
 	public void run()
 	{
 		Socket sckOut = null;
