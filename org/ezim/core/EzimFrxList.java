@@ -30,6 +30,9 @@ public class EzimFrxList
 	private Hashtable<String, EzimFileIn> list = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the (incoming) file reception list
+	 */
 	private EzimFrxList()
 	{
 		this.list = new Hashtable<String, EzimFileIn>();

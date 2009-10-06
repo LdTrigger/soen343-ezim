@@ -69,6 +69,7 @@ public class EzimLang
 	public static String Yes;
 	public static String No;
 	public static String Receiving;
+	public static String OverwriteExistingFile;
 
 	// outgoing file window
 	public static String OutgoingFile;
@@ -113,6 +114,9 @@ public class EzimLang
 	public static String ShowHide;
 	public static String Exit;
 
+	/**
+	 * initialize public static class members
+	 */
 	public static void init()
 	{
 		try
@@ -167,6 +171,7 @@ public class EzimLang
 			Yes = rbTmp.getString("Yes");
 			No = rbTmp.getString("No");
 			Receiving = rbTmp.getString("Receiving");
+			OverwriteExistingFile = rbTmp.getString("OverwriteExistingFile");
 
 			// outgoing file window
 			OutgoingFile = rbTmp.getString("OutgoingFile");

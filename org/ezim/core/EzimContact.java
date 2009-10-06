@@ -43,6 +43,16 @@ public class EzimContact implements Comparable
 	private int state;
 	private String status;
 
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the contact class
+	 * @param iaIn address of the contact
+	 * @param iPort DTX port of the contact
+	 * @param strName name of the contact
+	 * @param iSysState system state of the contact
+	 * @param iState user state of the contact
+	 * @param strStatus user status of the contact
+	 */
 	public EzimContact
 	(
 		InetAddress iaIn
@@ -62,6 +72,12 @@ public class EzimContact implements Comparable
 		this.setStatus(strStatus);
 	}
 
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * compare this class instance with another
+	 * @param ecIn the other class instance to be compared
+	 * @return comparison result
+	 */
 	public int compareTo(Object ecIn)
 		throws ClassCastException
 	{
@@ -74,36 +90,64 @@ public class EzimContact implements Comparable
 		);
 	}
 
+	/**
+	 * get address of the contact
+	 * @return address of the contact
+	 */
 	public InetAddress getAddress()
 	{
 		return this.addr;
 	}
 
+	/**
+	 * get DTX port of the contact
+	 * @return DTX port of the contact
+	 */
 	public int getPort()
 	{
 		return this.port;
 	}
 
+	/**
+	 * get name of the contact
+	 * @return name of the contact
+	 */
 	public String getName()
 	{
 		return this.name;
 	}
 
+	/**
+	 * get system state of the contact
+	 * @return system state of the contact
+	 */
 	public int getSysState()
 	{
 		return this.sysState;
 	}
 
+	/**
+	 * get user state of the contact
+	 * @return user state of the contact
+	 */
 	public int getState()
 	{
 		return this.state;
 	}
 
+	/**
+	 * get user status of the contact
+	 * @return user status of the contact
+	 */
 	public String getStatus()
 	{
 		return this.status;
 	}
 
+	/**
+	 * set address of the contact
+	 * @param iaIn address to be applied
+	 */
 	public void setAddress(InetAddress iaIn)
 		throws EzimContactException
 	{
@@ -115,6 +159,10 @@ public class EzimContact implements Comparable
 		return;
 	}
 
+	/**
+	 * set DTX port of the contact
+	 * @param iIn DTX port to be applied
+	 */
 	public void setPort(int iIn)
 		throws EzimContactException
 	{
@@ -126,6 +174,10 @@ public class EzimContact implements Comparable
 		return;
 	}
 
+	/**
+	 * set name of the contact
+	 * @param strIn name to be set
+	 */
 	public void setName(String strIn)
 	{
 		if (strIn != null && strIn.length() > 0)
@@ -136,6 +188,10 @@ public class EzimContact implements Comparable
 		return;
 	}
 
+	/**
+	 * set system state of the contact
+	 * @param iIn system state to be set
+	 */
 	public void setSysState(int iIn)
 	{
 		if (iIn >= 0) this.sysState = iIn;
@@ -144,6 +200,10 @@ public class EzimContact implements Comparable
 		return;
 	}
 
+	/**
+	 * set user state of the contact
+	 * @param iIn user state of the contact
+	 */
 	public void setState(int iIn)
 	{
 		if (iIn >= 0) this.state = iIn;
@@ -152,6 +212,10 @@ public class EzimContact implements Comparable
 		return;
 	}
 
+	/**
+	 * set user status of the contact
+	 * @param strIn user status to be set
+	 */
 	public void setStatus(String strIn)
 	{
 		if (strIn != null && strIn.length() > 0)

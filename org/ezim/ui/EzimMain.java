@@ -98,6 +98,9 @@ public class EzimMain
 	public EzimPlaza epMain;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the main window GUI
+	 */
 	private EzimMain()
 	{
 		this.initData();
@@ -283,6 +286,9 @@ public class EzimMain
 		return;
 	}
 
+	/**
+	 * initialize class members
+	 */
 	private void initData()
 	{
 		this.localSysState = EzimContact.SYSSTATE_DEFAULT;
@@ -294,6 +300,9 @@ public class EzimMain
 		return;
 	}
 
+	/**
+	 * initialize GUI components
+	 */
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
@@ -748,6 +757,9 @@ public class EzimMain
 		return;
 	}
 
+	/**
+	 * initialize system tray icon
+	 */
 	private void initTrayIcon()
 	{
 		// P O P - U P   M E N U -------------------------------------------
@@ -862,6 +874,10 @@ public class EzimMain
 		return;
 	}
 
+	/**
+	 * return the only instance of this class
+	 * @return instance of this class
+	 */
 	public static EzimMain getInstance()
 	{
 		if (EzimMain.emSngtn == null)
@@ -913,18 +929,27 @@ public class EzimMain
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
+	/**
+	 * state combobox event handler
+	 */
 	private void jcbState_ActionPerformed()
 	{
 		this.changeState(this.jcbState.getSelectedIndex());
 		return;
 	}
 
+	/**
+	 * status textfield event handler
+	 */
 	private void jtfdStatus_ActionPerformed()
 	{
 		this.changeStatus();
 		return;
 	}
 
+	/**
+	 * status textfield event handler on mouse click
+	 */
 	private void jtfdStatus_MouseClicked()
 	{
 		this.jtfdStatus.setEnabled(true);
@@ -932,18 +957,27 @@ public class EzimMain
 		return;
 	}
 
+	/**
+	 * status textfield event handler on focus lost
+	 */
 	private void jtfdStatus_FocusLost()
 	{
 		this.changeStatus();
 		return;
 	}
 
+	/**
+	 * about label event handler on mouse click
+	 */
 	private void jlblAbout_MouseClicked()
 	{
 		this.showAboutDlg();
 		return;
 	}
 
+	/**
+	 * open an outgoing message window
+	 */
 	private void openMsgOut()
 	{
 		Object obj[] = this.jlstContacts.getSelectedValues();
@@ -967,18 +1001,27 @@ public class EzimMain
 		return;
 	}
 
+	/**
+	 * contact list event handler on mouse double click
+	 */
 	private void jlstContacts_MouseDblClicked()
 	{
 		this.openMsgOut();
 		return;
 	}
 
+	/**
+	 * message button event handler
+	 */
 	private void jbtnMsg_ActionPerformed()
 	{
 		this.openMsgOut();
 		return;
 	}
 
+	/**
+	 * file transfer button event handler
+	 */
 	private void jbtnFtx_ActionPerformed()
 	{
 		Object obj[] = this.jlstContacts.getSelectedValues();
@@ -1033,6 +1076,9 @@ public class EzimMain
 		return;
 	}
 
+	/**
+	 * refresh button event handler
+	 */
 	private void jbtnRfh_ActionPerformed()
 	{
 		this.jbtnRfh.setEnabled(false);
@@ -1067,6 +1113,9 @@ public class EzimMain
 		return;
 	}
 
+	/**
+	 * plaza (chat) button event handler
+	 */
 	private void jbtnPlz_ActionPerformed()
 	{
 		if (! this.epMain.isVisible())
@@ -1077,6 +1126,10 @@ public class EzimMain
 		return;
 	}
 
+	/**
+	 * show or hide this main window instance
+	 * @param blnIn show if true, hide otherwise
+	 */
 	private void showHide(boolean blnIn)
 	{
 		boolean blnSysTray = SystemTray.isSupported();
@@ -1088,6 +1141,9 @@ public class EzimMain
 		return;
 	}
 
+	/**
+	 * preferences button event handler
+	 */
 	private void jbtnPrefs_ActionPerformed()
 	{
 		new EzimPreferences();
@@ -1095,6 +1151,9 @@ public class EzimMain
 	}
 
 	// A B O U T   D I A L O G ---------------------------------------------
+	/**
+	 * show the about dialog
+	 */
 	private void showAboutDlg()
 	{
 		JOptionPane.showMessageDialog
@@ -1108,6 +1167,10 @@ public class EzimMain
 	}
 
 	// E R R O R   H A N D L E R -------------------------------------------
+	/**
+	 * show an error message dialog
+	 * @param strIn the error message to be shown
+	 */
 	public void errAlert(String strIn)
 	{
 		JOptionPane.showMessageDialog

@@ -29,6 +29,10 @@ public class EzimPlainDocument extends PlainDocument
 	private int maxLength;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the plain document
+	 * @param iIn maximum length of the document
+	 */
 	public EzimPlainDocument(int iIn)
 	{
 		this.maxLength = iIn;
@@ -36,6 +40,7 @@ public class EzimPlainDocument extends PlainDocument
 
 	// O V E R R I D D E N   F U N C T I O N -------------------------------
 	/**
+	 * insert contents into the document
 	 * @param offset the starting offset >= 0
 	 * @param str the string to insert, does nothing with null/empty strings
 	 * @param a the attributes for the inserted content

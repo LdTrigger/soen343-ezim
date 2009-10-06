@@ -32,12 +32,19 @@ import javax.swing.KeyStroke;
 public class EzimTextArea
 	extends JTextArea
 {
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct a textarea for message windows
+	 */
 	public EzimTextArea()
 	{
 		super();
 		this.initCtrls();
 	}
 
+	/**
+	 * initialize controls with modified key mappings
+	 */
 	private void initCtrls()
 	{
 		// K E Y S T R O K E -----------------------------------------------

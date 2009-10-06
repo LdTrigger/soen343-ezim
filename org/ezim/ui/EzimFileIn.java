@@ -32,6 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
@@ -69,11 +70,22 @@ public class EzimFileIn
 	private JButton jbtnClose;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the incoming file GUI
+	 * @param ecIn contact of the file sender
+	 * @param strId ID of the file in the incoming file queue
+	 */
 	public EzimFileIn(EzimContact ecIn, String strId)
 	{
 		init(ecIn, strId, (String) null);
 	}
 
+	/**
+	 * construct an instance of the incoming file GUI
+	 * @param ecIn contact of the file sender
+	 * @param strId ID of the file in the incoming file queue
+	 * @param strRemoteFName file name on the remote (sender's) machine
+	 */
 	public EzimFileIn
 	(
 		EzimContact ecIn
@@ -84,6 +96,12 @@ public class EzimFileIn
 		init(ecIn, strId, strRemoteFName);
 	}
 
+	/**
+	 * initialize class members and GUI
+	 * @param ecIn contact of the file sender
+	 * @param strId ID of the file in the incoming file queue
+	 * @param strRemoteFName file name on the remote (sender's) machine
+	 */
 	private void init
 	(
 		EzimContact ecIn
@@ -111,6 +129,9 @@ public class EzimFileIn
 	}
 
 	// P R I V A T E   M E T H O D S ---------------------------------------
+	/**
+	 * load window position and size from configuration settings
+	 */
 	private void loadConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
@@ -153,6 +174,9 @@ public class EzimFileIn
 		return;
 	}
 
+	/**
+	 * save window position and size to configuration settings
+	 */
 	private void saveConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
@@ -184,6 +208,9 @@ public class EzimFileIn
 		return;
 	}
 
+	/**
+	 * initialize GUI components
+	 */
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
@@ -473,6 +500,10 @@ public class EzimFileIn
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
+	/**
+	 * unregister file from the incoming file queue, save window position
+	 * and size, then dispose itself
+	 */
 	private void unregSaveDispose()
 	{
 		try
@@ -492,69 +523,12 @@ public class EzimFileIn
 		return;
 	}
 
-	private void jbtnYes_ActionPerformed()
-	{
-		acceptTransmission(true);
-		return;
-	}
-
-	private void jbtnNo_ActionPerformed()
-	{
-		acceptTransmission(false);
-		return;
-	}
-
-	private void jbtnClose_ActionPerformed()
-	{
-		this.unregSaveDispose();
-		return;
-	}
-
-	// O P E R A T I O N ---------------------------------------------------
-	public String getId()
-	{
-		return this.id;
-	}
-
-	public File getFile()
-	{
-		return this.file;
-	}
-
-	public void setSocket(Socket sckIn)
-	{
-		this.sck = sckIn;
-		return;
-	}
-
-	public void setSysMsg(String strIn)
-	{
-		this.jlblSysMsg.setText(strIn);
-		return;
-	}
-
-	public void setSize(int iIn)
-	{
-		this.jtfdSize.setText(Integer.toString(iIn));
-		this.jpbProgress.setMaximum(iIn);
-		return;
-	}
-
-	public void setProgressed(int iIn)
-	{
-		this.jpbProgress.setValue(iIn);
-		return;
-	}
-
-	public void endProgress(String strIn)
-	{
-		this.setSysMsg(strIn);
-		this.jbtnClose.setText(EzimLang.Close);
-
-		return;
-	}
-
-	public void acceptTransmission(boolean blnRes)
+	/**
+	 * handle (accept or reject) file transmission
+	 * @param blnRes a true value indicates the transmission is accepted,
+	 *   while a false value indicates the transmission is rejected
+	 */
+	private void handleTransmission(boolean blnRes)
 	{
 		this.setSysMsg(EzimLang.WaitingForResponse);
 		this.jbtnYes.setVisible(false);
@@ -567,34 +541,62 @@ public class EzimFileIn
 		if (blnRes)
 		{
 			EzimConf econf = EzimConf.getInstance();
-			JFileChooser jfcTmp = new JFileChooser
-			(
-				econf.settings.getProperty
-				(
-					EzimConf.ezimfileinDirectory
-				)
-			);
+			boolean blnRetry = true;
 
-			jfcTmp.setSelectedFile
-			(
-				new File
-				(
-					jfcTmp.getCurrentDirectory().getAbsolutePath()
-					, this.remoteFName
-				)
-			);
-
-			int iJfcRes = jfcTmp.showSaveDialog(this);
-
-			if (iJfcRes == JFileChooser.APPROVE_OPTION)
+			while(blnRetry)
 			{
-				econf.settings.setProperty
+				blnRetry = false;
+
+				JFileChooser jfcTmp = new JFileChooser
 				(
-					EzimConf.ezimfileinDirectory
-					, jfcTmp.getCurrentDirectory().getAbsolutePath()
+					econf.settings.getProperty
+					(
+						EzimConf.ezimfileinDirectory
+					)
 				);
 
-				this.file = jfcTmp.getSelectedFile();
+				jfcTmp.setSelectedFile
+				(
+					new File
+					(
+						jfcTmp.getCurrentDirectory().getAbsolutePath()
+						, this.remoteFName
+					)
+				);
+
+				int iJfcRes = jfcTmp.showSaveDialog(this);
+
+				if (iJfcRes == JFileChooser.APPROVE_OPTION)
+				{
+					econf.settings.setProperty
+					(
+						EzimConf.ezimfileinDirectory
+						, jfcTmp.getCurrentDirectory().getAbsolutePath()
+					);
+
+					this.file = jfcTmp.getSelectedFile();
+
+					if (this.file.exists())
+					{
+						int iDlgRes = JOptionPane.showConfirmDialog
+						(
+							null
+							, EzimLang.OverwriteExistingFile
+						);
+
+						switch(iDlgRes)
+						{
+						case JOptionPane.NO_OPTION:
+						default:
+							this.file = null;
+							blnRetry = true;
+							break;
+						case JOptionPane.CANCEL_OPTION:
+							this.file = null;
+						case JOptionPane.YES_OPTION:
+						}
+					}
+				}
 			}
 		}
 
@@ -618,6 +620,106 @@ public class EzimFileIn
 		{
 			this.unregSaveDispose();
 		}
+
+		return;
+	}
+
+	/**
+	 * "Yes" button event handler
+	 */
+	private void jbtnYes_ActionPerformed()
+	{
+		this.handleTransmission(true);
+		return;
+	}
+
+	/**
+	 * "No" button event handler
+	 */
+	private void jbtnNo_ActionPerformed()
+	{
+		this.handleTransmission(false);
+		return;
+	}
+
+	/**
+	 * "Close" button event handler
+	 */
+	private void jbtnClose_ActionPerformed()
+	{
+		this.unregSaveDispose();
+		return;
+	}
+
+	// O P E R A T I O N ---------------------------------------------------
+	/**
+	 * get ID of the incoming file
+	 * @return ID of the incoming file
+	 */
+	public String getId()
+	{
+		return this.id;
+	}
+
+	/**
+	 * get file associated with this user interface
+	 * @return the associated physical file
+	 */
+	public File getFile()
+	{
+		return this.file;
+	}
+
+	/**
+	 * set socket associated with this user interface
+	 * @param sckIn socket to be applied
+	 */
+	public void setSocket(Socket sckIn)
+	{
+		this.sck = sckIn;
+		return;
+	}
+
+	/**
+	 * set text of the system message label
+	 * @param strIn text to be set
+	 */
+	public void setSysMsg(String strIn)
+	{
+		this.jlblSysMsg.setText(strIn);
+		return;
+	}
+
+	/**
+	 * set value of the file size textfield
+	 * @param int value to be set
+	 */
+	public void setSize(int iIn)
+	{
+		this.jtfdSize.setText(Integer.toString(iIn));
+		this.jpbProgress.setMaximum(iIn);
+		return;
+	}
+
+	/**
+	 * set value of the progress bar
+	 * @param iIn value to be set
+	 */
+	public void setProgressed(int iIn)
+	{
+		this.jpbProgress.setValue(iIn);
+		return;
+	}
+
+	/**
+	 * change text in the system message label and close button to indicate
+	 * the progress has ended
+	 * @param strIn text to be set in the system message label
+	 */
+	public void endProgress(String strIn)
+	{
+		this.setSysMsg(strIn);
+		this.jbtnClose.setText(EzimLang.Close);
 
 		return;
 	}

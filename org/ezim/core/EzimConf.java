@@ -92,6 +92,9 @@ public class EzimConf
 	private static EzimConf ezconf = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the configuration class
+	 */
 	private EzimConf()
 	{
 		// set default values

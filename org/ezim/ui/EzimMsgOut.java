@@ -67,16 +67,29 @@ public class EzimMsgOut
 	private JButton jbtnSend;
 
 	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the outgoing message window
+	 */
 	public EzimMsgOut()
 	{
 		init((ArrayList<EzimContact>) null, (String) null, (String) null);
 	}
 
+	/**
+	 * construct an instance of the outgoing message window
+	 * @param alIn contacts of the message recipients
+	 */
 	public EzimMsgOut(ArrayList<EzimContact> alIn)
 	{
 		init(alIn, (String) null, (String) null);
 	}
 
+	/**
+	 * construct an instance of the outgoing message window
+	 * @param alIn contacts of the message recipients
+	 * @param strSbj preset subject line
+	 * @param strIn preset message body
+	 */
 	public EzimMsgOut
 	(
 		ArrayList<EzimContact> alIn
@@ -87,6 +100,12 @@ public class EzimMsgOut
 		init(alIn, strSbj, strIn);
 	}
 
+	/**
+	 * initialize class members and GUI
+	 * @param alIn contacts of the message recipients
+	 * @param strSbj preset subject line
+	 * @param strIn preset message body
+	 */
 	private void init
 	(
 		ArrayList<EzimContact> alIn
@@ -137,6 +156,9 @@ public class EzimMsgOut
 	}
 
 	// P R I V A T E   M E T H O D S ---------------------------------------
+	/**
+	 * load window position and size from configuration settings
+	 */
 	private void loadConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
@@ -179,6 +201,9 @@ public class EzimMsgOut
 		return;
 	}
 
+	/**
+	 * save window position and size to configuration settings
+	 */
 	private void saveConf()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
@@ -210,6 +235,9 @@ public class EzimMsgOut
 		return;
 	}
 
+	/**
+	 * initialize GUI components
+	 */
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
@@ -436,6 +464,9 @@ public class EzimMsgOut
 		return;
 	}
 
+	/**
+	 * update contact names in the recipient textfield
+	 */
 	private void updateContactNames()
 	{
 		StringBuffer sbOut = new StringBuffer();
@@ -494,6 +525,9 @@ public class EzimMsgOut
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
+	/**
+	 * "Send" button event handler
+	 */
 	private void jbtnSend_ActionPerformed()
 	{
 		if
@@ -509,6 +543,9 @@ public class EzimMsgOut
 		return;
 	}
 
+	/**
+	 * "Delete last recipient" button event handler
+	 */
 	private void jbtnDelLastRcpt_ActionPerformed()
 	{
 		if (this.contacts != null && this.contacts.size() > 0)
@@ -525,6 +562,10 @@ public class EzimMsgOut
 	}
 
 	// P U B L I C   M E T H O D -------------------------------------------
+	/**
+	 * add contacts to the recipient list
+	 * @param acIn contacts to be added
+	 */
 	public void addContacts(ArrayList<EzimContact> alIn)
 	{
 		if (this.contacts != null)
@@ -546,16 +587,28 @@ public class EzimMsgOut
 		return;
 	}
 
+	/**
+	 * get contacts of the recipients
+	 * @return contacts of the recipients
+	 */
 	public ArrayList<EzimContact> getContacts()
 	{
 		return this.contacts;
 	}
 
+	/**
+	 * get subject line
+	 * @return subject line
+	 */
 	public String getSubject()
 	{
 		return this.jtfdSbj.getText();
 	}
 
+	/**
+	 * get message body
+	 * @return message body
+	 */
 	public String getBody()
 	{
 		return this.etaMsg.getText();

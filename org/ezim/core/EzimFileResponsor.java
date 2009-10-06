@@ -38,6 +38,14 @@ public class EzimFileResponsor implements Runnable
 	private String id = null;
 	private boolean blnRes = false;
 
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the file confirmer
+	 * @param iaIn address of the sender
+	 * @param iPort DTX port of the sender
+	 * @param strId File-Request-ID to respond to
+	 * @param blnIn indicates whether the transmission is accepted
+	 */
 	public EzimFileResponsor
 	(
 		InetAddress iaIn
@@ -52,6 +60,10 @@ public class EzimFileResponsor implements Runnable
 		this.blnRes = blnIn;
 	}
 
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * the method to be invoked
+	 */
 	public void run()
 	{
 		Socket sckOut = null;

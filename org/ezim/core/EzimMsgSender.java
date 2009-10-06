@@ -42,11 +42,20 @@ public class EzimMsgSender implements Runnable
 {
 	private EzimMsgOut emo = null;
 
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the message sender
+	 * @param emoIn the associated outgoing message window
+	 */
 	public EzimMsgSender(EzimMsgOut emoIn)
 	{
 		this.emo = emoIn;
 	}
 
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * the method to be invoked
+	 */
 	public void run()
 	{
 		ArrayList<EzimContact> alEc = this.emo.getContacts();

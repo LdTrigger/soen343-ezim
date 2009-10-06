@@ -34,10 +34,67 @@ import org.ezim.ui.EzimMain;
 
 public class EzimAckTaker implements Runnable
 {
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the ACK taker class
+	 */
 	public EzimAckTaker()
 	{
 	}
 
+	// P R I V A T E -------------------------------------------------------
+	/**
+	 * ACK data receiving loop
+	 * @param msIn multicast socket where ACK data comes from
+	 */
+	private void loop(MulticastSocket msIn)
+	{
+		byte[] arrBytes = new byte[Ezim.inBuf];
+		DatagramPacket dp = new DatagramPacket(arrBytes, arrBytes.length);
+
+		while(true)
+		{
+			try
+			{
+				msIn.receive(dp);
+
+				final InetAddress iaAck = dp.getAddress();
+
+				final String strAck = new String
+				(
+					dp.getData()
+					, 0
+					, dp.getLength()
+					, Ezim.dtxMsgEnc
+				);
+
+				EzimThreadPool etpTmp = EzimThreadPool.getInstance();
+				etpTmp.execute
+				(
+					new Runnable()
+					{
+						public void run()
+						{
+							EzimAckSemantics.parser
+							(
+								iaAck
+								, strAck
+							);
+						}
+					}
+				);
+			}
+			catch(Exception e)
+			{
+				EzimLogger.getInstance().severe(e.getMessage(), e);
+			}
+		}
+	}
+
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * the method to be invoked
+	 */
 	public void run()
 	{
 		MulticastSocket ms = null;
@@ -96,53 +153,5 @@ public class EzimAckTaker implements Runnable
 		}
 
 		return;
-	}
-
-	/**
-	 * ACK data receiving loop
-	 * @param msIn multicast socket where ACK data comes from
-	 */
-	private void loop(MulticastSocket msIn)
-	{
-		byte[] arrBytes = new byte[Ezim.inBuf];
-		DatagramPacket dp = new DatagramPacket(arrBytes, arrBytes.length);
-
-		while(true)
-		{
-			try
-			{
-				msIn.receive(dp);
-
-				final InetAddress iaAck = dp.getAddress();
-
-				final String strAck = new String
-				(
-					dp.getData()
-					, 0
-					, dp.getLength()
-					, Ezim.dtxMsgEnc
-				);
-
-				EzimThreadPool etpTmp = EzimThreadPool.getInstance();
-				etpTmp.execute
-				(
-					new Runnable()
-					{
-						public void run()
-						{
-							EzimAckSemantics.parser
-							(
-								iaAck
-								, strAck
-							);
-						}
-					}
-				);
-			}
-			catch(Exception e)
-			{
-				EzimLogger.getInstance().severe(e.getMessage(), e);
-			}
-		}
 	}
 }

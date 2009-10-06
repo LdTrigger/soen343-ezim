@@ -24,21 +24,38 @@ import java.lang.Exception;
 
 public class EzimContactException extends Exception
 {
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the contact exception class
+	 */
 	public EzimContactException()
 	{
 		super();
 	}
 
+	/**
+	 * construct an instance of the contact exception class
+	 * @param strMsg the detailed message
+	 */
 	public EzimContactException(String strMsg)
 	{
 		super(strMsg);
 	}
 
+	/**
+	 * construct an instance of the contact exception class
+	 * @param strMsg the detailed message
+	 * @param cause the cause
+	 */
 	public EzimContactException(String strMsg, Throwable cause)
 	{
 		super(strMsg, cause);
 	}
 
+	/**
+	 * construct an instance of the contact exception class
+	 * @param cause the cause
+	 */
 	public EzimContactException(Throwable cause)
 	{
 		super(cause);

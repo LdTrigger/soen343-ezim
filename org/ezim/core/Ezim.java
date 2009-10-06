@@ -440,6 +440,10 @@ public class Ezim
 	}
 
 	// P U B L I C   M E T H O D S -----------------------------------------
+	/**
+	 * the main function which gets executed
+	 * @param arrArgs command line arguments
+	 */
 	public static void main(String[] arrArgs)
 	{
 		Ezim.mkSaveDataDir();

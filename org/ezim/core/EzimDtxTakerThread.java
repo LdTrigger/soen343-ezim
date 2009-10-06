@@ -32,12 +32,20 @@ public class EzimDtxTakerThread implements Runnable
 	private EzimContact ec;
 	private Socket sck;
 
+	// C O N S T R U C T O R -----------------------------------------------
+	/**
+	 * construct an instance of the DTX taker thread
+	 */
 	public EzimDtxTakerThread(EzimContact ecIn, Socket sckIn)
 	{
 		this.ec = ecIn;
 		this.sck = sckIn;
 	}
 
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * the method to be invoked
+	 */
 	public void run()
 	{
 		File fHdr = null;
