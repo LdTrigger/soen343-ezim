@@ -23,6 +23,7 @@ package org.ezim.core;
 import java.net.InetAddress;
 
 import org.ezim.core.EzimContactException;
+import org.ezim.core.EzimImage;
 
 public class EzimContact implements Comparable
 {
@@ -194,8 +195,14 @@ public class EzimContact implements Comparable
 	 */
 	public void setSysState(int iIn)
 	{
-		if (iIn >= 0) this.sysState = iIn;
-		else this.sysState = EzimContact.SYSSTATE_DEFAULT;
+		if (iIn >= 0 && iIn < EzimImage.icoSysStates.length)
+		{
+			this.sysState = iIn;
+		}
+		else
+		{
+			this.sysState = EzimContact.SYSSTATE_DEFAULT;
+		}
 
 		return;
 	}
@@ -206,8 +213,14 @@ public class EzimContact implements Comparable
 	 */
 	public void setState(int iIn)
 	{
-		if (iIn >= 0) this.state = iIn;
-		else this.state = EzimContact.STATE_DEFAULT;
+		if (iIn >= 0 && iIn < EzimImage.icoStates.length)
+		{
+			this.state = iIn;
+		}
+		else
+		{
+			this.state = EzimContact.STATE_DEFAULT;
+		}
 
 		return;
 	}
