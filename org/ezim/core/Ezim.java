@@ -48,7 +48,7 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "1.1.7";
+	public final static String appVer = "1.2.0";
 
 	// thread pool sizes and keep alive time (in minutes)
 	public final static int thPoolSizeCore = 8;
