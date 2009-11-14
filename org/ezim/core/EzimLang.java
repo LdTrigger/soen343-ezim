@@ -109,6 +109,7 @@ public class EzimLang
 	public static String Save;
 	public static String Restore;
 	public static String RestartNeeded;
+	public static String McGroupError;
 
 	// tray icon pop-up menu
 	public static String ShowHide;
@@ -211,6 +212,7 @@ public class EzimLang
 			Save = rbTmp.getString("Save");
 			Restore = rbTmp.getString("Restore");
 			RestartNeeded = rbTmp.getString("RestartNeeded");
+			McGroupError = rbTmp.getString("McGroupError");
 
 			// tray icon pop-up menu
 			ShowHide = rbTmp.getString("ShowHide");

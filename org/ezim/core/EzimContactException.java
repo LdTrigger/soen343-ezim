@@ -20,8 +20,6 @@
  */
 package org.ezim.core;
 
-import java.lang.Exception;
-
 public class EzimContactException extends Exception
 {
 	// C O N S T R U C T O R -----------------------------------------------

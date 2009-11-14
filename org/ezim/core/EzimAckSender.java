@@ -20,7 +20,6 @@
  */
 package org.ezim.core;
 
-import java.lang.Runnable;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;

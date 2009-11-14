@@ -20,7 +20,6 @@
  */
 package org.ezim.core;
 
-import java.lang.Throwable;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +59,7 @@ public class EzimLogger
 		}
 		catch(Exception e)
 		{
-			// ignore
+			e.printStackTrace(System.err);
 		}
 	}
 

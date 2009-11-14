@@ -21,8 +21,6 @@
 package org.ezim.core;
 
 import java.awt.event.WindowEvent;
-import java.lang.InterruptedException;
-import java.lang.Runnable;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;

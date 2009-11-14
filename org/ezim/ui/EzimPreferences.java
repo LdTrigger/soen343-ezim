@@ -22,6 +22,8 @@ package org.ezim.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.net.InetAddress;
 import java.util.Locale;
 import javax.swing.GroupLayout.Alignment;
@@ -36,6 +38,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 import org.ezim.core.Ezim;
@@ -55,10 +58,7 @@ public class EzimPreferences
 	private JPanel jpnlNetwork;
 
 	private JLabel jlblMcGroup;
-	private JSpinner jspnMcGroup1;
-	private JSpinner jspnMcGroup2;
-	private JSpinner jspnMcGroup3;
-	private JSpinner jspnMcGroup4;
+	private JTextField jtfdMcGroup;
 
 	private JLabel jlblMcPort;
 	private JSpinner jspnMcPort;
@@ -118,35 +118,6 @@ public class EzimPreferences
 	 */
 	private void initGUI()
 	{
-		SpinnerNumberModel mdlMcGrp1 = new SpinnerNumberModel
-		(
-			229
-			, 224
-			, 239
-			, 1
-		);
-		SpinnerNumberModel mdlMcGrp2 = new SpinnerNumberModel
-		(
-			0
-			, 0
-			, 255
-			, 1
-		);
-		SpinnerNumberModel mdlMcGrp3 = new SpinnerNumberModel
-		(
-			0
-			, 0
-			, 255
-			, 1
-		);
-		SpinnerNumberModel mdlMcGrp4 = new SpinnerNumberModel
-		(
-			1
-			, 0
-			, 255
-			, 1
-		);
-
 		SpinnerNumberModel mdlMcPort = new SpinnerNumberModel
 		(
 			5555
@@ -165,25 +136,21 @@ public class EzimPreferences
 
 		// C O M P O N E N T S ---------------------------------------------
 		this.jlblMcGroup = new JLabel(EzimLang.McGroup);
-		this.jspnMcGroup1 = new JSpinner(mdlMcGrp1);
-		this.jspnMcGroup1.setEditor
+		this.jtfdMcGroup = new JTextField();
+		this.jtfdMcGroup.addFocusListener
 		(
-			new JSpinner.NumberEditor(this.jspnMcGroup1, "#")
-		);
-		this.jspnMcGroup2 = new JSpinner(mdlMcGrp2);
-		this.jspnMcGroup2.setEditor
-		(
-			new JSpinner.NumberEditor(this.jspnMcGroup2, "#")
-		);
-		this.jspnMcGroup3 = new JSpinner(mdlMcGrp3);
-		this.jspnMcGroup3.setEditor
-		(
-			new JSpinner.NumberEditor(this.jspnMcGroup3, "#")
-		);
-		this.jspnMcGroup4 = new JSpinner(mdlMcGrp4);
-		this.jspnMcGroup4.setEditor
-		(
-			new JSpinner.NumberEditor(this.jspnMcGroup4, "#")
+			new FocusListener()
+			{
+				public void focusGained(FocusEvent evtTmp)
+				{
+					return;
+				}
+
+				public void focusLost(FocusEvent evtTmp)
+				{
+					EzimPreferences.this.jtfdMcGroup_FocusLost();
+				}
+			}
 		);
 		this.jlblMcPort = new JLabel(EzimLang.McPort);
 		this.jspnMcPort = new JSpinner(mdlMcPort);
@@ -303,37 +270,12 @@ public class EzimPreferences
 		hNwGrp.addGroup
 		(
 			glNw.createParallelGroup()
-				.addGroup
+				.addComponent
 				(
-					glNw.createSequentialGroup()
-						.addComponent
-						(
-							this.jspnMcGroup1
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-						)
-						.addComponent
-						(
-							this.jspnMcGroup2
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-						)
-						.addComponent
-						(
-							this.jspnMcGroup3
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-						)
-						.addComponent
-						(
-							this.jspnMcGroup4
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-						)
+					this.jtfdMcGroup
+					, GroupLayout.DEFAULT_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, Short.MAX_VALUE
 				)
 				.addComponent
 				(
@@ -374,28 +316,7 @@ public class EzimPreferences
 				)
 				.addComponent
 				(
-					this.jspnMcGroup1
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-				.addComponent
-				(
-					this.jspnMcGroup2
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-				.addComponent
-				(
-					this.jspnMcGroup3
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-				.addComponent
-				(
-					this.jspnMcGroup4
+					this.jtfdMcGroup
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -731,12 +652,7 @@ public class EzimPreferences
 			EzimConf.ezimMcGroup
 		);
 
-		String[] arrMcGroup = strMcGroup.split("\\.");
-
-		this.jspnMcGroup1.setValue(Integer.valueOf(arrMcGroup[0]));
-		this.jspnMcGroup2.setValue(Integer.valueOf(arrMcGroup[1]));
-		this.jspnMcGroup3.setValue(Integer.valueOf(arrMcGroup[2]));
-		this.jspnMcGroup4.setValue(Integer.valueOf(arrMcGroup[3]));
+		this.jtfdMcGroup.setText(strMcGroup);
 
 		// multicast group port
 		String strMcPort = ecTmp.settings.getProperty
@@ -843,6 +759,68 @@ public class EzimPreferences
 	}
 
 	/**
+	 * verify settings
+	 */
+	private boolean verifyCurConf()
+	{
+		boolean blnOut = true;
+		String strHostAddress = ((InetAddress) this.jcbLocalAddress
+			.getSelectedItem()).getHostAddress();
+		String strMcGroup = this.jtfdMcGroup.getText();
+
+		if
+		(
+			(
+				strHostAddress.matches(Ezim.regexpIPv4)
+				&& ! strMcGroup.matches(Ezim.regexpIPv4)
+			)
+			// should we comment these out for dual stack networks?
+			|| (
+				strHostAddress.matches(Ezim.regexpIPv6)
+				&& ! strMcGroup.matches(Ezim.regexpIPv6)
+			)
+		)
+		{
+			JOptionPane.showMessageDialog
+			(
+				this
+				, EzimLang.McGroupError
+				, EzimLang.Prefs
+				, JOptionPane.ERROR_MESSAGE
+			);
+
+			blnOut = false;
+		}
+		else
+		{
+			try
+			{
+				InetAddress iaTmp = InetAddress.getByName(strMcGroup);
+
+				if (! iaTmp.isMulticastAddress())
+				{
+					JOptionPane.showMessageDialog
+					(
+						this
+						, EzimLang.McGroupError
+						, EzimLang.Prefs
+						, JOptionPane.ERROR_MESSAGE
+					);
+
+					blnOut = false;
+				}
+			}
+			catch(Exception e)
+			{
+				// this should NEVER happen
+				blnOut = false;
+			}
+		}
+
+		return blnOut;
+	}
+
+	/**
 	 * save settings to current configuration
 	 */
 	private void saveCurConf()
@@ -853,10 +831,7 @@ public class EzimPreferences
 		ecTmp.settings.setProperty
 		(
 			EzimConf.ezimMcGroup
-			, this.jspnMcGroup1.getValue().toString()
-				+ "." + this.jspnMcGroup2.getValue().toString()
-				+ "." + this.jspnMcGroup3.getValue().toString()
-				+ "." + this.jspnMcGroup4.getValue().toString()
+			, this.jtfdMcGroup.getText()
 		);
 
 		// multicast group port
@@ -924,21 +899,53 @@ public class EzimPreferences
 
 	// E V E N T   H A N D L E R -------------------------------------------
 	/**
+	 * "Multicast Group IP" textfield event handler
+	 */
+	private void jtfdMcGroup_FocusLost()
+	{
+		String strMcGroup = this.jtfdMcGroup.getText().trim();
+
+		if (strMcGroup.length() == 0)
+		{
+			String strHostAddress = ((InetAddress) this.jcbLocalAddress
+				.getSelectedItem()).getHostAddress();
+
+			if (strHostAddress.matches(Ezim.regexpIPv4))
+			{
+				this.jtfdMcGroup.setText(Ezim.mcGroupIPv4);
+			}
+			else if (strHostAddress.matches(Ezim.regexpIPv6))
+			{
+				this.jtfdMcGroup.setText(Ezim.mcGroupIPv6);
+			}
+		}
+		else
+		{
+			this.jtfdMcGroup.setText(strMcGroup);
+		}
+
+		return;
+	}
+
+	/**
 	 * "Save" button event handler
 	 */
 	private void jbtnSave_ActionPerformed()
 	{
-		this.saveCurConf();
+		if (this.verifyCurConf())
+		{
+			this.saveCurConf();
 
-		JOptionPane.showMessageDialog
-		(
-			this
-			, EzimLang.RestartNeeded
-			, EzimLang.Prefs
-			, JOptionPane.INFORMATION_MESSAGE
-		);
+			JOptionPane.showMessageDialog
+			(
+				this
+				, EzimLang.RestartNeeded
+				, EzimLang.Prefs
+				, JOptionPane.INFORMATION_MESSAGE
+			);
 
-		this.dispose();
+			this.dispose();
+		}
 
 		return;
 	}

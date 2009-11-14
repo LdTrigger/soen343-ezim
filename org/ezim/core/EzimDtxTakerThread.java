@@ -20,7 +20,6 @@ package org.ezim.core;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.lang.Runnable;
 import java.net.Socket;
 
 import org.ezim.core.Ezim;
