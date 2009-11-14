@@ -128,7 +128,6 @@ public class EzimConf
 			, Integer.toString(Ezim.thPoolKeepAlive)
 		);
 
-		this.settings.setProperty(EzimConf.ezimMcGroup, Ezim.mcGroup);
 		this.settings.setProperty
 		(
 			EzimConf.ezimMcPort
@@ -262,7 +261,7 @@ public class EzimConf
 		catch(FileNotFoundException fnfe)
 		{
 			// we can safely ignore this
-//			EzimLogger.getInstance().warning(fnfe.getMessage(), fnfe);
+			EzimLogger.getInstance().warning(fnfe.getMessage(), fnfe);
 		}
 		catch(Exception e)
 		{

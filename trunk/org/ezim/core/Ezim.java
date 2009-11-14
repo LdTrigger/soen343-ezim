@@ -21,8 +21,6 @@
 package org.ezim.core;
 
 import java.io.File;
-import java.lang.Integer;
-import java.lang.Thread;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -57,7 +55,8 @@ public class Ezim
 
 	// multicast group, port, TTL, and incoming buffer size
 	// where group should be from 224.0.0.0 to 239.255.255.255
-	public final static String mcGroup = "229.0.0.1";
+	public final static String mcGroupIPv4 = "229.0.0.1";
+	public final static String mcGroupIPv6 = "ff15::657a:696d";
 	public final static int mcPort = 5555;
 	public final static int ttl = 1;
 	public final static int inBuf = 4096;
@@ -101,7 +100,27 @@ public class Ezim
 
 	// regexp for validating IPv6 address
 	public static final String regexpIPv6
-		= "\\A(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}%[0-9]+\\z";
+		= "\\A("
+		+ "(?:(?:[0-9A-Fa-f]{1,4}\\:){1,1}(?:\\:[0-9A-Fa-f]{1,4}){1,6})"
+		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,2}(?:\\:[0-9A-Fa-f]{1,4}){1,5})"
+		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,3}(?:\\:[0-9A-Fa-f]{1,4}){1,4})"
+		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,4}(?:\\:[0-9A-Fa-f]{1,4}){1,3})"
+		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,5}(?:\\:[0-9A-Fa-f]{1,4}){1,2})"
+		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,6}(?:\\:[0-9A-Fa-f]{1,4}){1,1})"
+		+ "|(?:[0-9A-Fa-f]{1,4}(?:\\:[0-9A-Fa-f]{1,4}){7})"
+		+ "|(?:(?:(?:[0-9A-Fa-f]{1,4}\\:){1,7}|\\:)\\:)"
+		+ "|(?:\\:(?:\\:[0-9A-Fa-f]{1,4}){1,7})"
+		+ "|(?:(?:(?:(?:[0-9A-Fa-f]{1,4}\\:){6})(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}))"
+		+ "|(?:(?:(?:[0-9A-Fa-f]{1,4}\\:){5}[0-9A-Fa-f]{1,4}\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}))"
+		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){5}\\:[0-9A-Fa-f]{1,4}\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
+		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,1}(?:\\:[0-9A-Fa-f]{1,4}){1,4}\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
+		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,2}(?:\\:[0-9A-Fa-f]{1,4}){1,3}\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
+		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,3}(?:\\:[0-9A-Fa-f]{1,4}){1,2}\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
+		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,4}(?:\\:[0-9A-Fa-f]{1,4}){1,1}\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
+		+ "|(?:(?:(?:[0-9A-Fa-f]{1,4}\\:){1,5}|\\:)\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
+		+ "|(?:\\:(?:\\:[0-9A-Fa-f]{1,4}){1,5}\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
+		+ ")(?:\\%\\d+)?\\z"
+		;
 
 	// P R O P E R T I E S -------------------------------------------------
 	public static ArrayList<InetAddress> localAddresses = null;
@@ -208,65 +227,24 @@ public class Ezim
 	 */
 	private static InetAddress parseInetAddress(String strIn)
 	{
-		int iCnt = 0;
 		InetAddress iaOut = null;
 		String[] strBytes = null;
 		byte[] arrBytes = null;
-		int iByte = 0;
-		int iScopeId = 0;
 
-		if (strIn.matches(Ezim.regexpIPv4))
+		if
+		(
+			strIn.matches(Ezim.regexpIPv4)
+			|| strIn.matches(Ezim.regexpIPv6)
+		)
 		{
-			strBytes = strIn.split("\\.");
-			arrBytes = new byte[4];
-
-			for(iCnt = 0; iCnt < 4; iCnt ++)
-			{
-				arrBytes[iCnt] = (byte) Integer.parseInt
-				(
-					strBytes[iCnt]
-				);
-			}
-
 			try
 			{
-				iaOut = InetAddress.getByAddress(arrBytes);
+				iaOut = InetAddress.getByName(strIn);
 			}
 			catch(Exception e)
 			{
-				iaOut = null;
-			}
-		}
-		else if (strIn.matches(Ezim.regexpIPv6))
-		{
-			String strParts[] = strIn.split("%");
-			strBytes = strParts[0].split(":");
-			arrBytes = new byte[16];
-			iScopeId = Integer.parseInt(strParts[1]);
-
-			for(iCnt = 0; iCnt < 16; iCnt += 2)
-			{
-				iByte = Integer.parseInt
-				(
-					strBytes[iCnt / 2]
-					, 16
-				);
-
-				arrBytes[iCnt] = (byte) ((iByte >> 8) & 0xff);
-				arrBytes[iCnt + 1] = (byte) (iByte & 0xff);
-			}
-
-			try
-			{
-				iaOut = Inet6Address.getByAddress
-				(
-					null
-					, arrBytes
-					, iScopeId
-				);
-			}
-			catch(Exception e)
-			{
+				// this should NEVER happen
+				EzimLogger.getInstance().severe(e.getMessage(), e);
 				iaOut = null;
 			}
 		}
@@ -345,6 +323,88 @@ public class Ezim
 				EzimConf.ezimLocaladdress
 				, Ezim.localAddress.getHostAddress()
 			);
+		}
+
+		return;
+	}
+
+	/**
+	 * set multicast group IP address
+	 */
+	private static void setMcGroup()
+	{
+		EzimConf ecTmp = EzimConf.getInstance();
+		String strMcGroup = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimMcGroup
+		);
+
+		// set multicast group to default if not yet determined or
+		// inappropriate
+		if
+		(
+			Ezim.localAddress instanceof Inet6Address
+			&& (
+				strMcGroup == null
+				|| ! strMcGroup.matches(Ezim.regexpIPv6)
+			)
+		)
+		{
+			ecTmp.settings.setProperty
+			(
+				EzimConf.ezimMcGroup
+				, Ezim.mcGroupIPv6
+			);
+		}
+		else if
+		(
+			Ezim.localAddress instanceof Inet4Address
+			&& (
+				strMcGroup == null
+				|| ! strMcGroup.matches(Ezim.regexpIPv4)
+			)
+		)
+		{
+			ecTmp.settings.setProperty
+			(
+				EzimConf.ezimMcGroup
+				, Ezim.mcGroupIPv4
+			);
+		}
+		else
+		{
+			InetAddress iaTmp = null;
+
+			try
+			{
+				iaTmp = InetAddress.getByName(strMcGroup);
+			}
+			catch(Exception e)
+			{
+				// this should NEVER happen
+				EzimLogger.getInstance().severe(e.getMessage(), e);
+				iaTmp = null;
+			}
+
+			if (iaTmp == null || ! iaTmp.isMulticastAddress())
+			{
+				if (Ezim.localAddress instanceof Inet6Address)
+				{
+					ecTmp.settings.setProperty
+					(
+						EzimConf.ezimMcGroup
+						, Ezim.mcGroupIPv6
+					);
+				}
+				else if (Ezim.localAddress instanceof Inet4Address)
+				{
+					ecTmp.settings.setProperty
+					(
+						EzimConf.ezimMcGroup
+						, Ezim.mcGroupIPv4
+					);
+				}
+			}
 		}
 
 		return;
@@ -432,6 +492,7 @@ public class Ezim
 	{
 		Ezim.initLocalAddresses();
 		Ezim.setLocalAddress();
+		Ezim.setMcGroup();
 		Ezim.setOperatingNI();
 		Ezim.setLocalDtxPort();
 		Ezim.setLocalName();
