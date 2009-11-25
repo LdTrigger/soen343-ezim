@@ -72,7 +72,12 @@ public class EzimMsgOut
 	 */
 	public EzimMsgOut()
 	{
-		init((ArrayList<EzimContact>) null, (String) null, (String) null);
+		this.init
+		(
+			(ArrayList<EzimContact>) null
+			, (String) null
+			, (String) null
+		);
 	}
 
 	/**
@@ -81,7 +86,7 @@ public class EzimMsgOut
 	 */
 	public EzimMsgOut(ArrayList<EzimContact> alIn)
 	{
-		init(alIn, (String) null, (String) null);
+		this.init(alIn, (String) null, (String) null);
 	}
 
 	/**
@@ -97,7 +102,7 @@ public class EzimMsgOut
 		, String strIn
 	)
 	{
-		init(alIn, strSbj, strIn);
+		this.init(alIn, strSbj, strIn);
 	}
 
 	/**

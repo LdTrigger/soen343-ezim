@@ -71,7 +71,7 @@ public class EzimFileOut
 	 */
 	public EzimFileOut(EzimContact ecIn)
 	{
-		init(ecIn, (File) null);
+		this.init(ecIn, (File) null);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class EzimFileOut
 	 */
 	public EzimFileOut(EzimContact ecIn, File fIn)
 	{
-		init(ecIn, fIn);
+		this.init(ecIn, fIn);
 
 		EzimFtxList.getInstance().put(this.id, this);
 
