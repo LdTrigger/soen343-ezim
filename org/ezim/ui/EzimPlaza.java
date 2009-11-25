@@ -287,7 +287,7 @@ public class EzimPlaza
 	 */
 	private void jtfdSpeak_ActionPerformed()
 	{
-		sendSpeech();
+		this.sendSpeech();
 		return;
 	}
 
@@ -296,7 +296,7 @@ public class EzimPlaza
 	 */
 	private void jbtnSpeak_ActionPerformed()
 	{
-		sendSpeech();
+		this.sendSpeech();
 		return;
 	}
 

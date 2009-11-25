@@ -77,7 +77,7 @@ public class EzimFileIn
 	 */
 	public EzimFileIn(EzimContact ecIn, String strId)
 	{
-		init(ecIn, strId, (String) null);
+		this.init(ecIn, strId, (String) null);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class EzimFileIn
 		, String strRemoteFName
 	)
 	{
-		init(ecIn, strId, strRemoteFName);
+		this.init(ecIn, strId, strRemoteFName);
 	}
 
 	/**
