@@ -255,7 +255,6 @@ public class EzimMsgOut
 			EzimContactTransferHandler.getInstance()
 		);
 
-//		this.jbtnDelLastRcpt = new JButton(EzimImage.icoButtons[5]);
 		this.jbtnDelLastRcpt = new JButton
 		(
 			new ImageIcon
