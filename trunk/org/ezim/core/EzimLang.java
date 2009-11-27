@@ -93,6 +93,7 @@ public class EzimLang
 	public static String Prefs;
 	public static String Network;
 	public static String McGroup;
+	public static String RestoreToDefault;
 	public static String McPort;
 	public static String DtxPort;
 	public static String LocalAddress;
@@ -196,6 +197,7 @@ public class EzimLang
 			Prefs = rbTmp.getString("Prefs");
 			Network = rbTmp.getString("Network");
 			McGroup = rbTmp.getString("McGroup");
+			RestoreToDefault = rbTmp.getString("RestoreToDefault");
 			McPort = rbTmp.getString("McPort");
 			DtxPort = rbTmp.getString("DtxPort");
 			LocalAddress = rbTmp.getString("LocalAddress");

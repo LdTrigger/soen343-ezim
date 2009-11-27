@@ -20,6 +20,8 @@
  */
 package org.ezim.ui;
 
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -28,6 +30,7 @@ import java.net.InetAddress;
 import java.util.Locale;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -59,6 +62,7 @@ public class EzimPreferences
 
 	private JLabel jlblMcGroup;
 	private JTextField jtfdMcGroup;
+	private JButton jbtnRestoreToDefault;
 
 	private JLabel jlblMcPort;
 	private JSpinner jspnMcPort;
@@ -149,6 +153,30 @@ public class EzimPreferences
 				public void focusLost(FocusEvent evtTmp)
 				{
 					EzimPreferences.this.jtfdMcGroup_FocusLost();
+				}
+			}
+		);
+		this.jbtnRestoreToDefault = new JButton
+		(
+			new ImageIcon
+			(
+				EzimImage.icoButtons[7].getImage().getScaledInstance
+				(
+					16, 16
+					, Image.SCALE_SMOOTH
+				)
+			)
+		);
+		this.jbtnRestoreToDefault.setPreferredSize(new Dimension(16, 16));
+		this.jbtnRestoreToDefault.setToolTipText(EzimLang.RestoreToDefault);
+		this.jbtnRestoreToDefault.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent evntTmp)
+				{
+					EzimPreferences.this
+						.jbtnRestoreToDefault_ActionPerformed();
 				}
 			}
 		);
@@ -300,6 +328,18 @@ public class EzimPreferences
 				)
 		);
 
+		hNwGrp.addGroup
+		(
+			glNw.createParallelGroup()
+				.addComponent
+				(
+					this.jbtnRestoreToDefault
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
 		glNw.setHorizontalGroup(hNwGrp);
 
 		GroupLayout.SequentialGroup vNwGrp = glNw.createSequentialGroup();
@@ -317,6 +357,13 @@ public class EzimPreferences
 				.addComponent
 				(
 					this.jtfdMcGroup
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jbtnRestoreToDefault
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -903,25 +950,25 @@ public class EzimPreferences
 	 */
 	private void jtfdMcGroup_FocusLost()
 	{
-		String strMcGroup = this.jtfdMcGroup.getText().trim();
+		this.jtfdMcGroup.setText(this.jtfdMcGroup.getText().trim());
+		return;
+	}
 
-		if (strMcGroup.length() == 0)
+	/**
+	 * "Default Multicast Group IP" button event handler
+	 */
+	private void jbtnRestoreToDefault_ActionPerformed()
+	{
+		String strHostAddress = ((InetAddress) this.jcbLocalAddress
+			.getSelectedItem()).getHostAddress();
+
+		if (strHostAddress.matches(Ezim.regexpIPv4))
 		{
-			String strHostAddress = ((InetAddress) this.jcbLocalAddress
-				.getSelectedItem()).getHostAddress();
-
-			if (strHostAddress.matches(Ezim.regexpIPv4))
-			{
-				this.jtfdMcGroup.setText(Ezim.mcGroupIPv4);
-			}
-			else if (strHostAddress.matches(Ezim.regexpIPv6))
-			{
-				this.jtfdMcGroup.setText(Ezim.mcGroupIPv6);
-			}
+			this.jtfdMcGroup.setText(Ezim.mcGroupIPv4);
 		}
-		else
+		else if (strHostAddress.matches(Ezim.regexpIPv6))
 		{
-			this.jtfdMcGroup.setText(strMcGroup);
+			this.jtfdMcGroup.setText(Ezim.mcGroupIPv6);
 		}
 
 		return;

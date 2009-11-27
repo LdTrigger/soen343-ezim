@@ -281,15 +281,16 @@ public class Ezim
 			|| ! Ezim.localAddresses.contains(Ezim.localAddress)
 		)
 		{
-			// try to pick a IPv4 non-loopback address
+			// try to pick a IPv6 non-loopback and non-link-locale address
 			for(iCnt = 0; iCnt < iLen; iCnt ++)
 			{
 				iaTmp = Ezim.localAddresses.get(iCnt);
 
 				if
 				(
-					! iaTmp.isLoopbackAddress()
-					&& iaTmp instanceof Inet4Address
+					iaTmp instanceof Inet6Address
+					&& ! iaTmp.isLoopbackAddress()
+					&& ! iaTmp.isLinkLocalAddress()
 				)
 				{
 					Ezim.localAddress = iaTmp;
