@@ -257,13 +257,11 @@ public class Ezim
 	 */
 	private static void setLocalAddress()
 	{
-		int iCnt = 0, iLen = Ezim.localAddresses.size();
 		EzimConf ecTmp = EzimConf.getInstance();
 		String strLclAdr = ecTmp.settings.getProperty
 		(
 			EzimConf.ezimLocaladdress
 		);
-		InetAddress iaTmp = null;
 
 		try
 		{
@@ -281,11 +279,9 @@ public class Ezim
 			|| ! Ezim.localAddresses.contains(Ezim.localAddress)
 		)
 		{
-			// try to pick a IPv6 non-loopback and non-link-locale address
-			for(iCnt = 0; iCnt < iLen; iCnt ++)
+			// try to pick an IPv6 non-loopback and non-link-locale address
+			for(InetAddress iaTmp: Ezim.localAddresses)
 			{
-				iaTmp = Ezim.localAddresses.get(iCnt);
-
 				if
 				(
 					iaTmp instanceof Inet6Address
@@ -298,14 +294,59 @@ public class Ezim
 				}
 			}
 
+			// try to pick a non-loopback and non-link-locale address
+			if (Ezim.localAddress == null)
+			{
+				for(InetAddress iaTmp: Ezim.localAddresses)
+				{
+					if
+					(
+						! iaTmp.isLoopbackAddress()
+						&& ! iaTmp.isLinkLocalAddress()
+					)
+					{
+						Ezim.localAddress = iaTmp;
+						break;
+					}
+				}
+			}
+
+			// try to pick an IPv6 non-loopback address
+			if (Ezim.localAddress == null)
+			{
+				for(InetAddress iaTmp: Ezim.localAddresses)
+				{
+					if
+					(
+						iaTmp instanceof Inet6Address
+						&& ! iaTmp.isLoopbackAddress()
+					)
+					{
+						Ezim.localAddress = iaTmp;
+						break;
+					}
+				}
+			}
+
 			// try to pick a non-loopback address
 			if (Ezim.localAddress == null)
 			{
-				for(iCnt = 0; iCnt < iLen; iCnt ++)
+				for(InetAddress iaTmp: Ezim.localAddresses)
 				{
-					iaTmp = Ezim.localAddresses.get(iCnt);
-
 					if (! iaTmp.isLoopbackAddress())
+					{
+						Ezim.localAddress = iaTmp;
+						break;
+					}
+				}
+			}
+
+			// try to pick an IPv6 address
+			if (Ezim.localAddress == null)
+			{
+				for(InetAddress iaTmp: Ezim.localAddresses)
+				{
+					if (iaTmp instanceof Inet6Address)
 					{
 						Ezim.localAddress = iaTmp;
 						break;
