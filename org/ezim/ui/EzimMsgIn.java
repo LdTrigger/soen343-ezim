@@ -462,12 +462,12 @@ public class EzimMsgIn
 		ArrayList<EzimContact> alEc = new ArrayList<EzimContact>();
 		alEc.add(this.ec);
 
-		StringBuffer sbSbj = new StringBuffer();
+		StringBuilder sbSbj = new StringBuilder();
 		if (! this.jtfdSbj.getText().startsWith("Re: "))
 			sbSbj.append("Re: ");
 		sbSbj.append(this.jtfdSbj.getText());
 
-		StringBuffer sbMsg = new StringBuffer();
+		StringBuilder sbMsg = new StringBuilder();
 		sbMsg.append("\n\n----- ");
 		sbMsg.append(EzimLang.OriginalMessageFrom);
 		sbMsg.append(" ");

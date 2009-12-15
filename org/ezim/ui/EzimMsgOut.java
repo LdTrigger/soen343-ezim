@@ -473,7 +473,7 @@ public class EzimMsgOut
 	 */
 	private void updateContactNames()
 	{
-		StringBuffer sbOut = new StringBuffer();
+		StringBuilder sbOut = new StringBuilder();
 
 		for(EzimContact ec: this.contacts)
 		{

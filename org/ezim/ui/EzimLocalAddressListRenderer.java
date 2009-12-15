@@ -59,7 +59,7 @@ public class EzimLocalAddressListRenderer
 	)
 	{
 		InetAddress iaTmp = (InetAddress) objIn;
-		StringBuffer sbTmp = new StringBuffer
+		StringBuilder sbTmp = new StringBuilder
 		(
 			iaTmp.getHostAddress()
 		);

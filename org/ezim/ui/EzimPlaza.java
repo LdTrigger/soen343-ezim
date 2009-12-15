@@ -350,7 +350,7 @@ public class EzimPlaza
 
 			if (ecTmp != null)
 			{
-				StringBuffer sbTmp = new StringBuffer();
+				StringBuilder sbTmp = new StringBuilder();
 
 				// add timestamp
 				sbTmp.append
@@ -389,7 +389,7 @@ public class EzimPlaza
 
 			if (ecTmp != null)
 			{
-				StringBuffer sbTmp = new StringBuffer();
+				StringBuilder sbTmp = new StringBuilder();
 
 				// add contact name
 				sbTmp.append
