@@ -1,7 +1,7 @@
 /*
     EZ Intranet Messenger
 
-    Copyright (C) 2007 - 2009  Chun-Kwong Wong
+    Copyright (C) 2007 - 2010  Chun-Kwong Wong
     chunkwong.wong@gmail.com
     http://ezim.sourceforge.net/
 
@@ -91,6 +91,7 @@ public class Ezim
 		, new Locale("es")			// Spanish
 		, new Locale("pt", "BR")	// Portuguese (Brazil)
 		, Locale.ITALY
+		, Locale.FRANCE
 	};
 
 	// regexp for validating IPv4 address

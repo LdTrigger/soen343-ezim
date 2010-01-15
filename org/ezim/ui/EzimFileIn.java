@@ -1,7 +1,7 @@
 /*
     EZ Intranet Messenger
 
-    Copyright (C) 2007 - 2009  Chun-Kwong Wong
+    Copyright (C) 2007 - 2010  Chun-Kwong Wong
     chunkwong.wong@gmail.com
     http://ezim.sourceforge.net/
 
@@ -113,13 +113,16 @@ public class EzimFileIn
 		this.id = strId;
 		this.remoteFName = strRemoteFName;
 
-		this.loadConf();
 		this.initGUI();
 
 		this.setIconImage(EzimImage.icoButtons[6].getImage());
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setTitle(EzimLang.IncomingFile);
-		this.setMinimumSize(new Dimension(320, 220));
+		this.pack();
+		this.setMinimumSize(this.getSize());
+
+		this.loadConf();
+
 		this.setVisible(true);
 
 		if (EzimSound.getInstance() != null)
@@ -462,11 +465,7 @@ public class EzimFileIn
 			, GroupLayout.PREFERRED_SIZE
 		);
 
-		vGrp.addContainerGap
-		(
-			GroupLayout.DEFAULT_SIZE
-			, Short.MAX_VALUE
-		);
+		vGrp.addGap(10, 10, Short.MAX_VALUE);
 
 		vGrp.addGroup
 		(
@@ -493,6 +492,8 @@ public class EzimFileIn
 					, GroupLayout.PREFERRED_SIZE
 				)
 		);
+
+		vGrp.addGap(10);
 
 		glBase.setVerticalGroup(vGrp);
 

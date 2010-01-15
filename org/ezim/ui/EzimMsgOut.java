@@ -1,7 +1,7 @@
 /*
     EZ Intranet Messenger
 
-    Copyright (C) 2007 - 2009  Chun-Kwong Wong
+    Copyright (C) 2007 - 2010  Chun-Kwong Wong
     chunkwong.wong@gmail.com
     http://ezim.sourceforge.net/
 
@@ -118,7 +118,6 @@ public class EzimMsgOut
 		, String strIn
 	)
 	{
-		this.loadConf();
 		this.initGUI();
 
 		if (alIn != null && alIn.size() > 0)
@@ -145,7 +144,11 @@ public class EzimMsgOut
 		this.setIconImage(EzimImage.icoButtons[0].getImage());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setTitle(EzimLang.OutgoingMessage);
-		this.setMinimumSize(new Dimension(320, 200));
+		this.pack();
+		this.setMinimumSize(this.getSize());
+
+		this.loadConf();
+
 		this.setVisible(true);
 
 		if (strSbj != null && strSbj.length() > 0)
@@ -295,6 +298,7 @@ public class EzimMsgOut
 		this.etaMsg.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 
 		this.jspMsg = new JScrollPane(this.etaMsg);
+		this.jspMsg.setMinimumSize(new Dimension(240, 100));
 
 		this.jbtnSend = new JButton(EzimLang.Send);
 		this.jbtnSend.addActionListener
