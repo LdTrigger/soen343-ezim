@@ -60,7 +60,7 @@ public class EzimLocaleListRenderer
 		Locale lclTmp = (Locale) objIn;
 
 		// display name of the locale
-		this.setText(lclTmp.getDisplayName());
+		this.setText(lclTmp.getDisplayName(lclTmp));
 
 		this.setEnabled(jlstIn.isEnabled());
 		this.setFont(jlstIn.getFont());
