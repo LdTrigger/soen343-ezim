@@ -693,7 +693,7 @@ public class EzimFileIn
 
 	/**
 	 * set value of the file size textfield
-	 * @param int value to be set
+	 * @param iIn value to be set
 	 */
 	public void setSize(int iIn)
 	{

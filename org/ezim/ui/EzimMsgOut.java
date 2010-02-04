@@ -572,7 +572,7 @@ public class EzimMsgOut
 	// P U B L I C   M E T H O D -------------------------------------------
 	/**
 	 * add contacts to the recipient list
-	 * @param acIn contacts to be added
+	 * @param alIn contacts to be added
 	 */
 	public void addContacts(ArrayList<EzimContact> alIn)
 	{

@@ -85,7 +85,6 @@ public class EzimFrxList
 	/**
 	 * remove an incoming file window from the list if exists
 	 * @param strId ID indicating the specified incoming file window
-	 * @return
 	 */
 	public void remove(String strId)
 	{

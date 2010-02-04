@@ -159,7 +159,6 @@ public class EzimDtxSemantics
 	 * @param sckIn outgoing socket
 	 * @param strSbj subject line of the outgoing message
 	 * @param strMsg message to be formatted and sent
-	 * @return
 	 */
 	public static void sendMsg(Socket sckIn, String strSbj, String strMsg)
 		throws Exception
@@ -209,8 +208,7 @@ public class EzimDtxSemantics
 	 * format and output file request
 	 * @param sckIn outgoing socket
 	 * @param strId file request ID
-	 * @param fIn file to be requested
-	 * @return
+	 * @param efoIn the associated outgoing file GUI
 	 */
 	public static void sendFileReq
 	(
@@ -421,7 +419,6 @@ public class EzimDtxSemantics
 	 * @param sckIn outgoing socket
 	 * @param strId file request ID
 	 * @param efoIn the associated outgoing file window
-	 * @return
 	 */
 	public static void sendFile
 	(
