@@ -209,14 +209,21 @@ public class EzimContactList implements ListModel
 			{
 				InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
 
-				for(iCnt = 0; iCnt < iLen; iCnt ++)
+				synchronized(this.list)
 				{
-					ecTmp = (EzimContact) this.list.get(iCnt);
-
-					if (ecTmp != null && iaTmp.equals(ecTmp.getAddress()))
+					for(iCnt = 0; iCnt < iLen; iCnt ++)
 					{
-						iOut = iCnt;
-						break;
+						ecTmp = (EzimContact) this.list.get(iCnt);
+
+						if
+						(
+							ecTmp != null
+							&& iaTmp.equals(ecTmp.getAddress())
+						)
+						{
+							iOut = iCnt;
+							break;
+						}
 					}
 				}
 			}
@@ -327,9 +334,9 @@ public class EzimContactList implements ListModel
 	{
 		InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
 
-		synchronized(this.list)
+		if (this.idxContact(iaTmp) == -1)
 		{
-			if (this.idxContact(iaTmp) == -1)
+			synchronized(this.list)
 			{
 				try
 				{
@@ -396,12 +403,11 @@ public class EzimContactList implements ListModel
 	public void rmContact(InetAddress iaIn)
 	{
 		InetAddress iaTmp = this.normalizeAddressIfLocal(iaIn);
+		int iIdx = idxContact(iaTmp);
 
-		synchronized(this.list)
+		if (iIdx > -1)
 		{
-			int iIdx = idxContact(iaTmp);
-
-			if (iIdx > -1)
+			synchronized(this.list)
 			{
 				this.list.remove(iIdx);
 				this.list.trimToSize();
