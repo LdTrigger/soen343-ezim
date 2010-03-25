@@ -264,21 +264,23 @@ public class Ezim
 			EzimConf.ezimLocaladdress
 		);
 
-		try
+		if (strLclAdr != null && strLclAdr.length() > 0)
 		{
-			if (strLclAdr != null && strLclAdr.length() > 0)
-				Ezim.localAddress = Ezim.parseInetAddress(strLclAdr);
-		}
-		catch(Exception e)
-		{
-			Ezim.localAddress = null;
+			Ezim.localAddress = Ezim.parseInetAddress(strLclAdr);
+
+			if (! Ezim.localAddresses.contains(Ezim.localAddress))
+			{
+				EzimLogger.getInstance().warning
+				(
+					"Invalid local address setting \"" + strLclAdr
+						+ "\"."
+				);
+
+				Ezim.localAddress = null;
+			}
 		}
 
-		if
-		(
-			Ezim.localAddress == null
-			|| ! Ezim.localAddresses.contains(Ezim.localAddress)
-		)
+		if (Ezim.localAddress == null)
 		{
 			// try to pick an IPv6 non-loopback and non-link-locale address
 			for(InetAddress iaTmp: Ezim.localAddresses)
@@ -294,79 +296,79 @@ public class Ezim
 					break;
 				}
 			}
-
-			// try to pick a non-loopback and non-link-locale address
-			if (Ezim.localAddress == null)
-			{
-				for(InetAddress iaTmp: Ezim.localAddresses)
-				{
-					if
-					(
-						! iaTmp.isLoopbackAddress()
-						&& ! iaTmp.isLinkLocalAddress()
-					)
-					{
-						Ezim.localAddress = iaTmp;
-						break;
-					}
-				}
-			}
-
-			// try to pick an IPv6 non-loopback address
-			if (Ezim.localAddress == null)
-			{
-				for(InetAddress iaTmp: Ezim.localAddresses)
-				{
-					if
-					(
-						iaTmp instanceof Inet6Address
-						&& ! iaTmp.isLoopbackAddress()
-					)
-					{
-						Ezim.localAddress = iaTmp;
-						break;
-					}
-				}
-			}
-
-			// try to pick a non-loopback address
-			if (Ezim.localAddress == null)
-			{
-				for(InetAddress iaTmp: Ezim.localAddresses)
-				{
-					if (! iaTmp.isLoopbackAddress())
-					{
-						Ezim.localAddress = iaTmp;
-						break;
-					}
-				}
-			}
-
-			// try to pick an IPv6 address
-			if (Ezim.localAddress == null)
-			{
-				for(InetAddress iaTmp: Ezim.localAddresses)
-				{
-					if (iaTmp instanceof Inet6Address)
-					{
-						Ezim.localAddress = iaTmp;
-						break;
-					}
-				}
-			}
-
-			// pick the first available address when all failed
-			if (Ezim.localAddress == null)
-			{
-				Ezim.localAddress = Ezim.localAddresses.get(0);
-			}
-
-			ecTmp.settings.setProperty
-			(
-				EzimConf.ezimLocaladdress
-				, Ezim.localAddress.getHostAddress()
-			);
 		}
+
+		// try to pick a non-loopback and non-link-locale address
+		if (Ezim.localAddress == null)
+		{
+			for(InetAddress iaTmp: Ezim.localAddresses)
+			{
+				if
+				(
+					! iaTmp.isLoopbackAddress()
+					&& ! iaTmp.isLinkLocalAddress()
+				)
+				{
+					Ezim.localAddress = iaTmp;
+					break;
+				}
+			}
+		}
+
+		// try to pick an IPv6 non-loopback address
+		if (Ezim.localAddress == null)
+		{
+			for(InetAddress iaTmp: Ezim.localAddresses)
+			{
+				if
+				(
+					iaTmp instanceof Inet6Address
+					&& ! iaTmp.isLoopbackAddress()
+				)
+				{
+					Ezim.localAddress = iaTmp;
+					break;
+				}
+			}
+		}
+
+		// try to pick a non-loopback address
+		if (Ezim.localAddress == null)
+		{
+			for(InetAddress iaTmp: Ezim.localAddresses)
+			{
+				if (! iaTmp.isLoopbackAddress())
+				{
+					Ezim.localAddress = iaTmp;
+					break;
+				}
+			}
+		}
+
+		// try to pick an IPv6 address
+		if (Ezim.localAddress == null)
+		{
+			for(InetAddress iaTmp: Ezim.localAddresses)
+			{
+				if (iaTmp instanceof Inet6Address)
+				{
+					Ezim.localAddress = iaTmp;
+					break;
+				}
+			}
+		}
+
+		// pick the first available address when all failed
+		if (Ezim.localAddress == null)
+		{
+			Ezim.localAddress = Ezim.localAddresses.get(0);
+		}
+
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimLocaladdress
+			, Ezim.localAddress.getHostAddress()
+		);
 
 		return;
 	}
