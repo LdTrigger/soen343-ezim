@@ -106,6 +106,7 @@ public class EzimLang
 	public static String AlwaysOnTop;
 	public static String AutoOpenMsgIn;
 	public static String Locale;
+	public static String StateiconSize;
 	public static String EnableSound;
 	public static String Save;
 	public static String Restore;
@@ -210,6 +211,7 @@ public class EzimLang
 			AlwaysOnTop = rbTmp.getString("AlwaysOnTop");
 			AutoOpenMsgIn = rbTmp.getString("AutoOpenMsgIn");
 			Locale = rbTmp.getString("Locale");
+			StateiconSize = rbTmp.getString("StateiconSize");
 			EnableSound = rbTmp.getString("EnableSound");
 			Save = rbTmp.getString("Save");
 			Restore = rbTmp.getString("Restore");
