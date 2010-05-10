@@ -48,6 +48,8 @@ public class EzimConf
 
 	public final static String ezimUserLocale = "ezim.user.locale";
 
+	public final static String ezimStateiconSize = "ezim.stateicon.size";
+
 	public final static String ezimmainAlwaysontop = "ezimmain.alwaysontop";
 	public final static String ezimmainVisible = "ezimmain.visible";
 	public final static String ezimmainLocationX = "ezimmain.location.x";
@@ -97,55 +99,93 @@ public class EzimConf
 	 */
 	private EzimConf()
 	{
-		// set default values
-		this.init();
+		this.settings = new Properties();
 
-		// set saved configuration settings
 		this.read();
+
+		this.validate();
 	}
 
 	/**
-	 * initialize all configuration items
+	 * validate settings and set default values where necessary
 	 */
-	private void init()
+	private void validate()
 	{
-		this.settings = new Properties();
+		// thread pool settings
+		if (this.settings.getProperty(EzimConf.ezimThPoolSizeCore) == null)
+		{
+			this.settings.setProperty
+			(
+				EzimConf.ezimThPoolSizeCore
+				, Integer.toString(Ezim.thPoolSizeCore)
+			);
+		}
+		if (this.settings.getProperty(EzimConf.ezimThPoolSizeMax) == null)
+		{
+			this.settings.setProperty
+			(
+				EzimConf.ezimThPoolSizeMax
+				, Integer.toString(Ezim.thPoolSizeMax)
+			);
+		}
+		if (this.settings.getProperty(EzimConf.ezimThPoolKeepAlive) == null)
+		{
+			this.settings.setProperty
+			(
+				EzimConf.ezimThPoolKeepAlive
+				, Integer.toString(Ezim.thPoolKeepAlive)
+			);
+		}
 
-		// default values
-		this.settings.setProperty
-		(
-			EzimConf.ezimThPoolSizeCore
-			, Integer.toString(Ezim.thPoolSizeCore)
-		);
-		this.settings.setProperty
-		(
-			EzimConf.ezimThPoolSizeMax
-			, Integer.toString(Ezim.thPoolSizeMax)
-		);
-		this.settings.setProperty
-		(
-			EzimConf.ezimThPoolKeepAlive
-			, Integer.toString(Ezim.thPoolKeepAlive)
-		);
+		// ACK port
+		int iMcPort = -1;
+		if (this.settings.getProperty(EzimConf.ezimMcPort) != null)
+		{
+			iMcPort = Integer.parseInt
+			(
+				this.settings.getProperty(EzimConf.ezimMcPort)
+			);
+		}
+		if (iMcPort < 0 || iMcPort > 65535)
+		{
+			this.settings.setProperty
+			(
+				EzimConf.ezimMcPort
+				, Integer.toString(Ezim.mcPort)
+			);
+		}
 
-		this.settings.setProperty
-		(
-			EzimConf.ezimMcPort
-			, Integer.toString(Ezim.mcPort)
-		);
-		this.settings.setProperty
-		(
-			EzimConf.ezimDtxPort
-			, Integer.toString(Ezim.dtxPort)
-		);
+		// DTX port
+		int iDtxPort = -1;
+		if (this.settings.getProperty(EzimConf.ezimDtxPort) != null)
+		{
+			iDtxPort = Integer.parseInt
+			(
+				this.settings.getProperty(EzimConf.ezimDtxPort)
+			);
+		}
+		if (iDtxPort < 0 || iDtxPort > 65535)
+		{
+			this.settings.setProperty
+			(
+				EzimConf.ezimDtxPort
+				, Integer.toString(Ezim.dtxPort)
+			);
+		}
 
+		// self-color
 		this.settings.setProperty
 		(
 			EzimConf.ezimColorSelf
 			, Integer.toString(Ezim.colorSelf, 16)
 		);
 
-		String strLocale = Locale.getDefault().toString();
+		// locale
+		String strLocale = this.settings.getProperty
+		(
+			EzimConf.ezimUserLocale
+		);
+		if (strLocale == null) strLocale = Locale.getDefault().toString();
 		boolean blnInvalidLocale = true;
 		for(int iCnt = 0; iCnt < Ezim.locales.length; iCnt ++)
 		{
@@ -162,40 +202,102 @@ public class EzimConf
 			, strLocale
 		);
 
-		this.settings.setProperty(EzimConf.ezimmainAlwaysontop, "false");
-		this.settings.setProperty(EzimConf.ezimmainVisible, "true");
-		this.settings.setProperty(EzimConf.ezimmainLocationX, "0");
-		this.settings.setProperty(EzimConf.ezimmainLocationY, "0");
-		this.settings.setProperty(EzimConf.ezimmainSizeH, "0");
-		this.settings.setProperty(EzimConf.ezimmainSizeW, "0");
+		// state icon size
+		int iStateiconSize = -1;
+		boolean blnInvalidStateiconSize = true;
+		if (this.settings.getProperty(EzimConf.ezimStateiconSize) != null)
+		{
+			iStateiconSize = Integer.parseInt
+			(
+				this.settings.getProperty(EzimConf.ezimStateiconSize)
+			);
+		}
+		for(int iCnt = 0; iCnt < Ezim.stateiconSizes.length; iCnt ++)
+		{
+			if (Ezim.stateiconSizes[iCnt].intValue() == iStateiconSize)
+			{
+				blnInvalidStateiconSize = false;
+				break;
+			}
+		}
+		if (blnInvalidStateiconSize)
+		{
+			this.settings.setProperty
+			(
+				EzimConf.ezimStateiconSize
+				, Ezim.stateiconSizes[0].toString()
+			);
+		}
 
-		this.settings.setProperty(EzimConf.ezimplazaLocationX, "0");
-		this.settings.setProperty(EzimConf.ezimplazaLocationY, "0");
-		this.settings.setProperty(EzimConf.ezimplazaSizeH, "0");
-		this.settings.setProperty(EzimConf.ezimplazaSizeW, "0");
+		// main window geometry
+		if (this.settings.getProperty(EzimConf.ezimmainAlwaysontop) == null)
+			this.settings.setProperty(EzimConf.ezimmainAlwaysontop, "false");
+		if (this.settings.getProperty(EzimConf.ezimmainVisible) == null)
+			this.settings.setProperty(EzimConf.ezimmainVisible, "true");
+		if (this.settings.getProperty(EzimConf.ezimmainLocationX) == null)
+			this.settings.setProperty(EzimConf.ezimmainLocationX, "0");
+		if (this.settings.getProperty(EzimConf.ezimmainLocationY) == null)
+			this.settings.setProperty(EzimConf.ezimmainLocationY, "0");
+		if (this.settings.getProperty(EzimConf.ezimmainSizeH) == null)
+			this.settings.setProperty(EzimConf.ezimmainSizeH, "0");
+		if (this.settings.getProperty(EzimConf.ezimmainSizeW) == null)
+			this.settings.setProperty(EzimConf.ezimmainSizeW, "0");
 
-		this.settings.setProperty(EzimConf.ezimmsgoutLocationX, "0");
-		this.settings.setProperty(EzimConf.ezimmsgoutLocationY, "0");
-		this.settings.setProperty(EzimConf.ezimmsgoutSizeH, "0");
-		this.settings.setProperty(EzimConf.ezimmsgoutSizeW, "0");
+		// plaza window geometry
+		if (this.settings.getProperty(EzimConf.ezimplazaLocationX) == null)
+			this.settings.setProperty(EzimConf.ezimplazaLocationX, "0");
+		if (this.settings.getProperty(EzimConf.ezimplazaLocationY) == null)
+			this.settings.setProperty(EzimConf.ezimplazaLocationY, "0");
+		if (this.settings.getProperty(EzimConf.ezimplazaSizeH) == null)
+			this.settings.setProperty(EzimConf.ezimplazaSizeH, "0");
+		if (this.settings.getProperty(EzimConf.ezimplazaSizeW) == null)
+			this.settings.setProperty(EzimConf.ezimplazaSizeW, "0");
 
-		this.settings.setProperty(EzimConf.ezimmsginAutoopen, "false");
-		this.settings.setProperty(EzimConf.ezimmsginLocationX, "0");
-		this.settings.setProperty(EzimConf.ezimmsginLocationY, "0");
-		this.settings.setProperty(EzimConf.ezimmsginSizeH, "0");
-		this.settings.setProperty(EzimConf.ezimmsginSizeW, "0");
+		// outgoing message window geometry
+		if (this.settings.getProperty(EzimConf.ezimmsgoutLocationX) == null)
+			this.settings.setProperty(EzimConf.ezimmsgoutLocationX, "0");
+		if (this.settings.getProperty(EzimConf.ezimmsgoutLocationY) == null)
+			this.settings.setProperty(EzimConf.ezimmsgoutLocationY, "0");
+		if (this.settings.getProperty(EzimConf.ezimmsgoutSizeH) == null)
+			this.settings.setProperty(EzimConf.ezimmsgoutSizeH, "0");
+		if (this.settings.getProperty(EzimConf.ezimmsgoutSizeW) == null)
+			this.settings.setProperty(EzimConf.ezimmsgoutSizeW, "0");
 
-		this.settings.setProperty(EzimConf.ezimfileoutLocationX, "0");
-		this.settings.setProperty(EzimConf.ezimfileoutLocationY, "0");
-		this.settings.setProperty(EzimConf.ezimfileoutSizeH, "0");
-		this.settings.setProperty(EzimConf.ezimfileoutSizeW, "0");
+		// incoming message window geometry
+		if (this.settings.getProperty(EzimConf.ezimmsginAutoopen) == null)
+			this.settings.setProperty(EzimConf.ezimmsginAutoopen, "false");
+		if (this.settings.getProperty(EzimConf.ezimmsginLocationX) == null)
+			this.settings.setProperty(EzimConf.ezimmsginLocationX, "0");
+		if (this.settings.getProperty(EzimConf.ezimmsginLocationY) == null)
+			this.settings.setProperty(EzimConf.ezimmsginLocationY, "0");
+		if (this.settings.getProperty(EzimConf.ezimmsginSizeH) == null)
+			this.settings.setProperty(EzimConf.ezimmsginSizeH, "0");
+		if (this.settings.getProperty(EzimConf.ezimmsginSizeW) == null)
+			this.settings.setProperty(EzimConf.ezimmsginSizeW, "0");
 
-		this.settings.setProperty(EzimConf.ezimfileinLocationX, "0");
-		this.settings.setProperty(EzimConf.ezimfileinLocationY, "0");
-		this.settings.setProperty(EzimConf.ezimfileinSizeH, "0");
-		this.settings.setProperty(EzimConf.ezimfileinSizeW, "0");
+		// outgoing file window geometry
+		if (this.settings.getProperty(EzimConf.ezimfileoutLocationX) == null)
+			this.settings.setProperty(EzimConf.ezimfileoutLocationX, "0");
+		if (this.settings.getProperty(EzimConf.ezimfileoutLocationY) == null)
+			this.settings.setProperty(EzimConf.ezimfileoutLocationY, "0");
+		if (this.settings.getProperty(EzimConf.ezimfileoutSizeH) == null)
+			this.settings.setProperty(EzimConf.ezimfileoutSizeH, "0");
+		if (this.settings.getProperty(EzimConf.ezimfileoutSizeW) == null)
+			this.settings.setProperty(EzimConf.ezimfileoutSizeW, "0");
 
-		this.settings.setProperty(EzimConf.ezimsoundEnabled, "true");
+		// incoming file window geometry
+		if (this.settings.getProperty(EzimConf.ezimfileinLocationX) == null)
+			this.settings.setProperty(EzimConf.ezimfileinLocationX, "0");
+		if (this.settings.getProperty(EzimConf.ezimfileinLocationY) == null)
+			this.settings.setProperty(EzimConf.ezimfileinLocationY, "0");
+		if (this.settings.getProperty(EzimConf.ezimfileinSizeH) == null)
+			this.settings.setProperty(EzimConf.ezimfileinSizeH, "0");
+		if (this.settings.getProperty(EzimConf.ezimfileinSizeW) == null)
+			this.settings.setProperty(EzimConf.ezimfileinSizeW, "0");
+
+		// sound
+		if (this.settings.getProperty(EzimConf.ezimsoundEnabled) == null)
+			this.settings.setProperty(EzimConf.ezimsoundEnabled, "true");
 
 		return;
 	}

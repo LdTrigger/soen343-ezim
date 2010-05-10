@@ -180,12 +180,20 @@ public class EzimImage
 			)
 		);
 
+		int iStateiconSize = Integer.valueOf
+		(
+			EzimConf.getInstance().settings.getProperty
+			(
+				EzimConf.ezimStateiconSize
+			)
+		);
+
 		// load system state icons
 		EzimImage.icoSysStates = EzimImage.loadIcons
 		(
 			"org/ezim/image/icon/sysstates.png"
 			, 32, 32
-			, 16, 16
+			, iStateiconSize, iStateiconSize
 		);
 
 		// load user state icons
@@ -193,7 +201,7 @@ public class EzimImage
 		(
 			"org/ezim/image/icon/states.png"
 			, 32, 32
-			, 16, 16
+			, iStateiconSize, iStateiconSize
 		);
 
 		// load button images

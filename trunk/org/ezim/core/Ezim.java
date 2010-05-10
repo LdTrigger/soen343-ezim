@@ -46,7 +46,7 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "1.2.5";
+	public final static String appVer = "1.2.6";
 
 	// thread pool sizes and keep alive time (in minutes)
 	public final static int thPoolSizeCore = 8;
@@ -122,6 +122,9 @@ public class Ezim
 		+ "|(?:\\:(?:\\:[0-9A-Fa-f]{1,4}){1,5}\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
 		+ ")(?:\\%\\d+)?\\z"
 		;
+
+	// valid state icon sizes
+	public static final Integer[] stateiconSizes = {16, 24, 32};
 
 	// P R O P E R T I E S -------------------------------------------------
 	public static ArrayList<InetAddress> localAddresses = null;

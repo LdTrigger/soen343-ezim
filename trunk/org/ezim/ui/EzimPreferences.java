@@ -84,6 +84,8 @@ public class EzimPreferences
 	private JCheckBox jcbAutoOpenMsgIn;
 	private JLabel jlblLocale;
 	private JComboBox jcbUserLocale;
+	private JLabel jlblStateiconSize;
+	private JComboBox jcbStateiconSize;
 	private JCheckBox jcbEnableSound;
 
 	private JButton jbtnSave;
@@ -216,6 +218,9 @@ public class EzimPreferences
 		this.jcbUserLocale.setRenderer(new EzimLocaleListRenderer());
 		this.jcbUserLocale.setEditable(false);
 		this.jlblLocale.setLabelFor(this.jcbUserLocale);
+		this.jlblStateiconSize = new JLabel(EzimLang.StateiconSize);
+		this.jcbStateiconSize = new JComboBox(Ezim.stateiconSizes);
+		this.jcbStateiconSize.setEditable(false);
 		this.jcbEnableSound = new JCheckBox(EzimLang.EnableSound);
 
 		this.jpnlNetwork = new JPanel();
@@ -530,6 +535,24 @@ public class EzimPreferences
 							, GroupLayout.PREFERRED_SIZE
 						)
 				)
+				.addGroup
+				(
+					glUI.createSequentialGroup()
+						.addComponent
+						(
+							this.jlblStateiconSize
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
+						.addComponent
+						(
+							this.jcbStateiconSize
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
+				)
 				.addComponent
 				(
 					this.jcbEnableSound
@@ -580,6 +603,25 @@ public class EzimPreferences
 				.addComponent
 				(
 					this.jcbUserLocale
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vUIGrp.addGroup
+		(
+			glUI.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jlblStateiconSize
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jcbStateiconSize
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -791,6 +833,30 @@ public class EzimPreferences
 			}
 		}
 
+		// state icon size
+		int iStateiconSize = Integer.parseInt
+		(
+			ecTmp.settings.getProperty
+			(
+				EzimConf.ezimStateiconSize
+			)
+		);
+		iLen = this.jcbStateiconSize.getItemCount();
+		for(iCnt = 0; iCnt < iLen; iCnt ++)
+		{
+			if
+			(
+				iStateiconSize ==
+				(
+					(Integer) this.jcbStateiconSize.getItemAt(iCnt)
+				).intValue()
+			)
+			{
+				this.jcbStateiconSize.setSelectedIndex(iCnt);
+				break;
+			}
+		}
+
 		// enable sound
 		String strEnableSound = ecTmp.settings.getProperty
 		(
@@ -932,6 +998,13 @@ public class EzimPreferences
 		(
 			EzimConf.ezimUserLocale
 			, ((Locale) this.jcbUserLocale.getSelectedItem()).toString()
+		);
+
+		// state icon size
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimStateiconSize
+			, this.jcbStateiconSize.getSelectedItem().toString()
 		);
 
 		// enable sound
