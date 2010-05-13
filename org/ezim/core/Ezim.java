@@ -123,6 +123,9 @@ public class Ezim
 		+ ")(?:\\%\\d+)?\\z"
 		;
 
+	// regexp for validating RGB color
+	public static final String regexpRgb = "\\A[0-9A-Fa-f]{6}\\z";
+
 	// valid state icon sizes
 	public static final Integer[] stateiconSizes = {16, 24, 32};
 
