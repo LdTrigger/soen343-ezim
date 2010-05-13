@@ -174,11 +174,15 @@ public class EzimConf
 		}
 
 		// self-color
-		this.settings.setProperty
-		(
-			EzimConf.ezimColorSelf
-			, Integer.toString(Ezim.colorSelf, 16)
-		);
+		String strRgb = this.settings.getProperty(EzimConf.ezimColorSelf);
+		if (strRgb == null || ! strRgb.matches(Ezim.regexpRgb))
+		{
+			this.settings.setProperty
+			(
+				EzimConf.ezimColorSelf
+				, Integer.toString(Ezim.colorSelf, 16)
+			);
+		}
 
 		// locale
 		String strLocale = this.settings.getProperty
