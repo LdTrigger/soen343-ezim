@@ -111,8 +111,13 @@ public class EzimConf
 	 */
 	private void validate()
 	{
+		boolean blnTmp = false;
+		int iTmp = 0;
+		String strTmp = null;
+
 		// thread pool settings
-		if (this.settings.getProperty(EzimConf.ezimThPoolSizeCore) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimThPoolSizeCore);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 		{
 			this.settings.setProperty
 			(
@@ -120,7 +125,8 @@ public class EzimConf
 				, Integer.toString(Ezim.thPoolSizeCore)
 			);
 		}
-		if (this.settings.getProperty(EzimConf.ezimThPoolSizeMax) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimThPoolSizeMax);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 		{
 			this.settings.setProperty
 			(
@@ -128,7 +134,8 @@ public class EzimConf
 				, Integer.toString(Ezim.thPoolSizeMax)
 			);
 		}
-		if (this.settings.getProperty(EzimConf.ezimThPoolKeepAlive) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimThPoolKeepAlive);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 		{
 			this.settings.setProperty
 			(
@@ -138,15 +145,16 @@ public class EzimConf
 		}
 
 		// ACK port
-		int iMcPort = -1;
-		if (this.settings.getProperty(EzimConf.ezimMcPort) != null)
+		iTmp = -1;
+		strTmp = this.settings.getProperty(EzimConf.ezimMcPort);
+		if (strTmp != null && strTmp.matches(Ezim.regexpInt))
 		{
-			iMcPort = Integer.parseInt
+			iTmp = Integer.parseInt
 			(
 				this.settings.getProperty(EzimConf.ezimMcPort)
 			);
 		}
-		if (iMcPort < 0 || iMcPort > 65535)
+		if (iTmp < 0 || iTmp > 65535)
 		{
 			this.settings.setProperty
 			(
@@ -156,15 +164,16 @@ public class EzimConf
 		}
 
 		// DTX port
-		int iDtxPort = -1;
-		if (this.settings.getProperty(EzimConf.ezimDtxPort) != null)
+		iTmp = -1;
+		strTmp = this.settings.getProperty(EzimConf.ezimDtxPort);
+		if (strTmp != null && strTmp.matches(Ezim.regexpInt))
 		{
-			iDtxPort = Integer.parseInt
+			iTmp = Integer.parseInt
 			(
 				this.settings.getProperty(EzimConf.ezimDtxPort)
 			);
 		}
-		if (iDtxPort < 0 || iDtxPort > 65535)
+		if (iTmp < 0 || iTmp > 65535)
 		{
 			this.settings.setProperty
 			(
@@ -174,8 +183,8 @@ public class EzimConf
 		}
 
 		// self-color
-		String strRgb = this.settings.getProperty(EzimConf.ezimColorSelf);
-		if (strRgb == null || ! strRgb.matches(Ezim.regexpRgb))
+		strTmp = this.settings.getProperty(EzimConf.ezimColorSelf);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpRgb))
 		{
 			this.settings.setProperty
 			(
@@ -185,46 +194,47 @@ public class EzimConf
 		}
 
 		// locale
-		String strLocale = this.settings.getProperty
+		strTmp = this.settings.getProperty
 		(
 			EzimConf.ezimUserLocale
 		);
-		if (strLocale == null) strLocale = Locale.getDefault().toString();
+		if (strTmp == null) strTmp = Locale.getDefault().toString();
 		boolean blnInvalidLocale = true;
 		for(int iCnt = 0; iCnt < Ezim.locales.length; iCnt ++)
 		{
-			if (strLocale.equals(Ezim.locales[iCnt].toString()))
+			if (strTmp.equals(Ezim.locales[iCnt].toString()))
 			{
 				blnInvalidLocale = false;
 				break;
 			}
 		}
-		if (blnInvalidLocale) strLocale = Ezim.locales[0].toString();
+		if (blnInvalidLocale) strTmp = Ezim.locales[0].toString();
 		this.settings.setProperty
 		(
 			EzimConf.ezimUserLocale
-			, strLocale
+			, strTmp
 		);
 
 		// state icon size
-		int iStateiconSize = -1;
-		boolean blnInvalidStateiconSize = true;
-		if (this.settings.getProperty(EzimConf.ezimStateiconSize) != null)
+		iTmp = -1;
+		strTmp = this.settings.getProperty(EzimConf.ezimStateiconSize);
+		if (strTmp != null && strTmp.matches(Ezim.regexpInt))
 		{
-			iStateiconSize = Integer.parseInt
+			iTmp = Integer.parseInt
 			(
 				this.settings.getProperty(EzimConf.ezimStateiconSize)
 			);
 		}
+		blnTmp = true;
 		for(int iCnt = 0; iCnt < Ezim.stateiconSizes.length; iCnt ++)
 		{
-			if (Ezim.stateiconSizes[iCnt].intValue() == iStateiconSize)
+			if (Ezim.stateiconSizes[iCnt].intValue() == iTmp)
 			{
-				blnInvalidStateiconSize = false;
+				blnTmp = false;
 				break;
 			}
 		}
-		if (blnInvalidStateiconSize)
+		if (blnTmp)
 		{
 			this.settings.setProperty
 			(
@@ -234,73 +244,101 @@ public class EzimConf
 		}
 
 		// main window geometry
-		if (this.settings.getProperty(EzimConf.ezimmainAlwaysontop) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmainAlwaysontop);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpBool))
 			this.settings.setProperty(EzimConf.ezimmainAlwaysontop, "false");
-		if (this.settings.getProperty(EzimConf.ezimmainVisible) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmainVisible);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpBool))
 			this.settings.setProperty(EzimConf.ezimmainVisible, "true");
-		if (this.settings.getProperty(EzimConf.ezimmainLocationX) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmainLocationX);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmainLocationX, "0");
-		if (this.settings.getProperty(EzimConf.ezimmainLocationY) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmainLocationY);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmainLocationY, "0");
-		if (this.settings.getProperty(EzimConf.ezimmainSizeH) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmainSizeH);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmainSizeH, "0");
-		if (this.settings.getProperty(EzimConf.ezimmainSizeW) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmainSizeW);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmainSizeW, "0");
 
 		// plaza window geometry
-		if (this.settings.getProperty(EzimConf.ezimplazaLocationX) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimplazaLocationX);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimplazaLocationX, "0");
-		if (this.settings.getProperty(EzimConf.ezimplazaLocationY) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimplazaLocationY);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimplazaLocationY, "0");
-		if (this.settings.getProperty(EzimConf.ezimplazaSizeH) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimplazaSizeH);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimplazaSizeH, "0");
-		if (this.settings.getProperty(EzimConf.ezimplazaSizeW) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimplazaSizeW);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimplazaSizeW, "0");
 
 		// outgoing message window geometry
-		if (this.settings.getProperty(EzimConf.ezimmsgoutLocationX) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmsgoutLocationX);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmsgoutLocationX, "0");
-		if (this.settings.getProperty(EzimConf.ezimmsgoutLocationY) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmsgoutLocationY);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmsgoutLocationY, "0");
-		if (this.settings.getProperty(EzimConf.ezimmsgoutSizeH) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmsgoutSizeH);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmsgoutSizeH, "0");
-		if (this.settings.getProperty(EzimConf.ezimmsgoutSizeW) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmsgoutSizeW);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmsgoutSizeW, "0");
 
 		// incoming message window geometry
-		if (this.settings.getProperty(EzimConf.ezimmsginAutoopen) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmsginAutoopen);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpBool))
 			this.settings.setProperty(EzimConf.ezimmsginAutoopen, "false");
-		if (this.settings.getProperty(EzimConf.ezimmsginLocationX) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmsginLocationX);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmsginLocationX, "0");
-		if (this.settings.getProperty(EzimConf.ezimmsginLocationY) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmsginLocationY);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmsginLocationY, "0");
-		if (this.settings.getProperty(EzimConf.ezimmsginSizeH) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmsginSizeH);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmsginSizeH, "0");
-		if (this.settings.getProperty(EzimConf.ezimmsginSizeW) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimmsginSizeW);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimmsginSizeW, "0");
 
 		// outgoing file window geometry
-		if (this.settings.getProperty(EzimConf.ezimfileoutLocationX) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimfileoutLocationX);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimfileoutLocationX, "0");
-		if (this.settings.getProperty(EzimConf.ezimfileoutLocationY) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimfileoutLocationY);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimfileoutLocationY, "0");
-		if (this.settings.getProperty(EzimConf.ezimfileoutSizeH) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimfileoutSizeH);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimfileoutSizeH, "0");
-		if (this.settings.getProperty(EzimConf.ezimfileoutSizeW) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimfileoutSizeW);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimfileoutSizeW, "0");
 
 		// incoming file window geometry
-		if (this.settings.getProperty(EzimConf.ezimfileinLocationX) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimfileinLocationX);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimfileinLocationX, "0");
-		if (this.settings.getProperty(EzimConf.ezimfileinLocationY) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimfileinLocationY);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimfileinLocationY, "0");
-		if (this.settings.getProperty(EzimConf.ezimfileinSizeH) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimfileinSizeH);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimfileinSizeH, "0");
-		if (this.settings.getProperty(EzimConf.ezimfileinSizeW) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimfileinSizeW);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
 			this.settings.setProperty(EzimConf.ezimfileinSizeW, "0");
 
 		// sound
-		if (this.settings.getProperty(EzimConf.ezimsoundEnabled) == null)
+		strTmp = this.settings.getProperty(EzimConf.ezimsoundEnabled);
+		if (strTmp == null || ! strTmp.matches(Ezim.regexpBool))
 			this.settings.setProperty(EzimConf.ezimsoundEnabled, "true");
 
 		return;
