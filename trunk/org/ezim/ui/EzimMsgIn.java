@@ -30,6 +30,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.DateFormat;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -59,6 +61,8 @@ public class EzimMsgIn
 	private JTextField jtfdName;
 	private JLabel jlblSbj;
 	private JTextField jtfdSbj;
+	private JLabel jlblRcvAt;
+	private JTextField jtfdRcvAt;
 	private JTextArea jtaMsg;
 	private JScrollPane jspMsg;
 	private JLabel jlblOpen;
@@ -79,6 +83,11 @@ public class EzimMsgIn
 
 		if (strSbj != null && strSbj.length() > 0)
 			this.jtfdSbj.setText(strSbj);
+
+		this.jtfdRcvAt.setText
+		(
+			DateFormat.getDateTimeInstance().format(new Date())
+		);
 
 		if (strIn != null && strIn.length() > 0)
 			this.jtaMsg.setText(strIn);
@@ -196,6 +205,11 @@ public class EzimMsgIn
 		this.jtfdName = new JTextField(this.ec.getName());
 		this.jtfdName.setEnabled(false);
 
+		this.jlblRcvAt = new JLabel(EzimLang.ReceivedAt);
+
+		this.jtfdRcvAt = new JTextField();
+		this.jtfdRcvAt.setEditable(false);
+
 		this.jlblSbj = new JLabel(EzimLang.Subject);
 
 		this.jtfdSbj = new JTextField();
@@ -280,6 +294,13 @@ public class EzimMsgIn
 							glBase.createParallelGroup(Alignment.LEADING)
 								.addComponent
 								(
+									this.jlblRcvAt
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+								.addComponent
+								(
 									this.jlblName
 									, GroupLayout.PREFERRED_SIZE
 									, GroupLayout.PREFERRED_SIZE
@@ -296,6 +317,13 @@ public class EzimMsgIn
 						.addGroup
 						(
 							glBase.createParallelGroup(Alignment.LEADING)
+								.addComponent
+								(
+									this.jtfdRcvAt
+									, GroupLayout.DEFAULT_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, Short.MAX_VALUE
+								)
 								.addComponent
 								(
 									this.jtfdName
@@ -342,6 +370,25 @@ public class EzimMsgIn
 		glBase.setHorizontalGroup(hGrp);
 
 		GroupLayout.SequentialGroup vGrp = glBase.createSequentialGroup();
+
+		vGrp.addGroup
+		(
+			glBase.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jlblRcvAt
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jtfdRcvAt
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
 
 		vGrp.addGroup
 		(
