@@ -48,6 +48,7 @@ public class EzimLang
 	public static String IncomingMessage;
 	public static String From;
 	public static String Subject;
+	public static String ReceivedAt;
 	public static String ClickHereToOpenMessage;
 	public static String Reply;
 	public static String OriginalMessageFrom;
@@ -153,6 +154,7 @@ public class EzimLang
 			IncomingMessage = rbTmp.getString("IncomingMessage");
 			From = rbTmp.getString("From");
 			Subject = rbTmp.getString("Subject");
+			ReceivedAt = rbTmp.getString("ReceivedAt");
 			ClickHereToOpenMessage = rbTmp.getString("ClickHereToOpenMessage");
 			Reply = rbTmp.getString("Reply");
 			OriginalMessageFrom = rbTmp.getString("OriginalMessageFrom");
