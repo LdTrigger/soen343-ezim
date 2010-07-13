@@ -31,6 +31,10 @@ import org.ezim.ui.EzimMain;
 
 public class EzimAckSender implements Runnable
 {
+	private static MulticastSocket ms;
+	private static InetAddress ia;
+	private static int iMcPort;
+
 	private String msg;
 
 	// C O N S T R U C T O R -----------------------------------------------
@@ -49,32 +53,11 @@ public class EzimAckSender implements Runnable
 	 */
 	public void run()
 	{
-		MulticastSocket ms = null;
-		InetAddress ia = null;
-		int iMcPort = 0;
 		DatagramPacket dp = null;
 		byte[] arrBytes = null;
 
-		EzimConf ecTmp = EzimConf.getInstance();
-
 		try
 		{
-			ia = InetAddress.getByName
-			(
-				ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
-			);
-
-			iMcPort = Integer.parseInt
-			(
-				ecTmp.settings.getProperty(EzimConf.ezimMcPort)
-			);
-
-			ms = new MulticastSocket(iMcPort);
-			ms.setNetworkInterface(Ezim.operatingNI);
-			ms.setReuseAddress(true);
-			ms.setTimeToLive(Ezim.ttl);
-			if (ms.getLoopbackMode()) ms.setLoopbackMode(false);
-
 			arrBytes = this.msg.getBytes(Ezim.dtxMsgEnc);
 			if (arrBytes.length > Ezim.inBuf)
 				throw new Exception("Ack message too long.");
@@ -82,29 +65,61 @@ public class EzimAckSender implements Runnable
 			(
 				arrBytes
 				, arrBytes.length
-				, ia
-				, iMcPort
+				, EzimAckSender.ia
+				, EzimAckSender.iMcPort
 			);
 
-			ms.send(dp);
+			synchronized(EzimAckSender.ms)
+			{
+				EzimAckSender.ms.send(dp);
+			}
 		}
 		catch(Exception e)
 		{
 			EzimMain.getInstance().errAlert(e.getMessage());
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
-		finally
+
+		return;
+	}
+
+	/**
+	 * prepare a single multicast purposes which will be used throughout
+	 * the program's lifetime
+	 */
+	public static void prepareSocket()
+	{
+		if (EzimAckSender.ms == null)
 		{
 			try
 			{
-				if (ms != null && ! ms.isClosed()) ms.close();
+				EzimConf ecTmp = EzimConf.getInstance();
+
+				EzimAckSender.ia = InetAddress.getByName
+				(
+					ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
+				);
+
+				EzimAckSender.iMcPort = Integer.parseInt
+				(
+					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
+				);
+
+				EzimAckSender.ms = new MulticastSocket(iMcPort);
+				EzimAckSender.ms.setNetworkInterface(Ezim.operatingNI);
+				EzimAckSender.ms.setReuseAddress(true);
+				EzimAckSender.ms.setTimeToLive(Ezim.ttl);
+
+				if (EzimAckSender.ms.getLoopbackMode())
+					EzimAckSender.ms.setLoopbackMode(false);
 			}
 			catch(Exception e)
 			{
+				EzimMain.getInstance().errAlert(e.getMessage());
 				EzimLogger.getInstance().severe(e.getMessage(), e);
+
+				System.exit(1);
 			}
 		}
-
-		return;
 	}
 }
