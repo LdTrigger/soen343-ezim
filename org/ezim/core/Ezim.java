@@ -584,6 +584,8 @@ public class Ezim
 		EzimAckTaker eatTmp = new EzimAckTaker();
 		etpTmp.execute(eatTmp);
 
+		EzimAckSender.prepareSocket();
+
 		try
 		{
 			Thread.sleep(500);
