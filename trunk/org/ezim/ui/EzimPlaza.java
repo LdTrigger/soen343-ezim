@@ -320,13 +320,16 @@ public class EzimPlaza
 	 * add content to the window and scroll to the updated position
 	 * @param strContent contents to be added
 	 */
-	public synchronized void addPlazaContents(String strContent)
+	public void addPlazaContents(String strContent)
 	{
 		if (this.isVisible())
 		{
-			// add contents to the contents text area
-			this.jtaPlaza.append(strContent);
-			this.jtaPlaza.append("\n");
+			synchronized(this.jtaPlaza)
+			{
+				// add contents to the contents text area
+				this.jtaPlaza.append(strContent);
+				this.jtaPlaza.append("\n");
+			}
 
 			// update scrollbar position
 			this.jtaPlaza.setCaretPosition
