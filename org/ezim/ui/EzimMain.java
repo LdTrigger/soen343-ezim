@@ -832,10 +832,7 @@ public class EzimMain
 			{
 				public void mouseClicked(MouseEvent me)
 				{
-					EzimMain.this.showHide
-					(
-						! EzimMain.this.isVisible()
-					);
+					return;
 				}
 
 				public void mouseEntered(MouseEvent me)
@@ -855,7 +852,13 @@ public class EzimMain
 
 				public void mouseReleased(MouseEvent me)
 				{
-					return;
+					if (! me.isPopupTrigger())
+					{
+						EzimMain.this.showHide
+						(
+							! EzimMain.this.isVisible()
+						);
+					}
 				}
 			}
 		);
