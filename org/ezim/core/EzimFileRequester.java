@@ -97,7 +97,7 @@ public class EzimFileRequester implements Runnable
 			(
 				null
 				, e.getMessage()
-				, EzimLang.SendMessageError
+				, EzimLang.Error
 				, JOptionPane.ERROR_MESSAGE
 			);
 		}
