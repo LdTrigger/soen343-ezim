@@ -431,34 +431,12 @@ public class EzimFileOut
 
 	// E V E N T   H A N D L E R -------------------------------------------
 	/**
-	 * unregister file from the outgoing file queue, save window position
-	 * and size, then dispose itself
-	 */
-	private void unregSaveDispose()
-	{
-		try
-		{
-			if (this.sck != null && ! this.sck.isClosed())
-				this.sck.close();
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().severe(e.getMessage(), e);
-		}
-
-		EzimFtxList.getInstance().remove(this.id);
-		this.saveConf();
-		this.dispose();
-
-		return;
-	}
-
-	/**
 	 * "Close" button event handler
 	 */
 	private void jbtnClose_ActionPerformed()
 	{
-		this.unregSaveDispose();
+		this.saveConf();
+		this.unregDispose();
 		return;
 	}
 
@@ -531,6 +509,27 @@ public class EzimFileOut
 	{
 		this.setSysMsg(strIn);
 		this.jbtnClose.setText(EzimLang.Close);
+
+		return;
+	}
+
+	/**
+	 * unregister file from the outgoing file queue then dispose itself
+	 */
+	public void unregDispose()
+	{
+		try
+		{
+			if (this.sck != null && ! this.sck.isClosed())
+				this.sck.close();
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+		}
+
+		EzimFtxList.getInstance().remove(this.id);
+		this.dispose();
 
 		return;
 	}

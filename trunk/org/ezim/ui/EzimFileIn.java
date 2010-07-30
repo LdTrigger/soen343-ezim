@@ -39,7 +39,7 @@ import javax.swing.JTextField;
 
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
-import org.ezim.core.EzimFileResponsor;
+import org.ezim.core.EzimFileResponder;
 import org.ezim.core.EzimFrxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
@@ -502,29 +502,6 @@ public class EzimFileIn
 
 	// E V E N T   H A N D L E R -------------------------------------------
 	/**
-	 * unregister file from the incoming file queue, save window position
-	 * and size, then dispose itself
-	 */
-	private void unregSaveDispose()
-	{
-		try
-		{
-			if (this.sck != null && ! this.sck.isClosed())
-				this.sck.close();
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().severe(e.getMessage(), e);
-		}
-
-		EzimFrxList.getInstance().remove(this.id);
-		this.saveConf();
-		this.dispose();
-
-		return;
-	}
-
-	/**
 	 * handle (accept or reject) file transmission
 	 * @param blnRes a true value indicates the transmission is accepted,
 	 *   while a false value indicates the transmission is rejected
@@ -606,7 +583,7 @@ public class EzimFileIn
 		// respond back to the request
 		EzimThreadPool.getInstance().execute
 		(
-			new EzimFileResponsor
+			new EzimFileResponder
 			(
 				this.ec.getAddress()
 				, this.ec.getPort()
@@ -619,7 +596,8 @@ public class EzimFileIn
 		// transmission or has not chosen where to save the file
 		if (! blnFinalRes)
 		{
-			this.unregSaveDispose();
+			this.saveConf();
+			this.unregDispose();
 		}
 
 		return;
@@ -648,7 +626,8 @@ public class EzimFileIn
 	 */
 	private void jbtnClose_ActionPerformed()
 	{
-		this.unregSaveDispose();
+		this.saveConf();
+		this.unregDispose();
 		return;
 	}
 
@@ -721,6 +700,27 @@ public class EzimFileIn
 	{
 		this.setSysMsg(strIn);
 		this.jbtnClose.setText(EzimLang.Close);
+
+		return;
+	}
+
+	/**
+	 * unregister file from the incoming file queue, then dispose itself
+	 */
+	public void unregDispose()
+	{
+		try
+		{
+			if (this.sck != null && ! this.sck.isClosed())
+				this.sck.close();
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+		}
+
+		EzimFrxList.getInstance().remove(this.id);
+		this.dispose();
 
 		return;
 	}

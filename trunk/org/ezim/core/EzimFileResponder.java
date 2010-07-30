@@ -27,10 +27,13 @@ import javax.swing.JOptionPane;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimDtxSemantics;
+import org.ezim.core.EzimFrxList;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimLogger;
 
-public class EzimFileResponsor implements Runnable
+import org.ezim.ui.EzimFileIn;
+
+public class EzimFileResponder implements Runnable
 {
 	private InetAddress addr = null;
 	private int port = -1;
@@ -45,7 +48,7 @@ public class EzimFileResponsor implements Runnable
 	 * @param strId File-Request-ID to respond to
 	 * @param blnIn indicates whether the transmission is accepted
 	 */
-	public EzimFileResponsor
+	public EzimFileResponder
 	(
 		InetAddress iaIn
 		, int iPort
@@ -92,13 +95,17 @@ public class EzimFileResponsor implements Runnable
 		{
 			EzimLogger.getInstance().warning(e.getMessage(), e);
 
+			EzimFileIn efiTmp = EzimFrxList.getInstance().get(this.id);
+
 			JOptionPane.showMessageDialog
 			(
-				null
+				efiTmp
 				, e.getMessage()
 				, EzimLang.Error
 				, JOptionPane.ERROR_MESSAGE
 			);
+
+			efiTmp.unregDispose();
 		}
 		finally
 		{

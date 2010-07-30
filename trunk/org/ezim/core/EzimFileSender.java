@@ -94,8 +94,7 @@ public class EzimFileSender implements Runnable
 		{
 			EzimLogger.getInstance().warning(e.getMessage(), e);
 
-			// re-enable the send message window upon failure
-			this.efo.setEnabled(true);
+			this.efo.unregDispose();
 		}
 		finally
 		{
