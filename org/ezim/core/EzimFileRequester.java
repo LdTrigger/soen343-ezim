@@ -95,11 +95,13 @@ public class EzimFileRequester implements Runnable
 
 			JOptionPane.showMessageDialog
 			(
-				null
+				this.efo
 				, e.getMessage()
 				, EzimLang.Error
 				, JOptionPane.ERROR_MESSAGE
 			);
+
+			this.efo.unregDispose();
 		}
 		finally
 		{
