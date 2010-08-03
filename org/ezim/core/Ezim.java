@@ -92,6 +92,7 @@ public class Ezim
 		, new Locale("pt", "BR")	// Portuguese (Brazil)
 		, Locale.ITALY
 		, Locale.FRANCE
+		, Locale.GERMANY
 	};
 
 	// regexp for validating IPv4 address
