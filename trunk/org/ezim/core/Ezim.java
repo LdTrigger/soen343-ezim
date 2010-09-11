@@ -93,6 +93,7 @@ public class Ezim
 		, Locale.ITALY
 		, Locale.FRANCE
 		, Locale.GERMANY
+		, new Locale("nl", "NL")	// Dutch (Netherlands)
 	};
 
 	// regexp for validating IPv4 address
