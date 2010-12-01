@@ -704,8 +704,6 @@ public class EzimDtxSemantics
 
 					if (efiTmp != null)
 					{
-						efiTmp.setSocket(sckIn);
-
 						EzimDtxSemantics.getFile
 						(
 							isData

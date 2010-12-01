@@ -49,7 +49,6 @@ public class EzimFileOut
 	extends JFrame
 {
 	private EzimContact ec;
-	private Socket sck;
 	private File file;
 	private String id;
 
@@ -460,16 +459,6 @@ public class EzimFileOut
 	}
 
 	/**
-	 * set socket associated with this user interface
-	 * @param sckIn socket to be applied
-	 */
-	public void setSocket(Socket sckIn)
-	{
-		this.sck = sckIn;
-		return;
-	}
-
-	/**
 	 * set text of the system message label
 	 * @param strIn text to be set
 	 */
@@ -518,16 +507,6 @@ public class EzimFileOut
 	 */
 	public void unregDispose()
 	{
-		try
-		{
-			if (this.sck != null && ! this.sck.isClosed())
-				this.sck.close();
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().severe(e.getMessage(), e);
-		}
-
 		EzimFtxList.getInstance().remove(this.id);
 		this.dispose();
 
