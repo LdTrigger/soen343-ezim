@@ -81,8 +81,6 @@ public class EzimFileSender implements Runnable
 			);
 			sckOut.connect(isaTmp, Ezim.dtxTimeout);
 
-			this.efo.setSocket(sckOut);
-
 			EzimDtxSemantics.sendFile
 			(
 				sckOut
