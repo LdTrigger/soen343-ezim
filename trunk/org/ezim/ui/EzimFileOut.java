@@ -25,7 +25,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Date;
+import java.util.UUID;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -102,7 +102,7 @@ public class EzimFileOut
 	 */
 	private void init(EzimContact ecIn, File fIn)
 	{
-		this.id = Long.toString(new Date().getTime());
+		this.id = UUID.randomUUID().toString();
 		this.ec = ecIn;
 		this.file = fIn;
 
