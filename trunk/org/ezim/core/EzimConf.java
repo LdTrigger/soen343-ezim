@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.nio.channels.FileLock;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -87,6 +88,9 @@ public class EzimConf
 
 	public final static String ezimsoundEnabled = "ezimsound.enabled";
 
+	private FileOutputStream fos = null;
+	private FileLock flock = null;
+
 	// configuration item
 	public Properties settings;
 
@@ -100,10 +104,45 @@ public class EzimConf
 	private EzimConf()
 	{
 		this.settings = new Properties();
-
 		this.read();
-
 		this.validate();
+		this.prepareFile();
+	}
+
+	/**
+	 * read configuration items from file indicated by the given filename
+	 */
+	private void read()
+	{
+		FileInputStream fisTmp = null;
+
+		try
+		{
+			fisTmp = new FileInputStream(EzimConf.getConfFilename());
+			this.settings.load(fisTmp);
+		}
+		catch(FileNotFoundException fnfe)
+		{
+			// we can safely ignore this
+			EzimLogger.getInstance().warning(fnfe.getMessage(), fnfe);
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+		}
+		finally
+		{
+			try
+			{
+				if (fisTmp != null) fisTmp.close();
+			}
+			catch(Exception e)
+			{
+				EzimLogger.getInstance().severe(e.getMessage(), e);
+			}
+		}
+
+		return;
 	}
 
 	/**
@@ -344,6 +383,38 @@ public class EzimConf
 		return;
 	}
 
+	/**
+	 * prepare and lock the physical file
+	 */
+	private void prepareFile()
+	{
+		File fTmp = null;
+
+		try
+		{
+			// prepare directories if necessary
+			fTmp = new File(EzimConf.getConfDir());
+			if (! fTmp.exists() || ! fTmp.isDirectory()) fTmp.mkdirs();
+
+			// lock file
+			this.fos = new FileOutputStream(EzimConf.getConfFilename());
+			this.flock = this.fos.getChannel().tryLock();
+
+			if (this.flock == null)
+			{
+				throw new Exception
+				(
+					"Only one program instance can be run at a time."
+				);
+			}
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+			System.exit(1);
+		}
+	}
+
 	// P U B L I C   M E T H O D S -----------------------------------------
 	/**
 	 * return an EzimConf object
@@ -391,58 +462,18 @@ public class EzimConf
 	}
 
 	/**
-	 * read configuration items from file indicated by the given filename
-	 */
-	public void read()
-	{
-		FileInputStream fisTmp = null;
-
-		try
-		{
-			fisTmp = new FileInputStream(EzimConf.getConfFilename());
-			this.settings.load(fisTmp);
-		}
-		catch(FileNotFoundException fnfe)
-		{
-			// we can safely ignore this
-			EzimLogger.getInstance().warning(fnfe.getMessage(), fnfe);
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().severe(e.getMessage(), e);
-		}
-		finally
-		{
-			try
-			{
-				if (fisTmp != null) fisTmp.close();
-			}
-			catch(Exception e)
-			{
-				EzimLogger.getInstance().severe(e.getMessage(), e);
-			}
-		}
-
-		return;
-	}
-
-	/**
 	 * write configuration items to the file indicated by the given filename
 	 */
 	public synchronized void write()
 	{
-		File fTmp = null;
-		FileOutputStream fosTmp = null;
-
 		try
 		{
-			// prepare directories if necessary
-			fTmp = new File(EzimConf.getConfDir());
-			if (! fTmp.exists() || ! fTmp.isDirectory()) fTmp.mkdirs();
-
 			// output configuration to file
-			fosTmp = new FileOutputStream(EzimConf.getConfFilename());
-			this.settings.store(fosTmp, "--- ezim Configuration File ---");
+			this.settings.store
+			(
+				this.fos
+				, "--- ezim Configuration File ---"
+			);
 		}
 		catch(Exception e)
 		{
@@ -452,11 +483,7 @@ public class EzimConf
 		{
 			try
 			{
-				if (fosTmp != null)
-				{
-					fosTmp.flush();
-					fosTmp.close();
-				}
+				if (this.fos != null) this.fos.flush();
 			}
 			catch(Exception e)
 			{

@@ -30,6 +30,7 @@ import org.ezim.core.EzimConf;
 import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
+import org.ezim.ui.EzimPreferences;
 
 public class EzimAckTaker implements Runnable
 {
@@ -100,7 +101,6 @@ public class EzimAckTaker implements Runnable
 		InetAddress ia = null;
 
 		EzimConf ecTmp = EzimConf.getInstance();
-		EzimMain emHwnd = EzimMain.getInstance();
 
 		try
 		{
@@ -124,8 +124,13 @@ public class EzimAckTaker implements Runnable
 		}
 		catch(Exception e)
 		{
+			EzimMain emHwnd = EzimMain.getInstance();
+
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 			emHwnd.errAlert(e.getMessage());
+
+			new EzimPreferences();
+			emHwnd.panic();
 		}
 		finally
 		{
@@ -148,6 +153,7 @@ public class EzimAckTaker implements Runnable
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 
+			// abnormal exit
 			System.exit(1);
 		}
 
