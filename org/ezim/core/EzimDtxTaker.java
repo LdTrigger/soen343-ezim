@@ -31,6 +31,7 @@ import org.ezim.core.EzimDtxTakerThread;
 import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
+import org.ezim.ui.EzimPreferences;
 
 public class EzimDtxTaker implements Runnable
 {
@@ -114,8 +115,13 @@ public class EzimDtxTaker implements Runnable
 		}
 		catch(Exception e)
 		{
-			EzimMain.getInstance().errAlert(e.getMessage());
+			EzimMain emHwnd = EzimMain.getInstance();
+
 			EzimLogger.getInstance().severe(e.getMessage(), e);
+			emHwnd.errAlert(e.getMessage());
+
+			new EzimPreferences();
+			emHwnd.panic();
 		}
 		finally
 		{
@@ -128,7 +134,7 @@ public class EzimDtxTaker implements Runnable
 				EzimLogger.getInstance().severe(exp.getMessage(), exp);
 			}
 
-			// only one instance of the application is allowed at one time
+			// abnormal exit
 			System.exit(1);
 		}
 	}

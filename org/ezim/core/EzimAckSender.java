@@ -28,6 +28,7 @@ import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimLogger;
 import org.ezim.ui.EzimMain;
+import org.ezim.ui.EzimPreferences;
 
 public class EzimAckSender implements Runnable
 {
@@ -115,8 +116,13 @@ public class EzimAckSender implements Runnable
 			}
 			catch(Exception e)
 			{
-				EzimMain.getInstance().errAlert(e.getMessage());
+				EzimMain emHwnd = EzimMain.getInstance();
+
 				EzimLogger.getInstance().severe(e.getMessage(), e);
+				emHwnd.errAlert(e.getMessage());
+
+				new EzimPreferences();
+				emHwnd.panic();
 
 				System.exit(1);
 			}

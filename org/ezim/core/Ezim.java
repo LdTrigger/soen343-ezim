@@ -146,26 +146,6 @@ public class Ezim
 
 	// P R I V A T E   M E T H O D S ---------------------------------------
 	/**
-	 * prepare the save data directory if not exist
-	 */
-	private static void mkSaveDataDir()
-	{
-		File fTmp = new File(EzimConf.getConfDir());
-
-		try
-		{
-			if (! fTmp.isDirectory()) fTmp.mkdirs();
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().severe(e.getMessage(), e);
-			System.exit(1);
-		}
-
-		return;
-	}
-
-	/**
 	 * locale change has to be here in order to work properly
 	 */
 	private static void setDefaultLocale()
@@ -566,7 +546,6 @@ public class Ezim
 	 */
 	public static void main(String[] arrArgs)
 	{
-		Ezim.mkSaveDataDir();
 		Ezim.setDefaultLocale();
 
 		UIManager.put("Button.defaultButtonFollowsFocus", true);
@@ -580,13 +559,13 @@ public class Ezim
 
 		EzimThreadPool etpTmp = EzimThreadPool.getInstance();
 
+		EzimAckSender.prepareSocket();
+
 		EzimDtxTaker edtTmp = new EzimDtxTaker();
 		etpTmp.execute(edtTmp);
 
 		EzimAckTaker eatTmp = new EzimAckTaker();
 		etpTmp.execute(eatTmp);
-
-		EzimAckSender.prepareSocket();
 
 		try
 		{
