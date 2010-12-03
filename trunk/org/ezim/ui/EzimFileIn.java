@@ -42,7 +42,6 @@ import org.ezim.core.EzimFileResponder;
 import org.ezim.core.EzimFrxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
-import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimSound;
 import org.ezim.core.EzimThreadPool;
 

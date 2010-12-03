@@ -20,7 +20,6 @@
  */
 package org.ezim.core;
 
-import java.io.File;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
