@@ -23,15 +23,14 @@ package org.ezim.core;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import javax.swing.JOptionPane;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimFrxList;
-import org.ezim.core.EzimLang;
 import org.ezim.core.EzimLogger;
 
 import org.ezim.ui.EzimFileIn;
+import org.ezim.ui.EzimMain;
 
 public class EzimFileResponder implements Runnable
 {
@@ -96,14 +95,7 @@ public class EzimFileResponder implements Runnable
 			EzimLogger.getInstance().warning(e.getMessage(), e);
 
 			EzimFileIn efiTmp = EzimFrxList.getInstance().get(this.id);
-
-			JOptionPane.showMessageDialog
-			(
-				efiTmp
-				, e.getMessage()
-				, EzimLang.Error
-				, JOptionPane.ERROR_MESSAGE
-			);
+			EzimMain.showError(efiTmp, e.getMessage());
 
 			efiTmp.unregDispose();
 		}

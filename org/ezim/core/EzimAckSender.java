@@ -77,7 +77,7 @@ public class EzimAckSender implements Runnable
 		}
 		catch(Exception e)
 		{
-			EzimMain.getInstance().errAlert(e.getMessage());
+			EzimMain.showError(e.getMessage());
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 
@@ -116,13 +116,11 @@ public class EzimAckSender implements Runnable
 			}
 			catch(Exception e)
 			{
-				EzimMain emHwnd = EzimMain.getInstance();
-
 				EzimLogger.getInstance().severe(e.getMessage(), e);
-				emHwnd.errAlert(e.getMessage());
+				EzimMain.showError(e.getMessage());
 
 				new EzimPreferences();
-				emHwnd.panic();
+				EzimMain.getInstance().panic();
 
 				System.exit(1);
 			}
