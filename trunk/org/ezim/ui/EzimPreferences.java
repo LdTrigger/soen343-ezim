@@ -48,8 +48,10 @@ import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+
 import org.ezim.ui.EzimLocalAddressListRenderer;
 import org.ezim.ui.EzimLocaleListRenderer;
+import org.ezim.ui.EzimMain;
 
 public class EzimPreferences
 	extends JDialog
@@ -894,12 +896,11 @@ public class EzimPreferences
 			)
 		)
 		{
-			JOptionPane.showMessageDialog
+			EzimMain.showError
 			(
 				this
 				, EzimLang.McGroupError
 				, EzimLang.Prefs
-				, JOptionPane.ERROR_MESSAGE
 			);
 
 			blnOut = false;
@@ -912,12 +913,11 @@ public class EzimPreferences
 
 				if (! iaTmp.isMulticastAddress())
 				{
-					JOptionPane.showMessageDialog
+					EzimMain.showError
 					(
 						this
 						, EzimLang.McGroupError
 						, EzimLang.Prefs
-						, JOptionPane.ERROR_MESSAGE
 					);
 
 					blnOut = false;

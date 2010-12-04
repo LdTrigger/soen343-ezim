@@ -124,13 +124,11 @@ public class EzimAckTaker implements Runnable
 		}
 		catch(Exception e)
 		{
-			EzimMain emHwnd = EzimMain.getInstance();
-
 			EzimLogger.getInstance().severe(e.getMessage(), e);
-			emHwnd.errAlert(e.getMessage());
+			EzimMain.showError(e.getMessage());
 
 			new EzimPreferences();
-			emHwnd.panic();
+			EzimMain.getInstance().panic();
 		}
 		finally
 		{

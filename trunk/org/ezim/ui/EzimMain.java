@@ -21,6 +21,7 @@
 package org.ezim.ui;
 
 import java.awt.AWTException;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.MenuItem;
 import java.awt.Point;
@@ -64,6 +65,7 @@ import org.ezim.core.EzimLang;
 import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimPlainDocument;
 import org.ezim.core.EzimThreadPool;
+
 import org.ezim.ui.EzimFileOut;
 import org.ezim.ui.EzimMsgOut;
 import org.ezim.ui.EzimPlaza;
@@ -870,7 +872,7 @@ public class EzimMain
 		catch(AWTException awtE)
 		{
 			EzimLogger.getInstance().severe(awtE.getMessage(), awtE);
-			this.errAlert(awtE.getMessage());
+			EzimMain.showError(awtE.getMessage());
 			System.exit(1);
 		}
 
@@ -1051,13 +1053,7 @@ public class EzimMain
 
 				if (ecTmp == null)
 				{
-					JOptionPane.showMessageDialog
-					(
-						null
-						, EzimLang.RecipientNotExists
-						, EzimLang.Error
-						, JOptionPane.ERROR_MESSAGE
-					);
+					EzimMain.showError(null, EzimLang.RecipientNotExists);
 				}
 				else
 				{
@@ -1172,18 +1168,50 @@ public class EzimMain
 	// E R R O R   H A N D L E R -------------------------------------------
 	/**
 	 * show an error message dialog
-	 * @param strIn the error message to be shown
+	 * @param cpntParent the parent component of the dialog
+	 * @param strMsg the error message to be shown
+	 * @param strTitle the title string of the dialog
 	 */
-	public void errAlert(String strIn)
+	public static void showError
+	(
+		Component cpntParent
+		, String strMsg
+		, String strTitle
+	)
 	{
 		JOptionPane.showMessageDialog
 		(
-			this
-			, strIn
-			, EzimLang.Error
+			cpntParent
+			, strMsg
+			, strTitle
 			, JOptionPane.ERROR_MESSAGE
 		);
+		return;
+	}
 
+	/**
+	 * show an error message dialog
+	 * @param cpntParent the parent component of the dialog
+	 * @param strMsg the error message to be shown
+	 */
+	public static void showError(Component cpntParent, String strMsg)
+	{
+		EzimMain.showError
+		(
+			cpntParent
+			, strMsg
+			, EzimLang.Error
+		);
+		return;
+	}
+
+	/**
+	 * show an error message dialog
+	 * @param strMsg the error message to be shown
+	 */
+	public static void showError(String strMsg)
+	{
+		EzimMain.showError(EzimMain.emSngtn, strMsg);
 		return;
 	}
 

@@ -27,13 +27,14 @@ import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import javax.swing.JOptionPane;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimLogger;
+
+import org.ezim.ui.EzimMain;
 import org.ezim.ui.EzimMsgOut;
 
 public class EzimMsgSender implements Runnable
@@ -164,12 +165,11 @@ public class EzimMsgSender implements Runnable
 		{
 			EzimMsgOut emoTmp = new EzimMsgOut(alNg, sbj, msg);
 
-			JOptionPane.showMessageDialog
+			EzimMain.showError
 			(
 				emoTmp
 				, EzimLang.RecipientsError
 				, EzimLang.SendMessageError
-				, JOptionPane.ERROR_MESSAGE
 			);
 		}
 	}
