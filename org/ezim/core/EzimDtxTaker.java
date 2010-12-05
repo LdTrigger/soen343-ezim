@@ -116,7 +116,7 @@ public class EzimDtxTaker implements Runnable
 		catch(Exception e)
 		{
 			EzimLogger.getInstance().severe(e.getMessage(), e);
-			EzimMain.showError(e.getMessage());
+			EzimMain.showError(EzimLang.DtxPort + "\n" + e.getMessage());
 
 			new EzimPreferences();
 			EzimMain.getInstance().panic();
