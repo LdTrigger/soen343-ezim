@@ -125,7 +125,7 @@ public class EzimAckTaker implements Runnable
 		catch(Exception e)
 		{
 			EzimLogger.getInstance().severe(e.getMessage(), e);
-			EzimMain.showError(e.getMessage());
+			EzimMain.showError(EzimLang.McPort + "\n" + e.getMessage());
 
 			new EzimPreferences();
 			EzimMain.getInstance().panic();
