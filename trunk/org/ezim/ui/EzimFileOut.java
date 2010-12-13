@@ -102,6 +102,8 @@ public class EzimFileOut
 	private void init(EzimContact ecIn, File fIn)
 	{
 		this.id = UUID.randomUUID().toString();
+		while(EzimFtxList.getInstance().get(this.id) != null)
+			this.id = UUID.randomUUID().toString();
 		this.ec = ecIn;
 		this.file = fIn;
 
