@@ -1014,6 +1014,8 @@ public class EzimPreferences
 			, Boolean.toString(this.jcbEnableSound.isSelected())
 		);
 
+		ecTmp.write();
+
 		return;
 	}
 

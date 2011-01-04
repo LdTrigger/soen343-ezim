@@ -1,7 +1,7 @@
 /*
     EZ Intranet Messenger
 
-    Copyright (C) 2007 - 2010  Chun-Kwong Wong
+    Copyright (C) 2007 - 2011  Chun-Kwong Wong
     chunkwong.wong@gmail.com
     http://ezim.sourceforge.net/
 
@@ -518,6 +518,8 @@ public class Ezim
 				EzimConf.ezimLocalname
 				, Ezim.localName
 			);
+
+			ecTmp.write();
 		}
 
 		return;
