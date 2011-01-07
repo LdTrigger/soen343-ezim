@@ -118,8 +118,6 @@ public class EzimFileOut
 		this.loadConf();
 
 		this.setVisible(true);
-
-		return;
 	}
 
 	// P R I V A T E   M E T H O D S ---------------------------------------
@@ -164,8 +162,6 @@ public class EzimFileOut
 				)
 			)
 		);
-
-		return;
 	}
 
 	/**
@@ -198,8 +194,6 @@ public class EzimFileOut
 			EzimConf.ezimfileoutSizeH
 			, String.valueOf((int) dmTmp.getHeight())
 		);
-
-		return;
 	}
 
 	/**
@@ -237,7 +231,6 @@ public class EzimFileOut
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimFileOut.this.jbtnClose_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -424,8 +417,6 @@ public class EzimFileOut
 		vGrp.addGap(10);
 
 		glBase.setVerticalGroup(vGrp);
-
-		return;
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
@@ -436,7 +427,6 @@ public class EzimFileOut
 	{
 		this.saveConf();
 		this.unregDispose();
-		return;
 	}
 
 	// O P E R A T I O N ---------------------------------------------------
@@ -465,7 +455,6 @@ public class EzimFileOut
 	public void setSysMsg(String strIn)
 	{
 		this.jlblSysMsg.setText(strIn);
-		return;
 	}
 
 	/**
@@ -476,7 +465,6 @@ public class EzimFileOut
 	{
 		this.jtfdSize.setText(Integer.toString(iIn));
 		this.jpbProgress.setMaximum(iIn);
-		return;
 	}
 
 	/**
@@ -486,7 +474,6 @@ public class EzimFileOut
 	public void setProgressed(int iIn)
 	{
 		this.jpbProgress.setValue(iIn);
-		return;
 	}
 
 	/**
@@ -498,8 +485,6 @@ public class EzimFileOut
 	{
 		this.setSysMsg(strIn);
 		this.jbtnClose.setText(EzimLang.Close);
-
-		return;
 	}
 
 	/**
@@ -509,7 +494,5 @@ public class EzimFileOut
 	{
 		EzimFtxList.getInstance().remove(this.id);
 		this.dispose();
-
-		return;
 	}
 }

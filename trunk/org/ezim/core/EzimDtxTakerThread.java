@@ -113,7 +113,5 @@ public class EzimDtxTakerThread implements Runnable
 
 			fHdr.delete();
 		}
-
-		return;
 	}
 }

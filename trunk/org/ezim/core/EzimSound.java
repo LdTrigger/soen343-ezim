@@ -129,8 +129,6 @@ public class EzimSound
 		{
 			EzimLogger.getInstance().warning(e.getMessage(), e);
 		}
-
-		return;
 	}
 
 	// P U B L I C   M E T H O D -------------------------------------------
@@ -170,7 +168,6 @@ public class EzimSound
 	{
 		this.stateChg.setFramePosition(0);
 		this.stateChg.start();
-		return;
 	}
 
 	/**
@@ -180,7 +177,6 @@ public class EzimSound
 	{
 		this.statusChg.setFramePosition(0);
 		this.statusChg.start();
-		return;
 	}
 
 	/**
@@ -190,7 +186,6 @@ public class EzimSound
 	{
 		this.msgIn.setFramePosition(0);
 		this.msgIn.start();
-		return;
 	}
 
 	/**
@@ -200,6 +195,5 @@ public class EzimSound
 	{
 		this.fileIn.setFramePosition(0);
 		this.fileIn.start();
-		return;
 	}
 }

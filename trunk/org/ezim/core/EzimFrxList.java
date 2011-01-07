@@ -79,7 +79,6 @@ public class EzimFrxList
 	public void put(String strId, EzimFileIn efiIn)
 	{
 		this.list.put(strId, efiIn);
-		return;
 	}
 
 	/**
@@ -89,6 +88,5 @@ public class EzimFrxList
 	public void remove(String strId)
 	{
 		this.list.remove(strId);
-		return;
 	}
 }

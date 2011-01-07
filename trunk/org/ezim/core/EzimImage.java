@@ -210,7 +210,5 @@ public class EzimImage
 			"org/ezim/image/icon/buttons.png"
 			, 32, 32
 		);
-
-		return;
 	}
 }

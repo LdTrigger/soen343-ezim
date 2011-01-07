@@ -82,7 +82,6 @@ public class EzimLogger
 	public void severe(String strMsg)
 	{
 		this.logger.log(Level.SEVERE, strMsg);
-		return;
 	}
 
 	/**
@@ -93,7 +92,6 @@ public class EzimLogger
 	public void severe(String strMsg, Throwable thwInfo)
 	{
 		this.logger.log(Level.SEVERE, strMsg, thwInfo);
-		return;
 	}
 
 	/**
@@ -103,7 +101,6 @@ public class EzimLogger
 	public void warning(String strMsg)
 	{
 		this.logger.log(Level.WARNING, strMsg);
-		return;
 	}
 
 	/**
@@ -114,6 +111,5 @@ public class EzimLogger
 	public void warning(String strMsg, Throwable thwInfo)
 	{
 		this.logger.log(Level.WARNING, strMsg, thwInfo);
-		return;
 	}
 }

@@ -58,7 +58,6 @@ public class EzimContactList implements ListModel
 	public synchronized void addListDataListener(ListDataListener l)
 	{
 		this.listeners.add(l);
-		return;
 	}
 
 	/**
@@ -97,7 +96,6 @@ public class EzimContactList implements ListModel
 	public synchronized void removeListDataListener(ListDataListener l)
 	{
 		this.listeners.remove(l);
-		return;
 	}
 
 	// P R I V A T E   M E T H O D S ---------------------------------------
@@ -122,8 +120,6 @@ public class EzimContactList implements ListModel
 		{
 			this.listeners.get(iCnt).contentsChanged(ldeTmp);
 		}
-
-		return;
 	}
 
 	/**
@@ -147,8 +143,6 @@ public class EzimContactList implements ListModel
 		{
 			this.listeners.get(iCnt).intervalAdded(ldeTmp);
 		}
-
-		return;
 	}
 
 	/**
@@ -172,8 +166,6 @@ public class EzimContactList implements ListModel
 		{
 			this.listeners.get(iCnt).intervalRemoved(ldeTmp);
 		}
-
-		return;
 	}
 
 	/**
@@ -280,8 +272,6 @@ public class EzimContactList implements ListModel
 				this.fireIntervalRemoved(0, iSize - 1);
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -392,8 +382,6 @@ public class EzimContactList implements ListModel
 				}
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -418,8 +406,6 @@ public class EzimContactList implements ListModel
 					EzimSound.getInstance().playStateChg();
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -449,8 +435,6 @@ public class EzimContactList implements ListModel
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -473,8 +457,6 @@ public class EzimContactList implements ListModel
 				this.fireContentsChanged(iIdx, iIdx);
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -530,8 +512,6 @@ public class EzimContactList implements ListModel
 					EzimSound.getInstance().playStateChg();
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -557,8 +537,6 @@ public class EzimContactList implements ListModel
 					EzimSound.getInstance().playStateChg();
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -584,7 +562,5 @@ public class EzimContactList implements ListModel
 					EzimSound.getInstance().playStatusChg();
 			}
 		}
-
-		return;
 	}
 }

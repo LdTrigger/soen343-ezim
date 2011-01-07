@@ -50,7 +50,5 @@ public class EzimPlainDocument extends PlainDocument
 	{
 		if (! ((this.getLength() + str.length()) > this.maxLength))
 			super.insertString(offset, str, a);
-
-		return;
 	}
 }
