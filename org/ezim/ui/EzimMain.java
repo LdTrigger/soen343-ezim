@@ -227,8 +227,6 @@ public class EzimMain
 			ecTmp.settings.getProperty(EzimConf.ezimColorSelf)
 			, 16
 		);
-
-		return;
 	}
 
 	/**
@@ -284,8 +282,6 @@ public class EzimMain
 			, String.valueOf((int) dmTmp.getHeight())
 		);
 		ecTmp.write();
-
-		return;
 	}
 
 	/**
@@ -298,8 +294,6 @@ public class EzimMain
 		this.localStatus = EzimContact.STATUS_DEFAULT;
 
 		this.epMain = new EzimPlaza();
-
-		return;
 	}
 
 	/**
@@ -317,7 +311,6 @@ public class EzimMain
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimMain.this.jcbState_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -337,7 +330,6 @@ public class EzimMain
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimMain.this.jtfdStatus_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -348,27 +340,22 @@ public class EzimMain
 				public void mouseClicked(MouseEvent evtTmp)
 				{
 					EzimMain.this.jtfdStatus_MouseClicked();
-					return;
 				}
 
 				public void mouseEntered(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mouseExited(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mousePressed(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mouseReleased(MouseEvent evtTmp)
 				{
-					return;
 				}
 			}
 		);
@@ -378,13 +365,11 @@ public class EzimMain
 			{
 				public void focusGained(FocusEvent evtTmp)
 				{
-					return;
 				}
 
 				public void focusLost(FocusEvent evtTmp)
 				{
 					EzimMain.this.jtfdStatus_FocusLost();
-					return;
 				}
 			}
 		);
@@ -415,27 +400,22 @@ public class EzimMain
 					{
 						EzimMain.this.jlstContacts_MouseDblClicked();
 					}
-					return;
 				}
 
 				public void mouseEntered(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mouseExited(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mousePressed(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mouseReleased(MouseEvent evtTmp)
 				{
-					return;
 				}
 			}
 		);
@@ -453,7 +433,6 @@ public class EzimMain
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimMain.this.jbtnMsg_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -468,7 +447,6 @@ public class EzimMain
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimMain.this.jbtnFtx_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -483,7 +461,6 @@ public class EzimMain
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimMain.this.jbtnRfh_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -498,7 +475,6 @@ public class EzimMain
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimMain.this.jbtnPlz_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -513,7 +489,6 @@ public class EzimMain
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimMain.this.jbtnPrefs_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -527,27 +502,22 @@ public class EzimMain
 				public void mouseClicked(MouseEvent evtTmp)
 				{
 					EzimMain.this.jlblAbout_MouseClicked();
-					return;
 				}
 
 				public void mouseEntered(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mouseExited(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mousePressed(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mouseReleased(MouseEvent evtTmp)
 				{
-					return;
 				}
 			}
 		);
@@ -755,8 +725,6 @@ public class EzimMain
 		// T R A Y   I C O N -----------------------------------------------
 		if (SystemTray.isSupported()) this.initTrayIcon();
 		else this.tiMain = null;
-
-		return;
 	}
 
 	/**
@@ -834,22 +802,18 @@ public class EzimMain
 			{
 				public void mouseClicked(MouseEvent me)
 				{
-					return;
 				}
 
 				public void mouseEntered(MouseEvent me)
 				{
-					return;
 				}
 
 				public void mouseExited(MouseEvent me)
 				{
-					return;
 				}
 
 				public void mousePressed(MouseEvent me)
 				{
-					return;
 				}
 
 				public void mouseReleased(MouseEvent me)
@@ -875,8 +839,6 @@ public class EzimMain
 			EzimMain.showError(awtE.getMessage());
 			System.exit(1);
 		}
-
-		return;
 	}
 
 	/**
@@ -894,12 +856,10 @@ public class EzimMain
 	// W I N D O W   L I S T E N E R ---------------------------------------
 	public void windowActivated(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowClosed(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowClosing(WindowEvent e)
@@ -909,28 +869,22 @@ public class EzimMain
 			this.saveConfAckOff();
 			System.exit(0);
 		}
-
-		return;
 	}
 
 	public void windowDeactivated(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowDeiconified(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowIconified(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowOpened(WindowEvent e)
 	{
-		return;
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
@@ -940,7 +894,6 @@ public class EzimMain
 	private void jcbState_ActionPerformed()
 	{
 		this.changeState(this.jcbState.getSelectedIndex());
-		return;
 	}
 
 	/**
@@ -949,7 +902,6 @@ public class EzimMain
 	private void jtfdStatus_ActionPerformed()
 	{
 		this.changeStatus();
-		return;
 	}
 
 	/**
@@ -959,7 +911,6 @@ public class EzimMain
 	{
 		this.jtfdStatus.setEnabled(true);
 		this.jtfdStatus.grabFocus();	// maybe inappropriate
-		return;
 	}
 
 	/**
@@ -968,7 +919,6 @@ public class EzimMain
 	private void jtfdStatus_FocusLost()
 	{
 		this.changeStatus();
-		return;
 	}
 
 	/**
@@ -977,7 +927,6 @@ public class EzimMain
 	private void jlblAbout_MouseClicked()
 	{
 		this.showAboutDlg();
-		return;
 	}
 
 	/**
@@ -1002,8 +951,6 @@ public class EzimMain
 		{
 			new EzimMsgOut();
 		}
-
-		return;
 	}
 
 	/**
@@ -1012,7 +959,6 @@ public class EzimMain
 	private void jlstContacts_MouseDblClicked()
 	{
 		this.openMsgOut();
-		return;
 	}
 
 	/**
@@ -1021,7 +967,6 @@ public class EzimMain
 	private void jbtnMsg_ActionPerformed()
 	{
 		this.openMsgOut();
-		return;
 	}
 
 	/**
@@ -1071,8 +1016,6 @@ public class EzimMain
 				}
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -1103,13 +1046,9 @@ public class EzimMain
 					}
 
 					EzimMain.this.jbtnRfh.setEnabled(true);
-
-					return;
 				}
 			}
 		);
-
-		return;
 	}
 
 	/**
@@ -1122,7 +1061,6 @@ public class EzimMain
 			this.epMain.reset();
 			this.changeSysState(EzimContact.SYSSTATE_PLAZA);
 		}
-		return;
 	}
 
 	/**
@@ -1136,8 +1074,6 @@ public class EzimMain
 		if (blnSysTray) this.setState(JFrame.NORMAL);
 
 		this.setVisible(blnIn || ! blnSysTray);
-
-		return;
 	}
 
 	/**
@@ -1146,7 +1082,6 @@ public class EzimMain
 	private void jbtnPrefs_ActionPerformed()
 	{
 		new EzimPreferences();
-		return;
 	}
 
 	// A B O U T   D I A L O G ---------------------------------------------
@@ -1186,7 +1121,6 @@ public class EzimMain
 			, strTitle
 			, JOptionPane.ERROR_MESSAGE
 		);
-		return;
 	}
 
 	/**
@@ -1202,7 +1136,6 @@ public class EzimMain
 			, strMsg
 			, EzimLang.Error
 		);
-		return;
 	}
 
 	/**
@@ -1212,7 +1145,6 @@ public class EzimMain
 	public static void showError(String strMsg)
 	{
 		EzimMain.showError(EzimMain.emSngtn, strMsg);
-		return;
 	}
 
 	// O P E R A T I V E   M E T H O D -------------------------------------
@@ -1243,8 +1175,6 @@ public class EzimMain
 			EzimAckSemantics.offline()
 		);
 		etpTmp.execute(easOff);
-
-		return;
 	}
 
 	/**
@@ -1264,8 +1194,6 @@ public class EzimMain
 			);
 			EzimThreadPool.getInstance().execute(easTmp);
 		}
-
-		return;
 	}
 
 	/**
@@ -1285,8 +1213,6 @@ public class EzimMain
 			);
 			EzimThreadPool.getInstance().execute(easTmp);
 		}
-
-		return;
 	}
 
 	/**
@@ -1315,8 +1241,6 @@ public class EzimMain
 		}
 
 		this.jtfdStatus.setEnabled(false);
-
-		return;
 	}
 
 	/**
@@ -1342,8 +1266,6 @@ public class EzimMain
 		);
 
 		EzimThreadPool.getInstance().execute(easTmp);
-
-		return;
 	}
 
 	/**
@@ -1353,7 +1275,5 @@ public class EzimMain
 	{
 		this.showHide(true);
 		this.saveConfAckOff();
-
-		return;
 	}
 }

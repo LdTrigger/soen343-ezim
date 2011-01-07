@@ -109,8 +109,6 @@ public class EzimDtxSemantics
 
 		EzimDtxSemantics.bHDRTRM
 			= EzimDtxSemantics.HDRTRM.getBytes(Ezim.dtxMsgEnc);
-
-		return;
 	}
 
 	/**
@@ -150,8 +148,6 @@ public class EzimDtxSemantics
 			// header terminator
 			osIn.write(EzimDtxSemantics.bHDRTRM);
 		}
-
-		return;
 	}
 
 	/**
@@ -200,8 +196,6 @@ public class EzimDtxSemantics
 
 		// make sure everything is sent
 		osTmp.flush();
-
-		return;
 	}
 
 	/**
@@ -286,8 +280,6 @@ public class EzimDtxSemantics
 				}
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -348,8 +340,6 @@ public class EzimDtxSemantics
 			// make sure everything is sent
 			osTmp.flush();
 		}
-
-		return;
 	}
 
 	/**
@@ -410,8 +400,6 @@ public class EzimDtxSemantics
 			// make sure everything is sent
 			osTmp.flush();
 		}
-
-		return;
 	}
 
 	/**
@@ -501,8 +489,6 @@ public class EzimDtxSemantics
 				efoIn.endProgress(strSysMsg);
 			}
 		}
-
-		return;
 	}
 
 	// M E T H O D S   F O R   I N C O M I N G   T R A N S M I S S I O N ---
@@ -587,8 +573,6 @@ public class EzimDtxSemantics
 		strTmp = new String(bBuf, 0, iCnt, Ezim.dtxMsgEnc);
 
 		new EzimMsgIn(ecIn, strSbj, strTmp);
-
-		return;
 	}
 
 	/**
@@ -638,8 +622,6 @@ public class EzimDtxSemantics
 
 			efiIn.endProgress(strSysMsg);
 		}
-
-		return;
 	}
 
 	/**
@@ -869,7 +851,5 @@ public class EzimDtxSemantics
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
-
-		return;
 	}
 }

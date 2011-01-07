@@ -159,8 +159,6 @@ public class EzimMsgOut
 		{
 			this.jtfdSbj.requestFocusInWindow();
 		}
-
-		return;
 	}
 
 	// P R I V A T E   M E T H O D S ---------------------------------------
@@ -205,8 +203,6 @@ public class EzimMsgOut
 				)
 			)
 		);
-
-		return;
 	}
 
 	/**
@@ -239,8 +235,6 @@ public class EzimMsgOut
 			EzimConf.ezimmsgoutSizeH
 			, String.valueOf((int) dmTmp.getHeight())
 		);
-
-		return;
 	}
 
 	/**
@@ -278,7 +272,6 @@ public class EzimMsgOut
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimMsgOut.this.jbtnDelLastRcpt_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -308,7 +301,6 @@ public class EzimMsgOut
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimMsgOut.this.jbtnSend_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -468,8 +460,6 @@ public class EzimMsgOut
 		glBase.setVerticalGroup(vGrp);
 
 		this.addWindowListener(this);
-
-		return;
 	}
 
 	/**
@@ -498,38 +488,31 @@ public class EzimMsgOut
 	// W I N D O W   L I S T E N E R ---------------------------------------
 	public void windowActivated(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowClosed(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowClosing(WindowEvent e)
 	{
 		this.saveConf();
-		return;
 	}
 
 	public void windowDeactivated(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowDeiconified(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowIconified(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowOpened(WindowEvent e)
 	{
-		return;
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
@@ -547,8 +530,6 @@ public class EzimMsgOut
 			EzimMsgSender jmsTmp = new EzimMsgSender(this);
 			EzimThreadPool.getInstance().execute(jmsTmp);
 		}
-
-		return;
 	}
 
 	/**
@@ -565,8 +546,6 @@ public class EzimMsgOut
 
 			this.updateContactNames();
 		}
-
-		return;
 	}
 
 	// P U B L I C   M E T H O D -------------------------------------------
@@ -591,8 +570,6 @@ public class EzimMsgOut
 
 			this.updateContactNames();
 		}
-
-		return;
 	}
 
 	/**

@@ -117,8 +117,6 @@ public class EzimPreferences
 	{
 		this.initGUI();
 		this.loadCurConf();
-
-		return;
 	}
 
 	/**
@@ -151,7 +149,6 @@ public class EzimPreferences
 			{
 				public void focusGained(FocusEvent evtTmp)
 				{
-					return;
 				}
 
 				public void focusLost(FocusEvent evtTmp)
@@ -239,7 +236,6 @@ public class EzimPreferences
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimPreferences.this.jbtnSave_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -252,8 +248,6 @@ public class EzimPreferences
 				{
 					EzimPreferences.this
 						.jbtnRestore_ActionPerformed();
-
-					return;
 				}
 			}
 		);
@@ -723,8 +717,6 @@ public class EzimPreferences
 		glBase.setVerticalGroup(vGrp);
 
 		this.add(jpnlBase);
-
-		return;
 	}
 
 	/**
@@ -869,8 +861,6 @@ public class EzimPreferences
 		(
 			Boolean.parseBoolean(strEnableSound)
 		);
-
-		return;
 	}
 
 	/**
@@ -1015,8 +1005,6 @@ public class EzimPreferences
 		);
 
 		ecTmp.write();
-
-		return;
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
@@ -1026,7 +1014,6 @@ public class EzimPreferences
 	private void jtfdMcGroup_FocusLost()
 	{
 		this.jtfdMcGroup.setText(this.jtfdMcGroup.getText().trim());
-		return;
 	}
 
 	/**
@@ -1045,8 +1032,6 @@ public class EzimPreferences
 		{
 			this.jtfdMcGroup.setText(Ezim.mcGroupIPv6);
 		}
-
-		return;
 	}
 
 	/**
@@ -1068,8 +1053,6 @@ public class EzimPreferences
 
 			this.dispose();
 		}
-
-		return;
 	}
 
 	/**
@@ -1078,6 +1061,5 @@ public class EzimPreferences
 	private void jbtnRestore_ActionPerformed()
 	{
 		this.loadCurConf();
-		return;
 	}
 }

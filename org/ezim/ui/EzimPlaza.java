@@ -104,7 +104,6 @@ public class EzimPlaza
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimPlaza.this.jtfdSpeak_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -117,7 +116,6 @@ public class EzimPlaza
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimPlaza.this.jbtnSpeak_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -212,20 +210,16 @@ public class EzimPlaza
 
 		// W I N D O W   L I S T E N E R -----------------------------------
 		this.addWindowListener(this);
-
-		return;
 	}
 
 	// W I N D O W   L I S T E N E R ---------------------------------------
 	public void windowActivated(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowClosed(WindowEvent e)
 	{
 		// comment out the setDefaultCloseOperation to make this usable
-		return;
 	}
 
 	public void windowClosing(WindowEvent e)
@@ -237,28 +231,22 @@ public class EzimPlaza
 			EzimAckSemantics.sysState(EzimContact.SYSSTATE_DEFAULT)
 		);
 		EzimThreadPool.getInstance().execute(easTmp);
-
-		return;
 	}
 
 	public void windowDeactivated(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowDeiconified(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowIconified(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowOpened(WindowEvent e)
 	{
-		return;
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
@@ -280,8 +268,6 @@ public class EzimPlaza
 			);
 			EzimThreadPool.getInstance().execute(easTmp);
 		}
-
-		return;
 	}
 
 	/**
@@ -290,7 +276,6 @@ public class EzimPlaza
 	private void jtfdSpeak_ActionPerformed()
 	{
 		this.sendSpeech();
-		return;
 	}
 
 	/**
@@ -299,7 +284,6 @@ public class EzimPlaza
 	private void jbtnSpeak_ActionPerformed()
 	{
 		this.sendSpeech();
-		return;
 	}
 
 	// ---------------------------------------------------------------------
@@ -312,8 +296,6 @@ public class EzimPlaza
 		this.jtfdSpeak.setText("");
 		this.setVisible(true);
 		this.jtfdSpeak.requestFocusInWindow();
-
-		return;
 	}
 
 	/**
@@ -337,8 +319,6 @@ public class EzimPlaza
 				this.jtaPlaza.getText().length()
 			);
 		}
-
-		return;
 	}
 
 	/**
@@ -376,8 +356,6 @@ public class EzimPlaza
 				this.addPlazaContents(sbTmp.toString());
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -410,7 +388,5 @@ public class EzimPlaza
 				this.addPlazaContents(sbTmp.toString());
 			}
 		}
-
-		return;
 	}
 }

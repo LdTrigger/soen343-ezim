@@ -124,8 +124,6 @@ public class EzimFileIn
 
 		if (EzimSound.getInstance() != null)
 			EzimSound.getInstance().playFileIn();
-
-		return;
 	}
 
 	// P R I V A T E   M E T H O D S ---------------------------------------
@@ -170,8 +168,6 @@ public class EzimFileIn
 				)
 			)
 		);
-
-		return;
 	}
 
 	/**
@@ -204,8 +200,6 @@ public class EzimFileIn
 			EzimConf.ezimfileinSizeH
 			, String.valueOf((int) dmTmp.getHeight())
 		);
-
-		return;
 	}
 
 	/**
@@ -243,7 +237,6 @@ public class EzimFileIn
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimFileIn.this.jbtnYes_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -256,7 +249,6 @@ public class EzimFileIn
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimFileIn.this.jbtnNo_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -269,7 +261,6 @@ public class EzimFileIn
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimFileIn.this.jbtnClose_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -493,8 +484,6 @@ public class EzimFileIn
 		vGrp.addGap(10);
 
 		glBase.setVerticalGroup(vGrp);
-
-		return;
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
@@ -596,8 +585,6 @@ public class EzimFileIn
 			this.saveConf();
 			this.unregDispose();
 		}
-
-		return;
 	}
 
 	/**
@@ -606,7 +593,6 @@ public class EzimFileIn
 	private void jbtnYes_ActionPerformed()
 	{
 		this.handleTransmission(true);
-		return;
 	}
 
 	/**
@@ -615,7 +601,6 @@ public class EzimFileIn
 	private void jbtnNo_ActionPerformed()
 	{
 		this.handleTransmission(false);
-		return;
 	}
 
 	/**
@@ -625,7 +610,6 @@ public class EzimFileIn
 	{
 		this.saveConf();
 		this.unregDispose();
-		return;
 	}
 
 	// O P E R A T I O N ---------------------------------------------------
@@ -654,7 +638,6 @@ public class EzimFileIn
 	public void setSysMsg(String strIn)
 	{
 		this.jlblSysMsg.setText(strIn);
-		return;
 	}
 
 	/**
@@ -665,7 +648,6 @@ public class EzimFileIn
 	{
 		this.jtfdSize.setText(Integer.toString(iIn));
 		this.jpbProgress.setMaximum(iIn);
-		return;
 	}
 
 	/**
@@ -675,7 +657,6 @@ public class EzimFileIn
 	public void setProgressed(int iIn)
 	{
 		this.jpbProgress.setValue(iIn);
-		return;
 	}
 
 	/**
@@ -687,8 +668,6 @@ public class EzimFileIn
 	{
 		this.setSysMsg(strIn);
 		this.jbtnClose.setText(EzimLang.Close);
-
-		return;
 	}
 
 	/**
@@ -698,7 +677,5 @@ public class EzimFileIn
 	{
 		EzimFrxList.getInstance().remove(this.id);
 		this.dispose();
-
-		return;
 	}
 }

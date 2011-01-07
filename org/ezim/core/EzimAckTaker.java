@@ -154,7 +154,5 @@ public class EzimAckTaker implements Runnable
 			// abnormal exit
 			System.exit(1);
 		}
-
-		return;
 	}
 }

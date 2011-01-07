@@ -80,8 +80,6 @@ public class EzimAckSender implements Runnable
 			EzimMain.showError(e.getMessage());
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
-
-		return;
 	}
 
 	/**

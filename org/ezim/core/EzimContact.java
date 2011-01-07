@@ -156,8 +156,6 @@ public class EzimContact implements Comparable
 			throw new EzimContactException("Address is null.");
 
 		this.addr = iaIn;
-
-		return;
 	}
 
 	/**
@@ -171,8 +169,6 @@ public class EzimContact implements Comparable
 			throw new EzimContactException("Invalid port number.");
 
 		this.port = iIn;
-
-		return;
 	}
 
 	/**
@@ -185,8 +181,6 @@ public class EzimContact implements Comparable
 			this.name = strIn;
 		else
 			this.name = this.addr.getHostAddress();
-
-		return;
 	}
 
 	/**
@@ -203,8 +197,6 @@ public class EzimContact implements Comparable
 		{
 			this.sysState = EzimContact.SYSSTATE_DEFAULT;
 		}
-
-		return;
 	}
 
 	/**
@@ -221,8 +213,6 @@ public class EzimContact implements Comparable
 		{
 			this.state = EzimContact.STATE_DEFAULT;
 		}
-
-		return;
 	}
 
 	/**
@@ -235,7 +225,5 @@ public class EzimContact implements Comparable
 			this.status = strIn;
 		else
 			this.status = EzimContact.STATUS_DEFAULT;
-
-		return;
 	}
 }

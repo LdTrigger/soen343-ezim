@@ -141,8 +141,6 @@ public class EzimConf
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -379,8 +377,6 @@ public class EzimConf
 		strTmp = this.settings.getProperty(EzimConf.ezimsoundEnabled);
 		if (strTmp == null || ! strTmp.matches(Ezim.regexpBool))
 			this.settings.setProperty(EzimConf.ezimsoundEnabled, "true");
-
-		return;
 	}
 
 	/**
@@ -490,7 +486,5 @@ public class EzimConf
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
-
-		return;
 	}
 }

@@ -109,7 +109,5 @@ public class EzimTextArea
 
 		// R E M A P   I N S E R T   T A B   K E Y -------------------------
 		this.getInputMap().put(ksCtrlTab, "insert-tab");
-
-		return;
 	}
 }

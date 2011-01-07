@@ -165,8 +165,6 @@ public class Ezim
 				break;
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -213,8 +211,6 @@ public class Ezim
 		}
 
 		Ezim.localAddresses.trimToSize();
-
-		return;
 	}
 
 	/**
@@ -363,8 +359,6 @@ public class Ezim
 			EzimConf.ezimLocaladdress
 			, Ezim.localAddress.getHostAddress()
 		);
-
-		return;
 	}
 
 	/**
@@ -445,8 +439,6 @@ public class Ezim
 				}
 			}
 		}
-
-		return;
 	}
 
 	/**
@@ -466,8 +458,6 @@ public class Ezim
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 			System.exit(1);
 		}
-
-		return;
 	}
 
 	/**
@@ -481,8 +471,6 @@ public class Ezim
 		(
 			ecfTmp.settings.getProperty(EzimConf.ezimDtxPort)
 		);
-
-		return;
 	}
 
 	/**
@@ -522,8 +510,6 @@ public class Ezim
 
 			ecTmp.write();
 		}
-
-		return;
 	}
 
 	/**
@@ -537,8 +523,6 @@ public class Ezim
 		Ezim.setOperatingNI();
 		Ezim.setLocalDtxPort();
 		Ezim.setLocalName();
-
-		return;
 	}
 
 	// P U B L I C   M E T H O D S -----------------------------------------
@@ -587,7 +571,6 @@ public class Ezim
 				public void run()
 				{
 					EzimMain.getInstance().panic();
-					return;
 				}
 			}
 		);
@@ -595,7 +578,5 @@ public class Ezim
 
 		EzimAckSemantics.sendAllInfo();
 		emTmp.freshPoll();
-
-		return;
 	}
 }

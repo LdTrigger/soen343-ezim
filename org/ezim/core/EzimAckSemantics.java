@@ -421,8 +421,6 @@ public class EzimAckSemantics
 		{
 			EzimAckSemantics.sendAllInfo();
 		}
-
-		return;
 	}
 
 	/**
@@ -445,7 +443,5 @@ public class EzimAckSemantics
 		);
 
 		etpTmp.execute(easTmp);
-
-		return;
 	}
 }

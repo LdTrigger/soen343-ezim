@@ -156,8 +156,6 @@ public class EzimMsgIn
 				)
 			)
 		);
-
-		return;
 	}
 
 	/**
@@ -190,8 +188,6 @@ public class EzimMsgIn
 			EzimConf.ezimmsginSizeH
 			, String.valueOf((int) dmTmp.getHeight())
 		);
-
-		return;
 	}
 
 	/**
@@ -232,27 +228,22 @@ public class EzimMsgIn
 				public void mouseClicked(MouseEvent evtTmp)
 				{
 					jlblOpen_MouseClicked();
-					return;
 				}
 
 				public void mouseEntered(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mouseExited(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mousePressed(MouseEvent evtTmp)
 				{
-					return;
 				}
 
 				public void mouseReleased(MouseEvent evtTmp)
 				{
-					return;
 				}
 			}
 		);
@@ -265,7 +256,6 @@ public class EzimMsgIn
 				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimMsgIn.this.jbtnReply_ActionPerformed();
-					return;
 				}
 			}
 		);
@@ -463,45 +453,36 @@ public class EzimMsgIn
 		glBase.setVerticalGroup(vGrp);
 
 		this.addWindowListener(this);
-
-		return;
 	}
 
 	// W I N D O W   L I S T E N E R ---------------------------------------
 	public void windowActivated(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowClosed(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowClosing(WindowEvent e)
 	{
 		this.saveConf();
-		return;
 	}
 
 	public void windowDeactivated(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowDeiconified(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowIconified(WindowEvent e)
 	{
-		return;
 	}
 
 	public void windowOpened(WindowEvent e)
 	{
-		return;
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------
@@ -530,8 +511,6 @@ public class EzimMsgIn
 
 		this.saveConf();
 		this.dispose();
-
-		return;
 	}
 
 	/**
@@ -542,7 +521,5 @@ public class EzimMsgIn
 		this.jspMsg.setViewportView(this.jtaMsg);
 		this.jbtnReply.setEnabled(true);
 		this.jlblOpen.setVisible(false);
-
-		return;
 	}
 }
