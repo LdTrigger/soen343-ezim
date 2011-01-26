@@ -88,7 +88,6 @@ public class EzimConf
 
 	public final static String ezimsoundEnabled = "ezimsound.enabled";
 
-	private FileOutputStream fos = null;
 	private FileLock flock = null;
 
 	// configuration item
@@ -384,17 +383,15 @@ public class EzimConf
 	 */
 	private void prepareFile()
 	{
-		File fTmp = null;
-
 		try
 		{
 			// prepare directories if necessary
-			fTmp = new File(EzimConf.getConfDir());
+			File fTmp = new File(EzimConf.getConfDir());
 			if (! fTmp.exists() || ! fTmp.isDirectory()) fTmp.mkdirs();
 
-			// lock file
-			this.fos = new FileOutputStream(EzimConf.getConfFilename());
-			this.flock = this.fos.getChannel().tryLock();
+			// attempt lock
+			this.flock = new FileOutputStream(EzimConf.getLockFilename())
+				.getChannel().tryLock();
 
 			if (this.flock == null)
 			{
@@ -458,18 +455,33 @@ public class EzimConf
 	}
 
 	/**
+	 * determine the appropriate lock filename
+	 */
+	public static String getLockFilename()
+	{
+		String strSep = System.getProperty("file.separator");
+		StringBuffer sbFName = new StringBuffer();
+
+		sbFName.append(EzimConf.getConfDir());
+		sbFName.append(strSep);
+		sbFName.append(Ezim.appAbbrev);
+		sbFName.append(".lock");
+
+		return sbFName.toString();
+	}
+
+	/**
 	 * write configuration items to the file indicated by the given filename
 	 */
 	public synchronized void write()
 	{
+		FileOutputStream fosTmp = null;
+
 		try
 		{
 			// output configuration to file
-			this.settings.store
-			(
-				this.fos
-				, "--- ezim Configuration File ---"
-			);
+			fosTmp = new FileOutputStream(EzimConf.getConfFilename());
+			this.settings.store(fosTmp, "--- ezim Configuration File ---");
 		}
 		catch(Exception e)
 		{
@@ -479,7 +491,11 @@ public class EzimConf
 		{
 			try
 			{
-				if (this.fos != null) this.fos.flush();
+				if (fosTmp != null)
+				{
+					fosTmp.flush();
+					fosTmp.close();
+				}
 			}
 			catch(Exception e)
 			{
