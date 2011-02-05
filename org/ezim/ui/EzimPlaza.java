@@ -35,8 +35,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimAckSemantics;
@@ -48,6 +46,8 @@ import org.ezim.core.EzimLang;
 import org.ezim.core.EzimPlainDocument;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
+import org.ezim.ui.EzimTextArea;
+import org.ezim.ui.EzimTextField;
 
 public class EzimPlaza
 	extends JFrame
@@ -56,9 +56,9 @@ public class EzimPlaza
 	private static SimpleDateFormat sdfHHmm = new SimpleDateFormat("HH:mm");
 
 	private JPanel jpnlBase;
-	private JTextArea jtaPlaza;
+	private EzimTextArea etaPlaza;
 	private JScrollPane jspPlaza;
-	private JTextField jtfdSpeak;
+	private EzimTextField etfSpeak;
 	private JButton jbtnSpeak;
 
 	// C O N S T R U C T O R -----------------------------------------------
@@ -82,22 +82,22 @@ public class EzimPlaza
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
-		this.jtaPlaza = new JTextArea();
-		this.jtaPlaza.setLineWrap(true);
-		this.jtaPlaza.setWrapStyleWord(true);
-		this.jtaPlaza.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-		this.jtaPlaza.setEditable(false);
+		this.etaPlaza = new EzimTextArea();
+		this.etaPlaza.setLineWrap(true);
+		this.etaPlaza.setWrapStyleWord(true);
+		this.etaPlaza.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		this.etaPlaza.setEditable(false);
 
-		this.jspPlaza = new JScrollPane(this.jtaPlaza);
+		this.jspPlaza = new JScrollPane(this.etaPlaza);
 		this.jspPlaza.setMinimumSize(new Dimension(240, 100));
 
-		this.jtfdSpeak = new JTextField
+		this.etfSpeak = new EzimTextField
 		(
 			new EzimPlainDocument(Ezim.maxAckLength)
 			, ""
 			, 0
 		);
-		this.jtfdSpeak.addActionListener
+		this.etfSpeak.addActionListener
 		(
 			new ActionListener()
 			{
@@ -151,7 +151,7 @@ public class EzimPlaza
 					glBase.createSequentialGroup()
 						.addComponent
 						(
-							this.jtfdSpeak
+							this.etfSpeak
 							, GroupLayout.DEFAULT_SIZE
 							, GroupLayout.PREFERRED_SIZE
 							, Short.MAX_VALUE
@@ -192,7 +192,7 @@ public class EzimPlaza
 			glBase.createParallelGroup(Alignment.BASELINE)
 				.addComponent
 				(
-					this.jtfdSpeak
+					this.etfSpeak
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -255,12 +255,12 @@ public class EzimPlaza
 	 */
 	private void sendSpeech()
 	{
-		String strTmp = this.jtfdSpeak.getText().trim();
+		String strTmp = this.etfSpeak.getText().trim();
 		EzimAckSender easTmp = null;
 
 		if (strTmp.length() > 0)
 		{
-			this.jtfdSpeak.setText("");
+			this.etfSpeak.setText("");
 
 			easTmp = new EzimAckSender
 			(
@@ -292,10 +292,10 @@ public class EzimPlaza
 	 */
 	public void reset()
 	{
-		this.jtaPlaza.setText("");
-		this.jtfdSpeak.setText("");
+		this.etaPlaza.setText("");
+		this.etfSpeak.setText("");
 		this.setVisible(true);
-		this.jtfdSpeak.requestFocusInWindow();
+		this.etfSpeak.requestFocusInWindow();
 	}
 
 	/**
@@ -306,17 +306,17 @@ public class EzimPlaza
 	{
 		if (this.isVisible())
 		{
-			synchronized(this.jtaPlaza)
+			synchronized(this.etaPlaza)
 			{
 				// add contents to the contents text area
-				this.jtaPlaza.append(strContent);
-				this.jtaPlaza.append("\n");
+				this.etaPlaza.append(strContent);
+				this.etaPlaza.append("\n");
 			}
 
 			// update scrollbar position
-			this.jtaPlaza.setCaretPosition
+			this.etaPlaza.setCaretPosition
 			(
-				this.jtaPlaza.getText().length()
+				this.etaPlaza.getText().length()
 			);
 		}
 	}
