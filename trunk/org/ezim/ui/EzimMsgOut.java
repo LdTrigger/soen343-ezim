@@ -49,6 +49,7 @@ import org.ezim.core.EzimMsgSender;
 import org.ezim.core.EzimPlainDocument;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimTextArea;
+import org.ezim.ui.EzimTextField;
 
 public class EzimMsgOut
 	extends JFrame
@@ -61,7 +62,7 @@ public class EzimMsgOut
 	private JTextField jtfdName;
 	private JButton jbtnDelLastRcpt;
 	private JLabel jlblSbj;
-	private JTextField jtfdSbj;
+	private EzimTextField etfSbj;
 	private EzimTextArea etaMsg;
 	private JScrollPane jspMsg;
 	private JButton jbtnSend;
@@ -132,7 +133,7 @@ public class EzimMsgOut
 
 		if (strSbj != null && strSbj.length() > 0)
 		{
-			this.jtfdSbj.setText(strSbj);
+			this.etfSbj.setText(strSbj);
 		}
 
 		if (strIn != null && strIn.length() > 0)
@@ -157,7 +158,7 @@ public class EzimMsgOut
 		}
 		else
 		{
-			this.jtfdSbj.requestFocusInWindow();
+			this.etfSbj.requestFocusInWindow();
 		}
 	}
 
@@ -278,7 +279,7 @@ public class EzimMsgOut
 
 		this.jlblSbj = new JLabel(EzimLang.Subject);
 
-		this.jtfdSbj = new JTextField
+		this.etfSbj = new EzimTextField
 		(
 			new EzimPlainDocument(Ezim.dtxBufLen)
 			, ""
@@ -353,7 +354,7 @@ public class EzimMsgOut
 								)
 								.addComponent
 								(
-									this.jtfdSbj
+									this.etfSbj
 									, GroupLayout.DEFAULT_SIZE
 									, GroupLayout.PREFERRED_SIZE
 									, Short.MAX_VALUE
@@ -429,7 +430,7 @@ public class EzimMsgOut
 				)
 				.addComponent
 				(
-					this.jtfdSbj
+					this.etfSbj
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -587,7 +588,7 @@ public class EzimMsgOut
 	 */
 	public String getSubject()
 	{
-		return this.jtfdSbj.getText();
+		return this.etfSbj.getText();
 	}
 
 	/**

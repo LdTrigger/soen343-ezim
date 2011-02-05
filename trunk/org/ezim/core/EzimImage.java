@@ -44,6 +44,9 @@ public class EzimImage
 	// EzimMain buttons
 	public static ImageIcon[] icoButtons;
 
+	// EzimTextEditingMenu icons
+	public static ImageIcon[] icoTxtPops;
+
 	/**
 	 * retrieve icons from the sprite sheet specified by the given URL
 	 * @param strUrl URL of the sprite sheet
@@ -209,6 +212,14 @@ public class EzimImage
 		(
 			"org/ezim/image/icon/buttons.png"
 			, 32, 32
+		);
+
+		// load text editing pop-up menu icons
+		EzimImage.icoTxtPops = EzimImage.loadIcons
+		(
+			"org/ezim/image/icon/txtpopicons.png"
+			, 32, 32
+			, 16, 16
 		);
 	}
 }

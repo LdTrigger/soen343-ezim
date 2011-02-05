@@ -118,6 +118,12 @@ public class EzimLang
 	public static String ShowHide;
 	public static String Exit;
 
+	// text editing pop-up menu
+	public static String Cut;
+	public static String Copy;
+	public static String Paste;
+	public static String SelectAll;
+
 	/**
 	 * initialize public static class members
 	 */
@@ -223,6 +229,12 @@ public class EzimLang
 			// tray icon pop-up menu
 			ShowHide = rbTmp.getString("ShowHide");
 			Exit = rbTmp.getString("Exit");
+
+			// text editing pop-up menu
+			Cut = rbTmp.getString("Cut");
+			Copy = rbTmp.getString("Copy");
+			Paste = rbTmp.getString("Paste");
+			SelectAll = rbTmp.getString("SelectAll");
 		}
 		catch(Exception e)
 		{

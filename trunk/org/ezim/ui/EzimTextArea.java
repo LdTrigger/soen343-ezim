@@ -28,20 +28,80 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.text.Document;
+
+import org.ezim.ui.EzimTextEditingPopupMenu;
 
 public class EzimTextArea
 	extends JTextArea
 {
 	// C O N S T R U C T O R -----------------------------------------------
 	/**
-	 * construct a textarea for message windows
+	 * construct a new EzimTextArea
 	 */
 	public EzimTextArea()
 	{
 		super();
-		this.initCtrls();
+		this.init();
 	}
 
+	/**
+	 * construct a new EzimTextArea
+	 * @param docIn the model to use
+	 */
+	public EzimTextArea(Document docIn)
+	{
+		super(docIn);
+		this.init();
+	}
+
+	/**
+	 * construct a new EzimTextArea
+	 * @param docIn the model to use
+	 * @param strIn the text to display
+	 * @param iRows the number of rows
+	 * @param iCols the number of columns
+	 */
+	public EzimTextArea(Document docIn, String strIn, int iRows, int iCols)
+	{
+		super(docIn, strIn, iRows, iCols);
+		this.init();
+	}
+
+	/**
+	 * construct a new EzimTextArea
+	 * @param iRows the number of rows
+	 * @param iCols the number of columns
+	 */
+	public EzimTextArea(int iRows, int iCols)
+	{
+		super(iRows, iCols);
+		this.init();
+	}
+
+	/**
+	 * construct a new EzimTextArea
+	 * @param strIn the text to display
+	 */
+	public EzimTextArea(String strIn)
+	{
+		super(strIn);
+		this.init();
+	}
+
+	/**
+	 * construct a new EzimTextArea
+	 * @param strIn the text to display
+	 * @param iRows the number of rows
+	 * @param iCols the number of columns
+	 */
+	public EzimTextArea(String strIn, int iRows, int iCols)
+	{
+		super(strIn, iRows, iCols);
+		this.init();
+	}
+
+	// P R I V A T E -------------------------------------------------------
 	/**
 	 * initialize controls with modified key mappings
 	 */
@@ -109,5 +169,14 @@ public class EzimTextArea
 
 		// R E M A P   I N S E R T   T A B   K E Y -------------------------
 		this.getInputMap().put(ksCtrlTab, "insert-tab");
+	}
+
+	/**
+	 * initialize features specific to EzimTextArea
+	 */
+	private void init()
+	{
+		this.initCtrls();
+		new EzimTextEditingPopupMenu(this);
 	}
 }

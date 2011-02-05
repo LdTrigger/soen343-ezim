@@ -39,7 +39,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.ezim.core.EzimConf;
@@ -49,6 +48,8 @@ import org.ezim.core.EzimLang;
 import org.ezim.core.EzimSound;
 import org.ezim.ui.EzimMain;
 import org.ezim.ui.EzimMsgOut;
+import org.ezim.ui.EzimTextArea;
+import org.ezim.ui.EzimTextField;
 
 public class EzimMsgIn
 	extends JFrame
@@ -57,13 +58,13 @@ public class EzimMsgIn
 	private EzimContact ec;
 
 	private JPanel jpnlBase;
+	private JLabel jlblRcvAt;
+	private JTextField jtfdRcvAt;
 	private JLabel jlblName;
 	private JTextField jtfdName;
 	private JLabel jlblSbj;
-	private JTextField jtfdSbj;
-	private JLabel jlblRcvAt;
-	private JTextField jtfdRcvAt;
-	private JTextArea jtaMsg;
+	private EzimTextField etfSbj;
+	private EzimTextArea etaMsg;
 	private JScrollPane jspMsg;
 	private JLabel jlblOpen;
 	private JButton jbtnReply;
@@ -82,7 +83,7 @@ public class EzimMsgIn
 		this.initGUI();
 
 		if (strSbj != null && strSbj.length() > 0)
-			this.jtfdSbj.setText(strSbj);
+			this.etfSbj.setText(strSbj);
 
 		this.jtfdRcvAt.setText
 		(
@@ -90,7 +91,7 @@ public class EzimMsgIn
 		);
 
 		if (strIn != null && strIn.length() > 0)
-			this.jtaMsg.setText(strIn);
+			this.etaMsg.setText(strIn);
 
 		this.setIconImage(EzimImage.icoButtons[0].getImage());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -196,26 +197,26 @@ public class EzimMsgIn
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
-		this.jlblName = new JLabel(EzimLang.From);
-
-		this.jtfdName = new JTextField(this.ec.getName());
-		this.jtfdName.setEnabled(false);
-
 		this.jlblRcvAt = new JLabel(EzimLang.ReceivedAt);
 
 		this.jtfdRcvAt = new JTextField();
 		this.jtfdRcvAt.setEditable(false);
 
+		this.jlblName = new JLabel(EzimLang.From);
+
+		this.jtfdName = new JTextField(this.ec.getName());
+		this.jtfdName.setEnabled(false);
+
 		this.jlblSbj = new JLabel(EzimLang.Subject);
 
-		this.jtfdSbj = new JTextField();
-		this.jtfdSbj.setEditable(false);
+		this.etfSbj = new EzimTextField();
+		this.etfSbj.setEditable(false);
 
-		this.jtaMsg = new JTextArea();
-		this.jtaMsg.setLineWrap(true);
-		this.jtaMsg.setWrapStyleWord(true);
-		this.jtaMsg.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-		this.jtaMsg.setEditable(false);
+		this.etaMsg = new EzimTextArea();
+		this.etaMsg.setLineWrap(true);
+		this.etaMsg.setWrapStyleWord(true);
+		this.etaMsg.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		this.etaMsg.setEditable(false);
 
 		this.jspMsg = new JScrollPane();
 		this.jspMsg.setMinimumSize(new Dimension(240, 100));
@@ -323,7 +324,7 @@ public class EzimMsgIn
 								)
 								.addComponent
 								(
-									this.jtfdSbj
+									this.etfSbj
 									, GroupLayout.DEFAULT_SIZE
 									, GroupLayout.PREFERRED_SIZE
 									, Short.MAX_VALUE
@@ -411,7 +412,7 @@ public class EzimMsgIn
 				)
 				.addComponent
 				(
-					this.jtfdSbj
+					this.etfSbj
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -495,9 +496,9 @@ public class EzimMsgIn
 		alEc.add(this.ec);
 
 		StringBuilder sbSbj = new StringBuilder();
-		if (! this.jtfdSbj.getText().startsWith("Re: "))
+		if (! this.etfSbj.getText().startsWith("Re: "))
 			sbSbj.append("Re: ");
-		sbSbj.append(this.jtfdSbj.getText());
+		sbSbj.append(this.etfSbj.getText());
 
 		StringBuilder sbMsg = new StringBuilder();
 		sbMsg.append("\n\n----- ");
@@ -505,7 +506,7 @@ public class EzimMsgIn
 		sbMsg.append(" ");
 		sbMsg.append(ec.getName());
 		sbMsg.append(" -----\n");
-		sbMsg.append(this.jtaMsg.getText());
+		sbMsg.append(this.etaMsg.getText());
 
 		new EzimMsgOut(alEc, sbSbj.toString(), sbMsg.toString());
 
@@ -518,7 +519,7 @@ public class EzimMsgIn
 	 */
 	private void jlblOpen_MouseClicked()
 	{
-		this.jspMsg.setViewportView(this.jtaMsg);
+		this.jspMsg.setViewportView(this.etaMsg);
 		this.jbtnReply.setEnabled(true);
 		this.jlblOpen.setVisible(false);
 	}
