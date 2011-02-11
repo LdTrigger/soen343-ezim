@@ -49,7 +49,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
@@ -70,6 +69,7 @@ import org.ezim.ui.EzimFileOut;
 import org.ezim.ui.EzimMsgOut;
 import org.ezim.ui.EzimPlaza;
 import org.ezim.ui.EzimPreferences;
+import org.ezim.ui.EzimTextField;
 
 public class EzimMain
 	extends JFrame
@@ -79,7 +79,7 @@ public class EzimMain
 
 	private JPanel jpnlBase;
 	private JComboBox jcbState;
-	private JTextField jtfdStatus;
+	private EzimTextField etfStatus;
 	private JLabel jlblAbout;
 	private JList jlstContacts;
 	private JScrollPane jspContacts;
@@ -316,30 +316,30 @@ public class EzimMain
 		);
 		this.jcbState.setToolTipText(EzimLang.ClickToChangeState);
 
-		this.jtfdStatus = new JTextField
+		this.etfStatus = new EzimTextField
 		(
 			new EzimPlainDocument(Ezim.maxAckLength)
 			, EzimContact.STATUS_DEFAULT
 			, 1
 		);
-		this.jtfdStatus.setEnabled(false);
-		this.jtfdStatus.addActionListener
+		this.etfStatus.setEnabled(false);
+		this.etfStatus.addActionListener
 		(
 			new ActionListener()
 			{
 				public void actionPerformed(ActionEvent evtTmp)
 				{
-					EzimMain.this.jtfdStatus_ActionPerformed();
+					EzimMain.this.etfStatus_ActionPerformed();
 				}
 			}
 		);
-		this.jtfdStatus.addMouseListener
+		this.etfStatus.addMouseListener
 		(
 			new MouseListener()
 			{
 				public void mouseClicked(MouseEvent evtTmp)
 				{
-					EzimMain.this.jtfdStatus_MouseClicked();
+					EzimMain.this.etfStatus_MouseClicked();
 				}
 
 				public void mouseEntered(MouseEvent evtTmp)
@@ -359,7 +359,7 @@ public class EzimMain
 				}
 			}
 		);
-		this.jtfdStatus.addFocusListener
+		this.etfStatus.addFocusListener
 		(
 			new FocusListener()
 			{
@@ -369,11 +369,11 @@ public class EzimMain
 
 				public void focusLost(FocusEvent evtTmp)
 				{
-					EzimMain.this.jtfdStatus_FocusLost();
+					EzimMain.this.etfStatus_FocusLost();
 				}
 			}
 		);
-		this.jtfdStatus.setToolTipText(EzimLang.ClickToChangeStatus);
+		this.etfStatus.setToolTipText(EzimLang.ClickToChangeStatus);
 
 		this.jlstContacts = new JList(EzimContactList.getInstance());
 		this.jlstContacts.setCellRenderer(new EzimContactListRenderer());
@@ -549,7 +549,7 @@ public class EzimMain
 						)
 						.addComponent
 						(
-							this.jtfdStatus
+							this.etfStatus
 							, GroupLayout.DEFAULT_SIZE
 							, GroupLayout.PREFERRED_SIZE
 							, Short.MAX_VALUE
@@ -631,7 +631,7 @@ public class EzimMain
 		(
 			SwingUtilities.VERTICAL
 			, this.jcbState
-			, this.jtfdStatus
+			, this.etfStatus
 		);
 
 		vGrp.addGroup
@@ -646,7 +646,7 @@ public class EzimMain
 				)
 				.addComponent
 				(
-					this.jtfdStatus
+					this.etfStatus
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -899,7 +899,7 @@ public class EzimMain
 	/**
 	 * status textfield event handler
 	 */
-	private void jtfdStatus_ActionPerformed()
+	private void etfStatus_ActionPerformed()
 	{
 		this.changeStatus();
 	}
@@ -907,16 +907,16 @@ public class EzimMain
 	/**
 	 * status textfield event handler on mouse click
 	 */
-	private void jtfdStatus_MouseClicked()
+	private void etfStatus_MouseClicked()
 	{
-		this.jtfdStatus.setEnabled(true);
-		this.jtfdStatus.grabFocus();	// maybe inappropriate
+		this.etfStatus.setEnabled(true);
+		this.etfStatus.grabFocus();	// maybe inappropriate
 	}
 
 	/**
 	 * status textfield event handler on focus lost
 	 */
-	private void jtfdStatus_FocusLost()
+	private void etfStatus_FocusLost()
 	{
 		this.changeStatus();
 	}
@@ -1220,14 +1220,13 @@ public class EzimMain
 	 */
 	private void changeStatus()
 	{
-		String strTmp = this.jtfdStatus.getText().trim();
+		String strTmp = this.etfStatus.getText();
 		EzimAckSender easTmp = null;
 
 		if (strTmp.length() == 0)
-		{
 			strTmp = EzimContact.STATUS_DEFAULT;
-			this.jtfdStatus.setText(strTmp);
-		}
+
+		this.etfStatus.setText(strTmp);
 
 		if (! this.localStatus.equals(strTmp))
 		{
@@ -1240,7 +1239,7 @@ public class EzimMain
 			EzimThreadPool.getInstance().execute(easTmp);
 		}
 
-		this.jtfdStatus.setEnabled(false);
+		this.etfStatus.setEnabled(false);
 	}
 
 	/**

@@ -179,4 +179,14 @@ public class EzimTextArea
 		this.initCtrls();
 		new EzimTextEditingPopupMenu(this);
 	}
+
+	// P U B L I C ---------------------------------------------------------
+	/**
+	 * get the text contents contained
+	 * @return text contents
+	 */
+	public String getText()
+	{
+		return super.getText().trim() + "\n";
+	}
 }
