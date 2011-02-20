@@ -31,7 +31,7 @@ public class EzimTextField
 	// C O N S T R U C T O R -----------------------------------------------
 	/**
 	 * construct a new EzimTextField
-	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 * @param bPopup whether to add a pop-up menu to this component
 	 */
 	public EzimTextField(boolean bPopup)
 	{
@@ -44,7 +44,7 @@ public class EzimTextField
 	 * @param docIn the text storage to use
 	 * @param strIn the initial string to display
 	 * @param iCols the number of columns for calculating preferred width
-	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 * @param bPopup whether to add a pop-up menu to this component
 	 */
 	public EzimTextField
 	(
@@ -61,7 +61,7 @@ public class EzimTextField
 	/**
 	 * construct a new EzimTextField
 	 * @param iCols the number of columns for calculating preferred width
-	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 * @param bPopup whether to add a pop-up menu to this component
 	 */
 	public EzimTextField(int iCols, boolean bPopup)
 	{
@@ -72,7 +72,7 @@ public class EzimTextField
 	/**
 	 * construct a new EzimTextField
 	 * @param strIn the initial string to display
-	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 * @param bPopup whether to add a pop-up menu to this component
 	 */
 	public EzimTextField(String strIn, boolean bPopup)
 	{
@@ -84,7 +84,7 @@ public class EzimTextField
 	 * construct a new EzimTextField
 	 * @param strIn the initial string to display
 	 * @param iCols the number of columns for calculating preferred width
-	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 * @param bPopup whether to add a pop-up menu to this component
 	 */
 	public EzimTextField(String strIn, int iCols, boolean bPopup)
 	{
@@ -147,7 +147,7 @@ public class EzimTextField
 	// P R I V A T E -------------------------------------------------------
 	/**
 	 * initialize features specific to EzimTextField
-	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 * @param bPopup whether to add a pop-up menu to this component
 	 */
 	private void init(boolean bPopup)
 	{
