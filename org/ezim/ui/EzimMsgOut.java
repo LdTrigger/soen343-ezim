@@ -121,6 +121,16 @@ public class EzimMsgOut
 	{
 		this.initGUI();
 
+		this.setIconImage(EzimImage.icoButtons[0].getImage());
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setTitle(EzimLang.OutgoingMessage);
+
+		this.loadConf();
+		this.pack();
+		this.setMinimumSize(this.getSize());
+
+		this.setVisible(true);
+
 		if (alIn != null && alIn.size() > 0)
 		{
 			this.contacts = alIn;
@@ -141,16 +151,6 @@ public class EzimMsgOut
 			this.etaMsg.setText(strIn);
 			this.etaMsg.setCaretPosition(0);
 		}
-
-		this.setIconImage(EzimImage.icoButtons[0].getImage());
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setTitle(EzimLang.OutgoingMessage);
-		this.pack();
-		this.setMinimumSize(this.getSize());
-
-		this.loadConf();
-
-		this.setVisible(true);
 
 		if (strSbj != null && strSbj.length() > 0)
 		{

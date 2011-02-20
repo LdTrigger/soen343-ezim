@@ -82,6 +82,14 @@ public class EzimMsgIn
 
 		this.initGUI();
 
+		this.setIconImage(EzimImage.icoButtons[0].getImage());
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setTitle(EzimLang.IncomingMessage);
+
+		this.loadConf();
+		this.pack();
+		this.setMinimumSize(this.getSize());
+
 		if (strSbj != null && strSbj.length() > 0)
 			this.etfSbj.setText(strSbj);
 
@@ -92,14 +100,6 @@ public class EzimMsgIn
 
 		if (strIn != null && strIn.length() > 0)
 			this.etaMsg.setText(strIn);
-
-		this.setIconImage(EzimImage.icoButtons[0].getImage());
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setTitle(EzimLang.IncomingMessage);
-		this.pack();
-		this.setMinimumSize(this.getSize());
-
-		this.loadConf();
 
 		this.setVisible(true);
 		this.toFront();
