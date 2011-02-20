@@ -170,19 +170,14 @@ public class EzimTextEditingPopupMenu
 	 */
 	public void reveal(Component cmpIn, int iX, int iY)
 	{
-		this.miCut.setEnabled
-		(
-			this.jtcParent.isEnabled() && this.jtcParent.isEditable()
-		);
+		boolean bEnabled = this.jtcParent.isEnabled();
+		boolean bEditable = this.jtcParent.isEditable();
+		boolean bSelected = null != this.jtcParent.getSelectedText();
 
-		this.miCopy.setEnabled(this.jtcParent.isEnabled());
-
-		this.miPaste.setEnabled
-		(
-			this.jtcParent.isEnabled() && this.jtcParent.isEditable()
-		);
-
-		this.miSelectAll.setEnabled(this.jtcParent.isEnabled());
+		this.miCut.setEnabled(bEnabled && bEditable && bSelected);
+		this.miCopy.setEnabled(bEnabled && bSelected);
+		this.miPaste.setEnabled(bEnabled && bEditable);
+		this.miSelectAll.setEnabled(bEnabled);
 
 		this.show(cmpIn, iX, iY);
 	}
