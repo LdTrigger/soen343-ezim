@@ -31,6 +31,69 @@ public class EzimTextField
 	// C O N S T R U C T O R -----------------------------------------------
 	/**
 	 * construct a new EzimTextField
+	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 */
+	public EzimTextField(boolean bPopup)
+	{
+		super();
+		this.init(bPopup);
+	}
+
+	/**
+	 * construct a new EzimTextField
+	 * @param docIn the text storage to use
+	 * @param strIn the initial string to display
+	 * @param iCols the number of columns for calculating preferred width
+	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 */
+	public EzimTextField
+	(
+		Document docIn
+		, String strIn
+		, int iCols
+		, boolean bPopup
+	)
+	{
+		super(docIn, strIn, iCols);
+		this.init(bPopup);
+	}
+
+	/**
+	 * construct a new EzimTextField
+	 * @param iCols the number of columns for calculating preferred width
+	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 */
+	public EzimTextField(int iCols, boolean bPopup)
+	{
+		super(iCols);
+		this.init(bPopup);
+	}
+
+	/**
+	 * construct a new EzimTextField
+	 * @param strIn the initial string to display
+	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 */
+	public EzimTextField(String strIn, boolean bPopup)
+	{
+		super(strIn);
+		this.init(bPopup);
+	}
+
+	/**
+	 * construct a new EzimTextField
+	 * @param strIn the initial string to display
+	 * @param iCols the number of columns for calculating preferred width
+	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 */
+	public EzimTextField(String strIn, int iCols, boolean bPopup)
+	{
+		super(strIn, iCols);
+		this.init(bPopup);
+	}
+
+	/**
+	 * construct a new EzimTextField and add a pop-up menu to it
 	 */
 	public EzimTextField()
 	{
@@ -39,7 +102,7 @@ public class EzimTextField
 	}
 
 	/**
-	 * construct a new EzimTextField
+	 * construct a new EzimTextField and add a pop-up menu to it
 	 * @param docIn the text storage to use
 	 * @param strIn the initial string to display
 	 * @param iCols the number of columns for calculating preferred width
@@ -51,7 +114,7 @@ public class EzimTextField
 	}
 
 	/**
-	 * construct a new EzimTextField
+	 * construct a new EzimTextField and add a pop-up menu to it
 	 * @param iCols the number of columns for calculating preferred width
 	 */
 	public EzimTextField(int iCols)
@@ -61,7 +124,7 @@ public class EzimTextField
 	}
 
 	/**
-	 * construct a new EzimTextField
+	 * construct a new EzimTextField and add a pop-up menu to it
 	 * @param strIn the initial string to display
 	 */
 	public EzimTextField(String strIn)
@@ -71,7 +134,7 @@ public class EzimTextField
 	}
 
 	/**
-	 * construct a new EzimTextField
+	 * construct a new EzimTextField and add a pop-up menu to it
 	 * @param strIn the initial string to display
 	 * @param iCols the number of columns for calculating preferred width
 	 */
@@ -84,10 +147,20 @@ public class EzimTextField
 	// P R I V A T E -------------------------------------------------------
 	/**
 	 * initialize features specific to EzimTextField
+	 * @param boolean bPopup whether to add a pop-up menu to this component
+	 */
+	private void init(boolean bPopup)
+	{
+		if (bPopup) new EzimTextEditingPopupMenu(this);
+	}
+
+	/**
+	 * initialize features specific to EzimTextField and add a pop-up menu
+	 * to it
 	 */
 	private void init()
 	{
-		new EzimTextEditingPopupMenu(this);
+		this.init(true);
 	}
 
 	// P U B L I C ---------------------------------------------------------
