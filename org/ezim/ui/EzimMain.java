@@ -321,6 +321,7 @@ public class EzimMain
 			new EzimPlainDocument(Ezim.maxAckLength)
 			, EzimContact.STATUS_DEFAULT
 			, 1
+			, false
 		);
 		this.etfStatus.setEnabled(false);
 		this.etfStatus.addActionListener
