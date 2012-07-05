@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -418,6 +419,8 @@ public class EzimDtxSemantics
 	{
 		if (efoIn != null)
 		{
+			efoIn.setSocket(sckIn);
+
 			EzimDtxSemantics.initByteArrays();
 
 			byte[] bTmp = new byte[Ezim.dtxBufLen];
@@ -467,6 +470,10 @@ public class EzimDtxSemantics
 
 				// make sure everything is sent
 				osTmp.flush();
+			}
+			catch(SocketException se)
+			{
+				// connection closed by remote
 			}
 			finally
 			{
@@ -609,6 +616,10 @@ public class EzimDtxSemantics
 
 			fosTmp.flush();
 		}
+		catch(SocketException se)
+		{
+			// connection closed by remote
+		}
 		finally
 		{
 			if (fosTmp != null) fosTmp.close();
@@ -686,6 +697,8 @@ public class EzimDtxSemantics
 
 					if (efiTmp != null)
 					{
+						efiTmp.setSocket(sckIn);
+
 						EzimDtxSemantics.getFile
 						(
 							isData

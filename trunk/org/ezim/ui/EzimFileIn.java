@@ -25,6 +25,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.Socket;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -44,6 +45,8 @@ import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimSound;
 import org.ezim.core.EzimThreadPool;
+import org.ezim.core.EzimLogger;
+import org.ezim.ui.EzimMain;
 
 public class EzimFileIn
 	extends JFrame
@@ -52,6 +55,7 @@ public class EzimFileIn
 	private File file;
 	private String id;
 	private String remoteFName;
+	private Socket socket;
 
 	private JPanel jpnlBase;
 	private JLabel jlblName;
@@ -109,6 +113,7 @@ public class EzimFileIn
 		this.ec = ecIn;
 		this.id = strId;
 		this.remoteFName = strRemoteFName;
+		this.socket = null;
 
 		this.initGUI();
 
@@ -608,6 +613,19 @@ public class EzimFileIn
 	 */
 	private void jbtnClose_ActionPerformed()
 	{
+		if (this.socket != null && ! this.socket.isClosed())
+		{
+			try
+			{
+				this.socket.close();
+			}
+			catch(Exception e)
+			{
+				EzimMain.showError(e.getMessage());
+				EzimLogger.getInstance().warning(e.getMessage(), e);
+			}
+		}
+
 		this.saveConf();
 		this.unregDispose();
 	}
@@ -629,6 +647,15 @@ public class EzimFileIn
 	public File getFile()
 	{
 		return this.file;
+	}
+
+	/**
+	 * set network socket to associate with this user interface
+	 * @param sckIn network socket to associate with
+	 */
+	public void setSocket(Socket sckIn)
+	{
+		if (this.socket == null) this.socket = sckIn;
 	}
 
 	/**
