@@ -1,6 +1,6 @@
 /*
     EZ Intranet Messenger
-    Copyright (C) 2007 - 2011  Chun-Kwong Wong <chunkwong.wong@gmail.com>
+    Copyright (C) 2007 - 2012  Chun-Kwong Wong
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
