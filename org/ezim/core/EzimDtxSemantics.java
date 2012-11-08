@@ -221,17 +221,17 @@ public class EzimDtxSemantics
 		{
 			EzimDtxSemantics.initByteArrays();
 
-			int iSize = 0;
+			long lSize = 0;
 
 			FileInputStream fisTmp = null;
 
 			try
 			{
 				OutputStream osTmp = sckIn.getOutputStream();
+				lSize = efoIn.getFile().length();
 				fisTmp = new FileInputStream(efoIn.getFile());
-				iSize = fisTmp.available();
 
-				efoIn.setSize(iSize);
+				efoIn.setSize(lSize);
 
 				// create necessary header fields
 				Hashtable<String, String> htTmp
@@ -260,7 +260,7 @@ public class EzimDtxSemantics
 				htTmp.put
 				(
 					EzimDtxSemantics.HDR_FILESIZE
-					, Integer.toString(iSize)
+					, Long.toString(lSize)
 				);
 
 				// output header in bytes
@@ -425,16 +425,16 @@ public class EzimDtxSemantics
 
 			byte[] bTmp = new byte[Ezim.dtxBufLen];
 			int iTmp = 0;
-			int iCnt = 0;
-			int iCLen = 0;
+			long lCnt = 0;
+			long lCLen = 0;
 
 			FileInputStream fisTmp = null;
 
 			try
 			{
 				OutputStream osTmp = sckIn.getOutputStream();
+				lCLen = efoIn.getFile().length();
 				fisTmp = new FileInputStream(efoIn.getFile());
-				iCLen = fisTmp.available();
 
 				// create necessary header fields
 				Hashtable<String, String> htTmp
@@ -448,7 +448,7 @@ public class EzimDtxSemantics
 				htTmp.put
 				(
 					EzimDtxSemantics.HDR_CLEN
-					, Integer.toString(iCLen)
+					, Long.toString(lCLen)
 				);
 				htTmp.put
 				(
@@ -459,13 +459,13 @@ public class EzimDtxSemantics
 				// output header in bytes
 				sendHeaderBytes(sckIn, htTmp);
 
-				efoIn.setSize(iCLen);
+				efoIn.setSize(lCLen);
 				// convert and output file contents in bytes
 				while(! ((iTmp = fisTmp.read(bTmp)) < 0))
 				{
 					osTmp.write(bTmp, 0, iTmp);
-					iCnt += iTmp;
-					efoIn.setProgressed(iCnt);
+					lCnt += iTmp;
+					efoIn.setProgressed(lCnt);
 				}
 
 				// make sure everything is sent
@@ -488,9 +488,9 @@ public class EzimDtxSemantics
 
 				String strSysMsg = null;
 
-				if (iCnt < iCLen)
+				if (lCnt < lCLen)
 					strSysMsg = EzimLang.TransmissionAbortedByRemote;
-				else if (iCnt == iCLen)
+				else if (lCnt == lCLen)
 					strSysMsg = EzimLang.Done;
 
 				efoIn.endProgress(strSysMsg);
@@ -585,14 +585,14 @@ public class EzimDtxSemantics
 	/**
 	 * retrieve file from incoming socket
 	 * @param isIn input stream which streams raw incoming data
-	 * @param iCLen length of the file in bytes
+	 * @param lCLen length of the file in bytes
 	 * @param efiIn the associated incoming file window
 	 * @return
 	 */
 	private static void getFile
 	(
 		InputStream isIn
-		, int iCLen
+		, long lCLen
 		, EzimFileIn efiIn
 	)
 		throws Exception
@@ -600,18 +600,18 @@ public class EzimDtxSemantics
 		FileOutputStream fosTmp = null;
 		byte[] bBuf = new byte[Ezim.dtxBufLen];
 		int iTmp = 0;
-		int iCnt = 0;
+		long lCnt = 0;
 
 		try
 		{
 			fosTmp = new FileOutputStream(efiIn.getFile());
-			efiIn.setSize(iCLen);
+			efiIn.setSize(lCLen);
 
-			while(! ((iTmp = isIn.read(bBuf)) < 0) && iCnt < iCLen)
+			while(! ((iTmp = isIn.read(bBuf)) < 0) && lCnt < lCLen)
 			{
 				fosTmp.write(bBuf, 0, iTmp);
-				iCnt += iTmp;
-				efiIn.setProgressed(iCnt);
+				lCnt += iTmp;
+				efiIn.setProgressed(lCnt);
 			}
 
 			fosTmp.flush();
@@ -626,9 +626,9 @@ public class EzimDtxSemantics
 
 			String strSysMsg = null;
 
-			if (iCnt < iCLen)
+			if (lCnt < lCLen)
 				strSysMsg = EzimLang.TransmissionAbortedByRemote;
-			else if (iCnt == iCLen)
+			else if (lCnt == lCLen)
 				strSysMsg = EzimLang.Done;
 
 			efiIn.endProgress(strSysMsg);
@@ -647,7 +647,7 @@ public class EzimDtxSemantics
 		InputStream isData = null;
 		String strCType = null;
 		String strCLen = null;
-		int iCLen = 0;
+		long lCLen = 0;
 
 		try
 		{
@@ -672,7 +672,7 @@ public class EzimDtxSemantics
 			}
 			else
 			{
-				iCLen = Integer.parseInt(strCLen);
+				lCLen = Long.parseLong(strCLen);
 
 				// receive incoming message
 				if (strCType.equals(EzimDtxSemantics.CTYPE_MSG))
@@ -682,7 +682,14 @@ public class EzimDtxSemantics
 						EzimDtxSemantics.HDR_SBJ
 					);
 
-					EzimDtxSemantics.getMsg(isData, iCLen, ecIn, strSbj);
+					// XXX:2012-11-09:message length check needed?
+					EzimDtxSemantics.getMsg
+					(
+						isData
+						, (int) lCLen
+						, ecIn
+						, strSbj
+					);
 				}
 				// receive incoming file
 				else if (strCType.equals(EzimDtxSemantics.CTYPE_FILE))
@@ -702,7 +709,7 @@ public class EzimDtxSemantics
 						EzimDtxSemantics.getFile
 						(
 							isData
-							, iCLen
+							, lCLen
 							, efiTmp
 						);
 					}
@@ -732,7 +739,7 @@ public class EzimDtxSemantics
 
 					// this is just a previewed size and may different from
 					// the actual one
-					efiTmp.setSize(Integer.parseInt(strFilesize));
+					efiTmp.setSize(Long.parseLong(strFilesize));
 				}
 				// receive incoming file confirmation
 				else if (strCType.equals(EzimDtxSemantics.CTYPE_FILECFM))
