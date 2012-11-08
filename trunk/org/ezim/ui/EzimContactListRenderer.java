@@ -81,7 +81,7 @@ public class EzimContactListRenderer
 		}
 		else
 		{
-			if (Ezim.localAddresses.contains(ecTmp.getAddress()))
+			if (Ezim.isLocalAddress(ecTmp.getAddress()))
 				this.setBackground(clrSelf);
 			else
 				this.setBackground(jlstIn.getBackground());

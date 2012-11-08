@@ -25,6 +25,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
@@ -139,22 +140,19 @@ public class EzimContactTransferHandler
 	{
 		EzimContactTransferable ectOut = null;
 
-		if (jcIn instanceof JList)
+		if
+		(
+			jcIn instanceof JList
+			&& ((JList<?>) jcIn).getModel() instanceof EzimContactList
+		)
 		{
-			JList jlstEc = (JList) jcIn;
+				@SuppressWarnings("unchecked")
+				JList<EzimContact> jlstEc = (JList<EzimContact>) jcIn;
 
-			if (jlstEc.getModel() instanceof EzimContactList)
-			{
-				ArrayList<EzimContact> alTmp = new ArrayList<EzimContact>();
-				Object obj[] = jlstEc.getSelectedValues();
-
-				for(int iCnt = 0; iCnt < obj.length; iCnt ++)
-				{
-					alTmp.add((EzimContact) obj[iCnt]);
-				}
-
-				ectOut = new EzimContactTransferable(alTmp);
-			}
+				ectOut = new EzimContactTransferable
+				(
+					jlstEc.getSelectedValuesList()
+				);
 		}
 
 		return ectOut;
@@ -267,16 +265,16 @@ public class EzimContactTransferHandler
 	public class EzimContactTransferable
 		implements Transferable
 	{
-		ArrayList list;
+		ArrayList<EzimContact> list;
 
 		// C O N S T R U C T O R -------------------------------------------
 		/**
 		 * construct an instance of the contact transferable class
 		 * @param alIn list of data to be transferred
 		 */
-		public EzimContactTransferable(ArrayList alIn)
+		public EzimContactTransferable(List<EzimContact> lIn)
 		{
-			this.list = alIn;
+			this.list = new ArrayList<EzimContact>(lIn);
 		}
 
 		// P U B L I C -----------------------------------------------------

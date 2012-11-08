@@ -57,14 +57,15 @@ public class EzimLocaleListRenderer
 		, boolean blnCellHasFocus
 	)
 	{
-		Locale lclTmp = (Locale) objIn;
+		if (objIn instanceof Locale)
+		{
+			Locale lclTmp = (Locale) objIn;
 
-		// display name of the locale
-		this.setText(lclTmp.getDisplayName(lclTmp));
-
-		this.setEnabled(jlstIn.isEnabled());
-		this.setFont(jlstIn.getFont());
-		this.setOpaque(true);
+			this.setText(lclTmp.getDisplayName(lclTmp));
+			this.setEnabled(jlstIn.isEnabled());
+			this.setFont(jlstIn.getFont());
+			this.setOpaque(true);
+		}
 
 		return this;
 	}

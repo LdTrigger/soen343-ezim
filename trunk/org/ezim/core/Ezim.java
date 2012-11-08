@@ -25,7 +25,11 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.List;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -97,12 +101,12 @@ public class Ezim
 	};
 
 	// regexp for validating IPv4 address
-	public static final String regexpIPv4
+	public final static String regexpIPv4
 		= "\\A(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)"
 		+ "(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}\\z";
 
 	// regexp for validating IPv6 address
-	public static final String regexpIPv6
+	public final static String regexpIPv6
 		= "\\A("
 		+ "(?:(?:[0-9A-Fa-f]{1,4}\\:){1,1}(?:\\:[0-9A-Fa-f]{1,4}){1,6})"
 		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,2}(?:\\:[0-9A-Fa-f]{1,4}){1,5})"
@@ -126,21 +130,23 @@ public class Ezim
 		;
 
 	// regexp for validating RGB color
-	public static final String regexpRgb = "\\A[0-9A-Fa-f]{6}\\z";
+	public final static String regexpRgb = "\\A[0-9A-Fa-f]{6}\\z";
 
 	// regexp for validating boolean values
-	public static final String regexpBool = "\\A(true|false)\\z";
+	public final static String regexpBool = "\\A(true|false)\\z";
 
 	// regexp for validating integer values
-	public static final String regexpInt = "\\A([1-9][0-9]*|0)\\z";
+	public final static String regexpInt = "\\A([1-9][0-9]*|0)\\z";
 
 	// valid state icon sizes
-	public static final Integer[] stateiconSizes = {16, 24, 32};
+	public final static Integer[] stateiconSizes = {16, 24, 32};
 
 	// P R O P E R T I E S -------------------------------------------------
-	public static ArrayList<InetAddress> localAddresses = null;
+	private static Hashtable<NetworkInterface, List<InetAddress>>
+		nifs = null;
+
+	public static NetworkInterface localNI = null;
 	public static InetAddress localAddress = null;
-	public static NetworkInterface operatingNI = null;
 	public static int localDtxPort = 0;
 	public static String localName = null;
 
@@ -168,15 +174,13 @@ public class Ezim
 	}
 
 	/**
-	 * initialize local addresses
+	 * scan all network interfaces
 	 */
-	private static void initLocalAddresses()
+	private static void scanNetworkInterfaces()
 	{
 		Enumeration<NetworkInterface> enumNI = null;
 		NetworkInterface niTmp = null;
-		Enumeration<InetAddress> enumIA = null;
-		InetAddress iaTmp = null;
-		Ezim.localAddresses = new ArrayList<InetAddress>();
+		Ezim.nifs = new Hashtable<NetworkInterface, List<InetAddress>>();
 
 		try
 		{
@@ -188,20 +192,14 @@ public class Ezim
 
 				if (! niTmp.isUp() || ! niTmp.supportsMulticast()) continue;
 
-				enumIA = niTmp.getInetAddresses();
-
-				while(enumIA.hasMoreElements())
-				{
-					iaTmp = enumIA.nextElement();
-
-					if
+				Ezim.nifs.put
+				(
+					niTmp
+					, new ArrayList<InetAddress>
 					(
-						! Ezim.localAddresses.contains(iaTmp)
+						Collections.list(niTmp.getInetAddresses())
 					)
-					{
-						Ezim.localAddresses.add(iaTmp);
-					}
-				}
+				);
 			}
 		}
 		catch(Exception e)
@@ -209,8 +207,6 @@ public class Ezim
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 			System.exit(1);
 		}
-
-		Ezim.localAddresses.trimToSize();
 	}
 
 	/**
@@ -244,46 +240,92 @@ public class Ezim
 	}
 
 	/**
-	 * set local address
+	 * set local network interface and address
 	 */
-	private static void setLocalAddress()
+	private static void setLocalNiAddress()
 	{
 		EzimConf ecTmp = EzimConf.getInstance();
+		String strLclNi = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimLocalni
+		);
 		String strLclAdr = ecTmp.settings.getProperty
 		(
 			EzimConf.ezimLocaladdress
 		);
 
-		if (strLclAdr != null && strLclAdr.length() > 0)
+		if (strLclNi != null && strLclNi.length() > 0)
 		{
-			Ezim.localAddress = Ezim.parseInetAddress(strLclAdr);
+			for(NetworkInterface niTmp: Ezim.nifs.keySet())
+				if (strLclNi.equals(niTmp.getName()))
+					Ezim.localNI = niTmp;
 
-			if (! Ezim.localAddresses.contains(Ezim.localAddress))
+			if (null == Ezim.localNI)
+			{
+				EzimLogger.getInstance().warning
+				(
+					"Invalid network interface setting \"" + strLclNi
+						+ "\"."
+				);
+			}
+		}
+
+		if
+		(
+			strLclAdr != null && strLclAdr.length() > 0
+			&& Ezim.localNI != null
+		)
+		{
+			List<InetAddress> lTmp = Ezim.nifs.get(Ezim.localNI);
+
+			for(InetAddress iaTmp: lTmp)
+				if (strLclAdr.equals(iaTmp.getHostAddress()))
+					Ezim.localAddress = iaTmp;
+
+			if (null == Ezim.localAddress)
 			{
 				EzimLogger.getInstance().warning
 				(
 					"Invalid local address setting \"" + strLclAdr
 						+ "\"."
 				);
-
-				Ezim.localAddress = null;
 			}
+		}
+
+		// confine our selectable network interfaces
+		Collection<List<InetAddress>> cTmp = null;
+
+		if (null == Ezim.localNI)
+		{
+			cTmp = Ezim.nifs.values();
+		}
+		else
+		{
+			cTmp = new ArrayList<List<InetAddress>>();
+
+			((ArrayList<List<InetAddress>>) cTmp).add
+			(
+				Ezim.nifs.get(Ezim.localNI)
+			);
 		}
 
 		if (Ezim.localAddress == null)
 		{
 			// try to pick an IPv6 non-loopback and non-link-locale address
-			for(InetAddress iaTmp: Ezim.localAddresses)
+			for(List<InetAddress> lTmp: cTmp)
 			{
-				if
-				(
-					iaTmp instanceof Inet6Address
-					&& ! iaTmp.isLoopbackAddress()
-					&& ! iaTmp.isLinkLocalAddress()
-				)
+				for(InetAddress iaTmp: lTmp)
 				{
-					Ezim.localAddress = iaTmp;
-					break;
+					if
+					(
+						iaTmp instanceof Inet6Address
+						&& ! iaTmp.isLoopbackAddress()
+						&& ! iaTmp.isLinkLocalAddress()
+					)
+					{
+						Ezim.localAddress = iaTmp;
+						break;
+					}
 				}
 			}
 		}
@@ -291,16 +333,19 @@ public class Ezim
 		// try to pick a non-loopback and non-link-locale address
 		if (Ezim.localAddress == null)
 		{
-			for(InetAddress iaTmp: Ezim.localAddresses)
+			for(List<InetAddress> lTmp: cTmp)
 			{
-				if
-				(
-					! iaTmp.isLoopbackAddress()
-					&& ! iaTmp.isLinkLocalAddress()
-				)
+				for(InetAddress iaTmp: lTmp)
 				{
-					Ezim.localAddress = iaTmp;
-					break;
+					if
+					(
+						! iaTmp.isLoopbackAddress()
+						&& ! iaTmp.isLinkLocalAddress()
+					)
+					{
+						Ezim.localAddress = iaTmp;
+						break;
+					}
 				}
 			}
 		}
@@ -308,16 +353,19 @@ public class Ezim
 		// try to pick an IPv6 non-loopback address
 		if (Ezim.localAddress == null)
 		{
-			for(InetAddress iaTmp: Ezim.localAddresses)
+			for(List<InetAddress> lTmp: cTmp)
 			{
-				if
-				(
-					iaTmp instanceof Inet6Address
-					&& ! iaTmp.isLoopbackAddress()
-				)
+				for(InetAddress iaTmp: lTmp)
 				{
-					Ezim.localAddress = iaTmp;
-					break;
+					if
+					(
+						iaTmp instanceof Inet6Address
+						&& ! iaTmp.isLoopbackAddress()
+					)
+					{
+						Ezim.localAddress = iaTmp;
+						break;
+					}
 				}
 			}
 		}
@@ -325,12 +373,15 @@ public class Ezim
 		// try to pick a non-loopback address
 		if (Ezim.localAddress == null)
 		{
-			for(InetAddress iaTmp: Ezim.localAddresses)
+			for(List<InetAddress> lTmp: cTmp)
 			{
-				if (! iaTmp.isLoopbackAddress())
+				for(InetAddress iaTmp: lTmp)
 				{
-					Ezim.localAddress = iaTmp;
-					break;
+					if (! iaTmp.isLoopbackAddress())
+					{
+						Ezim.localAddress = iaTmp;
+						break;
+					}
 				}
 			}
 		}
@@ -338,12 +389,15 @@ public class Ezim
 		// try to pick an IPv6 address
 		if (Ezim.localAddress == null)
 		{
-			for(InetAddress iaTmp: Ezim.localAddresses)
+			for(List<InetAddress> lTmp: cTmp)
 			{
-				if (iaTmp instanceof Inet6Address)
+				for(InetAddress iaTmp: lTmp)
 				{
-					Ezim.localAddress = iaTmp;
-					break;
+					if (iaTmp instanceof Inet6Address)
+					{
+						Ezim.localAddress = iaTmp;
+						break;
+					}
 				}
 			}
 		}
@@ -351,8 +405,19 @@ public class Ezim
 		// pick the first available address when all failed
 		if (Ezim.localAddress == null)
 		{
-			Ezim.localAddress = Ezim.localAddresses.get(0);
+			Ezim.localAddress = Ezim.nifs.elements().nextElement().get(0);
 		}
+
+		if (null == Ezim.localNI)
+			for(NetworkInterface niTmp: Ezim.nifs.keySet())
+				if (Ezim.nifs.get(niTmp).contains(Ezim.localAddress))
+					Ezim.localNI = niTmp;
+
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimLocalni
+			, Ezim.localNI.getName()
+		);
 
 		ecTmp.settings.setProperty
 		(
@@ -448,7 +513,7 @@ public class Ezim
 	{
 		try
 		{
-			Ezim.operatingNI = NetworkInterface.getByInetAddress
+			Ezim.localNI = NetworkInterface.getByInetAddress
 			(
 				Ezim.localAddress
 			);
@@ -517,8 +582,8 @@ public class Ezim
 	 */
 	private static void initNetConf()
 	{
-		Ezim.initLocalAddresses();
-		Ezim.setLocalAddress();
+		Ezim.scanNetworkInterfaces();
+		Ezim.setLocalNiAddress();
 		Ezim.setMcGroup();
 		Ezim.setOperatingNI();
 		Ezim.setLocalDtxPort();
@@ -526,6 +591,37 @@ public class Ezim
 	}
 
 	// P U B L I C   M E T H O D S -----------------------------------------
+	/**
+	 * get all available network interfaces
+	 */
+	public static Collection<NetworkInterface> getLocalNIs()
+	{
+		return (Collection<NetworkInterface>)
+			Ezim.nifs.keySet();
+	}
+
+	/**
+	 * get all addresses associated with the specified network interface
+	 * @param network interface to retrieve addresses
+	 */
+	public static List<InetAddress> getNIAddresses(NetworkInterface niIn)
+	{
+		return Ezim.nifs.get(niIn);
+	}
+
+	/**
+	 * check if the address provided is local
+	 * @param iaIn address to check against
+	 */
+	public static boolean isLocalAddress(InetAddress iaIn)
+	{
+		for(List<InetAddress> lAddrs: Ezim.nifs.values())
+			for(InetAddress iaddr: lAddrs)
+				if (iaIn.equals(iaddr)) return true;
+
+		return false;
+	}
+
 	/**
 	 * the main function which gets executed
 	 * @param arrArgs command line arguments

@@ -21,20 +21,20 @@
 package org.ezim.ui;
 
 import java.awt.Component;
-import java.net.InetAddress;
+import java.net.NetworkInterface;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-public class EzimLocalAddressListRenderer
+public class EzimLocalNIListRenderer
 	extends JLabel
 	implements ListCellRenderer
 {
 	// C O N S T R U C T O R -----------------------------------------------
 	/**
-	 * construct a list cell renderer for local address display
+	 * construct a list cell renderer for local network interface display
 	 */
-	public EzimLocalAddressListRenderer()
+	public EzimLocalNIListRenderer()
 	{
 	}
 
@@ -57,11 +57,11 @@ public class EzimLocalAddressListRenderer
 		, boolean blnCellHasFocus
 	)
 	{
-		if (objIn instanceof InetAddress)
+		if (objIn instanceof NetworkInterface)
 		{
-			InetAddress iaTmp = (InetAddress) objIn;
+			NetworkInterface niTmp = (NetworkInterface) objIn;
 
-			this.setText(iaTmp.getHostAddress());
+			this.setText(niTmp.getName());
 			this.setEnabled(jlstIn.isEnabled());
 			this.setFont(jlstIn.getFont());
 			this.setOpaque(true);
