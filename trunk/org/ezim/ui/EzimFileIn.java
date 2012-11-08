@@ -56,6 +56,7 @@ public class EzimFileIn
 	private String id;
 	private String remoteFName;
 	private Socket socket;
+	private long filesize;
 
 	private JPanel jpnlBase;
 	private JLabel jlblName;
@@ -669,21 +670,22 @@ public class EzimFileIn
 
 	/**
 	 * set value of the file size textfield
-	 * @param iIn value to be set
+	 * @param lIn value to be set
 	 */
-	public void setSize(int iIn)
+	public void setSize(long lIn)
 	{
-		this.jtfdSize.setText(Integer.toString(iIn));
-		this.jpbProgress.setMaximum(iIn);
+		this.filesize = lIn;
+		this.jtfdSize.setText(Long.toString(this.filesize));
+		this.jpbProgress.setMaximum(100);
 	}
 
 	/**
 	 * set value of the progress bar
-	 * @param iIn value to be set
+	 * @param lIn value to be set
 	 */
-	public void setProgressed(int iIn)
+	public void setProgressed(long lIn)
 	{
-		this.jpbProgress.setValue(iIn);
+		this.jpbProgress.setValue((int) (lIn / (this.filesize / 100)));
 	}
 
 	/**
