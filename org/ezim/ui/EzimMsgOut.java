@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -55,7 +56,7 @@ public class EzimMsgOut
 	extends JFrame
 	implements WindowListener
 {
-	private ArrayList<EzimContact> contacts;
+	private List<EzimContact> contacts;
 
 	private JPanel jpnlBase;
 	private JLabel jlblName;
@@ -75,7 +76,7 @@ public class EzimMsgOut
 	{
 		this.init
 		(
-			(ArrayList<EzimContact>) null
+			(List<EzimContact>) null
 			, (String) null
 			, (String) null
 		);
@@ -83,38 +84,38 @@ public class EzimMsgOut
 
 	/**
 	 * construct an instance of the outgoing message window
-	 * @param alIn contacts of the message recipients
+	 * @param lIn contacts of the message recipients
 	 */
-	public EzimMsgOut(ArrayList<EzimContact> alIn)
+	public EzimMsgOut(List<EzimContact> lIn)
 	{
-		this.init(alIn, (String) null, (String) null);
+		this.init(lIn, (String) null, (String) null);
 	}
 
 	/**
 	 * construct an instance of the outgoing message window
-	 * @param alIn contacts of the message recipients
+	 * @param lIn contacts of the message recipients
 	 * @param strSbj preset subject line
 	 * @param strIn preset message body
 	 */
 	public EzimMsgOut
 	(
-		ArrayList<EzimContact> alIn
+		List<EzimContact> lIn
 		, String strSbj
 		, String strIn
 	)
 	{
-		this.init(alIn, strSbj, strIn);
+		this.init(lIn, strSbj, strIn);
 	}
 
 	/**
 	 * initialize class members and GUI
-	 * @param alIn contacts of the message recipients
+	 * @param lIn contacts of the message recipients
 	 * @param strSbj preset subject line
 	 * @param strIn preset message body
 	 */
 	private void init
 	(
-		ArrayList<EzimContact> alIn
+		List<EzimContact> lIn
 		, String strSbj
 		, String strIn
 	)
@@ -131,9 +132,9 @@ public class EzimMsgOut
 
 		this.setVisible(true);
 
-		if (alIn != null && alIn.size() > 0)
+		if (lIn != null && lIn.size() > 0)
 		{
-			this.contacts = alIn;
+			this.contacts = new ArrayList<EzimContact>(lIn);
 			this.updateContactNames();
 		}
 		else
@@ -552,15 +553,15 @@ public class EzimMsgOut
 	// P U B L I C   M E T H O D -------------------------------------------
 	/**
 	 * add contacts to the recipient list
-	 * @param alIn contacts to be added
+	 * @param lIn contacts to be added
 	 */
-	public void addContacts(ArrayList<EzimContact> alIn)
+	public void addContacts(List<EzimContact> lIn)
 	{
 		if (this.contacts != null)
 		{
 			synchronized(this.contacts)
 			{
-				for(EzimContact ecTmp: alIn)
+				for(EzimContact ecTmp: lIn)
 				{
 					if (! this.contacts.contains(ecTmp))
 					{
@@ -577,7 +578,7 @@ public class EzimMsgOut
 	 * get contacts of the recipients
 	 * @return contacts of the recipients
 	 */
-	public ArrayList<EzimContact> getContacts()
+	public List<EzimContact> getContacts()
 	{
 		return this.contacts;
 	}

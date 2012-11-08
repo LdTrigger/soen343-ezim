@@ -32,14 +32,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -81,7 +85,7 @@ public class EzimMain
 	private JComboBox jcbState;
 	private EzimTextField etfStatus;
 	private JLabel jlblAbout;
-	private JList jlstContacts;
+	private JList<EzimContact> jlstContacts;
 	private JScrollPane jspContacts;
 	private JButton jbtnMsg;
 	private JButton jbtnFtx;
@@ -299,18 +303,20 @@ public class EzimMain
 	/**
 	 * initialize GUI components
 	 */
+	@SuppressWarnings("unchecked")
 	private void initGUI()
 	{
 		// C O M P O N E N T S ---------------------------------------------
-		this.jcbState = new JComboBox(EzimImage.icoStates);
+		this.jcbState = new JComboBox<ImageIcon>(EzimImage.icoStates);
 		this.jcbState.setEditable(false);
-		this.jcbState.addActionListener
+		this.jcbState.addItemListener
 		(
-			new ActionListener()
+			new ItemListener()
 			{
-				public void actionPerformed(ActionEvent evtTmp)
+				public void itemStateChanged(ItemEvent evtTmp)
 				{
-					EzimMain.this.jcbState_ActionPerformed();
+					if (ItemEvent.SELECTED == evtTmp.getStateChange())
+						EzimMain.this.jcbState_StateChanged();
 				}
 			}
 		);
@@ -376,7 +382,10 @@ public class EzimMain
 		);
 		this.etfStatus.setToolTipText(EzimLang.ClickToChangeStatus);
 
-		this.jlstContacts = new JList(EzimContactList.getInstance());
+		this.jlstContacts = new JList<EzimContact>
+		(
+			EzimContactList.getInstance()
+		);
 		this.jlstContacts.setCellRenderer(new EzimContactListRenderer());
 		this.jlstContacts.setSelectionMode
 		(
@@ -892,7 +901,7 @@ public class EzimMain
 	/**
 	 * state combobox event handler
 	 */
-	private void jcbState_ActionPerformed()
+	private void jcbState_StateChanged()
 	{
 		this.changeState(this.jcbState.getSelectedIndex());
 	}
@@ -935,23 +944,12 @@ public class EzimMain
 	 */
 	private void openMsgOut()
 	{
-		Object obj[] = this.jlstContacts.getSelectedValues();
+		List<EzimContact> lTmp = this.jlstContacts.getSelectedValuesList();
 
-		if (obj != null && obj.length > 0)
-		{
-			ArrayList<EzimContact> alTmp = new ArrayList<EzimContact>();
-
-			for(int iCnt = 0; iCnt < obj.length; iCnt ++)
-			{
-				alTmp.add((EzimContact) obj[iCnt]);
-			}
-
-			new EzimMsgOut(alTmp);
-		}
-		else
-		{
+		if (lTmp.isEmpty())
 			new EzimMsgOut();
-		}
+		else
+			new EzimMsgOut(lTmp);
 	}
 
 	/**
@@ -975,9 +973,9 @@ public class EzimMain
 	 */
 	private void jbtnFtx_ActionPerformed()
 	{
-		Object obj[] = this.jlstContacts.getSelectedValues();
+		List<EzimContact> lTmp = this.jlstContacts.getSelectedValuesList();
 
-		if (obj != null && obj.length == 1)
+		if (lTmp.size() == 1)
 		{
 			EzimConf econf = EzimConf.getInstance();
 			EzimContact ecTmp

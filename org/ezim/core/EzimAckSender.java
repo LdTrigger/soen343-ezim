@@ -105,7 +105,7 @@ public class EzimAckSender implements Runnable
 				);
 
 				EzimAckSender.ms = new MulticastSocket(iMcPort);
-				EzimAckSender.ms.setNetworkInterface(Ezim.operatingNI);
+				EzimAckSender.ms.setNetworkInterface(Ezim.localNI);
 				EzimAckSender.ms.setReuseAddress(true);
 				EzimAckSender.ms.setTimeToLive(Ezim.ttl);
 

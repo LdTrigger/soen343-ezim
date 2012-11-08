@@ -24,6 +24,7 @@ import java.awt.event.WindowEvent;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -57,8 +58,8 @@ public class EzimMsgSender implements Runnable
 	 */
 	public void run()
 	{
-		ArrayList<EzimContact> alEc = this.emo.getContacts();
-		final ArrayList<EzimContact> alNg
+		List<EzimContact> alEc = this.emo.getContacts();
+		final List<EzimContact> lNg
 			= new ArrayList<EzimContact>(alEc);
 		final String sbj = this.emo.getSubject();
 		final String msg = this.emo.getBody();
@@ -110,10 +111,10 @@ public class EzimMsgSender implements Runnable
 
 							EzimDtxSemantics.sendMsg(sckOut, sbj, msg);
 
-							synchronized(alNg)
+							synchronized(lNg)
 							{
-								alNg.remove(ec);
-								alNg.trimToSize();
+								lNg.remove(ec);
+								((ArrayList) lNg).trimToSize();
 							}
 						}
 						catch(Exception e)
@@ -161,9 +162,9 @@ public class EzimMsgSender implements Runnable
 		}
 
 		// open outgoing message window for contacts could not sent
-		if (alNg.size() > 0)
+		if (lNg.size() > 0)
 		{
-			EzimMsgOut emoTmp = new EzimMsgOut(alNg, sbj, msg);
+			EzimMsgOut emoTmp = new EzimMsgOut(lNg, sbj, msg);
 
 			EzimMain.showError
 			(

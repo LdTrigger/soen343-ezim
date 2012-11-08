@@ -42,6 +42,7 @@ public class EzimConf
 	public final static String ezimMcPort = "ezim.multicast.port";
 	public final static String ezimDtxPort = "ezim.dtx.port";
 
+	public final static String ezimLocalni = "ezim.localni";
 	public final static String ezimLocaladdress = "ezim.localaddress";
 	public final static String ezimLocalname = "ezim.localname";
 

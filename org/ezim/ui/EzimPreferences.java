@@ -26,8 +26,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -50,6 +56,7 @@ import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 
 import org.ezim.ui.EzimLocalAddressListRenderer;
+import org.ezim.ui.EzimLocalNIListRenderer;
 import org.ezim.ui.EzimLocaleListRenderer;
 import org.ezim.ui.EzimMain;
 
@@ -73,7 +80,8 @@ public class EzimPreferences
 	private JSpinner jspnDtxPort;
 
 	private JLabel jlblLocalAddress;
-	private JComboBox jcbLocalAddress;
+	private JComboBox<NetworkInterface> jcbLocalNI;
+	private JComboBox<InetAddress> jcbLocalAddress;
 
 	private JPanel jpnlDesign;
 
@@ -85,9 +93,9 @@ public class EzimPreferences
 	private JCheckBox jcbAlwaysOnTop;
 	private JCheckBox jcbAutoOpenMsgIn;
 	private JLabel jlblLocale;
-	private JComboBox jcbUserLocale;
+	private JComboBox<Locale> jcbUserLocale;
 	private JLabel jlblStateiconSize;
-	private JComboBox jcbStateiconSize;
+	private JComboBox<Integer> jcbStateiconSize;
 	private JCheckBox jcbEnableSound;
 
 	private JButton jbtnSave;
@@ -116,12 +124,14 @@ public class EzimPreferences
 	private void init()
 	{
 		this.initGUI();
+		this.jcbLocalNI_StateChanged();
 		this.loadCurConf();
 	}
 
 	/**
 	 * initialize GUI components
 	 */
+	@SuppressWarnings("unchecked")
 	private void initGUI()
 	{
 		SpinnerNumberModel mdlMcPort = new SpinnerNumberModel
@@ -195,14 +205,35 @@ public class EzimPreferences
 			new JSpinner.NumberEditor(this.jspnDtxPort, "#")
 		);
 		this.jlblDtxPort.setLabelFor(this.jspnDtxPort);
-		this.jcbLocalAddress = new JComboBox
+		this.jcbLocalNI = new JComboBox<NetworkInterface>
 		(
-			Ezim.localAddresses.toArray()
+			new Vector<NetworkInterface>(Ezim.getLocalNIs())
+		);
+		this.jcbLocalNI.setRenderer
+		(
+			new EzimLocalNIListRenderer()
+		);
+		this.jcbLocalNI.setEditable(false);
+		this.jcbLocalNI.addItemListener
+		(
+			new ItemListener()
+			{
+				public void itemStateChanged(ItemEvent evtTmp)
+				{
+					if (ItemEvent.SELECTED == evtTmp.getStateChange())
+						EzimPreferences.this.jcbLocalNI_StateChanged();
+				}
+			}
+		);
+		this.jcbLocalAddress = new JComboBox<InetAddress>
+		(
+			new Vector<InetAddress>()
 		);
 		this.jcbLocalAddress.setRenderer
 		(
 			new EzimLocalAddressListRenderer()
 		);
+		this.jcbLocalAddress.setEditable(false);
 		this.jlblLocalAddress = new JLabel(EzimLang.LocalAddress);
 		this.jlblLocalAddress.setLabelFor(this.jcbLocalAddress);
 
@@ -213,12 +244,12 @@ public class EzimPreferences
 		this.jcbAlwaysOnTop = new JCheckBox(EzimLang.AlwaysOnTop);
 		this.jcbAutoOpenMsgIn = new JCheckBox(EzimLang.AutoOpenMsgIn);
 		this.jlblLocale = new JLabel(EzimLang.Locale);
-		this.jcbUserLocale = new JComboBox(Ezim.locales);
+		this.jcbUserLocale = new JComboBox<Locale>(Ezim.locales);
 		this.jcbUserLocale.setRenderer(new EzimLocaleListRenderer());
 		this.jcbUserLocale.setEditable(false);
 		this.jlblLocale.setLabelFor(this.jcbUserLocale);
 		this.jlblStateiconSize = new JLabel(EzimLang.StateiconSize);
-		this.jcbStateiconSize = new JComboBox(Ezim.stateiconSizes);
+		this.jcbStateiconSize = new JComboBox<Integer>(Ezim.stateiconSizes);
 		this.jcbStateiconSize.setEditable(false);
 		this.jcbEnableSound = new JCheckBox(EzimLang.EnableSound);
 
@@ -320,12 +351,23 @@ public class EzimPreferences
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 				)
-				.addComponent
+				.addGroup
 				(
-					this.jcbLocalAddress
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
+					glNw.createSequentialGroup()
+						.addComponent
+						(
+							this.jcbLocalNI
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
+						.addComponent
+						(
+							this.jcbLocalAddress
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
 				)
 		);
 
@@ -415,6 +457,13 @@ public class EzimPreferences
 				.addComponent
 				(
 					this.jlblLocalAddress
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jcbLocalNI
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -753,6 +802,24 @@ public class EzimPreferences
 
 		this.jspnDtxPort.setValue(Integer.valueOf(strDtxPort));
 
+		// local network interface
+		String strLocalNI = ecTmp.settings.getProperty
+		(
+			EzimConf.ezimLocalni
+		);
+		iLen = this.jcbLocalNI.getItemCount();
+		for(iCnt = 0; iCnt < iLen; iCnt ++)
+		{
+			if
+			(
+				this.jcbLocalNI.getItemAt(iCnt).getName().equals(strLocalNI)
+			)
+			{
+				this.jcbLocalNI.setSelectedIndex(iCnt);
+				break;
+			}
+		}
+
 		// local address
 		String strLocalAddress = ecTmp.settings.getProperty
 		(
@@ -869,8 +936,9 @@ public class EzimPreferences
 	private boolean verifyCurConf()
 	{
 		boolean blnOut = true;
-		String strHostAddress = ((InetAddress) this.jcbLocalAddress
-			.getSelectedItem()).getHostAddress();
+		String strHostAddress
+			= ((InetAddress) this.jcbLocalAddress.getSelectedItem())
+				.getHostAddress();
 		String strMcGroup = this.jtfdMcGroup.getText();
 
 		if
@@ -961,6 +1029,14 @@ public class EzimPreferences
 			)
 		);
 
+		// local network interface
+		ecTmp.settings.setProperty
+		(
+			EzimConf.ezimLocalni
+			, ((NetworkInterface) this.jcbLocalNI.getSelectedItem())
+				.getName()
+		);
+
 		// local address
 		ecTmp.settings.setProperty
 		(
@@ -1032,6 +1108,22 @@ public class EzimPreferences
 		{
 			this.jtfdMcGroup.setText(Ezim.mcGroupIPv6);
 		}
+	}
+
+	/**
+	 * network interface combobox event handler
+	 */
+	private void jcbLocalNI_StateChanged()
+	{
+		this.jcbLocalAddress.removeAllItems();
+
+		List<InetAddress> lAddrs = Ezim.getNIAddresses
+		(
+			(NetworkInterface) this.jcbLocalNI.getSelectedItem()
+		);
+
+		for(InetAddress iaTmp: lAddrs)
+			this.jcbLocalAddress.addItem(iaTmp);
 	}
 
 	/**

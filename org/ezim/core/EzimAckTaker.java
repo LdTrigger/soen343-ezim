@@ -22,6 +22,7 @@ package org.ezim.core;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 
 import org.ezim.core.Ezim;
@@ -98,27 +99,27 @@ public class EzimAckTaker implements Runnable
 	public void run()
 	{
 		MulticastSocket ms = null;
-		InetAddress ia = null;
+		InetSocketAddress isa = null;
 
 		EzimConf ecTmp = EzimConf.getInstance();
 
 		try
 		{
-			ia = InetAddress.getByName
+			isa = new InetSocketAddress
 			(
-				ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
-			);
-
-			ms = new MulticastSocket
-			(
-				Integer.parseInt
+				InetAddress.getByName
+				(
+					ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
+				)
+				, Integer.parseInt
 				(
 					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
 				)
 			);
-			ms.setNetworkInterface(Ezim.operatingNI);
+
+			ms = new MulticastSocket(isa);
 			ms.setReuseAddress(true);
-			ms.joinGroup(ia);
+			ms.joinGroup(isa, Ezim.localNI);
 
 			this.loop(ms);
 		}
@@ -134,8 +135,8 @@ public class EzimAckTaker implements Runnable
 		{
 			try
 			{
-				if (ia != null && ms != null && ! ms.isClosed())
-					ms.leaveGroup(ia);
+				if (isa != null && ms != null && ! ms.isClosed())
+					ms.leaveGroup(isa, Ezim.localNI);
 			}
 			catch(Exception e)
 			{
