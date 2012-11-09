@@ -64,8 +64,11 @@ public class Ezim
 	public final static int ttl = 1;
 	public final static int inBuf = 4096;
 
-	// maximum textfield lengths (for Ack messages)
+	// maximum textfield lengths (for ACK messages)
 	public final static int maxAckLength = inBuf / 4;
+
+	// maximum textarea lengths (for DTX messages)
+	public final static int maxMsgLength = Integer.MAX_VALUE / 4;
 
 	// direct transmission port and timeout limit (in ms)
 	public final static int dtxPort = 6666;

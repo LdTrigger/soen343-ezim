@@ -48,6 +48,7 @@ import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimMsgSender;
 import org.ezim.core.EzimPlainDocument;
+import org.ezim.core.EzimPlainDocument;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimTextArea;
 import org.ezim.ui.EzimTextField;
@@ -287,7 +288,10 @@ public class EzimMsgOut
 			, 0
 		);
 
-		this.etaMsg = new EzimTextArea();
+		this.etaMsg = new EzimTextArea
+		(
+			new EzimPlainDocument(Ezim.maxMsgLength)
+		);
 		this.etaMsg.setLineWrap(true);
 		this.etaMsg.setWrapStyleWord(true);
 		this.etaMsg.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));

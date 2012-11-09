@@ -41,10 +41,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
+import org.ezim.core.EzimPlainDocument;
 import org.ezim.core.EzimSound;
 import org.ezim.ui.EzimMain;
 import org.ezim.ui.EzimMsgOut;
@@ -212,7 +214,10 @@ public class EzimMsgIn
 		this.etfSbj = new EzimTextField();
 		this.etfSbj.setEditable(false);
 
-		this.etaMsg = new EzimTextArea();
+		this.etaMsg = new EzimTextArea
+		(
+			new EzimPlainDocument(Ezim.maxMsgLength)
+		);
 		this.etaMsg.setLineWrap(true);
 		this.etaMsg.setWrapStyleWord(true);
 		this.etaMsg.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));

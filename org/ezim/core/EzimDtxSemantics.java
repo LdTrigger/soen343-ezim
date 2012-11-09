@@ -677,12 +677,22 @@ public class EzimDtxSemantics
 				// receive incoming message
 				if (strCType.equals(EzimDtxSemantics.CTYPE_MSG))
 				{
+					if (lCLen > (Ezim.maxMsgLength * 4))
+					{
+						throw new EzimException
+						(
+							"Illegally large incoming message from \""
+							+ ecIn.getName()
+							+ " (" + ecIn.getAddress().getHostAddress()
+							+ ")\" detected."
+						);
+					}
+
 					String strSbj = htHdr.get
 					(
 						EzimDtxSemantics.HDR_SBJ
 					);
 
-					// XXX:2012-11-09:message length check needed?
 					EzimDtxSemantics.getMsg
 					(
 						isData
@@ -855,6 +865,10 @@ public class EzimDtxSemantics
 					}
 				}
 			}
+		}
+		catch(EzimException ee)
+		{
+			EzimLogger.getInstance().warning(ee.getMessage(), ee);
 		}
 		catch(Exception e)
 		{
