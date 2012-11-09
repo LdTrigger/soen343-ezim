@@ -98,28 +98,41 @@ public class EzimAckTaker implements Runnable
 	 */
 	public void run()
 	{
+		int iPort = 0;
+		InetAddress iaMc = null;
+		InetSocketAddress isaMc = null;
 		MulticastSocket ms = null;
-		InetSocketAddress isa = null;
 
 		EzimConf ecTmp = EzimConf.getInstance();
 
 		try
 		{
-			isa = new InetSocketAddress
+			iPort = Integer.parseInt
 			(
-				InetAddress.getByName
-				(
-					ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
-				)
-				, Integer.parseInt
-				(
-					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
-				)
+				ecTmp.settings.getProperty(EzimConf.ezimMcPort)
+			);
+			iaMc = InetAddress.getByName
+			(
+				ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
 			);
 
-			ms = new MulticastSocket(isa);
+			isaMc = new InetSocketAddress(iaMc, iPort);
+
+			try
+			{
+				// we have to do this on Linux, or it will cross talk
+				ms = new MulticastSocket(isaMc);
+			}
+			catch(java.net.BindException be)
+			{
+				// Windows and Mac fallback
+				ms = new MulticastSocket();
+			}
+
 			ms.setReuseAddress(true);
-			ms.joinGroup(isa, Ezim.localNI);
+
+			// Review:2012-11-10:this is NO effect on Linux
+			ms.joinGroup(isaMc, Ezim.localNI);
 
 			this.loop(ms);
 		}
@@ -135,8 +148,8 @@ public class EzimAckTaker implements Runnable
 		{
 			try
 			{
-				if (isa != null && ms != null && ! ms.isClosed())
-					ms.leaveGroup(isa, Ezim.localNI);
+				if (isaMc != null && ms != null && ! ms.isClosed())
+					ms.leaveGroup(isaMc, Ezim.localNI);
 			}
 			catch(Exception e)
 			{
