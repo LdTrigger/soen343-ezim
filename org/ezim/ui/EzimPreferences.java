@@ -1,7 +1,7 @@
 /*
     EZ Intranet Messenger
 
-    Copyright (C) 2007 - 2012  Chun-Kwong Wong
+    Copyright (C) 2007 - 2013  Chun-Kwong Wong
     chunkwong.wong@gmail.com
     http://ezim.sourceforge.net/
 
@@ -491,33 +491,6 @@ public class EzimPreferences
 		hDsGrp.addGroup
 		(
 			glDs.createParallelGroup()
-				.addGroup
-				(
-					glDs.createSequentialGroup()
-						.addComponent
-						(
-							this.jlblColorSelf
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-						)
-						.addComponent
-						(
-							this.jccColorSelf
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-						)
-				)
-		);
-
-		glDs.setHorizontalGroup(hDsGrp);
-
-		GroupLayout.SequentialGroup vDsGrp = glDs.createSequentialGroup();
-
-		vDsGrp.addGroup
-		(
-			glDs.createParallelGroup(Alignment.BASELINE)
 				.addComponent
 				(
 					this.jlblColorSelf
@@ -532,6 +505,25 @@ public class EzimPreferences
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 				)
+		);
+
+		glDs.setHorizontalGroup(hDsGrp);
+
+		GroupLayout.SequentialGroup vDsGrp = glDs.createSequentialGroup();
+
+		vDsGrp.addComponent
+		(
+			this.jlblColorSelf
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+		);
+		vDsGrp.addComponent
+		(
+			this.jccColorSelf
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
 		);
 
 		glDs.setVerticalGroup(vDsGrp);
