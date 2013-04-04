@@ -1,7 +1,7 @@
 /*
     EZ Intranet Messenger
 
-    Copyright (C) 2007 - 2012  Chun-Kwong Wong
+    Copyright (C) 2007 - 2013  Chun-Kwong Wong
     chunkwong.wong@gmail.com
     http://ezim.sourceforge.net/
 
@@ -49,7 +49,7 @@ public class Ezim
 	// application name and version
 	public final static String appName = "EZ Intranet Messenger";
 	public final static String appAbbrev = "ezim";
-	public final static String appVer = "1.2.19";
+	public final static String appVer = "1.2.20";
 
 	// thread pool sizes and keep alive time (in minutes)
 	public final static int thPoolSizeCore = 8;
