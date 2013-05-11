@@ -661,7 +661,6 @@ public class Ezim
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 
-/*
 		// execute proper ending processes when JVM shuts down
 		Runtime.getRuntime().addShutdownHook
 		(
@@ -673,7 +672,6 @@ public class Ezim
 				}
 			}
 		);
-*/
 
 		EzimAckSemantics.sendAllInfo();
 		emTmp.freshPoll();
