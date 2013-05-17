@@ -52,7 +52,7 @@ public class EzimDtxTaker implements Runnable
 	{
 		Socket sckTmp = null;
 
-		while(true)
+		while(Ezim.isRunning())
 		{
 			try
 			{
