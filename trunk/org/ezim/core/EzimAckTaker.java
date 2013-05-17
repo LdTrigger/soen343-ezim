@@ -53,7 +53,7 @@ public class EzimAckTaker implements Runnable
 		byte[] arrBytes = new byte[Ezim.inBuf];
 		DatagramPacket dp = new DatagramPacket(arrBytes, arrBytes.length);
 
-		while(true)
+		while(Ezim.isRunning())
 		{
 			try
 			{

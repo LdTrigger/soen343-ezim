@@ -147,6 +147,7 @@ public class Ezim
 	// P R O P E R T I E S -------------------------------------------------
 	private static Hashtable<NetworkInterface, List<InetAddress>>
 		nifs = null;
+	private static boolean running = true;
 
 	public static NetworkInterface localNI = null;
 	public static InetAddress localAddress = null;
@@ -626,6 +627,16 @@ public class Ezim
 	}
 
 	/**
+	 * get whether the program is considered running to determine daemon
+	 * loops should continue to run
+	 * @return true: running; false: not running
+	 */
+	public static boolean isRunning()
+	{
+		return Ezim.running;
+	}
+
+	/**
 	 * the main function which gets executed
 	 * @param arrArgs command line arguments
 	 */
@@ -647,10 +658,14 @@ public class Ezim
 		EzimAckSender.prepareSocket();
 
 		EzimDtxTaker edtTmp = new EzimDtxTaker();
-		etpTmp.execute(edtTmp);
+		Thread thDtx = new Thread(edtTmp);
+		thDtx.setDaemon(true);
+		thDtx.start();
 
 		EzimAckTaker eatTmp = new EzimAckTaker();
-		etpTmp.execute(eatTmp);
+		Thread thAck = new Thread(eatTmp);
+		thAck.setDaemon(true);
+		thAck.start();
 
 		try
 		{
@@ -668,6 +683,7 @@ public class Ezim
 			{
 				public void run()
 				{
+					Ezim.running = false;
 					EzimMain.getInstance().panic();
 				}
 			}
