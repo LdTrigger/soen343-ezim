@@ -164,9 +164,6 @@ public class EzimAckTaker implements Runnable
 			{
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
-
-			// abnormal exit
-			System.exit(1);
 		}
 	}
 }
