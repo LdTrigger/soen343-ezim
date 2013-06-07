@@ -131,9 +131,6 @@ public class EzimDtxTaker implements Runnable
 			{
 				EzimLogger.getInstance().severe(exp.getMessage(), exp);
 			}
-
-			// abnormal exit
-			System.exit(1);
 		}
 	}
 }

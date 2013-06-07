@@ -147,7 +147,7 @@ public class Ezim
 	// P R O P E R T I E S -------------------------------------------------
 	private static Hashtable<NetworkInterface, List<InetAddress>>
 		nifs = null;
-	private static boolean running = true;
+	private static volatile boolean running = true;
 
 	public static NetworkInterface localNI = null;
 	public static InetAddress localAddress = null;
