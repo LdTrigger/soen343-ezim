@@ -53,7 +53,8 @@ public class EzimPlaza
 	extends JFrame
 	implements WindowListener
 {
-	private static SimpleDateFormat sdfHHmm = new SimpleDateFormat("HH:mm");
+	private static SimpleDateFormat sdfHms
+		= new SimpleDateFormat("HH:mm:ss");
 
 	private JPanel jpnlBase;
 	private EzimTextArea etaPlaza;
@@ -340,7 +341,7 @@ public class EzimPlaza
 				// add timestamp
 				sbTmp.append
 				(
-					"[" + EzimPlaza.sdfHHmm.format(new Date()) + "] "
+					"[" + EzimPlaza.sdfHms.format(new Date()) + "] "
 				);
 				// add contact name
 				sbTmp.append
@@ -374,6 +375,11 @@ public class EzimPlaza
 			{
 				StringBuilder sbTmp = new StringBuilder();
 
+				// add timestamp
+				sbTmp.append
+				(
+					"[" + EzimPlaza.sdfHms.format(new Date()) + "] "
+				);
 				// add contact name
 				sbTmp.append
 				(
