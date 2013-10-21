@@ -405,7 +405,7 @@ public class EzimConf
 		catch(Exception e)
 		{
 			EzimLogger.getInstance().severe(e.getMessage(), e);
-			System.exit(1);
+			Ezim.exit(1);
 		}
 	}
 

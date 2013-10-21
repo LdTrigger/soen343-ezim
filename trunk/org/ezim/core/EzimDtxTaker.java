@@ -117,9 +117,7 @@ public class EzimDtxTaker implements Runnable
 		{
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 			EzimMain.showError(EzimLang.DtxPort + "\n" + e.getMessage());
-
-			new EzimPreferences();
-			EzimMain.getInstance().panic();
+			EzimMain.getInstance().panic(1);
 		}
 		finally
 		{

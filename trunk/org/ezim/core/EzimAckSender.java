@@ -59,9 +59,14 @@ public class EzimAckSender implements Runnable
 
 		try
 		{
+			if (null == EzimAckSender.ms)
+				throw new Exception("Ack socket not prepared yet.");
+
 			arrBytes = this.msg.getBytes(Ezim.dtxMsgEnc);
+
 			if (arrBytes.length > Ezim.inBuf)
 				throw new Exception("Ack message too long.");
+
 			dp = new DatagramPacket
 			(
 				arrBytes
@@ -116,11 +121,7 @@ public class EzimAckSender implements Runnable
 			{
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 				EzimMain.showError(EzimLang.McPort + "\n" + e.getMessage());
-
-				new EzimPreferences();
-				EzimMain.getInstance().panic();
-
-				System.exit(1);
+				EzimMain.getInstance().panic(1);
 			}
 		}
 	}

@@ -88,9 +88,9 @@ public class EzimMsgIn
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setTitle(EzimLang.IncomingMessage);
 
-		this.loadConf();
 		this.pack();
 		this.setMinimumSize(this.getSize());
+		this.loadConf();
 
 		if (strSbj != null && strSbj.length() > 0)
 			this.etfSbj.setText(strSbj);
