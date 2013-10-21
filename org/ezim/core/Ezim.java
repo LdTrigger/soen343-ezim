@@ -31,10 +31,12 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.ezim.core.EzimAckSemantics;
+import org.ezim.core.EzimAckSender;
 import org.ezim.core.EzimAckTaker;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimDtxTaker;
@@ -83,6 +85,9 @@ public class Ezim
 	// time interval for the refresh button to be re-enabled after being
 	// clicked (to avoid ACK flooding)
 	public final static int rfhBtnTI = 5000;
+
+	// thread pool termination timeout (in seconds) at exit
+	public final static long exitTimeout = 15;
 
 	// self-entry background color on the contact list
 	public final static int colorSelf = (int) 0xDEEFFF;
@@ -209,7 +214,7 @@ public class Ezim
 		catch(Exception e)
 		{
 			EzimLogger.getInstance().severe(e.getMessage(), e);
-			System.exit(1);
+			Ezim.exit(1);
 		}
 	}
 
@@ -525,7 +530,7 @@ public class Ezim
 		catch(Exception e)
 		{
 			EzimLogger.getInstance().severe(e.getMessage(), e);
-			System.exit(1);
+			Ezim.exit(1);
 		}
 	}
 
@@ -637,6 +642,39 @@ public class Ezim
 	}
 
 	/**
+	 * perform cleanup and exit
+	 * @param iIn exit code
+	 */
+	public static void exit(final int iIn)
+	{
+		if (! Ezim.isRunning()) return;
+
+		Ezim.running = false;
+
+		EzimThreadPool etpTmp = EzimThreadPool.getInstance();
+
+		// acknowledge other peers we're going offline
+		EzimAckSender easOff = new EzimAckSender
+		(
+			EzimAckSemantics.offline()
+		);
+		etpTmp.execute(easOff);
+
+		etpTmp.shutdown();
+
+		try
+		{
+			etpTmp.awaitTermination(Ezim.exitTimeout, TimeUnit.SECONDS);
+		}
+		catch(InterruptedException ie)
+		{
+			EzimLogger.getInstance().warning(ie.getMessage(), ie);
+		}
+
+		System.exit(iIn);
+	}
+
+	/**
 	 * the main function which gets executed
 	 * @param arrArgs command line arguments
 	 */
@@ -683,8 +721,7 @@ public class Ezim
 			{
 				public void run()
 				{
-					Ezim.running = false;
-					EzimMain.getInstance().panic();
+					EzimMain.getInstance().panic(0);
 				}
 			}
 		);

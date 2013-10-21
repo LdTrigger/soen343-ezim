@@ -127,9 +127,9 @@ public class EzimMsgOut
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setTitle(EzimLang.OutgoingMessage);
 
-		this.loadConf();
 		this.pack();
 		this.setMinimumSize(this.getSize());
+		this.loadConf();
 
 		this.setVisible(true);
 

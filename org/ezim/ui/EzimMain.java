@@ -787,10 +787,7 @@ public class EzimMain
 					, String.valueOf(EzimMain.this.isVisible())
 				);
 
-				EzimMain.this.showHide(true);
-				EzimMain.this.saveConfAckOff();
-
-				System.exit(0);
+				EzimMain.this.panic(0);
 			}
 		};
 		miExit.addActionListener(alExit);
@@ -847,7 +844,7 @@ public class EzimMain
 		{
 			EzimLogger.getInstance().severe(awtE.getMessage(), awtE);
 			EzimMain.showError(awtE.getMessage());
-			System.exit(1);
+			Ezim.exit(1);
 		}
 	}
 
@@ -874,11 +871,7 @@ public class EzimMain
 
 	public void windowClosing(WindowEvent e)
 	{
-		if (this.tiMain == null)
-		{
-			this.saveConfAckOff();
-			System.exit(0);
-		}
+		if (this.tiMain == null) this.panic(0);
 	}
 
 	public void windowDeactivated(WindowEvent e)
@@ -1155,8 +1148,6 @@ public class EzimMain
 		// save configurations
 		this.saveConf();
 
-		EzimThreadPool etpTmp = EzimThreadPool.getInstance();
-
 		// change our state back to default, if it was something else
 		// (i.e. leave the plaza if we were there)
 		if (this.localSysState != EzimContact.SYSSTATE_DEFAULT)
@@ -1165,15 +1156,8 @@ public class EzimMain
 			(
 				EzimAckSemantics.sysState(EzimContact.SYSSTATE_DEFAULT)
 			);
-			etpTmp.execute(easDS);
+			EzimThreadPool.getInstance().execute(easDS);
 		}
-
-		// acknowledge other peers we're going offline
-		EzimAckSender easOff = new EzimAckSender
-		(
-			EzimAckSemantics.offline()
-		);
-		etpTmp.execute(easOff);
 	}
 
 	/**
@@ -1268,10 +1252,12 @@ public class EzimMain
 
 	/**
 	 * execute proper ending processes when JVM shuts down unexpectedly
+	 * @param iIn exit code
 	 */
-	public void panic()
+	public void panic(int iIn)
 	{
 		this.showHide(true);
 		this.saveConfAckOff();
+		Ezim.exit(iIn);
 	}
 }

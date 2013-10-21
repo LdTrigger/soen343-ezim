@@ -20,6 +20,7 @@
  */
 package org.ezim.core;
 
+import org.ezim.core.Ezim;
 import org.ezim.core.EzimLogger;
 
 import java.util.ResourceBundle;
@@ -242,7 +243,7 @@ public class EzimLang
 
 			// properties file is obligatory
 			System.out.println(e.getMessage());
-			System.exit(1);
+			Ezim.exit(1);
 		}
 	}
 }
