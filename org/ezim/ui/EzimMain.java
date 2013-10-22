@@ -39,7 +39,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
