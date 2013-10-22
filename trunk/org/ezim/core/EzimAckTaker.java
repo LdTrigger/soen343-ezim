@@ -31,7 +31,6 @@ import org.ezim.core.EzimConf;
 import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
-import org.ezim.ui.EzimPreferences;
 
 public class EzimAckTaker implements Runnable
 {
@@ -118,18 +117,9 @@ public class EzimAckTaker implements Runnable
 
 			isaMc = new InetSocketAddress(iaMc, iPort);
 
-			try
-			{
-				// we have to do this on Linux, or it will cross talk
-				ms = new MulticastSocket(isaMc);
-			}
-			catch(java.net.BindException be)
-			{
-				// Windows and Mac fallback
-				ms = new MulticastSocket();
-			}
-
+			ms = new MulticastSocket(iPort);
 			ms.setReuseAddress(true);
+			ms.setInterface(Ezim.localAddress);
 
 			// Review:2012-11-10:this is NO effect on Linux
 			ms.joinGroup(isaMc, Ezim.localNI);

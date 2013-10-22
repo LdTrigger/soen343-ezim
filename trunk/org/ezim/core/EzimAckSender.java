@@ -28,7 +28,6 @@ import org.ezim.core.Ezim;
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimLogger;
 import org.ezim.ui.EzimMain;
-import org.ezim.ui.EzimPreferences;
 
 public class EzimAckSender implements Runnable
 {

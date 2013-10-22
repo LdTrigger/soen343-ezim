@@ -31,7 +31,6 @@ import org.ezim.core.EzimDtxTakerThread;
 import org.ezim.core.EzimLogger;
 import org.ezim.core.EzimThreadPool;
 import org.ezim.ui.EzimMain;
-import org.ezim.ui.EzimPreferences;
 
 public class EzimDtxTaker implements Runnable
 {
