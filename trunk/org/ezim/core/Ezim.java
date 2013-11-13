@@ -153,11 +153,15 @@ public class Ezim
 	private static Hashtable<NetworkInterface, List<InetAddress>>
 		nifs = null;
 	private static volatile boolean running = true;
+	private static volatile boolean shutdown = false;
 
 	public static NetworkInterface localNI = null;
 	public static InetAddress localAddress = null;
 	public static int localDtxPort = 0;
 	public static String localName = null;
+
+	public static Thread thAckTaker = null;
+	public static Thread thDtxTaker = null;
 
 	// P R I V A T E   M E T H O D S ---------------------------------------
 	/**
@@ -632,24 +636,19 @@ public class Ezim
 	}
 
 	/**
-	 * get whether the program is considered running to determine daemon
-	 * loops should continue to run
-	 * @return true: running; false: not running
-	 */
-	public static boolean isRunning()
-	{
-		return Ezim.running;
-	}
-
-	/**
 	 * perform cleanup and exit
 	 * @param iIn exit code
 	 */
 	public static void exit(final int iIn)
 	{
-		if (! Ezim.isRunning()) return;
+		if (! Ezim.running) return;
 
 		Ezim.running = false;
+
+		Ezim.thAckTaker.interrupt();
+		EzimAckTaker.getInstance().closeSocket();
+		Ezim.thDtxTaker.interrupt();
+		EzimDtxTaker.getInstance().closeSocket();
 
 		EzimThreadPool etpTmp = EzimThreadPool.getInstance();
 
@@ -671,7 +670,7 @@ public class Ezim
 			EzimLogger.getInstance().warning(ie.getMessage(), ie);
 		}
 
-		System.exit(iIn);
+		if (! Ezim.shutdown) System.exit(iIn);
 	}
 
 	/**
@@ -695,15 +694,13 @@ public class Ezim
 
 		EzimAckSender.prepareSocket();
 
-		EzimDtxTaker edtTmp = new EzimDtxTaker();
-		Thread thDtx = new Thread(edtTmp);
-		thDtx.setDaemon(true);
-		thDtx.start();
+		Ezim.thDtxTaker = new Thread(EzimDtxTaker.getInstance());
+		Ezim.thDtxTaker.setDaemon(true);
+		Ezim.thDtxTaker.start();
 
-		EzimAckTaker eatTmp = new EzimAckTaker();
-		Thread thAck = new Thread(eatTmp);
-		thAck.setDaemon(true);
-		thAck.start();
+		Ezim.thAckTaker = new Thread(EzimAckTaker.getInstance());
+		Ezim.thAckTaker.setDaemon(true);
+		Ezim.thAckTaker.start();
 
 		try
 		{
@@ -714,6 +711,7 @@ public class Ezim
 			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 
+/*
 		// execute proper ending processes when JVM shuts down
 		Runtime.getRuntime().addShutdownHook
 		(
@@ -721,10 +719,12 @@ public class Ezim
 			{
 				public void run()
 				{
+					Ezim.shutdown = true;
 					EzimMain.getInstance().panic(0);
 				}
 			}
 		);
+*/
 
 		EzimAckSemantics.sendAllInfo();
 		emTmp.freshPoll();

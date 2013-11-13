@@ -34,28 +34,35 @@ import org.ezim.ui.EzimMain;
 
 public class EzimDtxTaker implements Runnable
 {
+	// P R O P E R T I E S -------------------------------------------------
+	// server socket where DTX data comes from
+	private ServerSocket ssck = null;
+
+	// singleton object
+	private static EzimDtxTaker dtxTaker = null;
+
 	// C O N S T R U C T O R -----------------------------------------------
 	/**
 	 * construct an instance of the DTX taker class
 	 */
-	public EzimDtxTaker()
+	private EzimDtxTaker()
 	{
 	}
 
 	// P R I V A T E -------------------------------------------------------
 	/**
 	 * DTX data receiving loop
-	 * @param ssckIn server socket where DTX data comes from
 	 */
-	private void loop(ServerSocket ssckIn)
+	private void loop()
 	{
+		Thread thTmp = Thread.currentThread();
 		Socket sckTmp = null;
 
-		while(Ezim.isRunning())
+		while(! thTmp.isInterrupted())
 		{
 			try
 			{
-				sckTmp = ssckIn.accept();
+				sckTmp = this.ssck.accept();
 				sckTmp.setSoTimeout(Ezim.dtxTimeout);
 
 				EzimContact ecTmp = EzimContactList.getInstance().getContact
@@ -85,23 +92,33 @@ public class EzimDtxTaker implements Runnable
 			}
 			catch(Exception e)
 			{
-				EzimLogger.getInstance().severe(e.getMessage(), e);
+				if (! thTmp.isInterrupted())
+					EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 	}
 
 	// P U B L I C ---------------------------------------------------------
 	/**
+	 * return an EzimDtxTaker object
+	 */
+	public static EzimDtxTaker getInstance()
+	{
+		if (EzimDtxTaker.dtxTaker == null)
+			EzimDtxTaker.dtxTaker = new EzimDtxTaker();
+
+		return EzimDtxTaker.dtxTaker;
+	}
+
+	/**
 	 * the method to be invoked
 	 */
 	public void run()
 	{
-		ServerSocket ssck = null;
-
 		try
 		{
-			ssck = new ServerSocket();
-			ssck.bind
+			this.ssck = new ServerSocket();
+			this.ssck.bind
 			(
 				new InetSocketAddress
 				(
@@ -110,7 +127,7 @@ public class EzimDtxTaker implements Runnable
 				)
 			);
 
-			this.loop(ssck);
+			this.loop();
 		}
 		catch(Exception e)
 		{
@@ -122,12 +139,29 @@ public class EzimDtxTaker implements Runnable
 		{
 			try
 			{
-				if (ssck != null && ! ssck.isClosed()) ssck.close();
+				if (this.ssck != null && ! this.ssck.isClosed())
+					this.ssck.close();
 			}
 			catch(Exception exp)
 			{
 				EzimLogger.getInstance().severe(exp.getMessage(), exp);
 			}
+		}
+	}
+
+	/**
+	 * close the underlying server socket
+	 */
+	public void closeSocket()
+	{
+		try
+		{
+			if (this.ssck != null && ! this.ssck.isClosed())
+				this.ssck.close();
+		}
+		catch(Exception exp)
+		{
+			EzimLogger.getInstance().severe(exp.getMessage(), exp);
 		}
 	}
 }
