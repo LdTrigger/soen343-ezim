@@ -34,29 +34,38 @@ import org.ezim.ui.EzimMain;
 
 public class EzimAckTaker implements Runnable
 {
+	// P R O P E R T I E S -------------------------------------------------
+	private InetSocketAddress isaMc = null;
+
+	// multicast socket where ACK data comes from
+	private MulticastSocket ms = null;
+
+	// singleton object
+	private static EzimAckTaker ackTaker = null;
+
 	// C O N S T R U C T O R -----------------------------------------------
 	/**
 	 * construct an instance of the ACK taker class
 	 */
-	public EzimAckTaker()
+	private EzimAckTaker()
 	{
 	}
 
 	// P R I V A T E -------------------------------------------------------
 	/**
 	 * ACK data receiving loop
-	 * @param msIn multicast socket where ACK data comes from
 	 */
-	private void loop(MulticastSocket msIn)
+	private void loop()
 	{
+		Thread thTmp = Thread.currentThread();
 		byte[] arrBytes = new byte[Ezim.inBuf];
 		DatagramPacket dp = new DatagramPacket(arrBytes, arrBytes.length);
 
-		while(Ezim.isRunning())
+		while(! thTmp.isInterrupted())
 		{
 			try
 			{
-				msIn.receive(dp);
+				this.ms.receive(dp);
 
 				final InetAddress iaAck = dp.getAddress();
 
@@ -86,12 +95,24 @@ public class EzimAckTaker implements Runnable
 			}
 			catch(Exception e)
 			{
-				EzimLogger.getInstance().severe(e.getMessage(), e);
+				if (! thTmp.isInterrupted())
+					EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
 	}
 
 	// P U B L I C ---------------------------------------------------------
+	/**
+	 * return an EzimAckTaker object
+	 */
+	public static EzimAckTaker getInstance()
+	{
+		if (EzimAckTaker.ackTaker == null)
+			EzimAckTaker.ackTaker = new EzimAckTaker();
+
+		return EzimAckTaker.ackTaker;
+	}
+
 	/**
 	 * the method to be invoked
 	 */
@@ -99,8 +120,6 @@ public class EzimAckTaker implements Runnable
 	{
 		int iPort = 0;
 		InetAddress iaMc = null;
-		InetSocketAddress isaMc = null;
-		MulticastSocket ms = null;
 
 		EzimConf ecTmp = EzimConf.getInstance();
 
@@ -115,16 +134,16 @@ public class EzimAckTaker implements Runnable
 				ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
 			);
 
-			isaMc = new InetSocketAddress(iaMc, iPort);
+			this.isaMc = new InetSocketAddress(iaMc, iPort);
 
-			ms = new MulticastSocket(iPort);
-			ms.setReuseAddress(true);
-			ms.setInterface(Ezim.localAddress);
+			this.ms = new MulticastSocket(iPort);
+			this.ms.setReuseAddress(true);
+			this.ms.setInterface(Ezim.localAddress);
 
 			// Review:2012-11-10:this is NO effect on Linux
-			ms.joinGroup(isaMc, Ezim.localNI);
+			this.ms.joinGroup(this.isaMc, Ezim.localNI);
 
-			this.loop(ms);
+			this.loop();
 		}
 		catch(Exception e)
 		{
@@ -136,8 +155,13 @@ public class EzimAckTaker implements Runnable
 		{
 			try
 			{
-				if (isaMc != null && ms != null && ! ms.isClosed())
-					ms.leaveGroup(isaMc, Ezim.localNI);
+				if
+				(
+					this.isaMc != null
+					&& this.ms != null
+					&& ! this.ms.isClosed()
+				)
+					this.ms.leaveGroup(isaMc, Ezim.localNI);
 			}
 			catch(Exception e)
 			{
@@ -146,12 +170,44 @@ public class EzimAckTaker implements Runnable
 
 			try
 			{
-				if (ms != null && ! ms.isClosed()) ms.close();
+				if (this.ms != null && ! this.ms.isClosed())
+					this.ms.close();
 			}
 			catch(Exception e)
 			{
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
+		}
+	}
+
+	/**
+	 * close the underlying multicast socket
+	 */
+	public void closeSocket()
+	{
+		try
+		{
+			if
+			(
+				this.isaMc != null
+				&& this.ms != null
+				&& ! this.ms.isClosed()
+			)
+				this.ms.leaveGroup(isaMc, Ezim.localNI);
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+		}
+
+		try
+		{
+			if (this.ms != null && ! this.ms.isClosed())
+				this.ms.close();
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
 		}
 	}
 }
