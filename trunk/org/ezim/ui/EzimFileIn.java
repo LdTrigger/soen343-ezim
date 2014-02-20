@@ -1,7 +1,7 @@
 /*
     EZ Intranet Messenger
 
-    Copyright (C) 2007 - 2013  Chun-Kwong Wong
+    Copyright (C) 2007 - 2014  Chun-Kwong Wong
     chunkwong.wong@gmail.com
     http://ezim.sourceforge.net/
 
@@ -685,7 +685,7 @@ public class EzimFileIn
 	 */
 	public void setProgressed(long lIn)
 	{
-		this.jpbProgress.setValue((int) (lIn / (this.filesize / 100)));
+		this.jpbProgress.setValue((int) ((lIn * 100) / this.filesize));
 	}
 
 	/**
