@@ -502,7 +502,10 @@ public class EzimFileOut
 	 */
 	public void setProgressed(long lIn)
 	{
-		this.jpbProgress.setValue((int) ((lIn * 100) / this.filesize));
+		if (0 == this.filesize)
+			this.jpbProgress.setValue(100);
+		else
+			this.jpbProgress.setValue((int) ((lIn * 100) / this.filesize));
 	}
 
 	/**

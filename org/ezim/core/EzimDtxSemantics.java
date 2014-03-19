@@ -460,6 +460,7 @@ public class EzimDtxSemantics
 				sendHeaderBytes(sckIn, htTmp);
 
 				efoIn.setSize(lCLen);
+				efoIn.setProgressed(lCnt);
 				// convert and output file contents in bytes
 				while(! ((iTmp = fisTmp.read(bTmp)) < 0))
 				{
@@ -606,6 +607,7 @@ public class EzimDtxSemantics
 		{
 			fosTmp = new FileOutputStream(efiIn.getFile());
 			efiIn.setSize(lCLen);
+			efiIn.setProgressed(lCnt);
 
 			while(! ((iTmp = isIn.read(bBuf)) < 0) && lCnt < lCLen)
 			{
