@@ -134,7 +134,7 @@ public class Ezim
 		+ "|(?:(?:[0-9A-Fa-f]{1,4}\\:){1,4}(?:\\:[0-9A-Fa-f]{1,4}){1,1}\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
 		+ "|(?:(?:(?:[0-9A-Fa-f]{1,4}\\:){1,5}|\\:)\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
 		+ "|(?:\\:(?:\\:[0-9A-Fa-f]{1,4}){1,5}\\:(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3})"
-		+ ")(?:\\%\\d+)?\\z"
+		+ ")(?:\\%[^\\%]+)?\\z"
 		;
 
 	// regexp for validating RGB color
@@ -169,12 +169,7 @@ public class Ezim
 	 */
 	private static void setDefaultLocale()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-
-		String strLocale = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimUserLocale
-		);
+		String strLocale = EzimConf.UI_USER_LOCALE;
 
 		for(int iCnt = 0; iCnt < Ezim.locales.length; iCnt ++)
 		{
@@ -257,15 +252,8 @@ public class Ezim
 	 */
 	private static void setLocalNiAddress()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-		String strLclNi = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimLocalni
-		);
-		String strLclAdr = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimLocaladdress
-		);
+		String strLclNi = EzimConf.NET_LOCALNI;
+		String strLclAdr = EzimConf.NET_LOCALADDRESS;
 
 		if (strLclNi != null && strLclNi.length() > 0)
 		{
@@ -426,17 +414,11 @@ public class Ezim
 				if (Ezim.nifs.get(niTmp).contains(Ezim.localAddress))
 					Ezim.localNI = niTmp;
 
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimLocalni
-			, Ezim.localNI.getName()
-		);
+		// save local network interface
+		EzimConf.NET_LOCALNI = Ezim.localNI.getName();
 
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimLocaladdress
-			, Ezim.localAddress.getHostAddress()
-		);
+		// save local address
+		EzimConf.NET_LOCALADDRESS = Ezim.localAddress.getHostAddress();
 	}
 
 	/**
@@ -444,11 +426,7 @@ public class Ezim
 	 */
 	private static void setMcGroup()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-		String strMcGroup = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimMcGroup
-		);
+		String strMcGroup = EzimConf.NET_MC_GROUP;
 
 		// set multicast group to default if not yet determined or
 		// inappropriate
@@ -461,11 +439,7 @@ public class Ezim
 			)
 		)
 		{
-			ecTmp.settings.setProperty
-			(
-				EzimConf.ezimMcGroup
-				, Ezim.mcGroupIPv6
-			);
+			EzimConf.NET_MC_GROUP = Ezim.mcGroupIPv6;
 		}
 		else if
 		(
@@ -476,11 +450,7 @@ public class Ezim
 			)
 		)
 		{
-			ecTmp.settings.setProperty
-			(
-				EzimConf.ezimMcGroup
-				, Ezim.mcGroupIPv4
-			);
+			EzimConf.NET_MC_GROUP = Ezim.mcGroupIPv4;
 		}
 		else
 		{
@@ -500,21 +470,9 @@ public class Ezim
 			if (iaTmp == null || ! iaTmp.isMulticastAddress())
 			{
 				if (Ezim.localAddress instanceof Inet6Address)
-				{
-					ecTmp.settings.setProperty
-					(
-						EzimConf.ezimMcGroup
-						, Ezim.mcGroupIPv6
-					);
-				}
+					EzimConf.NET_MC_GROUP = Ezim.mcGroupIPv6;
 				else if (Ezim.localAddress instanceof Inet4Address)
-				{
-					ecTmp.settings.setProperty
-					(
-						EzimConf.ezimMcGroup
-						, Ezim.mcGroupIPv4
-					);
-				}
+					EzimConf.NET_MC_GROUP = Ezim.mcGroupIPv4;
 			}
 		}
 	}
@@ -543,12 +501,7 @@ public class Ezim
 	 */
 	private static void setLocalDtxPort()
 	{
-		EzimConf ecfTmp = EzimConf.getInstance();
-
-		Ezim.localDtxPort = Integer.parseInt
-		(
-			ecfTmp.settings.getProperty(EzimConf.ezimDtxPort)
-		);
+		Ezim.localDtxPort = EzimConf.NET_DTX_PORT;
 	}
 
 	/**
@@ -556,12 +509,7 @@ public class Ezim
 	 */
 	private static void setLocalName()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-
-		Ezim.localName = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimLocalname
-		);
+		Ezim.localName = EzimConf.NET_LOCALNAME;
 
 		// query username if isn't set yet
 		if (Ezim.localName == null || Ezim.localName.length() == 0)
@@ -580,13 +528,9 @@ public class Ezim
 			Ezim.localName = strTmp;
 
 			// save username
-			ecTmp.settings.setProperty
-			(
-				EzimConf.ezimLocalname
-				, Ezim.localName
-			);
+			EzimConf.NET_LOCALNAME = Ezim.localName;
 
-			ecTmp.write();
+			EzimConf.write();
 		}
 	}
 

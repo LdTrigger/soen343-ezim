@@ -138,41 +138,15 @@ public class EzimFileIn
 	 */
 	private void loadConf()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-
 		this.setLocation
 		(
-			Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimfileinLocationX
-				)
-			)
-			, Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimfileinLocationY
-				)
-			)
+			EzimConf.UI_FILEIN_LOCATION_X
+			, EzimConf.UI_FILEIN_LOCATION_Y
 		);
 		this.setSize
 		(
-			Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimfileinSizeW
-				)
-			)
-			, Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimfileinSizeH
-				)
-			)
+			EzimConf.UI_FILEIN_SIZE_W
+			, EzimConf.UI_FILEIN_SIZE_H
 		);
 	}
 
@@ -181,31 +155,13 @@ public class EzimFileIn
 	 */
 	private void saveConf()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-
 		// save window location and size
 		Point ptTmp = this.getLocationOnScreen();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimfileinLocationX
-			, String.valueOf((int) ptTmp.getX())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimfileinLocationY
-			, String.valueOf((int) ptTmp.getY())
-		);
+		EzimConf.UI_FILEIN_LOCATION_X = (int) ptTmp.getX();
+		EzimConf.UI_FILEIN_LOCATION_Y = (int) ptTmp.getY();
 		Dimension dmTmp = this.getSize();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimfileinSizeW
-			, String.valueOf((int) dmTmp.getWidth())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimfileinSizeH
-			, String.valueOf((int) dmTmp.getHeight())
-		);
+		EzimConf.UI_FILEIN_SIZE_W = (int) dmTmp.getWidth();
+		EzimConf.UI_FILEIN_SIZE_H = (int) dmTmp.getHeight();
 	}
 
 	/**
@@ -510,7 +466,6 @@ public class EzimFileIn
 		// let the user choose where to save the incoming file
 		if (blnRes)
 		{
-			EzimConf econf = EzimConf.getInstance();
 			boolean blnRetry = true;
 
 			while(blnRetry)
@@ -519,10 +474,7 @@ public class EzimFileIn
 
 				JFileChooser jfcTmp = new JFileChooser
 				(
-					econf.settings.getProperty
-					(
-						EzimConf.ezimfileinDirectory
-					)
+					EzimConf.UI_FILEIN_DIRECTORY
 				);
 
 				jfcTmp.setSelectedFile
@@ -538,11 +490,8 @@ public class EzimFileIn
 
 				if (iJfcRes == JFileChooser.APPROVE_OPTION)
 				{
-					econf.settings.setProperty
-					(
-						EzimConf.ezimfileinDirectory
-						, jfcTmp.getCurrentDirectory().getAbsolutePath()
-					);
+					EzimConf.UI_FILEIN_DIRECTORY
+						= jfcTmp.getCurrentDirectory().getAbsolutePath();
 
 					this.file = jfcTmp.getSelectedFile();
 

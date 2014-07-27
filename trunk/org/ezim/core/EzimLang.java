@@ -109,7 +109,12 @@ public class EzimLang
 	public static String AutoOpenMsgIn;
 	public static String Locale;
 	public static String StateiconSize;
+	public static String Sound;
 	public static String EnableSound;
+	public static String StateChg;
+	public static String StatusChg;
+	public static String MsgIn;
+	public static String FileIn;
 	public static String Save;
 	public static String Restore;
 	public static String RestartNeeded;
@@ -221,7 +226,12 @@ public class EzimLang
 			AutoOpenMsgIn = rbTmp.getString("AutoOpenMsgIn");
 			Locale = rbTmp.getString("Locale");
 			StateiconSize = rbTmp.getString("StateiconSize");
+			Sound = rbTmp.getString("Sound");
 			EnableSound = rbTmp.getString("EnableSound");
+			StateChg = rbTmp.getString("StateChg");
+			StatusChg = rbTmp.getString("StatusChg");
+			MsgIn = rbTmp.getString("MsgIn");
+			FileIn = rbTmp.getString("FileIn");
 			Save = rbTmp.getString("Save");
 			Restore = rbTmp.getString("Restore");
 			RestartNeeded = rbTmp.getString("RestartNeeded");

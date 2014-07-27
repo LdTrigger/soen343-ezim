@@ -28,6 +28,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -67,36 +70,40 @@ public class EzimPreferences
 
 	private JTabbedPane jtpBase;
 
-	private JPanel jpnlNetwork;
-
-	private JLabel jlblMcGroup;
-	private JTextField jtfdMcGroup;
-	private JButton jbtnRestoreToDefault;
-
-	private JLabel jlblMcPort;
-	private JSpinner jspnMcPort;
-
-	private JLabel jlblDtxPort;
-	private JSpinner jspnDtxPort;
-
-	private JLabel jlblLocalAddress;
-	private JComboBox<NetworkInterface> jcbLocalNI;
-	private JComboBox<InetAddress> jcbLocalAddress;
-
-	private JPanel jpnlDesign;
-
-	private JLabel jlblColorSelf;
-	private JColorChooser jccColorSelf;
-
 	private JPanel jpnlUI;
-
 	private JCheckBox jcbAlwaysOnTop;
 	private JCheckBox jcbAutoOpenMsgIn;
 	private JLabel jlblLocale;
 	private JComboBox<Locale> jcbUserLocale;
 	private JLabel jlblStateiconSize;
 	private JComboBox<Integer> jcbStateiconSize;
+
+	private JPanel jpnlSound;
 	private JCheckBox jcbEnableSound;
+	private JLabel jlblStateChg;
+	private JTextField jtfdStateChg;
+	private JLabel jlblStatusChg;
+	private JTextField jtfdStatusChg;
+	private JLabel jlblMsgIn;
+	private JTextField jtfdMsgIn;
+	private JLabel jlblFileIn;
+	private JTextField jtfdFileIn;
+
+	private JPanel jpnlDesign;
+	private JLabel jlblColorSelf;
+	private JColorChooser jccColorSelf;
+
+	private JPanel jpnlNetwork;
+	private JLabel jlblMcGroup;
+	private JTextField jtfdMcGroup;
+	private JButton jbtnRestoreToDefault;
+	private JLabel jlblMcPort;
+	private JSpinner jspnMcPort;
+	private JLabel jlblDtxPort;
+	private JSpinner jspnDtxPort;
+	private JLabel jlblLocalAddress;
+	private JComboBox<NetworkInterface> jcbLocalNI;
+	private JComboBox<InetAddress> jcbLocalAddress;
 
 	private JButton jbtnSave;
 	private JButton jbtnRestore;
@@ -151,6 +158,147 @@ public class EzimPreferences
 		);
 
 		// C O M P O N E N T S ---------------------------------------------
+		this.jcbAlwaysOnTop = new JCheckBox(EzimLang.AlwaysOnTop);
+		this.jcbAutoOpenMsgIn = new JCheckBox(EzimLang.AutoOpenMsgIn);
+		this.jlblLocale = new JLabel(EzimLang.Locale);
+		this.jcbUserLocale = new JComboBox<Locale>(Ezim.locales);
+		this.jcbUserLocale.setRenderer(new EzimLocaleListRenderer());
+		this.jcbUserLocale.setEditable(false);
+		this.jlblLocale.setLabelFor(this.jcbUserLocale);
+		this.jlblStateiconSize = new JLabel(EzimLang.StateiconSize);
+		this.jcbStateiconSize = new JComboBox<Integer>(Ezim.stateiconSizes);
+		this.jcbStateiconSize.setEditable(false);
+
+		this.jcbEnableSound = new JCheckBox(EzimLang.EnableSound);
+		this.jlblStateChg = new JLabel(EzimLang.StateChg);
+		this.jtfdStateChg = new JTextField();
+		this.jtfdStateChg.setEditable(false);
+		this.jtfdStateChg.addMouseListener
+		(
+			new MouseListener()
+			{
+				public void mouseClicked(MouseEvent evtTmp)
+				{
+					EzimPreferences.this.pickFilePathAsText
+					(
+						EzimPreferences.this.jtfdStateChg
+					);
+				}
+
+				public void mouseEntered(MouseEvent evtTmp)
+				{
+				}
+
+				public void mouseExited(MouseEvent evtTmp)
+				{
+				}
+
+				public void mousePressed(MouseEvent evtTmp)
+				{
+				}
+
+				public void mouseReleased(MouseEvent evtTmp)
+				{
+				}
+			}
+		);
+		this.jlblStatusChg = new JLabel(EzimLang.StatusChg);
+		this.jtfdStatusChg = new JTextField();
+		this.jtfdStatusChg.setEditable(false);
+		this.jtfdStatusChg.addMouseListener
+		(
+			new MouseListener()
+			{
+				public void mouseClicked(MouseEvent evtTmp)
+				{
+					EzimPreferences.this.pickFilePathAsText
+					(
+						EzimPreferences.this.jtfdStatusChg
+					);
+				}
+
+				public void mouseEntered(MouseEvent evtTmp)
+				{
+				}
+
+				public void mouseExited(MouseEvent evtTmp)
+				{
+				}
+
+				public void mousePressed(MouseEvent evtTmp)
+				{
+				}
+
+				public void mouseReleased(MouseEvent evtTmp)
+				{
+				}
+			}
+		);
+		this.jlblMsgIn = new JLabel(EzimLang.MsgIn);
+		this.jtfdMsgIn = new JTextField();
+		this.jtfdMsgIn.setEditable(false);
+		this.jtfdMsgIn.addMouseListener
+		(
+			new MouseListener()
+			{
+				public void mouseClicked(MouseEvent evtTmp)
+				{
+					EzimPreferences.this.pickFilePathAsText
+					(
+						EzimPreferences.this.jtfdMsgIn
+					);
+				}
+
+				public void mouseEntered(MouseEvent evtTmp)
+				{
+				}
+
+				public void mouseExited(MouseEvent evtTmp)
+				{
+				}
+
+				public void mousePressed(MouseEvent evtTmp)
+				{
+				}
+
+				public void mouseReleased(MouseEvent evtTmp)
+				{
+				}
+			}
+		);
+		this.jlblFileIn = new JLabel(EzimLang.FileIn);
+		this.jtfdFileIn = new JTextField();
+		this.jtfdFileIn.setEditable(false);
+		this.jtfdFileIn.addMouseListener
+		(
+			new MouseListener()
+			{
+				public void mouseClicked(MouseEvent evtTmp)
+				{
+					EzimPreferences.this.pickFilePathAsText
+					(
+						EzimPreferences.this.jtfdFileIn
+					);
+				}
+
+				public void mouseEntered(MouseEvent evtTmp)
+				{
+				}
+
+				public void mouseExited(MouseEvent evtTmp)
+				{
+				}
+
+				public void mousePressed(MouseEvent evtTmp)
+				{
+				}
+
+				public void mouseReleased(MouseEvent evtTmp)
+				{
+				}
+			}
+		);
+
 		this.jlblMcGroup = new JLabel(EzimLang.McGroup);
 		this.jtfdMcGroup = new JTextField();
 		this.jtfdMcGroup.addFocusListener
@@ -241,21 +389,10 @@ public class EzimPreferences
 		this.jccColorSelf = new JColorChooser();
 		this.jlblColorSelf.setLabelFor(this.jccColorSelf);
 
-		this.jcbAlwaysOnTop = new JCheckBox(EzimLang.AlwaysOnTop);
-		this.jcbAutoOpenMsgIn = new JCheckBox(EzimLang.AutoOpenMsgIn);
-		this.jlblLocale = new JLabel(EzimLang.Locale);
-		this.jcbUserLocale = new JComboBox<Locale>(Ezim.locales);
-		this.jcbUserLocale.setRenderer(new EzimLocaleListRenderer());
-		this.jcbUserLocale.setEditable(false);
-		this.jlblLocale.setLabelFor(this.jcbUserLocale);
-		this.jlblStateiconSize = new JLabel(EzimLang.StateiconSize);
-		this.jcbStateiconSize = new JComboBox<Integer>(Ezim.stateiconSizes);
-		this.jcbStateiconSize.setEditable(false);
-		this.jcbEnableSound = new JCheckBox(EzimLang.EnableSound);
-
 		this.jpnlNetwork = new JPanel();
 		this.jpnlDesign = new JPanel();
 		this.jpnlUI = new JPanel();
+		this.jpnlSound = new JPanel();
 
 		this.jtpBase = new JTabbedPane();
 
@@ -284,6 +421,366 @@ public class EzimPreferences
 		);
 
 		this.jpnlBase = new JPanel();
+
+		// I N T E R F A C E   P A N E   L A Y O U T -----------------------
+		GroupLayout glUI = new GroupLayout(this.jpnlUI);
+		this.jpnlUI.setLayout(glUI);
+
+		glUI.setAutoCreateGaps(true);
+		glUI.setAutoCreateContainerGaps(true);
+
+		GroupLayout.SequentialGroup hUIGrp = glUI.createSequentialGroup();
+
+		hUIGrp.addGroup
+		(
+			glUI.createParallelGroup()
+				.addComponent
+				(
+					this.jcbAlwaysOnTop
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jcbAutoOpenMsgIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addGroup
+				(
+					glUI.createSequentialGroup()
+						.addComponent
+						(
+							this.jlblLocale
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
+						.addComponent
+						(
+							this.jcbUserLocale
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
+				)
+				.addGroup
+				(
+					glUI.createSequentialGroup()
+						.addComponent
+						(
+							this.jlblStateiconSize
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
+						.addComponent
+						(
+							this.jcbStateiconSize
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+							, GroupLayout.PREFERRED_SIZE
+						)
+				)
+		);
+
+		glUI.setHorizontalGroup(hUIGrp);
+
+		GroupLayout.SequentialGroup vUIGrp = glUI.createSequentialGroup();
+
+		vUIGrp.addGroup
+		(
+			glUI.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jcbAlwaysOnTop
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vUIGrp.addGroup
+		(
+			glUI.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jcbAutoOpenMsgIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vUIGrp.addGroup
+		(
+			glUI.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jlblLocale
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jcbUserLocale
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vUIGrp.addGroup
+		(
+			glUI.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jlblStateiconSize
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jcbStateiconSize
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		glUI.setVerticalGroup(vUIGrp);
+
+		// S O U N D   P A N E   L A Y O U T -------------------------------
+		GroupLayout glSnd = new GroupLayout(this.jpnlSound);
+		this.jpnlSound.setLayout(glSnd);
+
+		glSnd.setAutoCreateGaps(true);
+		glSnd.setAutoCreateContainerGaps(true);
+
+		GroupLayout.SequentialGroup hSndGrp = glSnd.createSequentialGroup();
+
+		hSndGrp.addGroup
+		(
+			glSnd.createParallelGroup()
+				.addComponent
+				(
+					this.jcbEnableSound
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addGroup
+				(
+					glSnd.createSequentialGroup()
+						.addGroup
+						(
+							glSnd.createParallelGroup()
+								.addComponent
+								(
+									this.jlblStateChg
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+								.addComponent
+								(
+									this.jlblStatusChg
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+								.addComponent
+								(
+									this.jlblMsgIn
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+								.addComponent
+								(
+									this.jlblFileIn
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+						)
+						.addGroup
+						(
+							glSnd.createParallelGroup()
+								.addComponent
+								(
+									this.jtfdStateChg
+									, GroupLayout.DEFAULT_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, Short.MAX_VALUE
+								)
+								.addComponent
+								(
+									this.jtfdStatusChg
+									, GroupLayout.DEFAULT_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, Short.MAX_VALUE
+								)
+								.addComponent
+								(
+									this.jtfdMsgIn
+									, GroupLayout.DEFAULT_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, Short.MAX_VALUE
+								)
+								.addComponent
+								(
+									this.jtfdFileIn
+									, GroupLayout.DEFAULT_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, Short.MAX_VALUE
+								)
+						)
+				)
+		);
+
+		glSnd.setHorizontalGroup(hSndGrp);
+
+		GroupLayout.SequentialGroup vSndGrp = glSnd.createSequentialGroup();
+
+		vSndGrp.addComponent
+		(
+			this.jcbEnableSound
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+		);
+
+		vSndGrp.addGroup
+		(
+			glSnd.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jlblStateChg
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jtfdStateChg
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vSndGrp.addGroup
+		(
+			glSnd.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jlblStatusChg
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jtfdStatusChg
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vSndGrp.addGroup
+		(
+			glSnd.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jlblMsgIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jtfdMsgIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		vSndGrp.addGroup
+		(
+			glSnd.createParallelGroup(Alignment.BASELINE)
+				.addComponent
+				(
+					this.jlblFileIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jtfdFileIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		glSnd.setVerticalGroup(vSndGrp);
+
+		// D E S I G N   P A N E L   L A Y O U T ---------------------------
+		GroupLayout glDs = new GroupLayout(this.jpnlDesign);
+		this.jpnlDesign.setLayout(glDs);
+
+		glDs.setAutoCreateGaps(true);
+		glDs.setAutoCreateContainerGaps(true);
+
+		GroupLayout.SequentialGroup hDsGrp = glDs.createSequentialGroup();
+
+		hDsGrp.addGroup
+		(
+			glDs.createParallelGroup()
+				.addComponent
+				(
+					this.jlblColorSelf
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jccColorSelf
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+		);
+
+		glDs.setHorizontalGroup(hDsGrp);
+
+		GroupLayout.SequentialGroup vDsGrp = glDs.createSequentialGroup();
+
+		vDsGrp.addComponent
+		(
+			this.jlblColorSelf
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+		);
+		vDsGrp.addComponent
+		(
+			this.jccColorSelf
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+			, GroupLayout.PREFERRED_SIZE
+		);
+
+		glDs.setVerticalGroup(vDsGrp);
 
 		// N E T W O R K   P A N E L   L A Y O U T -------------------------
 		GroupLayout glNw = new GroupLayout(this.jpnlNetwork);
@@ -479,208 +976,9 @@ public class EzimPreferences
 
 		glNw.setVerticalGroup(vNwGrp);
 
-		// D E S I G N   P A N E L   L A Y O U T ---------------------------
-		GroupLayout glDs = new GroupLayout(this.jpnlDesign);
-		this.jpnlDesign.setLayout(glDs);
-
-		glDs.setAutoCreateGaps(true);
-		glDs.setAutoCreateContainerGaps(true);
-
-		GroupLayout.SequentialGroup hDsGrp = glDs.createSequentialGroup();
-
-		hDsGrp.addGroup
-		(
-			glDs.createParallelGroup()
-				.addComponent
-				(
-					this.jlblColorSelf
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-				.addComponent
-				(
-					this.jccColorSelf
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-		);
-
-		glDs.setHorizontalGroup(hDsGrp);
-
-		GroupLayout.SequentialGroup vDsGrp = glDs.createSequentialGroup();
-
-		vDsGrp.addComponent
-		(
-			this.jlblColorSelf
-			, GroupLayout.PREFERRED_SIZE
-			, GroupLayout.PREFERRED_SIZE
-			, GroupLayout.PREFERRED_SIZE
-		);
-		vDsGrp.addComponent
-		(
-			this.jccColorSelf
-			, GroupLayout.PREFERRED_SIZE
-			, GroupLayout.PREFERRED_SIZE
-			, GroupLayout.PREFERRED_SIZE
-		);
-
-		glDs.setVerticalGroup(vDsGrp);
-
-		// I N T E R F A C E   P A N E   L A Y O U T -----------------------
-		GroupLayout glUI = new GroupLayout(this.jpnlUI);
-		this.jpnlUI.setLayout(glUI);
-
-		glUI.setAutoCreateGaps(true);
-		glUI.setAutoCreateContainerGaps(true);
-
-		GroupLayout.SequentialGroup hUIGrp = glUI.createSequentialGroup();
-
-		hUIGrp.addGroup
-		(
-			glUI.createParallelGroup()
-				.addComponent
-				(
-					this.jcbAlwaysOnTop
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-				.addComponent
-				(
-					this.jcbAutoOpenMsgIn
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-				.addGroup
-				(
-					glUI.createSequentialGroup()
-						.addComponent
-						(
-							this.jlblLocale
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-						)
-						.addComponent
-						(
-							this.jcbUserLocale
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-						)
-				)
-				.addGroup
-				(
-					glUI.createSequentialGroup()
-						.addComponent
-						(
-							this.jlblStateiconSize
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-						)
-						.addComponent
-						(
-							this.jcbStateiconSize
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-							, GroupLayout.PREFERRED_SIZE
-						)
-				)
-				.addComponent
-				(
-					this.jcbEnableSound
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-		);
-
-		glUI.setHorizontalGroup(hUIGrp);
-
-		GroupLayout.SequentialGroup vUIGrp = glUI.createSequentialGroup();
-
-		vUIGrp.addGroup
-		(
-			glUI.createParallelGroup(Alignment.BASELINE)
-				.addComponent
-				(
-					this.jcbAlwaysOnTop
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-		);
-
-		vUIGrp.addGroup
-		(
-			glUI.createParallelGroup(Alignment.BASELINE)
-				.addComponent
-				(
-					this.jcbAutoOpenMsgIn
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-		);
-
-		vUIGrp.addGroup
-		(
-			glUI.createParallelGroup(Alignment.BASELINE)
-				.addComponent
-				(
-					this.jlblLocale
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-				.addComponent
-				(
-					this.jcbUserLocale
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-		);
-
-		vUIGrp.addGroup
-		(
-			glUI.createParallelGroup(Alignment.BASELINE)
-				.addComponent
-				(
-					this.jlblStateiconSize
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-				.addComponent
-				(
-					this.jcbStateiconSize
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-		);
-
-		vUIGrp.addGroup
-		(
-			glUI.createParallelGroup(Alignment.BASELINE)
-				.addComponent
-				(
-					this.jcbEnableSound
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-					, GroupLayout.PREFERRED_SIZE
-				)
-		);
-
-		glUI.setVerticalGroup(vUIGrp);
-
 		// T A B B E D   P A N E   L A Y O U T -----------------------------
 		this.jtpBase.addTab(EzimLang.UI, jpnlUI);
+		this.jtpBase.addTab(EzimLang.Sound, jpnlSound);
 		this.jtpBase.addTab(EzimLang.Design, jpnlDesign);
 		this.jtpBase.addTab(EzimLang.Network, jpnlNetwork);
 
@@ -761,6 +1059,32 @@ public class EzimPreferences
 	}
 
 	/**
+	 * file path text input event handler
+	 * @param jtfdIn textfield to update with the resulting file path
+	 */
+	private void pickFilePathAsText(JTextField jtfdIn)
+	{
+		JFileChooser jfcTmp = new JFileChooser
+		(
+			jtfdIn.getText()
+		);
+
+		int iJfcRes = jfcTmp.showOpenDialog(this);
+
+		if (iJfcRes == JFileChooser.APPROVE_OPTION)
+		{
+			try
+			{
+				jtfdIn.setText(jfcTmp.getSelectedFile().getCanonicalPath());
+			}
+			catch(Exception e)
+			{
+				// do nothing
+			}
+		}
+	}
+
+	/**
 	 * load settings from current configuration
 	 */
 	private void loadCurConf()
@@ -768,37 +1092,17 @@ public class EzimPreferences
 		int iCnt = 0, iLen = 0;
 
 		// C U R R E N T   S E T T I N G S ---------------------------------
-		EzimConf ecTmp = EzimConf.getInstance();
-
 		// multicast group IP
-		String strMcGroup = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimMcGroup
-		);
-
-		this.jtfdMcGroup.setText(strMcGroup);
+		this.jtfdMcGroup.setText(EzimConf.NET_MC_GROUP);
 
 		// multicast group port
-		String strMcPort = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimMcPort
-		);
-
-		this.jspnMcPort.setValue(Integer.valueOf(strMcPort));
+		this.jspnMcPort.setValue(EzimConf.NET_MC_PORT);
 
 		// direct transmission port
-		String strDtxPort = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimDtxPort
-		);
-
-		this.jspnDtxPort.setValue(Integer.valueOf(strDtxPort));
+		this.jspnDtxPort.setValue(EzimConf.NET_DTX_PORT);
 
 		// local network interface
-		String strLocalNI = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimLocalni
-		);
+		String strLocalNI = EzimConf.NET_LOCALNI;
 		iLen = this.jcbLocalNI.getItemCount();
 		for(iCnt = 0; iCnt < iLen; iCnt ++)
 		{
@@ -813,11 +1117,7 @@ public class EzimPreferences
 		}
 
 		// local address
-		String strLocalAddress = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimLocaladdress
-		);
-
+		String strLocalAddress = EzimConf.NET_LOCALADDRESS;
 		iLen = this.jcbLocalAddress.getItemCount();
 		for(iCnt = 0; iCnt < iLen; iCnt ++)
 		{
@@ -835,41 +1135,16 @@ public class EzimPreferences
 		}
 
 		// self color
-		String strColorSelf = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimColorSelf
-		);
-
-		this.jccColorSelf.setColor(Integer.parseInt(strColorSelf, 16));
+		this.jccColorSelf.setColor(EzimConf.UI_COLOR_SELF);
 
 		// always on top
-		String strAlwaysOnTop = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimmainAlwaysontop
-		);
-
-		this.jcbAlwaysOnTop.setSelected
-		(
-			Boolean.parseBoolean(strAlwaysOnTop)
-		);
+		this.jcbAlwaysOnTop.setSelected(EzimConf.UI_MAIN_ALWAYSONTOP);
 
 		// auto open incoming message
-		String strAutoOpenMsgIn = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimmsginAutoopen
-		);
-
-		this.jcbAutoOpenMsgIn.setSelected
-		(
-			Boolean.parseBoolean(strAutoOpenMsgIn)
-		);
+		this.jcbAutoOpenMsgIn.setSelected(EzimConf.UI_MSGIN_AUTOOPEN);
 
 		// locale
-		String strUserLocale = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimUserLocale
-		);
-
+		String strUserLocale = EzimConf.UI_USER_LOCALE;
 		iLen = this.jcbUserLocale.getItemCount();
 		for(iCnt = 0; iCnt < iLen; iCnt ++)
 		{
@@ -887,13 +1162,7 @@ public class EzimPreferences
 		}
 
 		// state icon size
-		int iStateiconSize = Integer.parseInt
-		(
-			ecTmp.settings.getProperty
-			(
-				EzimConf.ezimStateiconSize
-			)
-		);
+		int iStateiconSize = EzimConf.UI_STATEICON_SIZE;
 		iLen = this.jcbStateiconSize.getItemCount();
 		for(iCnt = 0; iCnt < iLen; iCnt ++)
 		{
@@ -911,15 +1180,19 @@ public class EzimPreferences
 		}
 
 		// enable sound
-		String strEnableSound = ecTmp.settings.getProperty
-		(
-			EzimConf.ezimsoundEnabled
-		);
+		this.jcbEnableSound.setSelected(EzimConf.SOUND_ENABLED);
 
-		this.jcbEnableSound.setSelected
-		(
-			Boolean.parseBoolean(strEnableSound)
-		);
+		// state change sound
+		this.jtfdStateChg.setText(EzimConf.SOUND_STATECHG);
+
+		// status change sound
+		this.jtfdStatusChg.setText(EzimConf.SOUND_STATUSCHG);
+
+		// message arrival sound
+		this.jtfdMsgIn.setText(EzimConf.SOUND_MSGIN);
+
+		// file arrival sound
+		this.jtfdFileIn.setText(EzimConf.SOUND_FILEIN);
 	}
 
 	/**
@@ -988,91 +1261,59 @@ public class EzimPreferences
 	 */
 	private void saveCurConf()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-
 		// multicast group IP
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimMcGroup
-			, this.jtfdMcGroup.getText()
-		);
+		EzimConf.NET_MC_GROUP = this.jtfdMcGroup.getText();
 
 		// multicast group port
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimMcPort
-			, this.jspnMcPort.getValue().toString()
-		);
+		EzimConf.NET_MC_PORT = (Integer) this.jspnMcPort.getValue();
 
 		// direct transmission port
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimDtxPort
-			, this.jspnDtxPort.getValue().toString()
-		);
+		EzimConf.NET_DTX_PORT = (Integer) this.jspnDtxPort.getValue();
 
 		// self color
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimColorSelf
-			, Integer.toHexString
-			(
-				this.jccColorSelf.getColor().getRGB() & 0xffffff
-			)
-		);
+		EzimConf.UI_COLOR_SELF = this.jccColorSelf.getColor().getRGB()
+			& 0xffffff;
 
 		// local network interface
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimLocalni
-			, ((NetworkInterface) this.jcbLocalNI.getSelectedItem())
-				.getName()
-		);
+		EzimConf.NET_LOCALNI
+			= ((NetworkInterface) this.jcbLocalNI.getSelectedItem())
+				.getName();
 
 		// local address
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimLocaladdress
-			, ((InetAddress) this.jcbLocalAddress.getSelectedItem())
-				.getHostAddress()
-		);
+		EzimConf.NET_LOCALADDRESS
+			= ((InetAddress) this.jcbLocalAddress.getSelectedItem())
+				.getHostAddress();
 
 		// always on top
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainAlwaysontop
-			, Boolean.toString(this.jcbAlwaysOnTop.isSelected())
-		);
+		EzimConf.UI_MAIN_ALWAYSONTOP = this.jcbAlwaysOnTop.isSelected();
 
 		// auto open incoming message
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmsginAutoopen
-			, Boolean.toString(this.jcbAutoOpenMsgIn.isSelected())
-		);
+		EzimConf.UI_MSGIN_AUTOOPEN = this.jcbAutoOpenMsgIn.isSelected();
 
 		// locale
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimUserLocale
-			, ((Locale) this.jcbUserLocale.getSelectedItem()).toString()
-		);
+		EzimConf.UI_USER_LOCALE
+			= ((Locale) this.jcbUserLocale.getSelectedItem()).toString();
 
 		// state icon size
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimStateiconSize
-			, this.jcbStateiconSize.getSelectedItem().toString()
-		);
+		EzimConf.UI_STATEICON_SIZE
+			= (Integer) this.jcbStateiconSize.getSelectedItem();
 
 		// enable sound
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimsoundEnabled
-			, Boolean.toString(this.jcbEnableSound.isSelected())
-		);
+		EzimConf.SOUND_ENABLED = this.jcbEnableSound.isSelected();
 
-		ecTmp.write();
+		// state change sound
+		EzimConf.SOUND_STATECHG = this.jtfdStateChg.getText();
+
+		// status change sound
+		EzimConf.SOUND_STATUSCHG = this.jtfdStatusChg.getText();
+
+		// message arrival sound
+		EzimConf.SOUND_MSGIN = this.jtfdMsgIn.getText();
+
+		// file arrival sound
+		EzimConf.SOUND_FILEIN = this.jtfdFileIn.getText();
+
+		EzimConf.write();
 	}
 
 	// E V E N T   H A N D L E R -------------------------------------------

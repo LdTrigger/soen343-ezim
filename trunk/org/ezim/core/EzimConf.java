@@ -24,102 +24,182 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.lang.IllegalAccessException;
+import java.lang.NoSuchMethodException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.channels.FileLock;
 import java.util.Locale;
 import java.util.Properties;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimLogger;
+import org.ezim.core.EzimSetting;
 
 public class EzimConf
 {
 	// configuration item name
-	public final static String ezimThPoolSizeCore = "ezim.thpoolsize.core";
-	public final static String ezimThPoolSizeMax = "ezim.thpoolsize.max";
-	public final static String ezimThPoolKeepAlive = "ezim.thpool.KeepAlive";
+	@EzimSetting(type=Integer.class, name="thpool.size.core", defaultValue="8")
+	public static Integer THPOOL_SIZE_CORE;
+	@EzimSetting(type=Integer.class, name="thpool.size.max", defaultValue="16")
+	public static Integer THPOOL_SIZE_MAX;
+	@EzimSetting(type=Integer.class, name="thpool.KeepAlive", defaultValue="30")
+	public static Integer THPOOL_KEEPALIVE;
 
-	public final static String ezimMcGroup = "ezim.multicast.group";
-	public final static String ezimMcPort = "ezim.multicast.port";
-	public final static String ezimDtxPort = "ezim.dtx.port";
+	@EzimSetting(type=String.class, name="net.multicast.group", defaultValue="")
+	public static String NET_MC_GROUP;
+	@EzimSetting(type=Integer.class, name="net.multicast.port", defaultValue="5555")
+	public static Integer NET_MC_PORT;
+	@EzimSetting(type=Integer.class, name="net.dtx.port", defaultValue="6666")
+	public static Integer NET_DTX_PORT;
 
-	public final static String ezimLocalni = "ezim.localni";
-	public final static String ezimLocaladdress = "ezim.localaddress";
-	public final static String ezimLocalname = "ezim.localname";
+	@EzimSetting(type=String.class, name="net.localni", defaultValue="")
+	public static String NET_LOCALNI;
+	@EzimSetting(type=String.class, name="net.localaddress", defaultValue="")
+	public static String NET_LOCALADDRESS;
+	@EzimSetting(type=String.class, name="net.localname", defaultValue="")
+	public static String NET_LOCALNAME;
 
-	public final static String ezimColorSelf = "ezim.color.self";
+	// default value 0xdeefff
+	@EzimSetting(type=Integer.class, name="ui.color.self", defaultValue="14610431")
+	public static Integer UI_COLOR_SELF;
 
-	public final static String ezimUserLocale = "ezim.user.locale";
+	@EzimSetting(type=String.class, name="ui.user.locale", defaultValue="en_US")
+	public static String UI_USER_LOCALE;
 
-	public final static String ezimStateiconSize = "ezim.stateicon.size";
+	@EzimSetting(type=Integer.class, name="ui.stateicon.size", defaultValue="24")
+	public static Integer UI_STATEICON_SIZE;
 
-	public final static String ezimmainAlwaysontop = "ezimmain.alwaysontop";
-	public final static String ezimmainVisible = "ezimmain.visible";
-	public final static String ezimmainLocationX = "ezimmain.location.x";
-	public final static String ezimmainLocationY = "ezimmain.location.y";
-	public final static String ezimmainSizeH = "ezimmain.size.h";
-	public final static String ezimmainSizeW = "ezimmain.size.w";
+	@EzimSetting(type=Boolean.class, name="ui.main.alwaysontop", defaultValue="false")
+	public static Boolean UI_MAIN_ALWAYSONTOP;
+	@EzimSetting(type=Boolean.class, name="ui.main.visible", defaultValue="true")
+	public static Boolean UI_MAIN_VISIBLE;
+	@EzimSetting(type=Integer.class, name="ui.main.location.x", defaultValue="0")
+	public static Integer UI_MAIN_LOCATION_X;
+	@EzimSetting(type=Integer.class, name="ui.main.location.y", defaultValue="0")
+	public static Integer UI_MAIN_LOCATION_Y;
+	@EzimSetting(type=Integer.class, name="ui.main.size.h", defaultValue="0")
+	public static Integer UI_MAIN_SIZE_H;
+	@EzimSetting(type=Integer.class, name="ui.main.size.w", defaultValue="0")
+	public static Integer UI_MAIN_SIZE_W;
 
-	public final static String ezimplazaLocationX = "ezimplaza.location.x";
-	public final static String ezimplazaLocationY = "ezimplaza.location.y";
-	public final static String ezimplazaSizeH = "ezimplaza.size.h";
-	public final static String ezimplazaSizeW = "ezimplaza.size.w";
+	@EzimSetting(type=Integer.class, name="ui.plaza.location.x", defaultValue="0")
+	public static Integer UI_PLAZA_LOCATION_X;
+	@EzimSetting(type=Integer.class, name="ui.plaza.location.y", defaultValue="0")
+	public static Integer UI_PLAZA_LOCATION_Y;
+	@EzimSetting(type=Integer.class, name="ui.plaza.size.h", defaultValue="0")
+	public static Integer UI_PLAZA_SIZE_H;
+	@EzimSetting(type=Integer.class, name="ui.plaza.size.w", defaultValue="0")
+	public static Integer UI_PLAZA_SIZE_W;
 
-	public final static String ezimmsgoutLocationX = "ezimmsgout.location.x";
-	public final static String ezimmsgoutLocationY = "ezimmsgout.location.y";
-	public final static String ezimmsgoutSizeH = "ezimmsgout.size.h";
-	public final static String ezimmsgoutSizeW = "ezimmsgout.size.w";
+	@EzimSetting(type=Integer.class, name="ui.msgout.location.x", defaultValue="0")
+	public static Integer UI_MSGOUT_LOCATION_X;
+	@EzimSetting(type=Integer.class, name="ui.msgout.location.y", defaultValue="0")
+	public static Integer UI_MSGOUT_LOCATION_Y;
+	@EzimSetting(type=Integer.class, name="ui.msgout.size.h", defaultValue="0")
+	public static Integer UI_MSGOUT_SIZE_H;
+	@EzimSetting(type=Integer.class, name="ui.msgout.size.w", defaultValue="0")
+	public static Integer UI_MSGOUT_SIZE_W;
 
-	public final static String ezimmsginAutoopen = "ezimmsgin.autoopen";
-	public final static String ezimmsginLocationX = "ezimmsgin.location.x";
-	public final static String ezimmsginLocationY = "ezimmsgin.location.y";
-	public final static String ezimmsginSizeH = "ezimmsgin.size.h";
-	public final static String ezimmsginSizeW = "ezimmsgin.size.w";
+	@EzimSetting(type=Boolean.class, name="ui.msgin.autoopen", defaultValue="false")
+	public static Boolean UI_MSGIN_AUTOOPEN;
+	@EzimSetting(type=Integer.class, name="ui.msgin.location.x", defaultValue="0")
+	public static Integer UI_MSGIN_LOCATION_X;
+	@EzimSetting(type=Integer.class, name="ui.msgin.location.y", defaultValue="0")
+	public static Integer UI_MSGIN_LOCATION_Y;
+	@EzimSetting(type=Integer.class, name="ui.msgin.size.h", defaultValue="0")
+	public static Integer UI_MSGIN_SIZE_H;
+	@EzimSetting(type=Integer.class, name="ui.msgin.size.w", defaultValue="0")
+	public static Integer UI_MSGIN_SIZE_W;
 
-	public final static String ezimfileoutLocationX = "ezimfileout.location.x";
-	public final static String ezimfileoutLocationY = "ezimfileout.location.y";
-	public final static String ezimfileoutSizeH = "ezimfileout.size.h";
-	public final static String ezimfileoutSizeW = "ezimfileout.size.w";
-	public final static String ezimfileoutDirectory = "ezimfileout.directory";
+	@EzimSetting(type=Integer.class, name="ui.fileout.location.x", defaultValue="0")
+	public static Integer UI_FILEOUT_LOCATION_X;
+	@EzimSetting(type=Integer.class, name="ui.fileout.location.y", defaultValue="0")
+	public static Integer UI_FILEOUT_LOCATION_Y;
+	@EzimSetting(type=Integer.class, name="ui.fileout.size.h", defaultValue="0")
+	public static Integer UI_FILEOUT_SIZE_H;
+	@EzimSetting(type=Integer.class, name="ui.fileout.size.w", defaultValue="0")
+	public static Integer UI_FILEOUT_SIZE_W;
+	@EzimSetting(type=String.class, name="ui.fileout.directory", defaultValue="")
+	public static String UI_FILEOUT_DIRECTORY;
 
-	public final static String ezimfileinLocationX = "ezimfilein.location.x";
-	public final static String ezimfileinLocationY = "ezimfilein.location.y";
-	public final static String ezimfileinSizeH = "ezimfilein.size.h";
-	public final static String ezimfileinSizeW = "ezimfilein.size.w";
-	public final static String ezimfileinDirectory = "ezimfilein.directory";
+	@EzimSetting(type=Integer.class, name="ui.filein.location.x", defaultValue="0")
+	public static Integer UI_FILEIN_LOCATION_X;
+	@EzimSetting(type=Integer.class, name="ui.filein.location.y", defaultValue="0")
+	public static Integer UI_FILEIN_LOCATION_Y;
+	@EzimSetting(type=Integer.class, name="ui.filein.size.h", defaultValue="0")
+	public static Integer UI_FILEIN_SIZE_H;
+	@EzimSetting(type=Integer.class, name="ui.filein.size.w", defaultValue="0")
+	public static Integer UI_FILEIN_SIZE_W;
+	@EzimSetting(type=String.class, name="ui.filein.directory", defaultValue="")
+	public static String UI_FILEIN_DIRECTORY;
 
-	public final static String ezimsoundEnabled = "ezimsound.enabled";
+	@EzimSetting(type=Boolean.class, name="sound.enabled", defaultValue="true")
+	public static Boolean SOUND_ENABLED;
+	@EzimSetting(type=String.class, name="sound.statechg", defaultValue="")
+	public static String SOUND_STATECHG;
+	@EzimSetting(type=String.class, name="sound.statuschg", defaultValue="")
+	public static String SOUND_STATUSCHG;
+	@EzimSetting(type=String.class, name="sound.msgin", defaultValue="")
+	public static String SOUND_MSGIN;
+	@EzimSetting(type=String.class, name="sound.filein", defaultValue="")
+	public static String SOUND_FILEIN;
 
-	private FileLock flock = null;
-
-	// configuration item
-	public Properties settings;
-
-	// singleton object
-	private static EzimConf ezconf = null;
+	private static FileLock flock = null;
 
 	// C O N S T R U C T O R -----------------------------------------------
-	/**
-	 * construct an instance of the configuration class
-	 */
-	private EzimConf()
+	static
 	{
-		this.settings = new Properties();
-		this.read();
-		this.validate();
-		this.prepareFile();
+		EzimConf.read();
+		EzimConf.validate();
+		EzimConf.prepareFile();
+	}
+
+	/**
+	 * instantiate an object from a given string
+	 * @param c class of the object to instantiate
+	 * @param s string to instantiate from
+	 * @return instance of the specified class
+	 * @throws NoSuchMethodException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T> T castFromStr(Class<T> c, String s)
+		throws NoSuchMethodException
+			, IllegalAccessException
+			, InvocationTargetException
+	{
+		if (String.class == c)
+			return (T) s;
+
+		Method m = c.getMethod("valueOf", String.class);
+
+		if (null == m)
+		{
+			throw new NoSuchMethodException
+			(
+				"Class " + c.getName()
+					+ " does not have the valueOf() method."
+			);
+		}
+
+		return (T) m.invoke(null, s);
 	}
 
 	/**
 	 * read configuration items from file indicated by the given filename
 	 */
-	private void read()
+	private static void read()
 	{
 		FileInputStream fisTmp = null;
+		Properties props = new Properties();
 
 		try
 		{
 			fisTmp = new FileInputStream(EzimConf.getConfFilename());
-			this.settings.load(fisTmp);
+			props.load(fisTmp);
 		}
 		catch(FileNotFoundException fnfe)
 		{
@@ -141,131 +221,100 @@ public class EzimConf
 				EzimLogger.getInstance().severe(e.getMessage(), e);
 			}
 		}
+
+		try
+		{
+			for(Field fld: EzimConf.class.getFields())
+			{
+				EzimSetting setting  = fld.getAnnotation(EzimSetting.class);
+
+				if (null == setting) continue;
+
+				try
+				{
+					fld.set
+					(
+						null
+						, EzimConf.castFromStr
+						(
+							setting.type()
+							, props.getProperty
+							(
+								setting.name()
+								, setting.defaultValue()
+							)
+						)
+					);
+				}
+				catch(Exception e)
+				{
+					EzimLogger.getInstance().warning
+					(
+						"Cannot set property \"" + fld.getName() + "\"."
+						, e
+					);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().severe(e.getMessage(), e);
+		}
 	}
 
 	/**
 	 * validate settings and set default values where necessary
 	 */
-	private void validate()
+	private static void validate()
 	{
 		boolean blnTmp = false;
 		int iTmp = 0;
 		String strTmp = null;
 
 		// thread pool settings
-		strTmp = this.settings.getProperty(EzimConf.ezimThPoolSizeCore);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-		{
-			this.settings.setProperty
-			(
-				EzimConf.ezimThPoolSizeCore
-				, Integer.toString(Ezim.thPoolSizeCore)
-			);
-		}
-		strTmp = this.settings.getProperty(EzimConf.ezimThPoolSizeMax);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-		{
-			this.settings.setProperty
-			(
-				EzimConf.ezimThPoolSizeMax
-				, Integer.toString(Ezim.thPoolSizeMax)
-			);
-		}
-		strTmp = this.settings.getProperty(EzimConf.ezimThPoolKeepAlive);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-		{
-			this.settings.setProperty
-			(
-				EzimConf.ezimThPoolKeepAlive
-				, Integer.toString(Ezim.thPoolKeepAlive)
-			);
-		}
+		if (4 > EzimConf.THPOOL_SIZE_CORE) EzimConf.THPOOL_SIZE_CORE = 4;
+		if (64 < EzimConf.THPOOL_SIZE_MAX) EzimConf.THPOOL_SIZE_MAX = 64;
+		if (1 > EzimConf.THPOOL_KEEPALIVE) EzimConf.THPOOL_KEEPALIVE = 1;
 
 		// ACK port
-		iTmp = -1;
-		strTmp = this.settings.getProperty(EzimConf.ezimMcPort);
-		if (strTmp != null && strTmp.matches(Ezim.regexpInt))
-		{
-			iTmp = Integer.parseInt
-			(
-				this.settings.getProperty(EzimConf.ezimMcPort)
-			);
-		}
-		if (iTmp < 0 || iTmp > 65535)
-		{
-			this.settings.setProperty
-			(
-				EzimConf.ezimMcPort
-				, Integer.toString(Ezim.mcPort)
-			);
-		}
+		if (0 > EzimConf.NET_MC_PORT || 65535 < EzimConf.NET_MC_PORT)
+			EzimConf.NET_MC_PORT = 5555;
 
 		// DTX port
-		iTmp = -1;
-		strTmp = this.settings.getProperty(EzimConf.ezimDtxPort);
-		if (strTmp != null && strTmp.matches(Ezim.regexpInt))
-		{
-			iTmp = Integer.parseInt
-			(
-				this.settings.getProperty(EzimConf.ezimDtxPort)
-			);
-		}
-		if (iTmp < 0 || iTmp > 65535)
-		{
-			this.settings.setProperty
-			(
-				EzimConf.ezimDtxPort
-				, Integer.toString(Ezim.dtxPort)
-			);
-		}
+		if (0 > EzimConf.NET_DTX_PORT || 65535 < EzimConf.NET_DTX_PORT)
+			EzimConf.NET_DTX_PORT = 6666;
 
 		// self-color
-		strTmp = this.settings.getProperty(EzimConf.ezimColorSelf);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpRgb))
-		{
-			this.settings.setProperty
-			(
-				EzimConf.ezimColorSelf
-				, Integer.toString(Ezim.colorSelf, 16)
-			);
-		}
+		EzimConf.UI_COLOR_SELF &= 0xffffff;
 
 		// locale
-		strTmp = this.settings.getProperty
-		(
-			EzimConf.ezimUserLocale
-		);
-		if (strTmp == null) strTmp = Locale.getDefault().toString();
 		boolean blnInvalidLocale = true;
 		for(int iCnt = 0; iCnt < Ezim.locales.length; iCnt ++)
 		{
-			if (strTmp.equals(Ezim.locales[iCnt].toString()))
+			if
+			(
+				EzimConf.UI_USER_LOCALE.equals
+				(
+					Ezim.locales[iCnt].toString()
+				)
+			)
 			{
 				blnInvalidLocale = false;
 				break;
 			}
 		}
-		if (blnInvalidLocale) strTmp = Ezim.locales[0].toString();
-		this.settings.setProperty
-		(
-			EzimConf.ezimUserLocale
-			, strTmp
-		);
+		if (blnInvalidLocale)
+			EzimConf.UI_USER_LOCALE = Ezim.locales[0].toString();
 
 		// state icon size
-		iTmp = -1;
-		strTmp = this.settings.getProperty(EzimConf.ezimStateiconSize);
-		if (strTmp != null && strTmp.matches(Ezim.regexpInt))
-		{
-			iTmp = Integer.parseInt
-			(
-				this.settings.getProperty(EzimConf.ezimStateiconSize)
-			);
-		}
 		blnTmp = true;
 		for(int iCnt = 0; iCnt < Ezim.stateiconSizes.length; iCnt ++)
 		{
-			if (Ezim.stateiconSizes[iCnt].intValue() == iTmp)
+			if
+			(
+				Ezim.stateiconSizes[iCnt].intValue()
+					== EzimConf.UI_STATEICON_SIZE
+			)
 			{
 				blnTmp = false;
 				break;
@@ -273,116 +322,74 @@ public class EzimConf
 		}
 		if (blnTmp)
 		{
-			this.settings.setProperty
-			(
-				EzimConf.ezimStateiconSize
-				, Ezim.stateiconSizes[0].toString()
-			);
+			EzimConf.UI_STATEICON_SIZE = Ezim.stateiconSizes[0];
 		}
 
 		// main window geometry
-		strTmp = this.settings.getProperty(EzimConf.ezimmainAlwaysontop);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpBool))
-			this.settings.setProperty(EzimConf.ezimmainAlwaysontop, "false");
-		strTmp = this.settings.getProperty(EzimConf.ezimmainVisible);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpBool))
-			this.settings.setProperty(EzimConf.ezimmainVisible, "true");
-		strTmp = this.settings.getProperty(EzimConf.ezimmainLocationX);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmainLocationX, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimmainLocationY);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmainLocationY, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimmainSizeH);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmainSizeH, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimmainSizeW);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmainSizeW, "0");
+		if (0 > EzimConf.UI_MAIN_LOCATION_X)
+			EzimConf.UI_MAIN_LOCATION_X = 0;
+		if (0 > EzimConf.UI_MAIN_LOCATION_Y)
+			EzimConf.UI_MAIN_LOCATION_Y = 0;
+		if (0 > EzimConf.UI_MAIN_SIZE_H)
+			EzimConf.UI_MAIN_SIZE_H = 0;
+		if (0 > EzimConf.UI_MAIN_SIZE_W)
+			EzimConf.UI_MAIN_SIZE_W = 0;
 
 		// plaza window geometry
-		strTmp = this.settings.getProperty(EzimConf.ezimplazaLocationX);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimplazaLocationX, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimplazaLocationY);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimplazaLocationY, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimplazaSizeH);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimplazaSizeH, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimplazaSizeW);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimplazaSizeW, "0");
+		if (0 > EzimConf.UI_PLAZA_LOCATION_X)
+			EzimConf.UI_PLAZA_LOCATION_X = 0;
+		if (0 > EzimConf.UI_PLAZA_LOCATION_Y)
+			EzimConf.UI_PLAZA_LOCATION_Y = 0;
+		if (0 > EzimConf.UI_PLAZA_SIZE_H)
+			EzimConf.UI_PLAZA_SIZE_H = 0;
+		if (0 > EzimConf.UI_PLAZA_SIZE_W)
+			EzimConf.UI_PLAZA_SIZE_W = 0;
 
 		// outgoing message window geometry
-		strTmp = this.settings.getProperty(EzimConf.ezimmsgoutLocationX);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmsgoutLocationX, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimmsgoutLocationY);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmsgoutLocationY, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimmsgoutSizeH);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmsgoutSizeH, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimmsgoutSizeW);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmsgoutSizeW, "0");
+		if (0 > EzimConf.UI_MSGOUT_LOCATION_X)
+			EzimConf.UI_MSGOUT_LOCATION_X = 0;
+		if (0 > EzimConf.UI_MSGOUT_LOCATION_Y)
+			EzimConf.UI_MSGOUT_LOCATION_Y = 0;
+		if (0 > EzimConf.UI_MSGOUT_SIZE_H)
+			EzimConf.UI_MSGOUT_SIZE_H = 0;
+		if (0 > EzimConf.UI_MSGOUT_SIZE_W)
+			EzimConf.UI_MSGOUT_SIZE_W = 0;
 
 		// incoming message window geometry
-		strTmp = this.settings.getProperty(EzimConf.ezimmsginAutoopen);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpBool))
-			this.settings.setProperty(EzimConf.ezimmsginAutoopen, "false");
-		strTmp = this.settings.getProperty(EzimConf.ezimmsginLocationX);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmsginLocationX, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimmsginLocationY);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmsginLocationY, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimmsginSizeH);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmsginSizeH, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimmsginSizeW);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimmsginSizeW, "0");
+		if (0 > EzimConf.UI_MSGIN_LOCATION_X)
+			EzimConf.UI_MSGIN_LOCATION_X = 0;
+		if (0 > EzimConf.UI_MSGIN_LOCATION_Y)
+			EzimConf.UI_MSGIN_LOCATION_Y = 0;
+		if (0 > EzimConf.UI_MSGIN_SIZE_H)
+			EzimConf.UI_MSGIN_SIZE_H = 0;
+		if (0 > EzimConf.UI_MSGIN_SIZE_W)
+			EzimConf.UI_MSGIN_SIZE_W = 0;
 
 		// outgoing file window geometry
-		strTmp = this.settings.getProperty(EzimConf.ezimfileoutLocationX);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimfileoutLocationX, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimfileoutLocationY);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimfileoutLocationY, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimfileoutSizeH);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimfileoutSizeH, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimfileoutSizeW);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimfileoutSizeW, "0");
+		if (0 > EzimConf.UI_FILEOUT_LOCATION_X)
+			EzimConf.UI_FILEOUT_LOCATION_X = 0;
+		if (0 > EzimConf.UI_FILEOUT_LOCATION_Y)
+			EzimConf.UI_FILEOUT_LOCATION_Y = 0;
+		if (0 > EzimConf.UI_FILEOUT_SIZE_H)
+			EzimConf.UI_FILEOUT_SIZE_H = 0;
+		if (0 > EzimConf.UI_FILEOUT_SIZE_W)
+			EzimConf.UI_FILEOUT_SIZE_W = 0;
 
 		// incoming file window geometry
-		strTmp = this.settings.getProperty(EzimConf.ezimfileinLocationX);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimfileinLocationX, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimfileinLocationY);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimfileinLocationY, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimfileinSizeH);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimfileinSizeH, "0");
-		strTmp = this.settings.getProperty(EzimConf.ezimfileinSizeW);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpInt))
-			this.settings.setProperty(EzimConf.ezimfileinSizeW, "0");
-
-		// sound
-		strTmp = this.settings.getProperty(EzimConf.ezimsoundEnabled);
-		if (strTmp == null || ! strTmp.matches(Ezim.regexpBool))
-			this.settings.setProperty(EzimConf.ezimsoundEnabled, "true");
+		if (0 > EzimConf.UI_FILEIN_LOCATION_X)
+			EzimConf.UI_FILEIN_LOCATION_X = 0;
+		if (0 > EzimConf.UI_FILEIN_LOCATION_Y)
+			EzimConf.UI_FILEIN_LOCATION_Y = 0;
+		if (0 > EzimConf.UI_FILEIN_SIZE_H)
+			EzimConf.UI_FILEIN_SIZE_H = 0;
+		if (0 > EzimConf.UI_FILEIN_SIZE_W)
+			EzimConf.UI_FILEIN_SIZE_W = 0;
 	}
 
 	/**
 	 * prepare and lock the physical file
 	 */
-	private void prepareFile()
+	private static void prepareFile()
 	{
 		try
 		{
@@ -391,10 +398,12 @@ public class EzimConf
 			if (! fTmp.exists() || ! fTmp.isDirectory()) fTmp.mkdirs();
 
 			// attempt lock
-			this.flock = new FileOutputStream(EzimConf.getLockFilename())
-				.getChannel().tryLock();
+			EzimConf.flock = new FileOutputStream
+			(
+				EzimConf.getLockFilename()
+			).getChannel().tryLock();
 
-			if (this.flock == null)
+			if (EzimConf.flock == null)
 			{
 				throw new Exception
 				(
@@ -410,17 +419,6 @@ public class EzimConf
 	}
 
 	// P U B L I C   M E T H O D S -----------------------------------------
-	/**
-	 * return an EzimConf object
-	 */
-	public static EzimConf getInstance()
-	{
-		if (EzimConf.ezconf == null)
-			EzimConf.ezconf = new EzimConf();
-
-		return EzimConf.ezconf;
-	}
-
 	/**
 	 * determine the appropriate configuration directory name
 	 */
@@ -474,15 +472,25 @@ public class EzimConf
 	/**
 	 * write configuration items to the file indicated by the given filename
 	 */
-	public synchronized void write()
+	synchronized public static void write()
 	{
 		FileOutputStream fosTmp = null;
+		Properties props = new Properties();
 
 		try
 		{
+			for(Field fld: EzimConf.class.getFields())
+			{
+				EzimSetting setting  = fld.getAnnotation(EzimSetting.class);
+
+				if (null == setting) continue;
+
+				props.setProperty(setting.name(), fld.get(null).toString());
+			}
+
 			// output configuration to file
 			fosTmp = new FileOutputStream(EzimConf.getConfFilename());
-			this.settings.store(fosTmp, "--- ezim Configuration File ---");
+			props.store(fosTmp, "--- ezim Configuration File ---");
 		}
 		catch(Exception e)
 		{
