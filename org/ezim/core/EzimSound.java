@@ -24,6 +24,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import org.ezim.core.EzimLogger;
+import org.ezim.core.EzimConf;
 
 public class EzimSound
 {
@@ -34,10 +35,10 @@ public class EzimSound
 	private static String fileInUrl = "org/ezim/sound/fx/fileIn.wav";
 
 	// sound effect audio clip
-	private static Clip stateChg = null;
-	private static Clip statusChg = null;
-	private static Clip msgIn = null;
-	private static Clip fileIn = null;
+	private Clip stateChg = null;
+	private Clip statusChg = null;
+	private Clip msgIn = null;
+	private Clip fileIn = null;
 
 	// singleton object
 	private static EzimSound es = null;
@@ -53,82 +54,91 @@ public class EzimSound
 
 	// P R I V A T E   M E T H O D -----------------------------------------
 	/**
+	 * initialize an audio clip with the given URL
+	 * @param strIn URL of the audio clip
+	 * @param strDefault default URL of the audio clip
+	 * @return the initialized audio clip
+	 */
+	private Clip initClip(String strIn, String strDefault)
+	{
+		Clip clipOut = null;
+
+		try
+		{
+			clipOut = AudioSystem.getClip();
+
+			try
+			{
+				clipOut.open
+				(
+					AudioSystem.getAudioInputStream
+					(
+						new java.io.File(strIn)
+					)
+				);
+			}
+			catch(Exception e)
+			{
+				if (null != strIn && 0 < strIn.length())
+					EzimLogger.getInstance().warning(e.getMessage(), e);
+
+				clipOut.open
+				(
+					AudioSystem.getAudioInputStream
+					(
+						ClassLoader.getSystemResource(strDefault)
+					)
+				);
+			}
+		}
+		catch(Exception e)
+		{
+			EzimLogger.getInstance().warning(e.getMessage(), e);
+		}
+
+		return clipOut;
+	}
+
+	/**
 	 * initialize all sound effect audio input streams
 	 */
 	private void init()
 	{
-		// determine sound effect file URI
-		String strStateChg = EzimSound.stateChgUrl;
-		String strStatusChg = EzimSound.statusChgUrl;
-		String strMsgIn = EzimSound.msgInUrl;
-		String strFileIn = EzimSound.fileInUrl;
+		this.stateChg = this.initClip
+		(
+			EzimConf.SOUND_STATECHG
+			, EzimSound.stateChgUrl
+		);
 
-		// !!! ANY CHANGE BY CONFIGURATIONS SHOULD BE DONE HERE !!!
+		this.statusChg = this.initClip
+		(
+			EzimConf.SOUND_STATUSCHG
+			, EzimSound.statusChgUrl
+		);
 
-		// retrieve sound effect
-		try
-		{
-			this.stateChg = AudioSystem.getClip();
-			this.stateChg.open
-			(
-				AudioSystem.getAudioInputStream
-				(
-					ClassLoader.getSystemResource(strStateChg)
-				)
-			);
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().warning(e.getMessage(), e);
-		}
+		this.msgIn = this.initClip
+		(
+			EzimConf.SOUND_MSGIN
+			, EzimSound.msgInUrl
+		);
 
-		try
-		{
-			this.statusChg = AudioSystem.getClip();
-			this.statusChg.open
-			(
-				AudioSystem.getAudioInputStream
-				(
-					ClassLoader.getSystemResource(strStatusChg)
-				)
-			);
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().warning(e.getMessage(), e);
-		}
+		this.fileIn = this.initClip
+		(
+			EzimConf.SOUND_FILEIN
+			, EzimSound.fileInUrl
+		);
+	}
 
-		try
-		{
-			this.msgIn = AudioSystem.getClip();
-			this.msgIn.open
-			(
-				AudioSystem.getAudioInputStream
-				(
-					ClassLoader.getSystemResource(strMsgIn)
-				)
-			);
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().warning(e.getMessage(), e);
-		}
+	/**
+	 * play the specified audio clip
+	 * @param clipIn audio clip
+	 */
+	private void playClip(Clip clipIn)
+	{
+		if (null == clipIn) return;
 
-		try
-		{
-			this.fileIn = AudioSystem.getClip();
-			this.fileIn.open
-			(
-				AudioSystem.getAudioInputStream
-				(
-					ClassLoader.getSystemResource(strFileIn)
-				)
-			);
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().warning(e.getMessage(), e);
-		}
+		clipIn.setFramePosition(0);
+		clipIn.start();
 	}
 
 	// P U B L I C   M E T H O D -------------------------------------------
@@ -138,15 +148,7 @@ public class EzimSound
 	 */
 	public static EzimSound getInstance()
 	{
-		boolean blnEnabled = Boolean.parseBoolean
-		(
-			EzimConf.getInstance().settings.getProperty
-			(
-				EzimConf.ezimsoundEnabled
-			)
-		);
-
-		if (blnEnabled)
+		if (EzimConf.SOUND_ENABLED)
 		{
 			if (EzimSound.es == null)
 			{
@@ -166,8 +168,7 @@ public class EzimSound
 	 */
 	public void playStateChg()
 	{
-		this.stateChg.setFramePosition(0);
-		this.stateChg.start();
+		this.playClip(this.stateChg);
 	}
 
 	/**
@@ -175,8 +176,7 @@ public class EzimSound
 	 */
 	public void playStatusChg()
 	{
-		this.statusChg.setFramePosition(0);
-		this.statusChg.start();
+		this.playClip(this.statusChg);
 	}
 
 	/**
@@ -184,8 +184,7 @@ public class EzimSound
 	 */
 	public void playMsgIn()
 	{
-		this.msgIn.setFramePosition(0);
-		this.msgIn.start();
+		this.playClip(this.msgIn);
 	}
 
 	/**
@@ -193,7 +192,6 @@ public class EzimSound
 	 */
 	public void playFileIn()
 	{
-		this.fileIn.setFramePosition(0);
-		this.fileIn.start();
+		this.playClip(this.fileIn);
 	}
 }

@@ -27,6 +27,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import org.ezim.core.Ezim;
+import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
 import org.ezim.core.EzimImage;
 
@@ -61,9 +62,8 @@ public class EzimContactListRenderer
 		, boolean blnCellHasFocus
 	)
 	{
-		EzimMain emHwnd = EzimMain.getInstance();
 		EzimContact ecTmp = (EzimContact) objIn;
-		Color clrSelf = new Color(emHwnd.colorSelf);
+		Color clrSelf = new Color(EzimConf.UI_COLOR_SELF);
 
 		// state icon
 		if (ecTmp.getSysState() != EzimContact.SYSSTATE_DEFAULT)

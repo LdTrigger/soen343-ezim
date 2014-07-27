@@ -121,18 +121,10 @@ public class EzimAckTaker implements Runnable
 		int iPort = 0;
 		InetAddress iaMc = null;
 
-		EzimConf ecTmp = EzimConf.getInstance();
-
 		try
 		{
-			iPort = Integer.parseInt
-			(
-				ecTmp.settings.getProperty(EzimConf.ezimMcPort)
-			);
-			iaMc = InetAddress.getByName
-			(
-				ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
-			);
+			iPort = EzimConf.NET_MC_PORT;
+			iaMc = InetAddress.getByName(EzimConf.NET_MC_GROUP);
 
 			this.isaMc = new InetSocketAddress(iaMc, iPort);
 

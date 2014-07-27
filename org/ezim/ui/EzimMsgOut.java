@@ -170,41 +170,15 @@ public class EzimMsgOut
 	 */
 	private void loadConf()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-
 		this.setLocation
 		(
-			Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimmsgoutLocationX
-				)
-			)
-			, Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimmsgoutLocationY
-				)
-			)
+			EzimConf.UI_MSGOUT_LOCATION_X
+			, EzimConf.UI_MSGOUT_LOCATION_Y
 		);
 		this.setSize
 		(
-			Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimmsgoutSizeW
-				)
-			)
-			, Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimmsgoutSizeH
-				)
-			)
+			EzimConf.UI_MSGOUT_SIZE_W
+			, EzimConf.UI_MSGOUT_SIZE_H
 		);
 	}
 
@@ -213,31 +187,13 @@ public class EzimMsgOut
 	 */
 	private void saveConf()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-
 		// save window location and size
 		Point ptTmp = this.getLocationOnScreen();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmsgoutLocationX
-			, String.valueOf((int) ptTmp.getX())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmsgoutLocationY
-			, String.valueOf((int) ptTmp.getY())
-		);
+		EzimConf.UI_MSGOUT_LOCATION_X = (int) ptTmp.getX();
+		EzimConf.UI_MSGOUT_LOCATION_Y = (int) ptTmp.getY();
 		Dimension dmTmp = this.getSize();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmsgoutSizeW
-			, String.valueOf((int) dmTmp.getWidth())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmsgoutSizeH
-			, String.valueOf((int) dmTmp.getHeight())
-		);
+		EzimConf.UI_MSGOUT_SIZE_W = (int) dmTmp.getWidth();
+		EzimConf.UI_MSGOUT_SIZE_H = (int) dmTmp.getHeight();
 	}
 
 	/**

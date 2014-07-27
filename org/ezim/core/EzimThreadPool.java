@@ -33,33 +33,14 @@ public class EzimThreadPool extends ThreadPoolExecutor
 	// C O N S T R U C T O R -----------------------------------------------
 	/**
 	 * construct an instance of the thread pool
-	 * @param ecIn configuration settings
 	 */
-	private EzimThreadPool(EzimConf ecIn)
+	private EzimThreadPool()
 	{
 		super
 		(
-			Integer.parseInt
-			(
-				ecIn.settings.getProperty
-				(
-					EzimConf.ezimThPoolSizeCore
-				)
-			)
-			, Integer.parseInt
-			(
-				ecIn.settings.getProperty
-				(
-					EzimConf.ezimThPoolSizeMax
-				)
-			)
-			, Integer.parseInt
-			(
-				ecIn.settings.getProperty
-				(
-					EzimConf.ezimThPoolKeepAlive
-				)
-			)
+			EzimConf.THPOOL_SIZE_CORE
+			, EzimConf.THPOOL_SIZE_MAX
+			, EzimConf.THPOOL_KEEPALIVE
 			, TimeUnit.MINUTES
 			, new LinkedBlockingQueue<Runnable>()
 		);
@@ -73,10 +54,7 @@ public class EzimThreadPool extends ThreadPoolExecutor
 	public static EzimThreadPool getInstance()
 	{
 		if (EzimThreadPool.etpool == null)
-		{
-			EzimThreadPool.etpool
-				= new EzimThreadPool(EzimConf.getInstance());
-		}
+			EzimThreadPool.etpool = new EzimThreadPool();
 
 		return EzimThreadPool.etpool;
 	}

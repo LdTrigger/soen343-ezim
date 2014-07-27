@@ -96,17 +96,12 @@ public class EzimAckSender implements Runnable
 		{
 			try
 			{
-				EzimConf ecTmp = EzimConf.getInstance();
-
 				EzimAckSender.ia = InetAddress.getByName
 				(
-					ecTmp.settings.getProperty(EzimConf.ezimMcGroup)
+					EzimConf.NET_MC_GROUP
 				);
 
-				EzimAckSender.iMcPort = Integer.parseInt
-				(
-					ecTmp.settings.getProperty(EzimConf.ezimMcPort)
-				);
+				EzimAckSender.iMcPort = EzimConf.NET_MC_PORT;
 
 				EzimAckSender.ms = new MulticastSocket(iMcPort);
 				EzimAckSender.ms.setNetworkInterface(Ezim.localNI);

@@ -98,7 +98,6 @@ public class EzimMain
 	public String localStatus;
 
 	public boolean autoOpenMsgIn;
-	public int colorSelf;
 
 	public EzimPlaza epMain;
 
@@ -124,112 +123,38 @@ public class EzimMain
 	 */
 	private void loadConf()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-
 		this.setLocation
 		(
-			Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimmainLocationX
-				)
-			)
-			, Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimmainLocationY
-				)
-			)
+			EzimConf.UI_MAIN_LOCATION_X
+			, EzimConf.UI_MAIN_LOCATION_Y
 		);
 		this.setSize
 		(
-			Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimmainSizeW
-				)
-			)
-			, Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimmainSizeH
-				)
-			)
+			EzimConf.UI_MAIN_SIZE_W
+			, EzimConf.UI_MAIN_SIZE_H
 		);
 		this.epMain.setLocation
 		(
-			Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimplazaLocationX
-				)
-			)
-			, Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimplazaLocationY
-				)
-			)
+			EzimConf.UI_PLAZA_LOCATION_X
+			, EzimConf.UI_PLAZA_LOCATION_Y
 		);
 		this.epMain.setSize
 		(
-			Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimplazaSizeW
-				)
-			)
-			, Integer.parseInt
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimplazaSizeH
-				)
-			)
+			EzimConf.UI_PLAZA_SIZE_W
+			, EzimConf.UI_PLAZA_SIZE_H
 		);
 
 		this.setAlwaysOnTop
 		(
-			Boolean.parseBoolean
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimmainAlwaysontop
-				)
-			)
+			EzimConf.UI_MAIN_ALWAYSONTOP
 		);
 
 		this.showHide
 		(
-			Boolean.parseBoolean
-			(
-				ecTmp.settings.getProperty
-				(
-					EzimConf.ezimmainVisible
-				)
-			)
+			EzimConf.UI_MAIN_VISIBLE
 		);
 
-		this.autoOpenMsgIn = Boolean.parseBoolean
-		(
-			ecTmp.settings.getProperty
-			(
-				EzimConf.ezimmsginAutoopen
-			)
-		);
-
-		this.colorSelf = Integer.parseInt
-		(
-			ecTmp.settings.getProperty(EzimConf.ezimColorSelf)
-			, 16
-		);
+		this.autoOpenMsgIn = EzimConf.UI_MSGIN_AUTOOPEN;
 	}
 
 	/**
@@ -237,54 +162,24 @@ public class EzimMain
 	 */
 	private void saveConf()
 	{
-		EzimConf ecTmp = EzimConf.getInstance();
-
 		// save window location and size
 		Point ptTmp = this.getLocationOnScreen();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainLocationX
-			, String.valueOf((int) ptTmp.getX())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainLocationY
-			, String.valueOf((int) ptTmp.getY())
-		);
+		EzimConf.UI_MAIN_LOCATION_X = (int) ptTmp.getX();
+		EzimConf.UI_MAIN_LOCATION_Y = (int) ptTmp.getY();
+
 		Dimension dmTmp = this.getSize();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainSizeW
-			, String.valueOf((int) dmTmp.getWidth())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimmainSizeH
-			, String.valueOf((int) dmTmp.getHeight())
-		);
+		EzimConf.UI_MAIN_SIZE_W = (int) dmTmp.getWidth();
+		EzimConf.UI_MAIN_SIZE_H = (int) dmTmp.getHeight();
+
 		ptTmp = this.epMain.getLocation();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimplazaLocationX
-			, String.valueOf((int) ptTmp.getX())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimplazaLocationY
-			, String.valueOf((int) ptTmp.getY())
-		);
+		EzimConf.UI_PLAZA_LOCATION_X = (int) ptTmp.getX();
+		EzimConf.UI_PLAZA_LOCATION_Y = (int) ptTmp.getY();
+
 		dmTmp = this.epMain.getSize();
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimplazaSizeW
-			, String.valueOf((int) dmTmp.getWidth())
-		);
-		ecTmp.settings.setProperty
-		(
-			EzimConf.ezimplazaSizeH
-			, String.valueOf((int) dmTmp.getHeight())
-		);
-		ecTmp.write();
+		EzimConf.UI_PLAZA_SIZE_W = (int) dmTmp.getWidth();
+		EzimConf.UI_PLAZA_SIZE_H = (int) dmTmp.getHeight();
+
+		EzimConf.write();
 	}
 
 	/**
@@ -777,15 +672,8 @@ public class EzimMain
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				EzimConf ecTmp = EzimConf.getInstance();
-
 				// save whether window is visible
-				ecTmp.settings.setProperty
-				(
-					EzimConf.ezimmainVisible
-					, String.valueOf(EzimMain.this.isVisible())
-				);
-
+				EzimConf.UI_MAIN_VISIBLE = EzimMain.this.isVisible();
 				EzimMain.this.panic(0);
 			}
 		};
@@ -969,17 +857,13 @@ public class EzimMain
 
 		if (lTmp.size() == 1)
 		{
-			EzimConf econf = EzimConf.getInstance();
 			EzimContact ecTmp
 				= (EzimContact) this.jlstContacts.getSelectedValue();
 			InetAddress iaTmp = ecTmp.getAddress();
 
 			JFileChooser jfcTmp = new JFileChooser
 			(
-				econf.settings.getProperty
-				(
-					EzimConf.ezimfileoutDirectory
-				)
+				EzimConf.UI_FILEOUT_DIRECTORY
 			);
 			int iJfcRes = jfcTmp.showOpenDialog(this);
 
@@ -993,11 +877,8 @@ public class EzimMain
 				}
 				else
 				{
-					econf.settings.setProperty
-					(
-						EzimConf.ezimfileoutDirectory
-						, jfcTmp.getCurrentDirectory().getAbsolutePath()
-					);
+					EzimConf.UI_FILEOUT_DIRECTORY
+						= jfcTmp.getCurrentDirectory().getAbsolutePath();
 
 					new EzimFileOut
 					(

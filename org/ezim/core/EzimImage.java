@@ -183,13 +183,7 @@ public class EzimImage
 			)
 		);
 
-		int iStateiconSize = Integer.valueOf
-		(
-			EzimConf.getInstance().settings.getProperty
-			(
-				EzimConf.ezimStateiconSize
-			)
-		);
+		int iStateiconSize = EzimConf.UI_STATEICON_SIZE;
 
 		// load system state icons
 		EzimImage.icoSysStates = EzimImage.loadIcons
