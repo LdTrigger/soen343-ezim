@@ -82,12 +82,16 @@ public class EzimPreferences
 	private JCheckBox jcbEnableSound;
 	private JLabel jlblStateChg;
 	private JTextField jtfdStateChg;
+	private JButton jbtnStateChg;
 	private JLabel jlblStatusChg;
 	private JTextField jtfdStatusChg;
+	private JButton jbtnStatusChg;
 	private JLabel jlblMsgIn;
 	private JTextField jtfdMsgIn;
+	private JButton jbtnMsgIn;
 	private JLabel jlblFileIn;
 	private JTextField jtfdFileIn;
+	private JButton jbtnFileIn;
 
 	private JPanel jpnlDesign;
 	private JLabel jlblColorSelf;
@@ -172,129 +176,65 @@ public class EzimPreferences
 		this.jcbEnableSound = new JCheckBox(EzimLang.EnableSound);
 		this.jlblStateChg = new JLabel(EzimLang.StateChg);
 		this.jtfdStateChg = new JTextField();
-		this.jtfdStateChg.setEditable(false);
-		this.jtfdStateChg.addMouseListener
+		this.jbtnStateChg = new JButton("...");
+		this.jbtnStateChg.addActionListener
 		(
-			new MouseListener()
+			new ActionListener()
 			{
-				public void mouseClicked(MouseEvent evtTmp)
+				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimPreferences.this.pickFilePathAsText
 					(
 						EzimPreferences.this.jtfdStateChg
 					);
 				}
-
-				public void mouseEntered(MouseEvent evtTmp)
-				{
-				}
-
-				public void mouseExited(MouseEvent evtTmp)
-				{
-				}
-
-				public void mousePressed(MouseEvent evtTmp)
-				{
-				}
-
-				public void mouseReleased(MouseEvent evtTmp)
-				{
-				}
 			}
 		);
 		this.jlblStatusChg = new JLabel(EzimLang.StatusChg);
 		this.jtfdStatusChg = new JTextField();
-		this.jtfdStatusChg.setEditable(false);
-		this.jtfdStatusChg.addMouseListener
+		this.jbtnStatusChg = new JButton("...");
+		this.jbtnStatusChg.addActionListener
 		(
-			new MouseListener()
+			new ActionListener()
 			{
-				public void mouseClicked(MouseEvent evtTmp)
+				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimPreferences.this.pickFilePathAsText
 					(
 						EzimPreferences.this.jtfdStatusChg
 					);
 				}
-
-				public void mouseEntered(MouseEvent evtTmp)
-				{
-				}
-
-				public void mouseExited(MouseEvent evtTmp)
-				{
-				}
-
-				public void mousePressed(MouseEvent evtTmp)
-				{
-				}
-
-				public void mouseReleased(MouseEvent evtTmp)
-				{
-				}
 			}
 		);
 		this.jlblMsgIn = new JLabel(EzimLang.MsgIn);
 		this.jtfdMsgIn = new JTextField();
-		this.jtfdMsgIn.setEditable(false);
-		this.jtfdMsgIn.addMouseListener
+		this.jbtnMsgIn = new JButton("...");
+		this.jbtnMsgIn.addActionListener
 		(
-			new MouseListener()
+			new ActionListener()
 			{
-				public void mouseClicked(MouseEvent evtTmp)
+				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimPreferences.this.pickFilePathAsText
 					(
 						EzimPreferences.this.jtfdMsgIn
 					);
 				}
-
-				public void mouseEntered(MouseEvent evtTmp)
-				{
-				}
-
-				public void mouseExited(MouseEvent evtTmp)
-				{
-				}
-
-				public void mousePressed(MouseEvent evtTmp)
-				{
-				}
-
-				public void mouseReleased(MouseEvent evtTmp)
-				{
-				}
 			}
 		);
 		this.jlblFileIn = new JLabel(EzimLang.FileIn);
 		this.jtfdFileIn = new JTextField();
-		this.jtfdFileIn.setEditable(false);
-		this.jtfdFileIn.addMouseListener
+		this.jbtnFileIn = new JButton("...");
+		this.jbtnFileIn.addActionListener
 		(
-			new MouseListener()
+			new ActionListener()
 			{
-				public void mouseClicked(MouseEvent evtTmp)
+				public void actionPerformed(ActionEvent evtTmp)
 				{
 					EzimPreferences.this.pickFilePathAsText
 					(
 						EzimPreferences.this.jtfdFileIn
 					);
-				}
-
-				public void mouseEntered(MouseEvent evtTmp)
-				{
-				}
-
-				public void mouseExited(MouseEvent evtTmp)
-				{
-				}
-
-				public void mousePressed(MouseEvent evtTmp)
-				{
-				}
-
-				public void mouseReleased(MouseEvent evtTmp)
-				{
 				}
 			}
 		);
@@ -613,6 +553,38 @@ public class EzimPreferences
 							glSnd.createParallelGroup()
 								.addComponent
 								(
+									this.jbtnStateChg
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+								.addComponent
+								(
+									this.jbtnStatusChg
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+								.addComponent
+								(
+									this.jbtnMsgIn
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+								.addComponent
+								(
+									this.jbtnFileIn
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+									, GroupLayout.PREFERRED_SIZE
+								)
+						)
+						.addGroup
+						(
+							glSnd.createParallelGroup()
+								.addComponent
+								(
 									this.jtfdStateChg
 									, GroupLayout.DEFAULT_SIZE
 									, GroupLayout.PREFERRED_SIZE
@@ -667,6 +639,13 @@ public class EzimPreferences
 				)
 				.addComponent
 				(
+					this.jbtnStateChg
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
 					this.jtfdStateChg
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -680,6 +659,13 @@ public class EzimPreferences
 				.addComponent
 				(
 					this.jlblStatusChg
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jbtnStatusChg
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -705,6 +691,13 @@ public class EzimPreferences
 				)
 				.addComponent
 				(
+					this.jbtnMsgIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
 					this.jtfdMsgIn
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -718,6 +711,13 @@ public class EzimPreferences
 				.addComponent
 				(
 					this.jlblFileIn
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+					, GroupLayout.PREFERRED_SIZE
+				)
+				.addComponent
+				(
+					this.jbtnFileIn
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
 					, GroupLayout.PREFERRED_SIZE
@@ -1302,16 +1302,16 @@ public class EzimPreferences
 		EzimConf.SOUND_ENABLED = this.jcbEnableSound.isSelected();
 
 		// state change sound
-		EzimConf.SOUND_STATECHG = this.jtfdStateChg.getText();
+		EzimConf.SOUND_STATECHG = this.jtfdStateChg.getText().trim();
 
 		// status change sound
-		EzimConf.SOUND_STATUSCHG = this.jtfdStatusChg.getText();
+		EzimConf.SOUND_STATUSCHG = this.jtfdStatusChg.getText().trim();
 
 		// message arrival sound
-		EzimConf.SOUND_MSGIN = this.jtfdMsgIn.getText();
+		EzimConf.SOUND_MSGIN = this.jtfdMsgIn.getText().trim();
 
 		// file arrival sound
-		EzimConf.SOUND_FILEIN = this.jtfdFileIn.getText();
+		EzimConf.SOUND_FILEIN = this.jtfdFileIn.getText().trim();
 
 		EzimConf.write();
 	}
