@@ -32,12 +32,8 @@ import org.ezim.core.EzimLogger;
 import org.ezim.ui.EzimFileOut;
 import org.ezim.ui.EzimMain;
 
-public class EzimFileConfirmer implements Runnable
+public class EzimFileConfirmer extends EzimSocketBinder implements Runnable
 {
-	private InetAddress addr = null;
-	private int port = -1;
-	private String id = null;
-	private boolean blnConfirm = false;
 
 	// C O N S T R U C T O R -----------------------------------------------
 	/**

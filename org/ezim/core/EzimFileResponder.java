@@ -28,16 +28,11 @@ import org.ezim.core.Ezim;
 import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimFrxList;
 import org.ezim.core.EzimLogger;
-
 import org.ezim.ui.EzimFileIn;
 import org.ezim.ui.EzimMain;
 
-public class EzimFileResponder implements Runnable
+public class EzimFileResponder extends EzimSocketBinder implements Runnable
 {
-	private InetAddress addr = null;
-	private int port = -1;
-	private String id = null;
-	private boolean blnRes = false;
 
 	// C O N S T R U C T O R -----------------------------------------------
 	/**

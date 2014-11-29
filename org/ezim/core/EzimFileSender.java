@@ -29,11 +29,8 @@ import org.ezim.core.EzimDtxSemantics;
 import org.ezim.core.EzimLogger;
 import org.ezim.ui.EzimFileOut;
 
-public class EzimFileSender implements Runnable
+public class EzimFileSender extends EzimSocketBinder implements Runnable
 {
-	private EzimFileOut efo;
-	private InetAddress addr;
-	private int port;
 
 	// C O N S T R U C T O R -----------------------------------------------
 	/**
