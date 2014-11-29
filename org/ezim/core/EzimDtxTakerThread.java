@@ -85,7 +85,7 @@ public class EzimDtxTakerThread implements Runnable
 
 			fosData.close();
 
-			EzimDtxSemantics.parser(fHdr, this.sck, this.ec);
+			EzimReceiver.parser(fHdr, this.sck, this.ec);
 		}
 		catch(Exception e)
 		{
