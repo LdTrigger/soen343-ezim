@@ -79,8 +79,89 @@ public class EzimSocketBinder implements Runnable
 		run();
 	}
 	
-	public void run()
-	{
-		// Function to be implemented in coming patchsets
-	}
+	// Run() Function that will be a combination of the 4 other classes
+	
+		public void run()
+		{
+			Socket sckOut = null;
+			InetSocketAddress isaTmp = null;
+
+			try
+			{
+				sckOut = new Socket();
+				sckOut.bind
+				(
+					new InetSocketAddress
+					(
+						Ezim.localAddress
+						, 0
+					)
+				);
+				isaTmp = new InetSocketAddress
+				(
+					this.addr
+					, this.port
+				);
+				sckOut.connect(isaTmp, Ezim.dtxTimeout);
+				
+				// Comments....will be added
+				
+				if(confirm)
+				{
+					EzimDtxSemantics.sendFileConfirm(sckOut, this.id, this.blnConfirm);	
+				}
+				else if(request)
+				{
+					EzimDtxSemantics.sendFileReq(sckOut, this.id, this.efo);
+				}
+				else if(respond)
+				{
+					EzimDtxSemantics.sendFileRes(sckOut, this.id, this.blnRes);
+				}
+				else if(send)
+				{
+					EzimDtxSemantics.sendFile(sckOut, this.efo.getId(), this.efo);
+				}
+
+			
+			}
+			catch(Exception e)
+			{
+				EzimLogger.getInstance().severe(e.getMessage(), e);
+
+				if(confirm)
+				{
+					EzimFileOut efoTmp = EzimFtxList.getInstance().get(this.id);
+					EzimMain.showError(efoTmp, e.getMessage());
+					efoTmp.unregDispose();
+				}
+				else if(request)
+				{
+					EzimMain.showError(this.efo, e.getMessage());
+					this.efo.unregDispose();
+				}
+				else if(respond)
+				{
+					EzimFileIn efiTmp = EzimFrxList.getInstance().get(this.id);
+					EzimMain.showError(efiTmp, e.getMessage());
+					efiTmp.unregDispose();
+				}
+				else if(send)
+				{
+					this.efo.unregDispose();
+				}
+
+			}
+			finally
+			{
+				try
+				{
+					if (sckOut != null && ! sckOut.isClosed()) sckOut.close();
+				}
+				catch(Exception e)
+				{
+					EzimLogger.getInstance().severe(e.getMessage(), e);
+				}
+			}
+		}
 }

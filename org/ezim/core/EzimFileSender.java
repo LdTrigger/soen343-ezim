@@ -57,50 +57,6 @@ public class EzimFileSender extends EzimSocketBinder implements Runnable
 	 */
 	public void run()
 	{
-		Socket sckOut = null;
-		InetSocketAddress isaTmp = null;
-
-		try
-		{
-			sckOut = new Socket();
-			sckOut.bind
-			(
-				new InetSocketAddress
-				(
-					Ezim.localAddress
-					, 0
-				)
-			);
-			isaTmp = new InetSocketAddress
-			(
-				this.addr
-				, this.port
-			);
-			sckOut.connect(isaTmp, Ezim.dtxTimeout);
-
-			EzimDtxSemantics.sendFile
-			(
-				sckOut
-				, this.efo.getId()
-				, this.efo
-			);
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().warning(e.getMessage(), e);
-
-			this.efo.unregDispose();
-		}
-		finally
-		{
-			try
-			{
-				if (sckOut != null && ! sckOut.isClosed()) sckOut.close();
-			}
-			catch(Exception e)
-			{
-				EzimLogger.getInstance().severe(e.getMessage(), e);
-			}
-		}
+		doRun("send");
 	}
 }

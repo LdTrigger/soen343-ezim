@@ -33,7 +33,6 @@ import org.ezim.ui.EzimMain;
 
 public class EzimFileResponder extends EzimSocketBinder implements Runnable
 {
-
 	// C O N S T R U C T O R -----------------------------------------------
 	/**
 	 * construct an instance of the file confirmer
@@ -62,48 +61,6 @@ public class EzimFileResponder extends EzimSocketBinder implements Runnable
 	 */
 	public void run()
 	{
-		Socket sckOut = null;
-		InetSocketAddress isaTmp = null;
-
-		try
-		{
-			sckOut = new Socket();
-			sckOut.bind
-			(
-				new InetSocketAddress
-				(
-					Ezim.localAddress
-					, 0
-				)
-			);
-			isaTmp = new InetSocketAddress
-			(
-				this.addr
-				, this.port
-			);
-			sckOut.connect(isaTmp, Ezim.dtxTimeout);
-
-			EzimDtxSemantics.sendFileRes(sckOut, this.id, this.blnRes);
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().warning(e.getMessage(), e);
-
-			EzimFileIn efiTmp = EzimFrxList.getInstance().get(this.id);
-			EzimMain.showError(efiTmp, e.getMessage());
-
-			efiTmp.unregDispose();
-		}
-		finally
-		{
-			try
-			{
-				if (sckOut != null && ! sckOut.isClosed()) sckOut.close();
-			}
-			catch(Exception e)
-			{
-				EzimLogger.getInstance().severe(e.getMessage(), e);
-			}
-		}
+		doRun("respond");
 	}
 }

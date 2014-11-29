@@ -63,54 +63,6 @@ public class EzimFileConfirmer extends EzimSocketBinder implements Runnable
 	 */
 	public void run()
 	{
-		Socket sckOut = null;
-		InetSocketAddress isaTmp = null;
-
-		try
-		{
-			sckOut = new Socket();
-			sckOut.bind
-			(
-				new InetSocketAddress
-				(
-					Ezim.localAddress
-					, 0
-				)
-			);
-			isaTmp = new InetSocketAddress
-			(
-				this.addr
-				, this.port
-			);
-			sckOut.connect(isaTmp, Ezim.dtxTimeout);
-
-			EzimDtxSemantics.sendFileConfirm
-			(
-				sckOut
-				, this.id
-				, this.blnConfirm
-			);
-		}
-		catch(Exception e)
-		{
-			EzimLogger.getInstance().severe(e.getMessage(), e);
-
-			EzimFileOut efoTmp = EzimFtxList.getInstance().get(this.id);
-
-			EzimMain.showError(efoTmp, e.getMessage());
-
-			efoTmp.unregDispose();
-		}
-		finally
-		{
-			try
-			{
-				if (sckOut != null && ! sckOut.isClosed()) sckOut.close();
-			}
-			catch(Exception e)
-			{
-				EzimLogger.getInstance().severe(e.getMessage(), e);
-			}
-		}
+		doRun("confirm");
 	}
 }
