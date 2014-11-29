@@ -119,7 +119,7 @@ public class EzimReceiver {
 
 		try{
 			isData = sckIn.getInputStream();
-			htHdr = EzimDtxSemantics.getHeader(fIn);
+			htHdr = EzimReceiver.getHeader(fIn);
 			strCType = htHdr.get(EzimDtxSemantics.HDR_CTYPE);
 			strCLen = htHdr.get(EzimDtxSemantics.HDR_CLEN);
 
@@ -147,7 +147,7 @@ public class EzimReceiver {
 
 					String strSbj = htHdr.get(EzimDtxSemantics.HDR_SBJ);
 
-					EzimDtxSemantics.getMsg(isData, (int) lCLen, ecIn, strSbj);
+					EzimReceiver.getMsg(isData, (int) lCLen, ecIn, strSbj);
 				}
 				// receive incoming file
 				else if (strCType.equals(EzimDtxSemantics.CTYPE_FILE))
@@ -159,7 +159,7 @@ public class EzimReceiver {
 					if (efiTmp != null){
 						efiTmp.setSocket(sckIn);
 
-						EzimDtxSemantics.getFile(isData, lCLen, efiTmp);
+						EzimReceiver.getFile(isData, lCLen, efiTmp);
 					}
 				}
 				// receive incoming file request
