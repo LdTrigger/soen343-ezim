@@ -38,7 +38,7 @@ import javax.swing.JTextField;
 
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
-import org.ezim.core.EzimFileRequester;
+import org.ezim.core.EzimSocketBinder;
 import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
@@ -89,7 +89,7 @@ public class EzimFileOut
 
 		EzimThreadPool.getInstance().execute
 		(
-			new EzimFileRequester
+			new EzimSocketBinder
 			(
 				ecIn.getAddress()
 				, ecIn.getPort()

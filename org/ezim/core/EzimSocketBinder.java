@@ -36,6 +36,8 @@ import org.ezim.core.EzimFtxList;
 
 public class EzimSocketBinder implements Runnable
 {
+	protected String ConfirmRespond = null;
+	
 	protected InetAddress addr = null;
 	protected int port = -1;
 	protected String id = null;
@@ -49,34 +51,54 @@ public class EzimSocketBinder implements Runnable
 	private boolean send = false;
 	private boolean request = false;
 	
-	// Will determine the fileType and run the appropriate code (to be implemented in run)
+	//Constructors ---------------------------------
 	
-	public void EzimFileType(String str)
+	//Confirm && Respond
+	public EzimSocketBinder(String ConfirmRespond ,InetAddress iaIn, int iPort, String strId, boolean blnIn)
+	{
+		this.addr = iaIn;
+		this.port = iPort;
+		this.id = strId;
+		this.blnConfirm = blnIn;
+		
+		EzimConfirmOrRespond(ConfirmRespond);
+	}
+	
+	//Requester
+	public EzimSocketBinder(InetAddress iaIn, int iPort, String strId, EzimFileOut efoIn)
+	{
+		this.addr = iaIn;
+		this.port = iPort;
+		this.id = strId;
+		this.efo = efoIn;
+		
+		this.request = true;
+	}
+	
+	//Sender
+	public EzimSocketBinder(EzimFileOut efoIn, InetAddress iaIn, int iPort)
+	{
+		this.efo = efoIn;
+		this.addr = iaIn;
+		this.port = iPort;
+		
+		this.send = true;
+	}
+	
+	//Constructors End ---------------------------------
+	
+	// Will determine whether it is a confirmation or response
+	
+	public void EzimConfirmOrRespond(String str)
 	{
 		if(str.equals("respond"))
 		{
 			this.respond = true;
 		}
-		else if(str.equals("request"))
-		{
-			this.request = true;
-		}
 		else if(str.equals("confirm"))
 		{
 			this.confirm = true;
 		}
-		else if(str.equals("send"))
-		{
-			this.send = true;
-		}
-	}
-	
-	// This function will be called by one of the classes(Requester , Responder etc...)
-	
-	public void doRun(String fileType)
-	{
-		EzimFileType(fileType);
-		run();
 	}
 	
 	// Run() Function that will be a combination of the 4 other classes
@@ -104,7 +126,6 @@ public class EzimSocketBinder implements Runnable
 				);
 				sckOut.connect(isaTmp, Ezim.dtxTimeout);
 				
-				// Comments....will be added
 				
 				if(confirm)
 				{

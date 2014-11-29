@@ -32,8 +32,7 @@ import java.util.Hashtable;
 
 import org.ezim.core.Ezim;
 import org.ezim.core.EzimContact;
-import org.ezim.core.EzimFileConfirmer;
-import org.ezim.core.EzimFileSender;
+import org.ezim.core.EzimSocketBinder;
 import org.ezim.core.EzimFtxList;
 import org.ezim.core.EzimLang;
 import org.ezim.core.EzimLogger;
@@ -810,9 +809,11 @@ public class EzimDtxSemantics
 							{
 								efoTmp.setSysMsg(EzimLang.Sending);
 
-								EzimFileConfirmer efcTmp
-									= new EzimFileConfirmer
+								EzimSocketBinder efcTmp
+									= new EzimSocketBinder
 									(
+										"confirm"
+										,	
 										ecIn.getAddress()
 										, ecIn.getPort()
 										, strFileReqId
@@ -820,7 +821,7 @@ public class EzimDtxSemantics
 									);
 								etpTmp.execute(efcTmp);
 
-								EzimFileSender efsTmp = new EzimFileSender
+								EzimSocketBinder efsTmp = new EzimSocketBinder
 								(
 									efoTmp
 									, ecIn.getAddress()
@@ -836,15 +837,17 @@ public class EzimDtxSemantics
 									EzimLang.FileNotFoundTransmissionAborted
 								);
 
-								EzimFileConfirmer efcTmp
-									= new EzimFileConfirmer
-									(
-										ecIn.getAddress()
-										, ecIn.getPort()
-										, strFileReqId
-										, false
-									);
-								etpTmp.execute(efcTmp);
+								EzimSocketBinder efcTmp
+								= new EzimSocketBinder
+								(
+									"confirm"
+									,	
+									ecIn.getAddress()
+									, ecIn.getPort()
+									, strFileReqId
+									, true
+								);
+							etpTmp.execute(efcTmp);
 							}
 						}
 						// the remote user has refused the request
@@ -856,14 +859,17 @@ public class EzimDtxSemantics
 					// the outgoing file window is closed
 					else if (strFileRes.equals(EzimDtxSemantics.OK))
 					{
-						EzimFileConfirmer efcTmp = new EzimFileConfirmer
+						EzimSocketBinder efcTmp
+						= new EzimSocketBinder
 						(
+							"confirm"
+							,	
 							ecIn.getAddress()
 							, ecIn.getPort()
 							, strFileReqId
-							, false
+							, true
 						);
-						etpTmp.execute(efcTmp);
+					etpTmp.execute(efcTmp);
 					}
 				}
 			}

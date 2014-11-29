@@ -39,7 +39,7 @@ import javax.swing.JTextField;
 
 import org.ezim.core.EzimConf;
 import org.ezim.core.EzimContact;
-import org.ezim.core.EzimFileResponder;
+import org.ezim.core.EzimSocketBinder;
 import org.ezim.core.EzimFrxList;
 import org.ezim.core.EzimImage;
 import org.ezim.core.EzimLang;
@@ -524,8 +524,10 @@ public class EzimFileIn
 		// respond back to the request
 		EzimThreadPool.getInstance().execute
 		(
-			new EzimFileResponder
+			new EzimSocketBinder
 			(
+				"respond"
+				,
 				this.ec.getAddress()
 				, this.ec.getPort()
 				, this.id
