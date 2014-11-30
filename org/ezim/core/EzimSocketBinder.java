@@ -129,19 +129,19 @@ public class EzimSocketBinder implements Runnable
 				
 				if(confirm)
 				{
-					EzimDtxSemantics.sendFileConfirm(sckOut, this.id, this.blnConfirm);	
+					EzimSender.sendFileConfirm(sckOut, this.id, this.blnConfirm);	
 				}
 				else if(request)
 				{
-					EzimDtxSemantics.sendFileReq(sckOut, this.id, this.efo);
+					EzimSender.sendFileReq(sckOut, this.id, this.efo);
 				}
 				else if(respond)
 				{
-					EzimDtxSemantics.sendFileRes(sckOut, this.id, this.blnRes);
+					EzimSender.sendFileRes(sckOut, this.id, this.blnRes);
 				}
 				else if(send)
 				{
-					EzimDtxSemantics.sendFile(sckOut, this.efo.getId(), this.efo);
+					EzimSender.sendFile(sckOut, this.efo.getId(), this.efo);
 				}
 
 			
