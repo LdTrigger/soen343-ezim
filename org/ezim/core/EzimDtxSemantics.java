@@ -45,54 +45,54 @@ public class EzimDtxSemantics
 {
 	// C L A S S   C O N S T A N T -----------------------------------------
 	// header field name and value separator
-	private final static String HDRSPR			= ": ";
-	private final static String CRLF			= "\r\n";
+	protected final static String HDRSPR			= ": ";
+	protected final static String CRLF			= "\r\n";
 
 	// header terminator
-	private final static String HDRTRM			= "\r\n";
+	protected final static String HDRTRM			= "\r\n";
 
 	// header field "Content-Type"
-	private final static String HDR_CTYPE		= "Content-Type";
-	private final static String CTYPE_MSG		= "Message";
+	protected final static String HDR_CTYPE		= "Content-Type";
+	protected final static String CTYPE_MSG		= "Message";
 //	private final static String CTYPE_MSGRT		= "Message-Return-Ticket";
-	private final static String CTYPE_FILE		= "File";
-	private final static String CTYPE_FILEREQ	= "File-Request";
-	private final static String CTYPE_FILERES	= "File-Response";
-	private final static String CTYPE_FILECFM	= "File-Confirm";
+	protected final static String CTYPE_FILE		= "File";
+	protected final static String CTYPE_FILEREQ	= "File-Request";
+	protected final static String CTYPE_FILERES	= "File-Response";
+	protected final static String CTYPE_FILECFM	= "File-Confirm";
 
 	// header field "Content-Length"
-	private final static String HDR_CLEN		= "Content-Length";
+	protected final static String HDR_CLEN		= "Content-Length";
 
 	// header field "Subject"
 	// valid content type: "Message"
-	private final static String HDR_SBJ			= "Subject";
+	protected final static String HDR_SBJ			= "Subject";
 
 	// header field "File-Request-ID"
 	// valid content type: "File", "File-Request", "File-Response"
-	private final static String HDR_FILEREQID	= "File-Request-ID";
+	protected final static String HDR_FILEREQID	= "File-Request-ID";
 
 	// header field "Filename"
 	// valid content type: "File-Request"
-	private final static String HDR_FILENAME	= "Filename";
+	protected final static String HDR_FILENAME	= "Filename";
 
 	// header field "Filesize"
 	// valid content type: "File-Request"
-	private final static String HDR_FILESIZE	= "Filesize";
+	protected final static String HDR_FILESIZE	= "Filesize";
 
 	// header field "File-Response"
 	// valid content type: "File-Response"
-	private final static String HDR_FILERES		= "File-Response";
-	private final static String OK				= "OK";
-	private final static String NG				= "NG";
+	protected final static String HDR_FILERES		= "File-Response";
+	protected final static String OK				= "OK";
+	protected final static String NG				= "NG";
 
 	// header field "File-Confirm"
 	// valid content type: "File-Confirm"
-	private final static String HDR_FILECFM		= "File-Confirm";
+	protected final static String HDR_FILECFM		= "File-Confirm";
 
 	// C L A S S   V A R I A B L E -----------------------------------------
-	private static byte[] bHDRSPR	= null;
-	private static byte[] bCRLF		= null;
-	private static byte[] bHDRTRM	= null;
+	protected static byte[] bHDRSPR	= null;
+	protected static byte[] bCRLF		= null;
+	protected static byte[] bHDRTRM	= null;
 
 	// M E T H O D S   F O R   O U T G O I N G   T R A N S M I S S I O N ---
 	/**
